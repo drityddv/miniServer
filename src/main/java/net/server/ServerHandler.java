@@ -1,5 +1,6 @@
 package net.server;
 
+import middleware.manager.ClazzManager;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.model.PacketProtocol;
@@ -18,10 +19,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol msg) throws Exception {
 		logger.info(msg.toString());
-		msg.setData("fuck".getBytes());
-		msg.setLength("fuck".getBytes().length);
-		msg.setId((byte) 2);
 
-		ctx.writeAndFlush(msg);
+		Class clazz = ClazzManager.getClazz((int) msg.getId());
+		Object object = ClazzManager.readObjectFromBytes(msg.getData(), clazz);
+		logger.info(object.getClass().getName());
+		logger.info(object.toString());
 	}
 }
