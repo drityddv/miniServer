@@ -1,10 +1,15 @@
 package net.client;
 
+import middleware.model.User;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.model.PacketProtocol;
+import net.utils.ProtoStuffUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : ddv
@@ -24,7 +29,20 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		PacketProtocol protocol = new PacketProtocol();
 		protocol.setId((byte) 1);
-		byte[] data = "hello".getBytes();
+
+		User user = new User();
+		user.setUid(1);
+		user.setUsername("ddv");
+		user.setAccountId("account");
+		user.setPassword("pwd");
+		Map<String, String> map = new HashMap<>(16);
+		map.put("1", "1");
+		map.put("2", "2");
+		user.setMap(map);
+
+
+		byte[] data = ProtoStuffUtil.serialize(user);
+
 		protocol.setLength(data.length);
 		protocol.setData(data);
 
