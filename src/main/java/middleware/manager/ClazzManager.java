@@ -17,6 +17,7 @@ public class ClazzManager {
 
 	static {
 		clazzMap.put(1, "middleware.model.User");
+		clazzMap.put(2, "middleware.model.SM_Success");
 	}
 
 	public static Class getClazz(Integer id) {
