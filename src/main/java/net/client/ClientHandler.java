@@ -1,8 +1,9 @@
 package net.client;
 
-import middleware.model.User;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import middleware.manager.ClazzManager;
+import middleware.model.User;
 import net.model.PacketProtocol;
 import net.utils.ProtoStuffUtil;
 import org.slf4j.Logger;
@@ -21,14 +22,18 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 	private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
 
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol msg) throws Exception {
-		logger.info(msg.toString());
+	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
+		logger.info("client received : " + protocol.toString());
+
+		Object object = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
+
+		logger.info("client handler : " + object.toString());
+
 	}
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		PacketProtocol protocol = new PacketProtocol();
-		protocol.setId((byte) 1);
 
 		User user = new User();
 		user.setUid(1);
@@ -40,9 +45,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 		map.put("2", "2");
 		user.setMap(map);
 
-
 		byte[] data = ProtoStuffUtil.serialize(user);
 
+		protocol.setId((byte) 1);
 		protocol.setLength(data.length);
 		protocol.setData(data);
 
