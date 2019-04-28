@@ -3,6 +3,5 @@
 
     <message id="1" value="middleware.model.User"/>
     <message id="2" value="middleware.model.SM_Success"/>
-    <message id="2" value="middleware.model.SM_Success"/>
 
 </protocols>

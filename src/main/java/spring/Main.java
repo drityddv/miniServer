@@ -1,6 +1,10 @@
 package spring;
 
-import middleware.manager.ClazzManager;
+import middleware.anno.HandlerAnno;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.lang.reflect.Method;
 
 /**
  * @author : ddv
@@ -10,8 +14,19 @@ import middleware.manager.ClazzManager;
 public class Main {
 
 	public static void main(String[] args){
-		Class clazz = ClazzManager.getClazz(1);
-		System.out.println(clazz);
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
+		String[] names = ctx.getBeanDefinitionNames();
+		for (String name : names) {
+			Object bean = ctx.getBean(name);
+			Class<?> beanClass = bean.getClass();
+			Method[] methods = beanClass.getDeclaredMethods();
 
+			for (int i = 0; i < methods.length; i++) {
+				Method method = methods[i];
+				if (method.isAnnotationPresent(HandlerAnno.class)) {
+					System.out.println(method);
+				}
+			}
+		}
 	}
 }

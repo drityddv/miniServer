@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 临时使用的id与Clazz对应关联表
+ * id与Clazz对应关联表
  *
  * @author : ddv
  * @since : 2019/4/26 下午4:42

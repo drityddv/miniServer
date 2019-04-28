@@ -14,7 +14,7 @@ public class PacketProtocol {
 	/**
 	 * 序列号
 	 */
-	private byte id;
+	private int id;
 	/**
 	 * 长度
 	 */
@@ -24,11 +24,11 @@ public class PacketProtocol {
 	 */
 	private byte[] data;
 
-	public byte getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(byte id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
