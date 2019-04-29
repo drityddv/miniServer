@@ -10,6 +10,6 @@
     <!-- 采用注释的方式配置bean -->
     <context:annotation-config/>
     <!-- 配置要扫描的包 -->
-    <context:component-scan base-package="game"/>
+    <context:component-scan base-package="game,middleware,spring"/>
 
 </beans>

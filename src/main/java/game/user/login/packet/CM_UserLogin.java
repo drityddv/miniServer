@@ -1,8 +1,7 @@
 package game.user.login.packet;
 
-import org.springframework.stereotype.Component;
-
 /**
+ * id:1
  * @author : ddv
  * @since : 2019/4/28 下午8:15
  */
