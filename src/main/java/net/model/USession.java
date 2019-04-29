@@ -3,8 +3,8 @@ package net.model;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.TimeUtil;
 
-import java.time.Instant;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -15,25 +15,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class USession {
 	private static final Logger LOGGER = LoggerFactory.getLogger(USession.class);
 
-	private String accountId;
 	private long createdAt;
 	private Channel channel;
 	private ConcurrentHashMap<String, Object> attributes;
 
-	public static USession createSession(String accountId, Channel channel) {
+	public static USession createSession(Channel channel) {
 		USession session = new USession();
-		session.setAccountId(accountId);
 		session.setChannel(channel);
-		session.setCreatedAt(Instant.now().toEpochMilli());
+		session.setCreatedAt(TimeUtil.now());
+		session.setAttributes(new ConcurrentHashMap<>(16));
 		return session;
-	}
-
-	public String getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
 	}
 
 	public long getCreatedAt() {
@@ -52,12 +43,20 @@ public class USession {
 		this.channel = channel;
 	}
 
+	public ConcurrentHashMap<String, Object> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(ConcurrentHashMap<String, Object> attributes) {
+		this.attributes = attributes;
+	}
+
 	@Override
 	public String toString() {
 		return "USession{" +
-				"accountId='" + accountId + '\'' +
-				", createdAt=" + createdAt +
+				"createdAt=" + createdAt +
 				", channel=" + channel +
+				", attributes=" + attributes +
 				'}';
 	}
 }

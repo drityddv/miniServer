@@ -1,16 +1,13 @@
 package net.client;
 
+import game.user.login.packet.CM_UserLogin;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import middleware.manager.ClazzManager;
-import middleware.model.User;
 import net.model.PacketProtocol;
 import net.utils.ProtoStuffUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author : ddv
@@ -35,21 +32,11 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		PacketProtocol protocol = new PacketProtocol();
 
-		User user = new User();
-		user.setUid(1);
-		user.setUsername("ddv");
-		user.setAccountId("account");
-		user.setPassword("pwd");
-		Map<String, String> map = new HashMap<>(16);
-		map.put("1", "1");
-		map.put("2", "2");
-		user.setMap(map);
+		protocol.setId(1);
 
-		byte[] data = ProtoStuffUtil.serialize(user);
-
-		protocol.setId((byte) 1);
-		protocol.setLength(data.length);
-		protocol.setData(data);
+		CM_UserLogin request = new CM_UserLogin();
+		protocol.setData(ProtoStuffUtil.serialize(request));
+		protocol.setLength(protocol.getData().length);
 
 		ctx.writeAndFlush(protocol);
 

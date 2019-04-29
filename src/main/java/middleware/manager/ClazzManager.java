@@ -7,6 +7,7 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author : ddv
  * @since : 2019/4/26 下午4:42
  */
-
+@Component
 public class ClazzManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(ClazzManager.class);

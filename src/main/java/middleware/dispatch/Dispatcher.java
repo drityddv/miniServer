@@ -1,5 +1,6 @@
 package middleware.dispatch;
 
+import net.model.USession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -37,13 +38,14 @@ public class Dispatcher {
 		handlerDestinationMap.put(clazz, handlerInvoke);
 	}
 
-	public void invoke(Class<?> packet) {
-		HandlerInvoke handlerInvoke = handlerDestinationMap.get(packet);
+	public void invoke(USession session,Object packet) {
+		HandlerInvoke handlerInvoke = handlerDestinationMap.get(packet.getClass());
 
 		if (handlerInvoke == null) {
 			logger.error("协议[{}]未注册handlerMap,忽视此条消息!", packet.getClass());
+			return;
 		}
 
-		handlerInvoke.invoke(null, packet);
+		handlerInvoke.invoke(session, packet);
 	}
 }

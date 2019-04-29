@@ -9,26 +9,24 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author : ddv
  * @since : 2019/4/28 下午3:28
  */
 
-public class SpringInitCenter {
+public class SpringController {
 
-	private static final Logger logger = LoggerFactory.getLogger(SpringInitCenter.class);
+	private static final Logger logger = LoggerFactory.getLogger(SpringController.class);
 
 	private static final ApplicationContext CONTEXT = new ClassPathXmlApplicationContext("applicationContext.xml");
 
-	private static SpringInitCenter instance = new SpringInitCenter();
+	private static SpringController instance = new SpringController();
 
-	private SpringInitCenter() {
+	private SpringController() {
 	}
 
-	public static SpringInitCenter getInstance() {
+	public static SpringController getInstance() {
 		return instance;
 	}
 
