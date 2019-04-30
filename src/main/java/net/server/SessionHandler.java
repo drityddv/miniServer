@@ -33,10 +33,8 @@ public class SessionHandler extends SimpleChannelInboundHandler<PacketProtocol> 
 		String accountId = (String) session.getSessionAttribute("accountId");
 
 		// 登陆之后才会设置accountId属性 这里可以对登陆放行
-		if (accountId == null) {
-			if (object.getClass() == CM_UserLogin.class) {
+		if (accountId != null || object.getClass() == CM_UserLogin.class) {
 				ctx.fireChannelRead(protocol);
-			}
 		}
 
 	}

@@ -46,4 +46,8 @@ public class SessionManager {
 	public static USession getSession(Channel channel) {
 		return sessionMap.get(channel);
 	}
+
+	public static ConcurrentHashMap<Channel, USession> getSessionMap() {
+		return sessionMap;
+	}
 }

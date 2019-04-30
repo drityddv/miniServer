@@ -9,6 +9,8 @@ import net.utils.ProtoStuffUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Scanner;
+
 /**
  * @author : ddv
  * @date : 2019/3/3 下午7:49
@@ -20,25 +22,20 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
-		logger.info("client received : " + protocol.toString());
-
 		Object object = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
+		logger.debug("client handler : " + object.toString());
 
-		logger.info("client handler : " + object.toString());
 
 	}
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		PacketProtocol protocol = new PacketProtocol();
-
-		protocol.setId(1);
 
 		CM_UserLogin request = new CM_UserLogin();
 		request.setAccountId("accountId-01");
 		request.setPassword("password-01");
-		protocol.setData(ProtoStuffUtil.serialize(request));
-		protocol.setLength(protocol.getData().length);
+
+		PacketProtocol protocol = PacketProtocol.valueOf(request);
 
 		ctx.writeAndFlush(protocol);
 

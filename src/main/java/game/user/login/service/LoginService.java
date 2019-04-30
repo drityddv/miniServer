@@ -1,12 +1,18 @@
 package game.user.login.service;
 
 import game.user.login.packet.CM_UserLogin;
+import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.SM_LoginSuccess;
 import io.netty.channel.Channel;
+import middleware.manager.SessionManager;
 import net.model.PacketProtocol;
 import net.model.USession;
-import net.utils.ProtoStuffUtil;
+import net.utils.PacketUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : ddv
@@ -15,18 +21,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoginService implements ILoginService {
 
+	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+
 	@Override
 	public void login(USession session, CM_UserLogin request) {
 
-		Channel channel = session.getChannel();
 		SM_LoginSuccess sm = new SM_LoginSuccess();
-		PacketProtocol protocol = new PacketProtocol();
-		protocol.setId(3);
-		protocol.setData(ProtoStuffUtil.serialize(sm));
-		protocol.setLength(protocol.getData().length);
-
+		PacketProtocol protocol = PacketProtocol.valueOf(sm);
 		session.putSessionAttribute("accountId", request.getAccountId());
 
-		channel.writeAndFlush(protocol);
+		PacketUtil.send(session, protocol);
+
+		ConcurrentHashMap<Channel, USession> sessionMap = SessionManager.getSessionMap();
+
+		logger.debug("1");
+	}
+
+	@Override
+	public void logout(USession session, CM_UserLogout request) {
+
 	}
 }

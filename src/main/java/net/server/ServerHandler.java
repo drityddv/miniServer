@@ -1,5 +1,6 @@
 package net.server;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import middleware.manager.ClazzManager;
@@ -9,6 +10,8 @@ import net.model.USession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import spring.SpringContext;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : ddv
@@ -25,7 +28,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
 		try {
 			Object packet = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-			SpringContext.getDispatcher().invoke(USession.createSession(ctx.channel()), packet);
+			SpringContext.getDispatcher().invoke(SessionManager.getSession(ctx.channel()), packet);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("dispatcher invoke error.");

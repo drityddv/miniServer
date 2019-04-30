@@ -31,26 +31,18 @@ public class Server {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} finally {
-			boss.shutdownGracefully();
-			worker.shutdownGracefully();
+			shutdown();
 		}
 	}
 
 	public void shutdown() {
-		if (boss != null) {
+		if (boss != null && !boss.isShutdown()) {
 			boss.shutdownGracefully();
 		}
 
-		if (worker != null) {
+		if (worker != null && !worker.isShutdown()) {
 			worker.shutdownGracefully();
 		}
 	}
 
-	public static void main(String[] args) {
-		Server server = new Server();
-		server.init();
-		new Thread(() -> server.run()).start();
-
-		System.out.println(1);
-	}
 }
