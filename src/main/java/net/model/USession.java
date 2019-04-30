@@ -51,6 +51,14 @@ public class USession {
 		this.attributes = attributes;
 	}
 
+	public Object getSessionAttribute(String key) {
+		return attributes.get(key);
+	}
+
+	public void putSessionAttribute(String key, Object value) {
+		attributes.put(key, value);
+	}
+
 	@Override
 	public String toString() {
 		return "USession{" +

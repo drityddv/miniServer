@@ -3,6 +3,7 @@ package net.server;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import middleware.manager.ClazzManager;
+import middleware.manager.SessionManager;
 import net.model.PacketProtocol;
 import net.model.USession;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
-		logger.info("server receive: [{}]", protocol.toString());
+		logger.info("server handler receive: [{}]", protocol.toString());
 
 		try {
 			Object packet = ClazzManager.readObjectById(protocol.getData(), protocol.getId());

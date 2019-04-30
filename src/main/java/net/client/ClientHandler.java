@@ -35,6 +35,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 		protocol.setId(1);
 
 		CM_UserLogin request = new CM_UserLogin();
+		request.setAccountId("accountId-01");
+		request.setPassword("password-01");
 		protocol.setData(ProtoStuffUtil.serialize(request));
 		protocol.setLength(protocol.getData().length);
 

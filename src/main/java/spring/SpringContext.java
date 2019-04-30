@@ -1,6 +1,8 @@
 package spring;
 
+import game.user.login.service.ILoginService;
 import middleware.dispatch.Dispatcher;
+import middleware.manager.SessionManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -25,6 +27,14 @@ public class SpringContext implements ApplicationContextAware {
 	@Autowired
 	private Dispatcher dispatcher;
 
+	@Autowired
+	private SessionManager sessionManager;
+
+	//业务service区
+
+	@Autowired
+	private ILoginService loginService;
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -41,5 +51,13 @@ public class SpringContext implements ApplicationContextAware {
 
 	public static Dispatcher getDispatcher() {
 		return instance.dispatcher;
+	}
+
+	public static SessionManager getSessionManager() {
+		return instance.sessionManager;
+	}
+
+	public static ILoginService getLoginService() {
+		return instance.loginService;
 	}
 }

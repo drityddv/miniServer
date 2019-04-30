@@ -1,5 +1,8 @@
 package net.model;
 
+import middleware.manager.ClazzManager;
+import net.utils.ProtoStuffUtil;
+
 import java.util.Arrays;
 
 /**
@@ -55,5 +58,20 @@ public class PacketProtocol {
 				", length=" + length +
 				", data=" + Arrays.toString(data) +
 				'}';
+	}
+
+
+	/**
+	 * 使用此方法一定要检查clazz在ClazzManager中有注册
+	 *
+	 * @param object
+	 * @return
+	 */
+	public static PacketProtocol valueOf(Object object) {
+		PacketProtocol protocol = new PacketProtocol();
+		protocol.setId(ClazzManager.getIdByClazz(object.getClass()));
+		protocol.setData(ProtoStuffUtil.serialize(object));
+		protocol.setLength(protocol.getData().length);
+		return protocol;
 	}
 }

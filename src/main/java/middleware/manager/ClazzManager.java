@@ -27,6 +27,8 @@ public class ClazzManager {
 
 	private static Map<Integer, String> clazzMap;
 
+	private static Map<Class<?>, Integer> idMap;
+
 	private static final String MESSAGE_XML = "src/main/resources/message.xml";
 
 	static {
@@ -37,8 +39,10 @@ public class ClazzManager {
 		}
 	}
 
-	private static void loadResource() throws JDOMException, IOException {
+	private static void loadResource() throws JDOMException, IOException, ClassNotFoundException {
 		Map<Integer, String> recourseMap = new HashMap<>();
+		Map<Class<?>, Integer> clazzIdMap = new HashMap<>();
+
 		SAXBuilder saxBuilder = new SAXBuilder();
 		Document document;
 		document = saxBuilder.build(MESSAGE_XML);
@@ -50,15 +54,25 @@ public class ClazzManager {
 			Element element = children.get(i);
 			Integer id = element.getAttribute("id").getIntValue();
 			String value = element.getAttribute("value").getValue();
+			Class clazz = Class.forName(value);
 
 			if (recourseMap.containsKey(id)) {
 				logger.error("协议资源文件配置重复，重复id[{}]", id);
 				throw new RuntimeException("协议资源文件加载失败！");
 			}
+
+			if (clazzIdMap.containsKey(clazz)) {
+				logger.error("协议资源文件配置重复，重复class[{}]", value);
+				throw new RuntimeException("协议资源文件加载失败！");
+			}
+
 			recourseMap.put(id, value);
+			clazzIdMap.put(clazz, id);
 		}
 
+		idMap = clazzIdMap;
 		clazzMap = recourseMap;
+
 		logger.info("协议资源文件加载完成，总共加载了[{}]条数据", children.size());
 	}
 
@@ -85,5 +99,11 @@ public class ClazzManager {
 
 	public static Object readObjectById(byte[] bytes, int id) throws ClassNotFoundException {
 		return readObjectFromBytes(bytes, getClazz(id));
+	}
+
+	public static int getIdByClazz(Class<?> clazz) {
+		Integer id = idMap.get(clazz);
+		// 序列号从1开始 0暂时用来异常占位
+		return id == null ? 0 : id;
 	}
 }

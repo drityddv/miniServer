@@ -8,15 +8,15 @@ package game.user.login.packet;
 
 public class CM_UserLogin {
 
-	private String username;
+	private String accountId;
 	private String password;
 
-	public String getUsername() {
-		return username;
+	public String getAccountId() {
+		return accountId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
 	}
 
 	public String getPassword() {
@@ -30,7 +30,7 @@ public class CM_UserLogin {
 	@Override
 	public String toString() {
 		return "CM_UserLogin{" +
-				"username='" + username + '\'' +
+				"accountId='" + accountId + '\'' +
 				", password='" + password + '\'' +
 				'}';
 	}
