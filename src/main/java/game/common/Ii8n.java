@@ -7,6 +7,9 @@ package game.common;
 
 public interface Ii8n {
 
+	// 操作session未授权
+	int ILLEGAL_SESSION = 0;
+
 	// 服务器异常
 	int SERVER_ERROR = 1;
 

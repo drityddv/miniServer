@@ -34,4 +34,8 @@ public class LoginManager {
 		userHibernateUtil.save(loadOrCreate(accountId));
 	}
 
+	public void saveEntity(UserEnt userEnt){
+		userHibernateUtil.save(userEnt);
+	}
+
 }

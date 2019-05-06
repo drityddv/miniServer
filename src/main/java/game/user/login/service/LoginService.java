@@ -3,6 +3,7 @@ package game.user.login.service;
 import game.common.Ii8n;
 import game.common.exception.RequestException;
 import game.user.login.entity.UserEnt;
+import game.user.login.model.Person;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
@@ -47,7 +48,7 @@ public class LoginService implements ILoginService {
 
 		// 下发登陆成功状态,注册session
 		session.putSessionAttribute("accountId", accountId);
-		PacketUtil.send(session, PacketProtocol.valueOf(new SM_LoginSuccess()));
+		PacketUtil.send(session, new SM_LoginSuccess());
 	}
 
 	@Override
@@ -57,14 +58,24 @@ public class LoginService implements ILoginService {
 
 	@Override
 	public void register(USession session, CM_UserRegister request) {
-
+		logger.info("register invoked ...");
 		String accountId = request.getAccountId();
 
 		UserEnt userEnt = loginManager.load(accountId);
 
 		if (userEnt != null) {
-
+			RequestException.throwException(Ii8n.USER_EXIST);
 		}
 
+		Person person = Person.valueOf();
+		person.setName(request.getName());
+		person.setIdCard(request.getIdCard());
+
+		userEnt = UserEnt.valueOf(accountId);
+		userEnt.setPassword(request.getPassword());
+		userEnt.setUsername(request.getUsername());
+		userEnt.setPerson(person);
+
+		loginManager.saveEntity(userEnt);
 	}
 }

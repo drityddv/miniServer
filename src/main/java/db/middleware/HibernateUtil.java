@@ -22,8 +22,11 @@ public class HibernateUtil<K extends Serializable & Comparable<K>, T extends IEn
 	public void save(IEntity object) {
 		Session session = sessionFactory.getCurrentSession();
 		session.getTransaction().begin();
+		object.serialize();
+		object.setTimeStamp();
 		session.save(object);
 		session.getTransaction().commit();
+		session.close();
 	}
 
 	@Override
@@ -43,6 +46,7 @@ public class HibernateUtil<K extends Serializable & Comparable<K>, T extends IEn
 		}
 
 		object.unSerialize();
+		session.close();
 		return object;
 	}
 
@@ -52,8 +56,11 @@ public class HibernateUtil<K extends Serializable & Comparable<K>, T extends IEn
 		session.getTransaction().begin();
 
 		T object = session.get(entityType, id);
-
 		session.getTransaction().commit();
+		session.close();
+		if (object != null) {
+			object.unSerialize();
+		}
 
 		return object;
 	}

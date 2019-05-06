@@ -26,4 +26,9 @@ public interface IEntity<T extends Serializable & Comparable<T>> {
 	 */
 	void unSerialize();
 
+	/**
+	 * 处理时间戳
+	 */
+	void setTimeStamp();
+
 }

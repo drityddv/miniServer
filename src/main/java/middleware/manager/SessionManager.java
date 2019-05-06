@@ -20,7 +20,8 @@ public class SessionManager {
 	private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
 
 	/**
-	 * ip-session对应
+	 * channel-session对应
+	 * 后期需要增加sessionMap的过期清除,session的单点注册功能
 	 */
 	private static ConcurrentHashMap<Channel, USession> sessionMap = new ConcurrentHashMap<>();
 

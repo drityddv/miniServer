@@ -17,11 +17,6 @@ public class Person {
 	 */
 	private String name;
 
-	/**
-	 * 性别 0:男 : 1:女
-	 */
-	private int sex;
-
 	public static Person valueOf() {
 		return new Person();
 	}
@@ -42,20 +37,11 @@ public class Person {
 		this.name = name;
 	}
 
-	public int getSex() {
-		return sex;
-	}
-
-	public void setSex(int sex) {
-		this.sex = sex;
-	}
-
 	@Override
 	public String toString() {
 		return "Person{" +
 				"idCard='" + idCard + '\'' +
 				", name='" + name + '\'' +
-				", sex=" + sex +
 				'}';
 	}
 }

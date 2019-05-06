@@ -13,21 +13,10 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class AbstractEntity<T extends Serializable & Comparable<T>> implements IEntity<T> {
 
-	@Column(columnDefinition = "int default 0 comment '创建时间戳' ")
-	private int createdAt;
-
 	@Column(columnDefinition = "int default 0 comment '更新时间戳' ")
 	private int updatedAt;
 
-	public int getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(int createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public int getUpdatedAt() {
+	public long getUpdatedAt() {
 		return updatedAt;
 	}
 
@@ -37,9 +26,6 @@ public abstract class AbstractEntity<T extends Serializable & Comparable<T>> imp
 
 	@Override
 	public void serialize() {
-		if (this.createdAt == 0) {
-			this.createdAt = (int) TimeUtil.now();
-		}
 		this.updatedAt = (int) TimeUtil.now();
 		doSerialize();
 	}
@@ -47,6 +33,11 @@ public abstract class AbstractEntity<T extends Serializable & Comparable<T>> imp
 	@Override
 	public void unSerialize() {
 		doDeserialize();
+	}
+
+	@Override
+	public void setTimeStamp() {
+		this.updatedAt = (int) TimeUtil.now();
 	}
 
 	public abstract void doSerialize();

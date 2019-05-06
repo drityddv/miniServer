@@ -1,9 +1,11 @@
 package game.user.login.facade;
 
+import game.common.Ii8n;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
+import game.user.login.packet.CM_UserRegister;
 import middleware.anno.HandlerAnno;
 import net.model.USession;
 import net.utils.PacketUtil;
@@ -34,7 +36,20 @@ public class LoginFacade {
 		} catch (RequestException e) {
 			PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
 		} catch (Exception e) {
+			PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
 			logger.error(e.toString());
+		}
+	}
+
+	@HandlerAnno
+	public void userRegister(USession session, CM_UserRegister request) {
+		try {
+			SpringContext.getLoginService().register(session, request);
+		} catch (RequestException e) {
+			PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
+		} catch (Exception e) {
+			PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
+			e.printStackTrace();
 		}
 	}
 

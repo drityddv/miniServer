@@ -17,14 +17,22 @@ import java.util.Scanner;
 
 public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
+	private static final String MESSAGE = "1: 账号登录\n" +
+			"2: 创建账号\n" +
+			"3: 用户登录";
+
 	private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
 
 	private Scanner scanner = new Scanner(System.in);
 
+	private ClientDispatch dispatch = new ClientDispatch();
+
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
 		Object object = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-		logger.info("client handler : " + object.toString());
+		logger.info("client received : " + object.toString());
+		logger.info("请选择操作!\n" + MESSAGE);
+		dispatch.handler(ctx,scanner,scanner.nextInt());
 
 	}
 

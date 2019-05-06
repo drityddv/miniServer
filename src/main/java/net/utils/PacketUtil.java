@@ -15,6 +15,12 @@ public class PacketUtil {
 
 	private static final Logger logger = LoggerFactory.getLogger(PacketUtil.class);
 
+	/**
+	 * 这个方法 使用者不要包装PacketProtocol 否则会误杀!!!
+	 *
+	 * @param session
+	 * @param object
+	 */
 	public static void send(USession session, Object object) {
 		int id = ClazzManager.getIdByClazz(object.getClass());
 
