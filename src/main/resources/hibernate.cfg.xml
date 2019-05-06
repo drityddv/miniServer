@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- 数据库连接属性 -->
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/miniServer?characterEncoding=utf8</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">root</property>
+
+        <!--自动建表-->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <!-- 设置当前会话和当前线程进行绑定 -->
+        <!-- 每个线程都持有自己的资源不会因为竞争资源影响并发 -->
+        <!-- 不会重复创建Session造成资源的浪费以及无法开启事务环境 -->
+        <property name="current_session_context_class">thread</property>
+
+        <!-- 显示并格式化SQL语句（在上线版本中要去掉这两个配置）,影响性能 -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!-- 对象关系映射引用 -->
+        <mapping class="game.user.login.entity.UserEnt"/>
+    </session-factory>
+</hibernate-configuration>

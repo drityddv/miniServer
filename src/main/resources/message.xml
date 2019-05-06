@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <protocols version="1.0">
 
+    <!--公共服务-->
+    <message id="-1" value="game.common.packet.SM_Message"/>
+
+    <!--用户登录-->
     <message id="1" value="game.user.login.packet.CM_UserLogin"/>
     <message id="2" value="game.user.login.packet.CM_UserLogout"/>
     <message id="3" value="game.user.login.packet.SM_LoginSuccess"/>
+    <message id="4" value="game.user.login.packet.CM_UserRegister"/>
 
 </protocols>

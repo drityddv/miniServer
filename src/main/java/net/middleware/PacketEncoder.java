@@ -18,7 +18,6 @@ public class PacketEncoder extends MessageToByteEncoder<PacketProtocol> {
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, PacketProtocol protocol, ByteBuf out) throws Exception {
-		logger.debug("packet encode invoked!");
 		out.writeByte(protocol.getId());
 		out.writeInt(protocol.getLength());
 		out.writeBytes(protocol.getData());

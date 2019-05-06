@@ -2,6 +2,7 @@ package game.user.login.service;
 
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
+import game.user.login.packet.CM_UserRegister;
 import net.model.USession;
 
 /**
@@ -28,4 +29,12 @@ public interface ILoginService {
 	 * @param request
 	 */
 	void logout(USession session, CM_UserLogout request);
+
+	/**
+	 * 用户注册
+	 *
+	 * @param session
+	 * @param request
+	 */
+	void register(USession session, CM_UserRegister request);
 }

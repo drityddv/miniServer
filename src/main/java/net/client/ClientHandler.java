@@ -5,7 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import middleware.manager.ClazzManager;
 import net.model.PacketProtocol;
-import net.utils.ProtoStuffUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,20 +19,22 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
 
+	private Scanner scanner = new Scanner(System.in);
+
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
 		Object object = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-		logger.debug("client handler : " + object.toString());
-
+		logger.info("client handler : " + object.toString());
 
 	}
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		logger.info("请输入登陆账号和密码进行登录!");
 
 		CM_UserLogin request = new CM_UserLogin();
-		request.setAccountId("accountId-01");
-		request.setPassword("password-01");
+		request.setAccountId(scanner.next());
+		request.setPassword(scanner.next());
 
 		PacketProtocol protocol = PacketProtocol.valueOf(request);
 

@@ -1,9 +1,12 @@
 package game.user.login.facade;
 
+import game.common.exception.RequestException;
+import game.common.packet.SM_Message;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import middleware.anno.HandlerAnno;
 import net.model.USession;
+import net.utils.PacketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -26,9 +29,10 @@ public class LoginFacade {
 	 */
 	@HandlerAnno
 	public void userLogin(USession session, CM_UserLogin request) {
-		logger.info("user login method invoked");
 		try {
 			SpringContext.getLoginService().login(session, request);
+		} catch (RequestException e) {
+			PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
 		} catch (Exception e) {
 			logger.error(e.toString());
 		}
