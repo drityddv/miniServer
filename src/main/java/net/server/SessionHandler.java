@@ -1,5 +1,7 @@
 package net.server;
 
+import game.common.Ii8n;
+import game.common.packet.SM_Message;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserRegister;
 import io.netty.channel.Channel;
@@ -9,6 +11,7 @@ import middleware.manager.ClazzManager;
 import middleware.manager.SessionManager;
 import net.model.PacketProtocol;
 import net.model.USession;
+import net.utils.PacketUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,11 +36,13 @@ public class SessionHandler extends SimpleChannelInboundHandler<PacketProtocol> 
 
 		String accountId = (String) session.getSessionAttribute("accountId");
 
-		// 登陆之后才会设置accountId属性 这里可以对登陆放行
+		// 登陆之后才会设置accountId属性 这里可以对登陆,注册
 		if (accountId != null || object.getClass() == CM_UserLogin.class || object.getClass() == CM_UserRegister.class) {
 				ctx.fireChannelRead(protocol);
+				return;
 		}
 
+		ctx.writeAndFlush(PacketProtocol.valueOf(SM_Message.valueOf(Ii8n.ILLEGAL_SESSION)));
 	}
 
 	@Override

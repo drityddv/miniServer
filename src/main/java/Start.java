@@ -2,6 +2,7 @@ import middleware.dispatch.Dispatcher;
 import net.server.Server;
 import spring.SpringContext;
 import spring.SpringController;
+import utils.IdUtil;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -26,6 +27,5 @@ public class Start {
 		});
 
 		System.out.println("main thread shutdown");
-
 	}
 }

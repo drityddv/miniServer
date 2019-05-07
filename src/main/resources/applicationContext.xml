@@ -16,17 +16,17 @@
     <!--<bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
 
         <!--&lt;!&ndash; 配置连接参数 &ndash;&gt;-->
-        <!--<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/miniServer?characterEncoding=utf8"/>-->
-        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>-->
-        <!--<property name="userEnt" value="root"/>-->
-        <!--<property name="password" value="root"/>-->
+        <!--<property accountId="jdbcUrl" value="jdbc:mysql://localhost:3306/miniServer?characterEncoding=utf8"/>-->
+        <!--<property accountId="driverClass" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property accountId="userEnt" value="root"/>-->
+        <!--<property accountId="password" value="root"/>-->
 
         <!--&lt;!&ndash; 配置连接池 &ndash;&gt;-->
-        <!--<property name="initialPoolSize" value="10"/>-->
-        <!--<property name="maxPoolSize" value="30"/>-->
-        <!--<property name="minPoolSize" value="1"/>-->
-        <!--<property name="acquireIncrement" value="3"/>-->
-        <!--<property name="maxIdleTime" value="60"/>-->
+        <!--<property accountId="initialPoolSize" value="10"/>-->
+        <!--<property accountId="maxPoolSize" value="30"/>-->
+        <!--<property accountId="minPoolSize" value="1"/>-->
+        <!--<property accountId="acquireIncrement" value="3"/>-->
+        <!--<property accountId="maxIdleTime" value="60"/>-->
 
     <!--</bean>-->
 
@@ -34,9 +34,9 @@
     <!--<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">-->
 
         <!--&lt;!&ndash; 依赖数据源 &ndash;&gt;-->
-        <!--<property name="dataSource" ref="ds"/>-->
+        <!--<property accountId="dataSource" ref="ds"/>-->
         <!--&lt;!&ndash; Hibernate框架相关配置 &ndash;&gt;-->
-        <!--<property name="hibernateProperties">-->
+        <!--<property accountId="hibernateProperties">-->
             <!--<props>-->
                 <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>-->
                 <!--<prop key="hibernate.show_sql">true</prop>-->

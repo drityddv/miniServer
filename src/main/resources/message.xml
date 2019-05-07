@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <protocols version="1.0">
 
+    <!--序列号0用来占位,不要使用0作为id !!!-->
+
     <!--公共服务-->
     <message id="-1" value="game.common.packet.SM_Message"/>
 
-    <!--用户登录-->
+    <!--用户登录 1 - 10 -->
     <message id="1" value="game.user.login.packet.CM_UserLogin"/>
     <message id="2" value="game.user.login.packet.CM_UserLogout"/>
     <message id="3" value="game.user.login.packet.SM_LoginSuccess"/>
     <message id="4" value="game.user.login.packet.CM_UserRegister"/>
+
+    <!--地图基础协议 11 - 50-->
+    <message id="11" value="game.scene.map.packet.CM_EnterMap"/>
+
+    <!--gm命令 51 - 70-->
+    <message id="51" value="game.gm.packet.CM_GmCommand"/>
 
 </protocols>

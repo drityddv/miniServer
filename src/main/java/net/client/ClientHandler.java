@@ -1,14 +1,16 @@
 package net.client;
 
-import game.user.login.packet.CM_UserLogin;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import middleware.manager.ClazzManager;
 import net.model.PacketProtocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import utils.TimeUtil;
 
 import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author : ddv
@@ -19,7 +21,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
 	private static final String MESSAGE = "1: 账号登录\n" +
 			"2: 创建账号\n" +
-			"3: 用户登录";
+			"3: 进入地图\n" +
+			"4: 后台命令";
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
 
@@ -30,23 +33,19 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
 		Object object = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-		logger.info("client received : " + object.toString());
-		logger.info("请选择操作!\n" + MESSAGE);
-		dispatch.handler(ctx,scanner,scanner.nextInt());
-
+		logger.info("客户端收到消息 : " + object.toString());
 	}
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
-		logger.info("请输入登陆账号和密码进行登录!");
+		logger.info("客户端与服务端通讯成功!");
 
-		CM_UserLogin request = new CM_UserLogin();
-		request.setAccountId(scanner.next());
-		request.setPassword(scanner.next());
-
-		PacketProtocol protocol = PacketProtocol.valueOf(request);
-
-		ctx.writeAndFlush(protocol);
-
+		Executors.newSingleThreadExecutor().submit(() -> {
+			while (true) {
+				logger.info("请选择操作!\n" + MESSAGE);
+				dispatch.handler(ctx, scanner, scanner.nextInt());
+				Thread.sleep(1000);
+			}
+		});
 	}
 }

@@ -1,5 +1,6 @@
 package game.user.login.service;
 
+import game.user.login.entity.UserEnt;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
@@ -37,4 +38,11 @@ public interface ILoginService {
 	 * @param request
 	 */
 	void register(USession session, CM_UserRegister request);
+
+	/**
+	 * 获取用户实体信息 这个类不允许做修改
+	 * @param session
+	 * @return
+	 */
+	UserEnt getUserEnt(USession session);
 }

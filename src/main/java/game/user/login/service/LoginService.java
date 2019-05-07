@@ -78,4 +78,9 @@ public class LoginService implements ILoginService {
 
 		loginManager.saveEntity(userEnt);
 	}
+
+	@Override
+	public UserEnt getUserEnt(USession session) {
+		return loginManager.load((String) session.getAttributes().get("accountId"));
+	}
 }

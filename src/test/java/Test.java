@@ -7,7 +7,11 @@ import net.utils.ProtoStuffUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.joda.convert.StringConvert;
 import spring.SpringController;
+
+import java.util.Scanner;
+import java.util.concurrent.Executors;
 
 /**
  * @author : ddv
@@ -60,8 +64,13 @@ public class Test {
 
 	@org.junit.Test
 	public void run3() {
-		SpringController.initHandlerDestinationMap();
-		LoginManager manager = SpringController.getContext().getBean(LoginManager.class);
+		Scanner scanner = new Scanner(System.in);
+		String s = scanner.nextLine();
+		System.out.println(s);
+	}
 
+	public static void main(String[] args){
+		Integer num = StringConvert.INSTANCE.convertFromString(Integer.class,"2s");
+		System.out.println(num);
 	}
 }

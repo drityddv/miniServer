@@ -1,5 +1,8 @@
 package spring;
 
+import game.gm.service.GM_Command;
+import game.gm.service.IGmService;
+import game.scene.map.service.ISceneMapService;
 import game.user.login.service.ILoginService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
@@ -35,6 +38,15 @@ public class SpringContext implements ApplicationContextAware {
 	@Autowired
 	private ILoginService loginService;
 
+	@Autowired
+	private ISceneMapService sceneMapService;
+
+	@Autowired
+	private IGmService gmService;
+
+	@Autowired
+	private GM_Command gmCommand;
+
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
@@ -59,5 +71,17 @@ public class SpringContext implements ApplicationContextAware {
 
 	public static ILoginService getLoginService() {
 		return instance.loginService;
+	}
+
+	public static ISceneMapService getSceneMapService() {
+		return instance.sceneMapService;
+	}
+
+	public static IGmService getGmService() {
+		return instance.gmService;
+	}
+
+	public static GM_Command getGmCommand(){
+		return instance.gmCommand;
 	}
 }

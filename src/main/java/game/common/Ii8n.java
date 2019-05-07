@@ -7,6 +7,9 @@ package game.common;
 
 public interface Ii8n {
 
+	//操作成功 开发阶段用来显示效果
+	int OPERATION_SUCCESS = -1;
+
 	// 操作session未授权
 	int ILLEGAL_SESSION = 0;
 
@@ -22,5 +25,6 @@ public interface Ii8n {
 	// 密码错误
 	int PASSWORD_ERROR = 4;
 
-
+	// 地图不存在
+	int MAP_NOT_EXIST = 5;
 }
