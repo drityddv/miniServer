@@ -9,18 +9,14 @@ public class RequestException extends RuntimeException {
 
 	private int errorCode;
 
-
-	public int getErrorCode() {
-		return errorCode;
-	}
-
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
-	}
-
 	public static void throwException(int i18nId) {
 		RequestException exception = new RequestException();
 		exception.errorCode = i18nId;
 		throw exception;
 	}
+
+	public int getErrorCode() {
+		return errorCode;
+	}
+
 }

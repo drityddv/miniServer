@@ -1,11 +1,12 @@
 package net.model;
 
-import io.netty.channel.Channel;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import utils.TimeUtil;
 
-import java.util.concurrent.ConcurrentHashMap;
+import utils.TimeUtil;
+import io.netty.channel.Channel;
 
 /**
  * @author : ddv

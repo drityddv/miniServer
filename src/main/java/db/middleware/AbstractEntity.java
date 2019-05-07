@@ -1,10 +1,11 @@
 package db.middleware;
 
-import utils.TimeUtil;
+import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
+
+import utils.TimeUtil;
 
 /**
  * @author : ddv

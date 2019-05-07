@@ -1,8 +1,9 @@
 package game.base.map.base;
 
-import game.base.map.IMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import game.base.map.IMap;
 
 /**
  * @author : ddv

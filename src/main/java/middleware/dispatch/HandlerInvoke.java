@@ -1,9 +1,10 @@
 package middleware.dispatch;
 
-import net.model.USession;
-import org.springframework.util.ReflectionUtils;
-
 import java.lang.reflect.Method;
+
+import net.model.USession;
+
+import org.springframework.util.ReflectionUtils;
 
 /**
  * @author : ddv
@@ -31,6 +32,10 @@ public class HandlerInvoke implements IHandlerInvoke {
 		this.clazz = clazz;
 	}
 
+	public static HandlerInvoke createHandlerInvoke(Object bean, Method method, Class<?> clazz) {
+		return new HandlerInvoke(bean, method, clazz);
+	}
+
 	public Object getBean() {
 		return bean;
 	}
@@ -46,9 +51,5 @@ public class HandlerInvoke implements IHandlerInvoke {
 	@Override
 	public Object invoke(USession session, Object packet) {
 		return ReflectionUtils.invokeMethod(method, bean, session, packet);
-	}
-
-	public static HandlerInvoke createHandlerInvoke(Object bean, Method method, Class<?> clazz) {
-		return new HandlerInvoke(bean, method, clazz);
 	}
 }

@@ -1,10 +1,11 @@
 package game.scene.map.resource;
 
-import game.base.map.base.AbstractGameMap;
-import game.base.map.base.MapCreature;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.slf4j.Logger;
 
-import java.util.concurrent.ConcurrentHashMap;
+import game.base.map.base.AbstractGameMap;
+import game.base.map.base.MapCreature;
 
 /**
  * 新手村

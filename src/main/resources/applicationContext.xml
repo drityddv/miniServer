@@ -13,7 +13,7 @@
     <context:component-scan base-package="game,middleware,spring"/>
 
     <!--&lt;!&ndash; 配置数据源 &ndash;&gt;-->
-    <!--<bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
+    <!--<bean i18nId="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">-->
 
         <!--&lt;!&ndash; 配置连接参数 &ndash;&gt;-->
         <!--<property accountId="jdbcUrl" value="jdbc:mysql://localhost:3306/miniServer?characterEncoding=utf8"/>-->
@@ -31,7 +31,7 @@
     <!--</bean>-->
 
     <!--&lt;!&ndash; 配置SessionFactory &ndash;&gt;-->
-    <!--<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">-->
+    <!--<bean i18nId="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">-->
 
         <!--&lt;!&ndash; 依赖数据源 &ndash;&gt;-->
         <!--<property accountId="dataSource" ref="ds"/>-->

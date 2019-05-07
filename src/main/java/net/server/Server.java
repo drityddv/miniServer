@@ -11,9 +11,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * @author ddv
  */
 public class Server {
+	private ServerBootstrap serverBootstrap;
 	private EventLoopGroup boss;
 	private EventLoopGroup worker;
-	ServerBootstrap serverBootstrap;
 
 	public void init() {
 		boss = new NioEventLoopGroup();

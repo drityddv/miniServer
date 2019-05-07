@@ -1,10 +1,10 @@
 package db.middleware;
 
+import java.io.Serializable;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-
-import java.io.Serializable;
 
 /**
  * @author : ddv

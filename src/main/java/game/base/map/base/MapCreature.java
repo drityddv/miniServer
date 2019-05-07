@@ -1,7 +1,7 @@
 package game.base.map.base;
 
-import game.base.object.AbstractCreature;
 import utils.IdUtil;
+import game.base.object.AbstractCreature;
 
 /**
  * 地图中的生物单位

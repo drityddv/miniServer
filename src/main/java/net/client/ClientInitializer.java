@@ -1,10 +1,10 @@
 package net.client;
 
+import net.middleware.PacketDecoder;
+import net.middleware.PacketEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import net.middleware.PacketDecoder;
-import net.middleware.PacketEncoder;
 
 /**
  * @author : ddv

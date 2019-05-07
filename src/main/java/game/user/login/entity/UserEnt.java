@@ -1,11 +1,12 @@
 package game.user.login.entity;
 
-import db.middleware.AbstractEntity;
-import game.user.login.model.Person;
-import net.utils.ProtoStuffUtil;
+import java.util.Arrays;
 
 import javax.persistence.*;
-import java.util.Arrays;
+
+import net.utils.ProtoStuffUtil;
+import db.middleware.AbstractEntity;
+import game.user.login.model.Person;
 
 /**
  * @author : ddv
@@ -28,6 +29,13 @@ public class UserEnt extends AbstractEntity<String> {
 	private String username;
 	@Column(columnDefinition = "varchar(255) CHARACTER SET utf8 COLLATE utf8_bin comment '账号密码' ", nullable = false)
 	private String password;
+
+	public static UserEnt valueOf(String accountId) {
+		UserEnt userEnt = new UserEnt();
+		userEnt.accountId = accountId;
+		userEnt.person = Person.valueOf();
+		return userEnt;
+	}
 
 	public Person getPerson() {
 		return person;
@@ -67,13 +75,6 @@ public class UserEnt extends AbstractEntity<String> {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public static UserEnt valueOf(String accountId) {
-		UserEnt userEnt = new UserEnt();
-		userEnt.accountId = accountId;
-		userEnt.person = Person.valueOf();
-		return userEnt;
 	}
 
 	@Override

@@ -1,16 +1,16 @@
 package net.client;
 
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
-import middleware.manager.ClazzManager;
-import net.model.PacketProtocol;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import utils.TimeUtil;
-
 import java.util.Scanner;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+
+import middleware.manager.ClazzManager;
+import net.model.PacketProtocol;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  * @author : ddv

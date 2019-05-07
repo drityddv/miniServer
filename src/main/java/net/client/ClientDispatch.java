@@ -1,21 +1,22 @@
 package net.client;
 
+import java.util.Scanner;
+
+import net.model.PacketProtocol;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import game.gm.packet.CM_GmCommand;
 import game.scene.map.packet.CM_EnterMap;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserRegister;
 import io.netty.channel.ChannelHandlerContext;
-import net.model.PacketProtocol;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Scanner;
 
 /**
  * @author : ddv
  * @since : 2019/5/6 下午3:16
  */
-
 public class ClientDispatch {
 
 	private static final Logger logger = LoggerFactory.getLogger(ClientDispatch.class);
@@ -44,7 +45,7 @@ public class ClientDispatch {
 				break;
 			}
 			case 3: {
-				logger.info("请输入想要进去的地图mapId!");
+				logger.info("请输入想要进入的地图mapId!");
 				CM_EnterMap cm = new CM_EnterMap();
 				cm.setMapId(scanner.nextLong());
 				ctx.writeAndFlush(PacketProtocol.valueOf(cm));

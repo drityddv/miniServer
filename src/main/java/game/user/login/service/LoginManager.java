@@ -1,10 +1,11 @@
 package game.user.login.service;
 
+import org.springframework.stereotype.Component;
+
 import db.middleware.EntityBuilder;
 import db.middleware.HibernateUtil;
 import db.middleware.IOrmTemplate;
 import game.user.login.entity.UserEnt;
-import org.springframework.stereotype.Component;
 
 /**
  * 静态资源,持久组件

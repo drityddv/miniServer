@@ -1,6 +1,12 @@
 package middleware.manager;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.utils.ProtoStuffUtil;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -8,11 +14,6 @@ import org.jdom.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * id与Clazz对应关联表
@@ -24,12 +25,9 @@ import java.util.Map;
 public class ClazzManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(ClazzManager.class);
-
-	private static Map<Integer, String> clazzMap;
-
-	private static Map<Class<?>, Integer> idMap;
-
 	private static final String MESSAGE_XML = "src/main/resources/message.xml";
+	private static Map<Integer, String> clazzMap;
+	private static Map<Class<?>, Integer> idMap;
 
 	static {
 		try {

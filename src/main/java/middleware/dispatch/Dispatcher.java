@@ -1,12 +1,13 @@
 package middleware.dispatch;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.model.USession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 应用层请求派发器

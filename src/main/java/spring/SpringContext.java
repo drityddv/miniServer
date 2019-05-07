@@ -1,18 +1,20 @@
 package spring;
 
-import game.gm.service.GM_Command;
-import game.gm.service.IGmService;
-import game.scene.map.service.ISceneMapService;
-import game.user.login.service.ILoginService;
+import javax.annotation.PostConstruct;
+
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
+
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import game.gm.service.GM_Command;
+import game.gm.service.IGmService;
+import game.scene.map.service.ISceneMapService;
+import game.user.login.service.ILoginService;
 
 /**
  * @author : ddv
@@ -47,20 +49,6 @@ public class SpringContext implements ApplicationContextAware {
 	@Autowired
 	private GM_Command gmCommand;
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
-
-	@PostConstruct
-	private void init() {
-		instance = this;
-	}
-
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
-
 	public static Dispatcher getDispatcher() {
 		return instance.dispatcher;
 	}
@@ -83,5 +71,19 @@ public class SpringContext implements ApplicationContextAware {
 
 	public static GM_Command getGmCommand(){
 		return instance.gmCommand;
+	}
+
+	@PostConstruct
+	private void init() {
+		instance = this;
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }

@@ -1,12 +1,14 @@
 package middleware.manager;
 
-import io.netty.channel.Channel;
+import java.util.concurrent.ConcurrentHashMap;
+
 import net.model.USession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ConcurrentHashMap;
+import io.netty.channel.Channel;
 
 /**
  * 用户session管理
