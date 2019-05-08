@@ -20,19 +20,19 @@ import spring.SpringContext;
 @Component
 public class GM_Command {
 
-	private static final Logger logger = LoggerFactory.getLogger(GM_Command.class);
+    private static final Logger logger = LoggerFactory.getLogger(GM_Command.class);
 
-	@Autowired
-	private SceneMapManager sceneMapManager;
+    @Autowired
+    private SceneMapManager sceneMapManager;
 
-	public void logUserEnt(USession session) {
-		UserEnt userEnt = SpringContext.getLoginService().getUserEnt(session);
-		logger.info(userEnt.toString());
-	}
+    public void logUserEnt(USession session) {
+        UserEnt userEnt = SpringContext.getLoginService().getUserEnt(session);
+        logger.info(userEnt.toString());
+    }
 
-	public void logMap(USession session, long mapId) {
-		logger.info("服务器当前地图[{}]张",sceneMapManager.getSceneMaps().size());
-		SpringContext.getSceneMapService().logBasicMapInfo(mapId);
-	}
+    public void logMap(USession session, long mapId) {
+        logger.info("服务器当前地图[{}]张", sceneMapManager.getSceneMaps().size());
+        SpringContext.getSceneMapService().logBasicMapInfo(mapId);
+    }
 
 }

@@ -7,5 +7,4 @@ package game.user.login.packet;
  * @since : 2019/4/29 上午11:59
  */
 
-public class CM_UserLogout {
-}
+public class CM_UserLogout {}

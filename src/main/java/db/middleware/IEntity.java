@@ -9,26 +9,26 @@ import java.io.Serializable;
 
 public interface IEntity<T extends Serializable & Comparable<T>> {
 
-	/**
-	 * 获取实体主键
-	 *
-	 * @return
-	 */
-	T getId();
+    /**
+     * 获取实体主键
+     *
+     * @return
+     */
+    T getId();
 
-	/**
-	 * 序列化逻辑
-	 */
-	void serialize();
+    /**
+     * 序列化逻辑
+     */
+    void serialize();
 
-	/**
-	 * 反序列化逻辑
-	 */
-	void unSerialize();
+    /**
+     * 反序列化逻辑
+     */
+    void unSerialize();
 
-	/**
-	 * 处理时间戳
-	 */
-	void setTimeStamp();
+    /**
+     * 处理时间戳
+     */
+    void setTimeStamp();
 
 }

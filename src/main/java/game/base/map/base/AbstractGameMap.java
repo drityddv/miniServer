@@ -16,134 +16,132 @@ import game.common.exception.RequestException;
 
 public abstract class AbstractGameMap implements IMap {
 
-	private static final Logger logger = LoggerFactory.getLogger(AbstractGameMap.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractGameMap.class);
 
-	private long mapId;
-	private int x;
-	private int y;
-	private int[][] mapData;
-	private ConcurrentHashMap<Long, MapCreature> mapCreatures;
+    private long mapId;
+    private int x;
+    private int y;
+    private int[][] mapData;
+    private ConcurrentHashMap<Long, MapCreature> mapCreatures;
 
-	public void init(long mapId, int[][] mapData) {
-		this.mapId = mapId;
-		this.x = mapData.length;
-		this.y = mapData[0].length;
-		this.mapData = mapData;
-		mapCreatures = new ConcurrentHashMap<>(16);
-	}
+    public void init(long mapId, int[][] mapData) {
+        this.mapId = mapId;
+        this.x = mapData.length;
+        this.y = mapData[0].length;
+        this.mapData = mapData;
+        mapCreatures = new ConcurrentHashMap<>(16);
+    }
 
-	@Override
-	public long getCurrentMapId() {
-		return mapId;
-	}
+    @Override
+    public long getCurrentMapId() {
+        return mapId;
+    }
 
-	@Override
-	public void printMap() {
-		logger.info("打印地图[{}]详细信息,地图长[{}],宽[{}]", this.getMapId(), this.getX(), this.getY());
-		logger.info("地图详细信息");
-		printMapData();
-		logger.info("地图生物单位数量[{}]", mapCreatures.size());
-		mapCreatures.forEach((objectId,mapCreature) ->{
-			mapCreature.print();
-		});
+    @Override
+    public void printMap() {
+        logger.info("打印地图[{}]详细信息,地图长[{}],宽[{}]", this.getMapId(), this.getX(), this.getY());
+        logger.info("地图详细信息");
+        printMapData();
+        logger.info("地图生物单位数量[{}]", mapCreatures.size());
+        mapCreatures.forEach((objectId, mapCreature) -> {
+            mapCreature.print();
+        });
 
-	}
+    }
 
-	@Override
-	public void move(long objectId, int targetX, int targetY) {
-		MapCreature creature = getCreature(objectId);
+    @Override
+    public void move(long objectId, int targetX, int targetY) {
+        MapCreature creature = getCreature(objectId);
 
-		if(creature == null){
-			logger.warn("角色[{}]不存在地图[{}],无法移动!",objectId,mapId);
-			return ;
-		}
+        if (creature == null) {
+            logger.warn("角色[{}]不存在地图[{}],无法移动!", objectId, mapId);
+            return;
+        }
 
-		if(!checkTarget(targetX,targetY)){
-			logger.warn("玩家移动坐标有误,坐标[{},{}]",targetX,targetY);
-			return;
-		}
+        if (!checkTarget(targetX, targetY)) {
+            logger.warn("玩家移动坐标有误,坐标[{},{}]", targetX, targetY);
+            return;
+        }
 
-		creature.setX(targetX);
-		creature.setY(targetY);
-	}
+        creature.setX(targetX);
+        creature.setY(targetY);
+    }
 
-	@Override
-	public MapCreature getCreature(long objectId) {
-		return mapCreatures.get(objectId);
-	}
+    @Override
+    public MapCreature getCreature(long objectId) {
+        return mapCreatures.get(objectId);
+    }
 
-	@Override
-	public void addCreature(MapCreature creature) {
-		long id = creature.getId();
-		if (!mapCreatures.contains(id)) {
-			mapCreatures.put(id, creature);
-		}
-	}
+    @Override
+    public void addCreature(MapCreature creature) {
+        long id = creature.getId();
+        if (!mapCreatures.contains(id)) {
+            mapCreatures.put(id, creature);
+        }
+    }
 
-	@Override
-	public void deleteCreature(long objectId) {
-		mapCreatures.remove(objectId);
-	}
+    @Override
+    public void deleteCreature(long objectId) {
+        mapCreatures.remove(objectId);
+    }
 
-	@Override
-	public double calculateDistance(long objectId, long targetObjectId) {
-		MapCreature from = mapCreatures.get(objectId);
-		MapCreature target = mapCreatures.get(targetObjectId);
+    @Override
+    public double calculateDistance(long objectId, long targetObjectId) {
+        MapCreature from = mapCreatures.get(objectId);
+        MapCreature target = mapCreatures.get(targetObjectId);
 
-		if(from == null || target == null){
-			RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
-		}
+        if (from == null || target == null) {
+            RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
+        }
 
-		double distanceX = Math.pow((from.getX() - target.getX()), 2);
-		double distanceY = Math.pow((from.getY() - target.getY()), 2);
-		return Math.sqrt(distanceX + distanceY);
+        double distanceX = Math.pow((from.getX() - target.getX()), 2);
+        double distanceY = Math.pow((from.getY() - target.getY()), 2);
+        return Math.sqrt(distanceX + distanceY);
 
-	}
+    }
 
-	//get and set
+    // get and set
 
-	public long getMapId() {
-		return mapId;
-	}
+    public long getMapId() {
+        return mapId;
+    }
 
-	public int getX() {
-		return x;
-	}
+    public int getX() {
+        return x;
+    }
 
-	public int getY() {
-		return y;
-	}
+    public int getY() {
+        return y;
+    }
 
-	public int[][] getMapData() {
-		return mapData;
-	}
+    public int[][] getMapData() {
+        return mapData;
+    }
 
-	public ConcurrentHashMap<Long, MapCreature> getMapCreatures() {
-		return mapCreatures;
-	}
+    public ConcurrentHashMap<Long, MapCreature> getMapCreatures() {
+        return mapCreatures;
+    }
 
-	private void printMapData() {
-		int[][] mapData = this.getMapData();
-		int x = this.getX();
-		int y = this.getY();
+    private void printMapData() {
+        int[][] mapData = this.getMapData();
+        int x = this.getX();
+        int y = this.getY();
 
-		for (int i = 0; i < x; i++) {
-			for (int j = 0; j < y; j++) {
-				System.out.print(mapData[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                System.out.print(mapData[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
-	private boolean checkTarget(int targetX, int targetY) {
+    private boolean checkTarget(int targetX, int targetY) {
 
-		if (targetX < 0 || targetY < 0 || targetX > x - 1 || targetY > y - 1 || mapData[targetX][targetY] == 0) {
-			return false;
-		}
+        if (targetX < 0 || targetY < 0 || targetX > x - 1 || targetY > y - 1 || mapData[targetX][targetY] == 0) {
+            return false;
+        }
 
-		return true;
-	}
-
-
+        return true;
+    }
 
 }

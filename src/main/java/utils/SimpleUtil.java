@@ -11,8 +11,8 @@ import net.model.USession;
 
 public class SimpleUtil {
 
-	public static String getAccountIdFromSession(USession session){
-		return (String) session.getAttributes().get("accountId");
-	}
+    public static String getAccountIdFromSession(USession session) {
+        return (String)session.getAttributes().get("accountId");
+    }
 
 }

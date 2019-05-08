@@ -3,11 +3,11 @@ package middleware.dispatch;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.model.USession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import net.model.USession;
 
 /**
  * 应用层请求派发器
@@ -19,34 +19,34 @@ import org.springframework.stereotype.Component;
 @Component
 public class Dispatcher {
 
-	private static Logger logger = LoggerFactory.getLogger(Dispatcher.class);
+    private static Logger logger = LoggerFactory.getLogger(Dispatcher.class);
 
-	/**
-	 * 方法invoke对应表
-	 */
-	private Map<Class<?>, HandlerInvoke> handlerDestinationMap = new HashMap<>();
+    /**
+     * 方法invoke对应表
+     */
+    private Map<Class<?>, HandlerInvoke> handlerDestinationMap = new HashMap<>();
 
-	public Map<Class<?>, HandlerInvoke> getHandlerDestinationMap() {
-		return handlerDestinationMap;
-	}
+    public Map<Class<?>, HandlerInvoke> getHandlerDestinationMap() {
+        return handlerDestinationMap;
+    }
 
-	public void addHandlerDestination(Class<?> clazz, HandlerInvoke handlerInvoke) {
-		if (handlerDestinationMap.containsKey(clazz)) {
-			logger.error("重复添加的clazz{}", clazz.toString());
-			throw new RuntimeException("初始化应用层派发器出错!");
-		}
+    public void addHandlerDestination(Class<?> clazz, HandlerInvoke handlerInvoke) {
+        if (handlerDestinationMap.containsKey(clazz)) {
+            logger.error("重复添加的clazz{}", clazz.toString());
+            throw new RuntimeException("初始化应用层派发器出错!");
+        }
 
-		handlerDestinationMap.put(clazz, handlerInvoke);
-	}
+        handlerDestinationMap.put(clazz, handlerInvoke);
+    }
 
-	public void invoke(USession session,Object packet) {
-		HandlerInvoke handlerInvoke = handlerDestinationMap.get(packet.getClass());
+    public void invoke(USession session, Object packet) {
+        HandlerInvoke handlerInvoke = handlerDestinationMap.get(packet.getClass());
 
-		if (handlerInvoke == null) {
-			logger.error("协议[{}]未注册handlerMap,忽视此条消息!", packet.getClass());
-			return;
-		}
+        if (handlerInvoke == null) {
+            logger.error("协议[{}]未注册handlerMap,忽视此条消息!", packet.getClass());
+            return;
+        }
 
-		handlerInvoke.invoke(session, packet);
-	}
+        handlerInvoke.invoke(session, packet);
+    }
 }

@@ -9,12 +9,12 @@ import java.time.Instant;
 
 public class TimeUtil {
 
-	/**
-	 * 返回系统当前时间戳
-	 *
-	 * @return
-	 */
-	public static long now() {
-		return Instant.now().toEpochMilli();
-	}
+    /**
+     * 返回系统当前时间戳
+     *
+     * @return
+     */
+    public static long now() {
+        return Instant.now().toEpochMilli();
+    }
 }

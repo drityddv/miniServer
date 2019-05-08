@@ -11,49 +11,48 @@ import game.base.object.AbstractCreature;
 
 public class Player extends AbstractCreature {
 
-	private String accountId;
+    private String accountId;
 
-	// 等级
-	private int level;
+    // 等级
+    private int level;
 
-	// 玩家战斗力
-	private long battleScore;
+    // 玩家战斗力
+    private long battleScore;
 
-	private Player() {
-	}
+    private Player() {}
 
-	public static Player valueOf(String accountId) {
-		Player player = new Player();
-		player.setAccountId(accountId);
-		player.setBattleScore(0);
-		player.setLevel(1);
-		return player;
-	}
+    public static Player valueOf(String accountId) {
+        Player player = new Player();
+        player.setAccountId(accountId);
+        player.setBattleScore(0);
+        player.setLevel(1);
+        return player;
+    }
 
-	// get and set
+    // get and set
 
-	public String getAccountId() {
-		return accountId;
-	}
+    public String getAccountId() {
+        return accountId;
+    }
 
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
-	public int getLevel() {
-		return level;
-	}
+    public int getLevel() {
+        return level;
+    }
 
-	public void setLevel(int level) {
-		this.level = level;
-	}
+    public void setLevel(int level) {
+        this.level = level;
+    }
 
-	public long getBattleScore() {
-		return battleScore;
-	}
+    public long getBattleScore() {
+        return battleScore;
+    }
 
-	public void setBattleScore(long battleScore) {
-		this.battleScore = battleScore;
-	}
+    public void setBattleScore(long battleScore) {
+        this.battleScore = battleScore;
+    }
 
 }

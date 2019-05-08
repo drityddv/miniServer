@@ -1,8 +1,5 @@
 package game.user.login.service;
 
-import net.model.USession;
-import net.utils.PacketUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,8 @@ import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
 import game.user.login.packet.SM_LoginSuccess;
+import net.model.USession;
+import net.utils.PacketUtil;
 
 /**
  * @author : ddv
@@ -24,64 +23,64 @@ import game.user.login.packet.SM_LoginSuccess;
 @Component
 public class LoginService implements ILoginService {
 
-	private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
+    private static final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
-	@Autowired
-	private LoginManager loginManager;
+    @Autowired
+    private LoginManager loginManager;
 
-	@Override
-	public void login(USession session, CM_UserLogin request) {
+    @Override
+    public void login(USession session, CM_UserLogin request) {
 
-		String accountId = request.getAccountId();
-		String password = request.getPassword();
+        String accountId = request.getAccountId();
+        String password = request.getPassword();
 
-		UserEnt userEnt = loginManager.load(accountId);
+        UserEnt userEnt = loginManager.load(accountId);
 
-		if (userEnt == null) {
-			RequestException.throwException(Ii8n.USER_NOT_EXIST);
-		}
+        if (userEnt == null) {
+            RequestException.throwException(Ii8n.USER_NOT_EXIST);
+        }
 
-		if (!userEnt.getPassword().equals(password)) {
-			RequestException.throwException(Ii8n.PASSWORD_ERROR);
-		}
+        if (!userEnt.getPassword().equals(password)) {
+            RequestException.throwException(Ii8n.PASSWORD_ERROR);
+        }
 
-		// 暂时单点会把相同accountId的session干掉 后续sessionManager需要做支持
+        // 暂时单点会把相同accountId的session干掉 后续sessionManager需要做支持
 
-		// 下发登陆成功状态,注册session
-		session.putSessionAttribute("accountId", accountId);
-		PacketUtil.send(session, new SM_LoginSuccess());
-	}
+        // 下发登陆成功状态,注册session
+        session.putSessionAttribute("accountId", accountId);
+        PacketUtil.send(session, new SM_LoginSuccess());
+    }
 
-	@Override
-	public void logout(USession session, CM_UserLogout request) {
+    @Override
+    public void logout(USession session, CM_UserLogout request) {
 
-	}
+    }
 
-	@Override
-	public void register(USession session, CM_UserRegister request) {
-		logger.info("register invoked ...");
-		String accountId = request.getAccountId();
+    @Override
+    public void register(USession session, CM_UserRegister request) {
+        logger.info("register invoked ...");
+        String accountId = request.getAccountId();
 
-		UserEnt userEnt = loginManager.load(accountId);
+        UserEnt userEnt = loginManager.load(accountId);
 
-		if (userEnt != null) {
-			RequestException.throwException(Ii8n.USER_EXIST);
-		}
+        if (userEnt != null) {
+            RequestException.throwException(Ii8n.USER_EXIST);
+        }
 
-		Person person = Person.valueOf();
-		person.setName(request.getName());
-		person.setIdCard(request.getIdCard());
+        Person person = Person.valueOf();
+        person.setName(request.getName());
+        person.setIdCard(request.getIdCard());
 
-		userEnt = UserEnt.valueOf(accountId);
-		userEnt.setPassword(request.getPassword());
-		userEnt.setUsername(request.getUsername());
-		userEnt.setPerson(person);
+        userEnt = UserEnt.valueOf(accountId);
+        userEnt.setPassword(request.getPassword());
+        userEnt.setUsername(request.getUsername());
+        userEnt.setPerson(person);
 
-		loginManager.saveEntity(userEnt);
-	}
+        loginManager.saveEntity(userEnt);
+    }
 
-	@Override
-	public UserEnt getUserEnt(USession session) {
-		return loginManager.load((String) session.getAttributes().get("accountId"));
-	}
+    @Override
+    public UserEnt getUserEnt(USession session) {
+        return loginManager.load((String)session.getAttributes().get("accountId"));
+    }
 }

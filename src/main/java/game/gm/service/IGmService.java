@@ -1,7 +1,7 @@
 package game.gm.service;
 
-import net.model.USession;
 import game.gm.packet.CM_GmCommand;
+import net.model.USession;
 
 /**
  * gm命令
@@ -12,11 +12,11 @@ import game.gm.packet.CM_GmCommand;
 
 public interface IGmService {
 
-	/**
-	 * 反射调用
-	 *
-	 * @param session
-	 * @param request
-	 */
-	void invoke(USession session, CM_GmCommand request);
+    /**
+     * 反射调用
+     *
+     * @param session
+     * @param request
+     */
+    void invoke(USession session, CM_GmCommand request);
 }

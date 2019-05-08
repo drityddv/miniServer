@@ -7,20 +7,18 @@ package game.gm.packet;
 
 public class CM_GmCommand {
 
-	private String methodAndParams;
+    private String methodAndParams;
 
-	public String getMethodAndParams() {
-		return methodAndParams;
-	}
+    public String getMethodAndParams() {
+        return methodAndParams;
+    }
 
-	public void setMethodAndParams(String methodAndParams) {
-		this.methodAndParams = methodAndParams;
-	}
+    public void setMethodAndParams(String methodAndParams) {
+        this.methodAndParams = methodAndParams;
+    }
 
-	@Override
-	public String toString() {
-		return "CM_GmCommand{" +
-				"methodAndParams='" + methodAndParams + '\'' +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "CM_GmCommand{" + "methodAndParams='" + methodAndParams + '\'' + '}';
+    }
 }

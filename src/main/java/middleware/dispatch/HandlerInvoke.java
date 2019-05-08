@@ -2,9 +2,9 @@ package middleware.dispatch;
 
 import java.lang.reflect.Method;
 
-import net.model.USession;
-
 import org.springframework.util.ReflectionUtils;
+
+import net.model.USession;
 
 /**
  * @author : ddv
@@ -13,43 +13,43 @@ import org.springframework.util.ReflectionUtils;
 
 public class HandlerInvoke implements IHandlerInvoke {
 
-	/**
-	 * 目标反射方法的所属对象
-	 */
-	private final Object bean;
-	/**
-	 * 反射的方法
-	 */
-	private final Method method;
-	/**
-	 * 对应packet
-	 */
-	private final Class<?> clazz;
+    /**
+     * 目标反射方法的所属对象
+     */
+    private final Object bean;
+    /**
+     * 反射的方法
+     */
+    private final Method method;
+    /**
+     * 对应packet
+     */
+    private final Class<?> clazz;
 
-	public HandlerInvoke(Object bean, Method method, Class<?> clazz) {
-		this.bean = bean;
-		this.method = method;
-		this.clazz = clazz;
-	}
+    public HandlerInvoke(Object bean, Method method, Class<?> clazz) {
+        this.bean = bean;
+        this.method = method;
+        this.clazz = clazz;
+    }
 
-	public static HandlerInvoke createHandlerInvoke(Object bean, Method method, Class<?> clazz) {
-		return new HandlerInvoke(bean, method, clazz);
-	}
+    public static HandlerInvoke createHandlerInvoke(Object bean, Method method, Class<?> clazz) {
+        return new HandlerInvoke(bean, method, clazz);
+    }
 
-	public Object getBean() {
-		return bean;
-	}
+    public Object getBean() {
+        return bean;
+    }
 
-	public Method getMethod() {
-		return method;
-	}
+    public Method getMethod() {
+        return method;
+    }
 
-	public Class<?> getClazz() {
-		return clazz;
-	}
+    public Class<?> getClazz() {
+        return clazz;
+    }
 
-	@Override
-	public Object invoke(USession session, Object packet) {
-		return ReflectionUtils.invokeMethod(method, bean, session, packet);
-	}
+    @Override
+    public Object invoke(USession session, Object packet) {
+        return ReflectionUtils.invokeMethod(method, bean, session, packet);
+    }
 }

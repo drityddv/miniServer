@@ -7,41 +7,36 @@ package game.scene.map.packet;
 
 public class CM_MoveMap {
 
-	private long mapId;
-	private int targetX;
-	private int targetY ;
+    private long mapId;
+    private int targetX;
+    private int targetY;
 
+    public long getMapId() {
+        return mapId;
+    }
 
-	public long getMapId() {
-		return mapId;
-	}
+    public void setMapId(long mapId) {
+        this.mapId = mapId;
+    }
 
-	public void setMapId(long mapId) {
-		this.mapId = mapId;
-	}
+    public int getTargetX() {
+        return targetX;
+    }
 
-	public int getTargetX() {
-		return targetX;
-	}
+    public void setTargetX(int targetX) {
+        this.targetX = targetX;
+    }
 
-	public void setTargetX(int targetX) {
-		this.targetX = targetX;
-	}
+    public int getTargetY() {
+        return targetY;
+    }
 
-	public int getTargetY() {
-		return targetY;
-	}
+    public void setTargetY(int targetY) {
+        this.targetY = targetY;
+    }
 
-	public void setTargetY(int targetY) {
-		this.targetY = targetY;
-	}
-
-	@Override
-	public String toString() {
-		return "CM_MoveMap{" +
-				"mapId=" + mapId +
-				", targetX=" + targetX +
-				", targetY=" + targetY +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "CM_MoveMap{" + "mapId=" + mapId + ", targetX=" + targetX + ", targetY=" + targetY + '}';
+    }
 }

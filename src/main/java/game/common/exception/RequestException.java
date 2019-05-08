@@ -7,16 +7,16 @@ package game.common.exception;
 
 public class RequestException extends RuntimeException {
 
-	private int errorCode;
+    private int errorCode;
 
-	public static void throwException(int i18nId) {
-		RequestException exception = new RequestException();
-		exception.errorCode = i18nId;
-		throw exception;
-	}
+    public static void throwException(int i18nId) {
+        RequestException exception = new RequestException();
+        exception.errorCode = i18nId;
+        throw exception;
+    }
 
-	public int getErrorCode() {
-		return errorCode;
-	}
+    public int getErrorCode() {
+        return errorCode;
+    }
 
 }

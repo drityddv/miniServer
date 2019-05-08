@@ -2,14 +2,13 @@ package net.middleware;
 
 import java.util.List;
 
-import net.model.PacketProtocol;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ReplayingDecoder;
+import net.model.PacketProtocol;
 
 /**
  * 解码器
@@ -20,24 +19,24 @@ import io.netty.handler.codec.ReplayingDecoder;
 
 public class PacketDecoder extends ReplayingDecoder<PacketProtocol> {
 
-	private static final Logger logger = LoggerFactory.getLogger(PacketDecoder.class);
+    private static final Logger logger = LoggerFactory.getLogger(PacketDecoder.class);
 
-	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		logger.debug("packet decoder invoked!");
-		byte id = in.readByte();
-		int length = in.readInt();
-		byte[] data = new byte[length];
+    @Override
+    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        logger.debug("packet decoder invoked!");
+        byte id = in.readByte();
+        int length = in.readInt();
+        byte[] data = new byte[length];
 
-		in.readBytes(data);
+        in.readBytes(data);
 
-		PacketProtocol packet = new PacketProtocol();
+        PacketProtocol packet = new PacketProtocol();
 
-		packet.setId(id);
-		packet.setLength(length);
-		packet.setData(data);
+        packet.setId(id);
+        packet.setLength(length);
+        packet.setData(data);
 
-		out.add(packet);
-		logger.debug("packet decoder:{}", packet.toString());
-	}
+        out.add(packet);
+        logger.debug("packet decoder:{}", packet.toString());
+    }
 }

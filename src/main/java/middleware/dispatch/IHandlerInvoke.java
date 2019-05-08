@@ -9,12 +9,12 @@ import net.model.USession;
 
 public interface IHandlerInvoke {
 
-	/**
-	 * 方法invoke
-	 *
-	 * @param session
-	 * @param packet
-	 * @return
-	 */
-	Object invoke(USession session, Object packet);
+    /**
+     * 方法invoke
+     *
+     * @param session
+     * @param packet
+     * @return
+     */
+    Object invoke(USession session, Object packet);
 }

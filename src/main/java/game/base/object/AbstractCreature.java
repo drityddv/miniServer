@@ -9,16 +9,16 @@ package game.base.object;
 
 public abstract class AbstractCreature extends AbstractObject {
 
-	// 属性容器
+    // 属性容器
 
-	// 是否存活 1:存活
-	private int isAlive = 1;
+    // 是否存活 1:存活
+    private int isAlive = 1;
 
-	public int getIsAlive() {
-		return isAlive;
-	}
+    public int getIsAlive() {
+        return isAlive;
+    }
 
-	public void setIsAlive(int isAlive) {
-		this.isAlive = isAlive;
-	}
+    public void setIsAlive(int isAlive) {
+        this.isAlive = isAlive;
+    }
 }

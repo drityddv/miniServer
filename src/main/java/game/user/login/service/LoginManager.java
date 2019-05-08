@@ -16,27 +16,27 @@ import game.user.login.entity.UserEnt;
 @Component
 public class LoginManager {
 
-	private IOrmTemplate<String, UserEnt> userHibernateUtil = new HibernateUtil<>();
+    private IOrmTemplate<String, UserEnt> userHibernateUtil = new HibernateUtil<>();
 
-	public UserEnt loadOrCreate(String accountId) {
-		return userHibernateUtil.loadOrCreate(UserEnt.class, accountId, new EntityBuilder<String, UserEnt>() {
-			@Override
-			public UserEnt newInstance(String accountId) {
-				return UserEnt.valueOf(accountId);
-			}
-		});
-	}
+    public UserEnt loadOrCreate(String accountId) {
+        return userHibernateUtil.loadOrCreate(UserEnt.class, accountId, new EntityBuilder<String, UserEnt>() {
+            @Override
+            public UserEnt newInstance(String accountId) {
+                return UserEnt.valueOf(accountId);
+            }
+        });
+    }
 
-	public UserEnt load(String accountId) {
-		return userHibernateUtil.load(UserEnt.class, accountId);
-	}
+    public UserEnt load(String accountId) {
+        return userHibernateUtil.load(UserEnt.class, accountId);
+    }
 
-	public void save(String accountId) {
-		userHibernateUtil.save(loadOrCreate(accountId));
-	}
+    public void save(String accountId) {
+        userHibernateUtil.save(loadOrCreate(accountId));
+    }
 
-	public void saveEntity(UserEnt userEnt){
-		userHibernateUtil.save(userEnt);
-	}
+    public void saveEntity(UserEnt userEnt) {
+        userHibernateUtil.save(userEnt);
+    }
 
 }

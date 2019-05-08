@@ -7,41 +7,38 @@ package game.user.login.model;
 
 public class Person {
 
-	/**
-	 * 身份证号
-	 */
-	private String idCard;
+    /**
+     * 身份证号
+     */
+    private String idCard;
 
-	/**
-	 * 真实姓名
-	 */
-	private String name;
+    /**
+     * 真实姓名
+     */
+    private String name;
 
-	public static Person valueOf() {
-		return new Person();
-	}
+    public static Person valueOf() {
+        return new Person();
+    }
 
-	public String getIdCard() {
-		return idCard;
-	}
+    public String getIdCard() {
+        return idCard;
+    }
 
-	public void setIdCard(String idCard) {
-		this.idCard = idCard;
-	}
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String toString() {
-		return "Person{" +
-				"idCard='" + idCard + '\'' +
-				", name='" + name + '\'' +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Person{" + "idCard='" + idCard + '\'' + ", name='" + name + '\'' + '}';
+    }
 }

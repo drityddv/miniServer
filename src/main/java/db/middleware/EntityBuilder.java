@@ -9,11 +9,11 @@ import java.io.Serializable;
 
 public interface EntityBuilder<K extends Comparable<K> & Serializable, T extends IEntity<K>> {
 
-	/**
-	 * create逻辑
-	 *
-	 * @param id
-	 * @return
-	 */
-	T newInstance(K id);
+    /**
+     * create逻辑
+     *
+     * @param id
+     * @return
+     */
+    T newInstance(K id);
 }

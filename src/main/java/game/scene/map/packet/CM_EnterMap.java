@@ -7,20 +7,18 @@ package game.scene.map.packet;
 
 public class CM_EnterMap {
 
-	private long mapId;
+    private long mapId;
 
-	public long getMapId() {
-		return mapId;
-	}
+    public long getMapId() {
+        return mapId;
+    }
 
-	public void setMapId(long mapId) {
-		this.mapId = mapId;
-	}
+    public void setMapId(long mapId) {
+        this.mapId = mapId;
+    }
 
-	@Override
-	public String toString() {
-		return "CM_EnterMap{" +
-				"mapId=" + mapId +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "CM_EnterMap{" + "mapId=" + mapId + '}';
+    }
 }
