@@ -13,10 +13,10 @@ public interface IMap {
 	 * 目标物体移动
 	 *
 	 * @param objectId
-	 * @param x
-	 * @param y
+	 * @param targetX
+	 * @param targetY
 	 */
-	void move(long objectId, int x, int y);
+	void move(long objectId, int targetX, int targetY);
 
 	/**
 	 * 打印地图信息
@@ -48,6 +48,31 @@ public interface IMap {
 
 	/**
 	 * 加入单位到地图
+	 *
+	 * @param creature
+	 * @return
 	 */
 	void addCreature(MapCreature creature);
+
+	/**
+	 * 删除地图中对应单位
+	 * @param objectId
+	 */
+	void deleteCreature(long objectId);
+
+
+	/**
+	 * 地图特殊机制 传送到下一张地图
+	 * @param objectId
+	 */
+	void transfer(long objectId);
+
+	/**
+	 * 计算与目标点之间的距离
+	 * @param objectId
+	 * @param targetObjectId
+	 * @return
+	 */
+	double calculateDistance(long objectId,long targetObjectId);
+
 }

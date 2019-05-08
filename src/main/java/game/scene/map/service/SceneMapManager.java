@@ -4,6 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
+import game.scene.map.resource.StormWind;
 import org.springframework.stereotype.Component;
 
 import game.base.map.IMap;
@@ -13,7 +14,6 @@ import game.scene.map.resource.NoviceVillage;
 
 /**
  * 地图配置先在这里写死,等待后续增加静态资源功能后修改
- * <p>
  * 1: 新手村
  *
  * @author : ddv
@@ -28,6 +28,7 @@ public class SceneMapManager {
 	public void init() {
 		IMap noviceVillage = NoviceVillage.valueOf(1L, 6, 6);
 		sceneMaps.put(noviceVillage.getCurrentMapId(), noviceVillage);
+		sceneMaps.put(2L, StormWind.valueOf(2,9,9));
 	}
 
 	public IMap getMapByMapId(long mapId) {
@@ -38,5 +39,9 @@ public class SceneMapManager {
 		}
 
 		return map;
+	}
+
+	public ConcurrentHashMap<Long, IMap> getSceneMaps() {
+		return sceneMaps;
 	}
 }

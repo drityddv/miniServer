@@ -27,4 +27,8 @@ public interface Ii8n {
 
 	// 地图不存在
 	int MAP_NOT_EXIST = 5;
+
+	// 操作的单元不存在与地图中
+	int MAP_CREATURE_NOT_EXIST = 6;
+
 }

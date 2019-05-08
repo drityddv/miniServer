@@ -7,9 +7,7 @@ import org.springframework.stereotype.Component;
 
 import game.base.map.IMap;
 import game.base.map.base.MapCreature;
-import game.scene.map.packet.CM_ChangeMap;
-import game.scene.map.packet.CM_EnterMap;
-import game.scene.map.packet.CM_LeaveMap;
+import game.scene.map.packet.*;
 
 /**
  * @author : ddv
@@ -24,8 +22,7 @@ public class SceneMapService implements ISceneMapService {
 	private SceneMapManager sceneMapManager;
 
 	@Override
-	public void enterMap(String accountId, CM_EnterMap request) {
-		long mapId = request.getMapId();
+	public void enterMap(String accountId, long mapId) {
 		IMap map = sceneMapManager.getMapByMapId(mapId);
 
 		if (!map.canEnterMap(accountId)) {
@@ -33,9 +30,7 @@ public class SceneMapService implements ISceneMapService {
 			return;
 		}
 
-		// 原则上应该使用player做业务,完成accountId到playerId的转化,这里先写死1L,后续添加player模块后修改
 		long playerId = getPlayerId(accountId);
-
 		MapCreature creature = map.getCreature(playerId);
 
 		if (creature != null) {
@@ -43,35 +38,52 @@ public class SceneMapService implements ISceneMapService {
 			return;
 		}
 
-		creature = MapCreature.valueOf(accountId, 0, 0);
+		creature = MapCreature.valueOf(accountId, getPlayerId(accountId),0, 0);
 		map.addCreature(creature);
-
-		logger.info("");
 	}
 
 	@Override
-	public void leaveMap(String accountId, CM_LeaveMap request) {
+	public void leaveMap(String accountId, long  mapId) {
+		IMap map = sceneMapManager.getMapByMapId(mapId);
+		long playerId = getPlayerId(accountId);
 
+		map.deleteCreature(playerId);
 	}
 
+	// 这个方法暂时放空,后续增加条件再拓展
 	@Override
-	public void changeMap(String accountId, CM_ChangeMap request) {
+	public void changeMap(String accountId, long fromMapId, long targetMapId) {
 
 	}
 
 	@Override
 	public void logBasicMapInfo(long mapId) {
 		IMap map = sceneMapManager.getMapByMapId(mapId);
-		if (map == null) {
-			logger.warn("指定[{}]的地图不存在!", mapId);
-			return;
-		}
-
 		map.printMap();
 	}
 
+	@Override
+	public void transfer(String accountId, long mapId) {
+		IMap map = sceneMapManager.getMapByMapId(mapId);
+
+		map.transfer(getPlayerId(accountId));
+	}
+
+	@Override
+	public void move(String accountId, long mapId,int targetX,int targetY) {
+		IMap map = sceneMapManager.getMapByMapId(mapId);
+
+		map.move(getPlayerId(accountId),targetX,targetY);
+	}
+
+	@Override
+	public IMap getMapResource(long mapId) {
+		return sceneMapManager.getMapByMapId(mapId);
+	}
+
 	// 临时的player转化工具
+	// 原则上应该使用player做业务,完成accountId到playerId的转化,这里先写死,后续添加player模块后修改
 	private long getPlayerId(String accountId) {
-		return 1L;
+		return accountId.hashCode();
 	}
 }

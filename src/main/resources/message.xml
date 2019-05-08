@@ -14,6 +14,10 @@
 
     <!--地图基础协议 11 - 50-->
     <message id="11" value="game.scene.map.packet.CM_EnterMap"/>
+    <message id="12" value="game.scene.map.packet.CM_LeaveMap"/>
+    <message id="13" value="game.scene.map.packet.CM_MoveMap"/>
+    <message id="14" value="game.scene.map.packet.CM_TransferMap"/>
+    <message id="15" value="game.scene.map.packet.CM_ChangeMap"/>
 
     <!--gm命令 51 - 70-->
     <message id="51" value="game.gm.packet.CM_GmCommand"/>

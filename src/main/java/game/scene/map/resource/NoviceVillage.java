@@ -1,14 +1,12 @@
 package game.scene.map.resource;
 
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.slf4j.Logger;
-
+import game.base.map.IMap;
 import game.base.map.base.AbstractGameMap;
 import game.base.map.base.MapCreature;
+import spring.SpringContext;
 
 /**
- * 新手村
+ * 1:新手村
  *
  * @author : ddv
  * @since : 2019/5/6 下午5:59
@@ -16,7 +14,7 @@ import game.base.map.base.MapCreature;
 
 public class NoviceVillage extends AbstractGameMap {
 
-	private ConcurrentHashMap<Long, MapCreature> mapCreatures = new ConcurrentHashMap<>();
+	private static long oldMan = 8L;
 
 	public static NoviceVillage valueOf(long mapId, int x, int y) {
 		NoviceVillage map = new NoviceVillage();
@@ -30,31 +28,9 @@ public class NoviceVillage extends AbstractGameMap {
 		}
 
 		map.init(mapId, mapData);
+		// 这里先写死一个npc 用来传送到暴风城
+		map.addCreature(MapCreature.valueOf("传送老头",oldMan,x-1,y-1));
 		return map;
-	}
-
-	@Override
-	public void move(long objectId, int x, int y) {
-		MapCreature creature = mapCreatures.get(objectId);
-
-		if (creature == null) {
-			return;
-		}
-
-		if (!checkTarget(x, y)) {
-			return;
-		}
-
-		creature.setX(x);
-		creature.setY(y);
-	}
-
-	@Override
-	public void basicLogMap(Logger logger) {
-		logger.info("打印地图[{}]详细信息,地图长[{}],宽[{}]", this.getMapId(), this.getX(), this.getY());
-		logger.info("地图详细信息");
-		printMapData();
-		logger.info("地图生物单位数量[{}]", mapCreatures.size());
 	}
 
 	// 新手村不做进入限制
@@ -64,28 +40,29 @@ public class NoviceVillage extends AbstractGameMap {
 	}
 
 	@Override
-	public MapCreature getCreature(long objectId) {
-		return mapCreatures.get(objectId);
-	}
+	public void transfer(long objectId) {
+		MapCreature creature = getCreature(objectId);
 
-	@Override
-	public void addCreature(MapCreature creature) {
-		long id = creature.getId();
-		if (!mapCreatures.contains(id)) {
-			mapCreatures.put(id, creature);
+		if(creature == null){
+			return ;
 		}
-	}
 
-	private void printMapData() {
-		int[][] mapData = this.getMapData();
-		int x = this.getX();
-		int y = this.getY();
+		double distance = calculateDistance(objectId, oldMan);
 
-		for (int i = 0; i < x; i++) {
-			for (int j = 0; j < y; j++) {
-				System.out.print(mapData[i][j] + " ");
-			}
-			System.out.println();
+		if(distance > 1){
+			// 要求距离传送老头1m才可以传送
+			return;
 		}
+
+		MapCreature mapCreature = getMapCreatures().get(objectId);
+
+		getMapCreatures().remove(objectId);
+
+		mapCreature.reset();
+
+		IMap mapResource = SpringContext.getSceneMapService().getMapResource(2L);
+
+		mapResource.addCreature(mapCreature);
 	}
+
 }

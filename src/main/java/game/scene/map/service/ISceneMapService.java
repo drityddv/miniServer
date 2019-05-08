@@ -1,8 +1,7 @@
 package game.scene.map.service;
 
-import game.scene.map.packet.CM_ChangeMap;
-import game.scene.map.packet.CM_EnterMap;
-import game.scene.map.packet.CM_LeaveMap;
+import game.base.map.IMap;
+import game.scene.map.packet.*;
 
 /**
  * 场景地图service
@@ -17,32 +16,53 @@ public interface ISceneMapService {
 	 * 进入指定地图
 	 *
 	 * @param accountId
-	 * @param request
+	 * @param mapId
 	 */
-	void enterMap(String accountId, CM_EnterMap request);
+	void enterMap(String accountId, long mapId);
 
 	/**
 	 * 离开地图
 	 *
 	 * @param accountId
-	 * @param request
+	 * @param mapId
 	 */
-	void leaveMap(String accountId, CM_LeaveMap request);
+	void leaveMap(String accountId, long mapId);
 
 	/**
 	 * 切换地图
 	 *
 	 * @param accountId
-	 * @param request
+	 * @param fromMapId
+	 * @param targetMapId
 	 */
-	void changeMap(String accountId, CM_ChangeMap request);
-
-
-	// gm支持
+	void changeMap(String accountId, long fromMapId,long targetMapId);
 
 	/**
 	 *	打印对应map的信息
 	 * @param mapId
 	 */
 	void logBasicMapInfo(long mapId);
+
+	/**
+	 * 地图特殊传送机制
+	 * @param accountId
+	 * @param mapId
+	 */
+	void transfer(String accountId,long mapId);
+
+	/**
+	 * 地图中单位移动
+	 * @param accountId
+	 * @param mapId
+	 * @param targetX
+	 * @param targetY
+	 */
+	void move(String accountId,long mapId,int targetX,int targetY);
+
+	/**
+	 * 获取地图
+	 * @param mapId
+	 * @return
+	 */
+	IMap getMapResource(long mapId);
 }

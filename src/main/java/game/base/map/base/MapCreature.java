@@ -1,6 +1,8 @@
 package game.base.map.base;
 
-import utils.IdUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import game.base.object.AbstractCreature;
 
 /**
@@ -12,17 +14,19 @@ import game.base.object.AbstractCreature;
 
 public class MapCreature extends AbstractCreature {
 
+	private static final Logger logger = LoggerFactory.getLogger(MapCreature.class);
+
 	private String accountId;
 	private int x;
 	private int y;
 
-	public static MapCreature valueOf(String accountId, int x, int y) {
+	public static MapCreature valueOf(String accountId,long objectId, int x, int y) {
 		MapCreature creature = new MapCreature();
 		creature.setAccountId(accountId);
 		creature.setX(x);
 		creature.setY(y);
 		creature.setIsAlive(1);
-		creature.setId(IdUtil.getLongId());
+		creature.setId(objectId);
 		return creature;
 	}
 
@@ -59,4 +63,17 @@ public class MapCreature extends AbstractCreature {
 				", y=" + y +
 				'}';
 	}
+
+	// 地图单位状态,坐标打印
+	public void print(){
+		logger.info("单位所属[{}],单位id[{}],坐标[{},{}],存活状态[{}]",accountId,getId(),x,y,getIsAlive());
+	}
+
+	// 重置单位状态
+	public void reset(){
+		this.x = 0;
+		this.y= 0;
+		this.setIsAlive(0);
+	}
+
 }
