@@ -3,6 +3,8 @@ package game.scene.map.resource;
 import game.base.map.IMap;
 import game.base.map.base.AbstractGameMap;
 import game.base.map.base.MapCreature;
+import game.common.Ii8n;
+import game.common.exception.RequestException;
 import spring.SpringContext;
 
 /**
@@ -44,13 +46,15 @@ public class NoviceVillage extends AbstractGameMap {
         MapCreature creature = getCreature(objectId);
 
         if (creature == null) {
+            RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
             return;
         }
 
         double distance = calculateDistance(objectId, oldMan);
 
         if (distance > 1) {
-            // 要求距离传送老头1m才可以传送
+            // 要求直线距离传送老头最远1m才可以传送
+			RequestException.throwException(Ii8n.DISTANCE_TOO_FAR);
             return;
         }
 

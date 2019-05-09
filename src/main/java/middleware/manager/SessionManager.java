@@ -1,5 +1,7 @@
 package middleware.manager;
 
+import java.util.Iterator;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -50,5 +52,21 @@ public class SessionManager {
 
     public static ConcurrentHashMap<Channel, USession> getSessionMap() {
         return sessionMap;
+    }
+
+    public static USession getSessionByAccountId(String accountId) {
+
+        Iterator<Map.Entry<Channel, USession>> iterator = sessionMap.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<Channel, USession> entry = iterator.next();
+
+            USession session = entry.getValue();
+
+            if (accountId.equals(session.getAttributes().get("accountId"))) {
+                return session;
+            }
+        }
+        return null;
     }
 }

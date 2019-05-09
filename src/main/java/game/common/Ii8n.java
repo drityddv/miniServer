@@ -31,4 +31,10 @@ public interface Ii8n {
     // 操作的单元不存在与地图中
     int MAP_CREATURE_NOT_EXIST = 6;
 
+    // 触发事件距离过远
+    int DISTANCE_TOO_FAR = 7;
+
+    // 地图移动坐标有误
+    int TARGET_POSITION_ERROR = 9;
+
 }

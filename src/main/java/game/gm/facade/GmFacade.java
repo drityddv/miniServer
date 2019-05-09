@@ -32,6 +32,7 @@ public class GmFacade {
     public void invoke(USession session, CM_GmCommand request) {
         try {
             SpringContext.getGmService().invoke(session, request);
+            PacketUtil.send(session, SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

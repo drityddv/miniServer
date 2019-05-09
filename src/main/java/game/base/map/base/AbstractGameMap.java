@@ -55,16 +55,17 @@ public abstract class AbstractGameMap implements IMap {
 
         if (creature == null) {
             logger.warn("角色[{}]不存在地图[{}],无法移动!", objectId, mapId);
-            return;
+            RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
         }
 
         if (!checkTarget(targetX, targetY)) {
             logger.warn("玩家移动坐标有误,坐标[{},{}]", targetX, targetY);
-            return;
+            RequestException.throwException(Ii8n.TARGET_POSITION_ERROR);
         }
 
         creature.setX(targetX);
         creature.setY(targetY);
+
     }
 
     @Override

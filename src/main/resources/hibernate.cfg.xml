@@ -19,8 +19,8 @@
         <property name="current_session_context_class">thread</property>
 
         <!-- 显示并格式化SQL语句（在上线版本中要去掉这两个配置）,影响性能 -->
-        <property name="show_sql">true</property>
-        <property name="format_sql">true</property>
+        <!--<property name="show_sql">true</property>-->
+        <!--<property name="format_sql">true</property>-->
 
         <!-- 对象关系映射引用 -->
         <mapping class="game.user.login.entity.UserEnt"/>

@@ -1,5 +1,6 @@
 package game.user.login.service;
 
+import game.common.packet.SM_Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,8 @@ public class LoginService implements ILoginService {
         userEnt.setPerson(person);
 
         loginManager.saveEntity(userEnt);
+
+        PacketUtil.send(session,SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
     }
 
     @Override
