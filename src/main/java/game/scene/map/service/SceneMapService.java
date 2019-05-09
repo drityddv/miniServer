@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 
 import game.base.map.IMap;
 import game.base.map.base.MapCreature;
+import game.common.Ii8n;
+import game.common.packet.SM_Message;
+import middleware.manager.SessionManager;
+import net.utils.PacketUtil;
 
 /**
  * @author : ddv
@@ -39,8 +43,11 @@ public class SceneMapService implements ISceneMapService {
 
         creature = MapCreature.valueOf(accountId, getPlayerId(accountId), 0, 0);
         map.addCreature(creature);
+
+        PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
     }
 
+    // 单位不存在地图中也不会抛异常 避免客户端重复发包
     @Override
     public void leaveMap(String accountId, long mapId) {
         IMap map = sceneMapManager.getMapByMapId(mapId);
@@ -66,6 +73,8 @@ public class SceneMapService implements ISceneMapService {
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
         map.transfer(getPlayerId(accountId));
+        PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+
     }
 
     @Override
@@ -73,6 +82,8 @@ public class SceneMapService implements ISceneMapService {
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
         map.move(getPlayerId(accountId), targetX, targetY);
+
+        PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
     }
 
     @Override

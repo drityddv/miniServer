@@ -37,7 +37,7 @@ public class StormWind extends AbstractGameMap {
         return true;
     }
 
-    // 暴风城暂时没有传送机制
+    // 暴风城暂时没有传送机制 但是不抛异常
     @Override
     public void transfer(long objectId) {
 
