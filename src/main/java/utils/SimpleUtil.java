@@ -1,5 +1,9 @@
 package utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
 import game.user.player.model.Player;
 import net.model.USession;
 import spring.SpringContext;
@@ -15,6 +19,18 @@ public class SimpleUtil {
 
     public static String getAccountIdFromSession(USession session) {
         return (String)session.getAttributes().get("accountId");
+    }
+
+    public static InputStream getInputStreamFromFile(String fileLocation) {
+        fileLocation = fileLocation + ".csv";
+        InputStream inputStream = null;
+        File file = new File(fileLocation);
+        try {
+            inputStream = new FileInputStream(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return inputStream;
     }
 
     public static Player getPlayerFromSession(USession session) {

@@ -1,0 +1,3 @@
+SERVER,mapId,mapName,x,y,mapData
+TYPE,int,string,int,int,arrays
+END,1,新手村,5,5,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"

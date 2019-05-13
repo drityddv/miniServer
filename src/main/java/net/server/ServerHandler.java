@@ -1,5 +1,8 @@
 package net.server;
 
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +22,8 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerHandler.class);
 
+    private  ChannelGroup channelGroup = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
@@ -34,6 +39,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
 
         try {
+			logger.info("在线玩家数目[{}]",channelGroup.size());
             Object packet = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
             logger.info("server handler receive: [{}]", packet.toString());
             SpringContext.getDispatcher().invoke(SessionManager.getSession(ctx.channel()), packet);
@@ -43,4 +49,10 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
         }
 
     }
+
+
+	@Override
+	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+		channelGroup.add(ctx.channel());
+	}
 }
