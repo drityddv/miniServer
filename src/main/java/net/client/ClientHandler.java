@@ -35,10 +35,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info("客户端与服务端通讯成功!");
-        ClazzManager clazzManager = new ClazzManager();
         Executors.newSingleThreadExecutor().submit(() -> {
             while (true) {
-            	Thread.sleep(1000);
+                Thread.sleep(1000);
                 System.out.println("请选择操作!\n" + MESSAGE);
                 dispatch.handler(ctx, scanner, scanner.nextInt());
 

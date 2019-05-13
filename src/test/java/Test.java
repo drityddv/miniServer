@@ -1,17 +1,12 @@
-import db.middleware.EntityBuilder;
-import db.middleware.HibernateUtil;
-import game.user.login.entity.UserEnt;
-import game.user.login.model.Person;
-import game.user.login.service.LoginManager;
-import net.utils.ProtoStuffUtil;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.joda.convert.StringConvert;
-import spring.SpringController;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-import java.util.Scanner;
-import java.util.concurrent.Executors;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * @author : ddv
@@ -20,57 +15,41 @@ import java.util.concurrent.Executors;
 
 public class Test {
 
-	@org.junit.Test
-	public void run() {
-		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
+    @org.junit.Test
+    public void run() {
+        String className = "game.scene.map.resource.NoviceVillage";
+        try {
+            Class<?> clazz = Class.forName(className);
+            Object instance = clazz.newInstance();
+            Field[] fields = clazz.getDeclaredFields();
+            try {
+                fields[1].set(instance, new Long(1));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            System.out.println(instance);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
 
-		session.beginTransaction();
+    }
 
-		UserEnt userEnt = new UserEnt();
-		userEnt.setAccountId("accountId_1");
-		userEnt.setUsername("username_1");
-		userEnt.setPassword("password_1");
-
-		Person person = new Person();
-		person.setIdCard("341226199704111054");
-		person.setName("张杰");
-
-		userEnt.setPerson(person);
-		userEnt.setPersonData(ProtoStuffUtil.serialize(person));
-		System.out.println(userEnt.getPersonData().length);
-
-		session.save(userEnt);
-
-		userEnt.setPassword("11");
-		session.getTransaction().commit();
-
-		run1();
-	}
-
-	@org.junit.Test
-	public void run1() {
-		HibernateUtil util = new HibernateUtil();
-		UserEnt entity = (UserEnt) util.loadOrCreate(UserEnt.class, "accountId_2", new EntityBuilder<String, UserEnt>() {
-			@Override
-			public UserEnt newInstance(String accountId) {
-				return UserEnt.valueOf(accountId);
-			}
-		});
-		System.out.println(entity);
-		Person person = ProtoStuffUtil.deserialize(entity.getPersonData(), Person.class);
-		System.out.println(person);
-	}
-
-	@org.junit.Test
-	public void run3() {
-		Scanner scanner = new Scanner(System.in);
-		String s = scanner.nextLine();
-		System.out.println(s);
-	}
-
-	public static void main(String[] args){
-		Integer num = StringConvert.INSTANCE.convertFromString(Integer.class,"2s");
-		System.out.println(num);
-	}
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("src/main/resources/csv/MapResource.csv");
+        InputStream inputStream = new FileInputStream(file);
+        ArrayList list = new ArrayList();
+        try {
+            CSVParser parser = CSVParser.parse(inputStream, Charset.forName("utf-8"), CSVFormat.DEFAULT);
+            for (CSVRecord record : parser) {
+                Iterator<String> iterator = record.iterator();
+                iterator.forEachRemaining(s -> System.out.println(s));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
