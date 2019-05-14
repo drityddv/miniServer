@@ -14,7 +14,7 @@ import middleware.anno.MapResource;
  * @author : ddv
  * @since : 2019/5/7 下午9:44
  */
-@MapResource()
+//@MapResource()
 public class StormWind extends AbstractGameMap {
 
     public static StormWind valueOf(long mapId, int x, int y) {
