@@ -1,13 +1,25 @@
 package game.base.map.base;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.map.IMap;
 import game.common.Ii8n;
 import game.common.exception.RequestException;
+import utils.JodaUtil;
+import utils.SimpleUtil;
 
 /**
  * @author : ddv
@@ -145,4 +157,64 @@ public abstract class AbstractGameMap implements IMap {
         return true;
     }
 
+    // 地图比较特殊 需要手动加载
+    public void init(InputStream inputStream, int start) {
+        CSVParser parser = SimpleUtil.getParserFromStream(inputStream);
+        List<CSVRecord> records = null;
+        List<String> csvNames = new ArrayList<>();
+        List<Class<?>> typeNames = new ArrayList<>();
+
+        try {
+            records = parser.getRecords();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        CSVRecord nameRecords = records.get(0);
+        nameRecords.forEach(csvName -> {
+            csvNames.add(csvName);
+        });
+
+        CSVRecord typeRecords = records.get(1);
+        typeRecords.forEach(type -> {
+            try {
+                if (SimpleUtil.isSimpleClazzByName(type)) {
+                    typeNames.add(Class.forName(type));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        CSVRecord valueRecords = records.get(start);
+        List<String> values = new ArrayList<>();
+        valueRecords.forEach(value -> {
+            values.add(value);
+        });
+
+        List<Field> simpleFields = Stream.of(this.getClass().getSuperclass().getDeclaredFields())
+            .filter(field -> SimpleUtil.isSimpleClazz(field.getType())).collect(Collectors.toList());
+
+        SimpleUtil.insertField(this, simpleFields, csvNames, values);
+        // 初始化地图数据 暂时npc还是写死,后续再改
+
+        mapData = new int[x][y];
+        mapCreatures = new ConcurrentHashMap<>();
+
+        String[] split = values.get(5).split(",");
+        int index = 0;
+
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                mapData[i][j] = JodaUtil.convertFromString(int.class, split[index++]);
+            }
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractGameMap{" + "mapId=" + mapId + ", x=" + x + ", y=" + y + ", mapData=" + Arrays.toString(mapData)
+            + ", mapCreatures=" + mapCreatures + '}';
+    }
 }

@@ -1,6 +1,7 @@
 package middleware.resource.storage;
 
 import java.io.InputStream;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,8 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import game.base.map.IMap;
-import game.scene.map.resource.MapResource;
-import game.scene.map.resource.NoviceVillage;
 import middleware.resource.middle.ResourceDefinition;
 
 /**
@@ -27,6 +26,9 @@ public class StorageManager {
     // 静态类容器
     private Map<Class<?>, ResourceDefinition> definitionMap = new ConcurrentHashMap<>();
 
+    // 地图静态类容器
+    private Map<Class<? extends IMap>, ResourceDefinition> mapResourceDefinitionMap = new ConcurrentHashMap<>();
+
     // 静态资源存储容器
     private Map<Class<?>, Storage<?, ?>> storageMap = new ConcurrentHashMap<>();
 
@@ -39,8 +41,17 @@ public class StorageManager {
             definitionMap.put(beanClass, definition);
             return;
         }
-
         logger.error("重复的加载行为,class[{}]", beanClass);
+    }
+
+    // 注册地图资源目的地
+    public void registerMapResourceDefinition(Class<? extends IMap> beanClass, ResourceDefinition definition) {
+        if (!mapResourceDefinitionMap.containsKey(beanClass)) {
+            mapResourceDefinitionMap.put(beanClass, definition);
+            return;
+        }
+
+        logger.error("重复的地图加载行为,class[{}]", beanClass);
     }
 
     public void registerCsvCache(String location, InputStream inputStream) {
@@ -51,12 +62,44 @@ public class StorageManager {
         logger.error("重复的加载行为,location[{}]", location);
     }
 
-    // 初始化静态资源类 这一步要放到最后做
+    // 初始化静态资源类
     public void initStorageMap() {
-        IMap map = NoviceVillage.valueOf(1, 5, 5);
-        Storage<Long, IMap> storage = new StorageLong<>();
-        storage.storageAdd(1L, map);
-        storageMap.put(MapResource.class, storage);
+        // Iterator<Map.Entry<Class<?>, ResourceDefinition>> iterator = definitionMap.entrySet().iterator();
+        //
+        // while (iterator.hasNext()) {
+        // long index = 1;
+        // Map.Entry<Class<?>, ResourceDefinition> next = iterator.next();
+        // Class<?> key = null;
+        // Storage<Long, Object> storage = new StorageLong<>();
+        // try {
+        // key = next.getKey();
+        // Object instance = key.newInstance();
+        // storage.addIntoStorageMap(index++, instance);
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // }
+        // storageMap.put(key, storage);
+        // }
+
+        Iterator<Map.Entry<Class<? extends IMap>, ResourceDefinition>> mapIterator =
+            mapResourceDefinitionMap.entrySet().iterator();
+        Storage<Long, Object> storage = new StorageLong<>();
+		long index = 1;
+        while (mapIterator.hasNext()) {
+            Map.Entry<Class<? extends IMap>, ResourceDefinition> next = mapIterator.next();
+            ResourceDefinition nextValue = next.getValue();
+            Object instance = null;
+
+            try {
+                instance = nextValue.getClz().newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            storage.addIntoStorageMap(index++, instance);
+
+        }
+        storageMap.put(IMap.class, storage);
     }
 
     // get
@@ -72,8 +115,16 @@ public class StorageManager {
         return caches;
     }
 
+    public Map<Class<? extends IMap>, ResourceDefinition> getMapResourceDefinitionMap() {
+        return mapResourceDefinitionMap;
+    }
+
     // 业务区
-    // public <T, K> T getResource(Class<T> clazz, K key) {
-    // Storage<?, ?> storage = storageMap.get(clazz);
-    // }
+
+    public InputStream getCache(Class<?> clazz) {
+        ResourceDefinition resourceDefinition = mapResourceDefinitionMap.get(clazz);
+        String location = resourceDefinition.getLocation();
+        return caches.get(location);
+    }
+
 }

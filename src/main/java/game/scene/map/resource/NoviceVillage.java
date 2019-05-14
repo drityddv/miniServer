@@ -1,10 +1,13 @@
 package game.scene.map.resource;
 
+import java.io.InputStream;
+
 import game.base.map.IMap;
 import game.base.map.base.AbstractGameMap;
 import game.base.map.base.MapCreature;
 import game.common.Ii8n;
 import game.common.exception.RequestException;
+import middleware.anno.MapResource;
 import spring.SpringContext;
 
 /**
@@ -13,7 +16,7 @@ import spring.SpringContext;
  * @author : ddv
  * @since : 2019/5/6 下午5:59
  */
-
+@MapResource()
 public class NoviceVillage extends AbstractGameMap {
 
     private static long oldMan = 8L;
@@ -68,4 +71,16 @@ public class NoviceVillage extends AbstractGameMap {
         SpringContext.getSceneMapService().modifyPlayerMapStatus(objectId, 2L);
     }
 
+    @Override
+    public IMap initFromInputStream(InputStream inputStream, int index) {
+        NoviceVillage noviceVillage = new NoviceVillage();
+        noviceVillage.init(inputStream, index);
+        noviceVillage.addCreature(MapCreature.valueOf("传送老头", oldMan, 4, 4));
+        return noviceVillage;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

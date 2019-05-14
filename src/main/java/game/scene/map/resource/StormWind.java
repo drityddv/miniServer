@@ -1,7 +1,11 @@
 package game.scene.map.resource;
 
+import java.io.InputStream;
+
+import game.base.map.IMap;
 import game.base.map.base.AbstractGameMap;
 import game.base.map.base.MapCreature;
+import middleware.anno.MapResource;
 
 /**
  *
@@ -10,7 +14,7 @@ import game.base.map.base.MapCreature;
  * @author : ddv
  * @since : 2019/5/7 下午9:44
  */
-
+@MapResource()
 public class StormWind extends AbstractGameMap {
 
     public static StormWind valueOf(long mapId, int x, int y) {
@@ -41,5 +45,15 @@ public class StormWind extends AbstractGameMap {
     @Override
     public void transfer(long objectId) {
 
+    }
+
+    @Override
+    public IMap initFromInputStream(InputStream inputStream, int index) {
+        StormWind stormWind = new StormWind();
+        stormWind.init(inputStream, index);
+        stormWind.addCreature(MapCreature.valueOf("新手军官", 9L, 1, 1));
+        stormWind.addCreature(MapCreature.valueOf("武器商人", 10L, 2, 2));
+        stormWind.addCreature(MapCreature.valueOf("护甲商人", 11L, 3, 3));
+        return stormWind;
     }
 }
