@@ -54,19 +54,18 @@ public class NoviceVillage extends AbstractGameMap {
 
         if (distance > 1) {
             // 要求直线距离传送老头最远1m才可以传送
-			RequestException.throwException(Ii8n.DISTANCE_TOO_FAR);
+            RequestException.throwException(Ii8n.DISTANCE_TOO_FAR);
             return;
         }
 
         MapCreature mapCreature = getMapCreatures().get(objectId);
-
         getMapCreatures().remove(objectId);
-
         mapCreature.reset();
 
         IMap mapResource = SpringContext.getSceneMapService().getMapResource(2L);
-
         mapResource.addCreature(mapCreature);
+
+        SpringContext.getSceneMapService().modifyPlayerMapStatus(objectId, 2L);
     }
 
 }

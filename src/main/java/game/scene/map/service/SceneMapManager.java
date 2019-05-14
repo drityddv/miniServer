@@ -1,5 +1,6 @@
 package game.scene.map.service;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +22,10 @@ import game.scene.map.resource.StormWind;
 @Component
 public class SceneMapManager {
 
-    private ConcurrentHashMap<Long, IMap> sceneMaps = new ConcurrentHashMap<>();
+    private Map<Long, IMap> sceneMaps = new ConcurrentHashMap<>();
+
+    // 对应玩家-存在地图状态表
+    private Map<Long, Long> playerMaps = new ConcurrentHashMap<>();
 
     @PostConstruct
     public void init() {
@@ -36,11 +40,19 @@ public class SceneMapManager {
         if (map == null) {
             RequestException.throwException(Ii8n.MAP_NOT_EXIST);
         }
-
         return map;
     }
 
-    public ConcurrentHashMap<Long, IMap> getSceneMaps() {
+    public Map<Long, IMap> getSceneMaps() {
         return sceneMaps;
     }
+
+    public boolean existInMap(long playerId) {
+        return playerMaps.containsKey(playerId);
+    }
+
+    public Map<Long, Long> getPlayerMaps() {
+        return playerMaps;
+    }
+
 }

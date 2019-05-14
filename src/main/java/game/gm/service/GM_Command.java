@@ -30,8 +30,15 @@ public class GM_Command {
         logger.info(userEnt.toString());
     }
 
-    public void logMap(USession session, long mapId) {
+    public void logScene(USession session) {
         logger.info("服务器当前地图[{}]张", sceneMapManager.getSceneMaps().size());
+
+        sceneMapManager.getPlayerMaps().forEach((playerId, id) -> {
+            logger.info("玩家[{}],存在于地图[{}]", playerId, id);
+        });
+    }
+
+    public void logMap(USession session, long mapId) {
         SpringContext.getSceneMapService().logBasicMapInfo(mapId);
     }
 

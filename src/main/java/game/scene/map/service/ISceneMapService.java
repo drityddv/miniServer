@@ -68,4 +68,11 @@ public interface ISceneMapService {
      * @return
      */
     IMap getMapResource(long mapId);
+
+	/**
+	 * 修改
+	 * @param playerId
+	 * @param mapId
+	 */
+	void modifyPlayerMapStatus(long playerId,long mapId);
 }

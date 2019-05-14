@@ -1,5 +1,7 @@
 package game.scene.map.service;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.stereotype.Component;
 import game.base.map.IMap;
 import game.base.map.base.MapCreature;
 import game.common.Ii8n;
+import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import middleware.manager.SessionManager;
 import net.utils.PacketUtil;
@@ -28,6 +31,11 @@ public class SceneMapService implements ISceneMapService {
     public void enterMap(String accountId, long mapId) {
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
+        if (sceneMapManager.existInMap(getPlayerId(accountId))) {
+            logger.warn("玩家[{}]当前处于地图中,请先退出地图!", accountId);
+            return;
+        }
+
         if (!map.canEnterMap(accountId)) {
             logger.warn("玩家[{}]未达到进入地图[{}]条件!", accountId, mapId);
             return;
@@ -44,6 +52,8 @@ public class SceneMapService implements ISceneMapService {
         creature = MapCreature.valueOf(accountId, getPlayerId(accountId), 0, 0);
         map.addCreature(creature);
 
+        sceneMapManager.getPlayerMaps().put(getPlayerId(accountId), mapId);
+
         PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
     }
 
@@ -51,9 +61,15 @@ public class SceneMapService implements ISceneMapService {
     @Override
     public void leaveMap(String accountId, long mapId) {
         IMap map = sceneMapManager.getMapByMapId(mapId);
+
+        if (map == null) {
+            RequestException.throwException(Ii8n.MAP_NOT_EXIST);
+        }
+
         long playerId = getPlayerId(accountId);
 
         map.deleteCreature(playerId);
+        sceneMapManager.getPlayerMaps().remove(getPlayerId(accountId));
     }
 
     // 这个方法暂时放空,后续增加条件再拓展
@@ -89,6 +105,12 @@ public class SceneMapService implements ISceneMapService {
     @Override
     public IMap getMapResource(long mapId) {
         return sceneMapManager.getMapByMapId(mapId);
+    }
+
+    @Override
+    public void modifyPlayerMapStatus(long playerId, long mapId) {
+        Map<Long, Long> playerMaps = sceneMapManager.getPlayerMaps();
+        playerMaps.put(playerId, mapId);
     }
 
     // 临时的player转化工具
