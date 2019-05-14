@@ -1,10 +1,13 @@
 package game.scene.map.resource;
 
+import java.io.InputStream;
+
 import game.base.map.IMap;
 import game.base.map.base.AbstractGameMap;
 import game.base.map.base.MapCreature;
 import game.common.Ii8n;
 import game.common.exception.RequestException;
+import middleware.anno.MapResource;
 import spring.SpringContext;
 
 /**
@@ -13,7 +16,7 @@ import spring.SpringContext;
  * @author : ddv
  * @since : 2019/5/6 下午5:59
  */
-
+@MapResource()
 public class NoviceVillage extends AbstractGameMap {
 
     private static long oldMan = 8L;
@@ -54,7 +57,7 @@ public class NoviceVillage extends AbstractGameMap {
 
         if (distance > 1) {
             // 要求直线距离传送老头最远1m才可以传送
-			RequestException.throwException(Ii8n.DISTANCE_TOO_FAR);
+            RequestException.throwException(Ii8n.DISTANCE_TOO_FAR);
             return;
         }
 
@@ -69,4 +72,16 @@ public class NoviceVillage extends AbstractGameMap {
         mapResource.addCreature(mapCreature);
     }
 
+    @Override
+    public IMap initFromInputStream(InputStream inputStream, int index) {
+        NoviceVillage noviceVillage = new NoviceVillage();
+        noviceVillage.init(inputStream, index);
+        noviceVillage.addCreature(MapCreature.valueOf("传送老头", oldMan, 4, 4));
+        return noviceVillage;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

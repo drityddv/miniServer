@@ -1,6 +1,8 @@
 package middleware.resource.storage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -17,11 +19,33 @@ public class Storage<K, V> {
 
     private Map<K, V> data = new HashMap<>();
 
-    public void storageAdd(K k, V v) {
+    private Map<K, List<V>> dataList = new HashMap<>();
+
+    public void addIntoStorageMap(K k, V v) {
         data.put(k, v);
     }
 
-    public V storageGet(K k) {
+    public V getFromStorageMap(K k) {
         return data.get(k);
+    }
+
+    public Map<K, V> getStorageMap() {
+        return data;
+    }
+
+    public Map<K, List<V>> getStorageListMap() {
+        return dataList;
+    }
+
+    public List<V> getFromStorageList(K k) {
+        return dataList.get(k);
+    }
+
+    public void addIntoStorageList(K k, V v) {
+        List<V> list = getFromStorageList(k);
+        if (list == null) {
+            list = new ArrayList<>();
+        }
+        list.add(v);
     }
 }

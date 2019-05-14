@@ -1,12 +1,13 @@
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Stream;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import utils.SimpleUtil;
 
 /**
  * @author : ddv
@@ -17,39 +18,46 @@ public class Test {
 
     @org.junit.Test
     public void run() {
-        String className = "game.scene.map.resource.NoviceVillage";
+        String className = "game.base.map.base.AbstractGameMap";
+        Class<?> clazz = null;
         try {
-            Class<?> clazz = Class.forName(className);
-            Object instance = clazz.newInstance();
-            Field[] fields = clazz.getDeclaredFields();
-            try {
-                fields[1].set(instance, new Long(1));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-            System.out.println(instance);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
+            clazz = Class.forName(className);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
+        Field[] fields = clazz.getDeclaredFields();
+        Stream.of(fields).filter(field -> SimpleUtil.isSimpleClazz(field.getType())).forEach(field -> System.out.println(field.getName() + " " + field.getType()));
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        File file = new File("src/main/resources/csv/MapResource.csv");
-        InputStream inputStream = new FileInputStream(file);
-        ArrayList list = new ArrayList();
+        CSVParser parser = method();
+
+        // Iterator<CSVRecord> iterator = parser.iterator();
         try {
-            CSVParser parser = CSVParser.parse(inputStream, Charset.forName("utf-8"), CSVFormat.DEFAULT);
-            for (CSVRecord record : parser) {
-                Iterator<String> iterator = record.iterator();
-                iterator.forEachRemaining(s -> System.out.println(s));
-            }
+            List<CSVRecord> records = parser.getRecords();
+            records.stream().skip(2).forEach(record -> record.forEach(s -> System.out.println(s)));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        // iterator.forEachRemaining(strings -> System.out.println(strings));
+
+        System.out.println();
+    }
+
+    private static CSVParser method() throws FileNotFoundException {
+        File file = new File("src/main/resources/csv/MapResource.csv");
+        InputStream inputStream = new FileInputStream(file);
+        CSVParser parser = null;
+        try {
+            parser = CSVParser.parse(inputStream, Charset.forName("utf-8"), CSVFormat.DEFAULT);
+            // for (CSVRecord record : parser) {
+            // Iterator<String> iterator = record.iterator();
+            // iterator.forEachRemaining(s -> System.out.println(s));
+            // }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return parser;
     }
 }

@@ -1,3 +1,4 @@
-SERVER,mapId,mapName,x,y,mapData
-TYPE,int,string,int,int,arrays
-END,1,新手村,5,5,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+mapId,mapName,x,y,mapType,mapData
+Long,String,Integer,Integer,mapType,arrays
+1,新手村,5,5,NoviceVillage,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+2,暴风城,5,5,StormWind,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
