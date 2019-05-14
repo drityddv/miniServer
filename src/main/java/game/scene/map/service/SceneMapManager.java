@@ -56,7 +56,7 @@ public class SceneMapManager implements IManager {
         Map<Long, IMap> tempMap = new HashMap<>();
 
         sceneMaps.forEach((aLong, iMap) -> {
-            iMap.initFromInputStream(storageManager.getCache(iMap.getClass()), aLong.intValue()+1);
+            iMap = iMap.initFromInputStream(storageManager.getCache(iMap.getClass()), aLong.intValue() + 1);
             tempMap.put(iMap.getCurrentMapId(), iMap);
         });
 
