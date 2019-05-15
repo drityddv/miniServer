@@ -1,6 +1,6 @@
 package utils;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.UUID;
 
 /**
  * 临时的id,key,生成工具
@@ -11,10 +11,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class IdUtil {
 
-    private static AtomicLong atomicLong = new AtomicLong();
-
     public static long getLongId() {
-        return atomicLong.getAndIncrement();
+        return UUID.randomUUID().hashCode();
     }
 
 }
