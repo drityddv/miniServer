@@ -1,6 +1,5 @@
 package game.user.login.service;
 
-import game.common.packet.SM_Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +7,18 @@ import org.springframework.stereotype.Component;
 
 import game.common.Ii8n;
 import game.common.exception.RequestException;
+import game.common.packet.SM_Message;
 import game.user.login.entity.UserEnt;
 import game.user.login.model.Person;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
 import game.user.login.packet.SM_LoginSuccess;
+import game.user.player.model.Player;
+import middleware.manager.SessionManager;
 import net.model.USession;
 import net.utils.PacketUtil;
+import utils.SimpleUtil;
 
 /**
  * @author : ddv
@@ -49,11 +52,17 @@ public class LoginService implements ILoginService {
 
         // 下发登陆成功状态,注册session
         session.putSessionAttribute("accountId", accountId);
+        SessionManager.registerPlayerSession(accountId, session);
         PacketUtil.send(session, new SM_LoginSuccess());
     }
 
     @Override
     public void logout(USession session, CM_UserLogout request) {
+        Player player = SimpleUtil.getPlayerFromSession(session);
+        PacketUtil.send(session, SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+
+        SessionManager.removeSession(session.getChannel());
+        SessionManager.removePlayerSession(player.getAccountId());
 
     }
 
@@ -79,7 +88,7 @@ public class LoginService implements ILoginService {
 
         loginManager.saveEntity(userEnt);
 
-        PacketUtil.send(session,SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+        PacketUtil.send(session, SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
     }
 
     @Override

@@ -43,12 +43,24 @@ public class SessionManager {
         }
 
         sessionMap.put(channel, session);
-//        playerSession.put(accountId, session);
+
+    }
+
+    public static void registerPlayerSession(String accountId, USession session) {
+        if (playerSession.containsKey(accountId)) {
+            logger.error("重复注册的accountId[{}]", accountId);
+            return;
+        }
+        playerSession.put(accountId, session);
     }
 
     public static void removeSession(Channel channel) {
         sessionMap.remove(channel);
     }
+
+    public static void removePlayerSession(String accountId){
+		playerSession.remove(accountId);
+	}
 
     public static boolean isContainSession(Channel channel) {
         return sessionMap.containsKey(channel);

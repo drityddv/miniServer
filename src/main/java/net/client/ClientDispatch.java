@@ -11,6 +11,7 @@ import game.scene.map.packet.CM_LeaveMap;
 import game.scene.map.packet.CM_MoveMap;
 import game.scene.map.packet.CM_TransferMap;
 import game.user.login.packet.CM_UserLogin;
+import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
 import io.netty.channel.ChannelHandlerContext;
 import net.model.PacketProtocol;
@@ -23,7 +24,7 @@ public class ClientDispatch {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientDispatch.class);
 
-    private static final String ACCOUNT_TIPS = "1: 账号创建[创建后请手动登陆]\n" + "2: 账号登陆";
+    private static final String ACCOUNT_TIPS = "1: 账号创建[创建后请手动登陆]\n" + "2: 账号登陆\n" + "3: 账号登出";
 
     private static final String MAP_TIPS = "1: [进入地图]\n" + "2: [地图移动]\n" + "3: [触发传送]\n" + "4: [离开地图]";;
 
@@ -54,6 +55,12 @@ public class ClientDispatch {
                         CM_UserLogin cm = new CM_UserLogin();
                         cm.setAccountId(scanner.next());
                         cm.setPassword(scanner.next());
+                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
+                        break;
+                    }
+
+                    case 3: {
+                        CM_UserLogout cm = new CM_UserLogout();
                         ctx.writeAndFlush(PacketProtocol.valueOf(cm));
                         break;
                     }

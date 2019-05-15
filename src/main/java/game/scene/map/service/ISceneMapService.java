@@ -70,10 +70,18 @@ public interface ISceneMapService {
      */
     IMap getMapResource(long mapId);
 
-	/**
-	 * 修改
-	 * @param playerId
-	 * @param mapId
-	 */
-	void modifyPlayerMapStatus(long playerId,long mapId);
+    /**
+     * 修改
+     *
+     * @param playerId
+     * @param mapId
+     */
+    void modifyPlayerMapStatus(long playerId, long mapId);
+
+    /**
+     * 用户登出支持
+     *
+     * @param player
+     */
+    void logOut(Player player);
 }

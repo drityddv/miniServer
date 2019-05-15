@@ -14,8 +14,8 @@ import utils.TimeUtil;
 @MappedSuperclass
 public abstract class AbstractEntity<T extends Serializable & Comparable<T>> implements IEntity<T> {
 
-    @Column(columnDefinition = "int default 0 comment '更新时间戳' ")
-    private int updatedAt;
+    @Column(columnDefinition = "bigint default 0 comment '更新时间戳' ")
+    private long updatedAt;
 
     public long getUpdatedAt() {
         return updatedAt;
@@ -27,7 +27,7 @@ public abstract class AbstractEntity<T extends Serializable & Comparable<T>> imp
 
     @Override
     public void serialize() {
-        this.updatedAt = (int)TimeUtil.now();
+        this.updatedAt = TimeUtil.now() / 1000;
         doSerialize();
     }
 
@@ -38,10 +38,16 @@ public abstract class AbstractEntity<T extends Serializable & Comparable<T>> imp
 
     @Override
     public void setTimeStamp() {
-        this.updatedAt = (int)TimeUtil.now();
+        this.updatedAt = TimeUtil.now() / 1000;
     }
 
+    /**
+     * 序列化
+     */
     public abstract void doSerialize();
 
+    /**
+     * 反序列化
+     */
     public abstract void doDeserialize();
 }

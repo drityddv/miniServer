@@ -31,10 +31,15 @@ public class SessionHandler extends SimpleChannelInboundHandler<PacketProtocol> 
         Object object = ClazzManager.readObjectById(protocol.getData(), id);
 
         Channel channel = ctx.channel();
+        String accountId = null;
+        try {
 
-        USession session = SessionManager.getSession(channel);
-
-        String accountId = (String)session.getSessionAttribute("accountId");
+            USession session = SessionManager.getSession(channel);
+            accountId = (String)session.getSessionAttribute("accountId");
+        } catch (NullPointerException e) {
+            logger.error("当前会话session已经失效,请重新连接...");
+            return;
+        }
 
         // 登陆之后才会设置accountId属性 这里可以对登陆,注册
         if (accountId != null || object.getClass() == CM_UserLogin.class

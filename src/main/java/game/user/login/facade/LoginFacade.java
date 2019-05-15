@@ -62,7 +62,14 @@ public class LoginFacade {
      */
     @HandlerAnno
     public void userLogout(USession session, CM_UserLogout request) {
-        logger.info("user logout method invoked");
+        try {
+            SpringContext.getLoginService().logout(session, request);
+        } catch (RequestException e) {
+            PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
+            e.printStackTrace();
+        }
     }
 
 }

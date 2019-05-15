@@ -55,4 +55,8 @@ public class SceneMapManager {
         return playerMaps;
     }
 
+    public Long getPlayerInMap(long playerId) {
+        return playerMaps.get(playerId);
+    }
+
 }

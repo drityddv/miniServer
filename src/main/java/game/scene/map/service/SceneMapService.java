@@ -119,6 +119,19 @@ public class SceneMapService implements ISceneMapService {
         playerMaps.put(playerId, mapId);
     }
 
+    @Override
+    public void logOut(Player player) {
+        Long mapId = sceneMapManager.getPlayerInMap(player.getPlayerId());
+        if (mapId == null) {
+            return;
+        }
+
+        sceneMapManager.getPlayerMaps().remove(player.getPlayerId());
+
+        IMap map = sceneMapManager.getMapByMapId(mapId);
+        map.deleteCreature(player.getPlayerId());
+    }
+
     // 临时的player转化工具
     // 原则上应该使用player做业务,完成accountId到playerId的转化,这里先写死,后续添加player模块后修改
     private long getPlayerId(String accountId) {
