@@ -1,6 +1,6 @@
 package game.user.player.model;
 
-import game.base.object.AbstractCreature;
+import utils.IdUtil;
 
 /**
  * 做业务的对象
@@ -9,28 +9,25 @@ import game.base.object.AbstractCreature;
  * @since : 2019/5/6 下午8:51
  */
 
-public class Player extends AbstractCreature {
+public class Player {
 
     private String accountId;
 
-    // 等级
-    private int level;
+    private long playerId;
 
-    // 玩家战斗力
-    private long battleScore;
+    private int level;
 
     private Player() {}
 
     public static Player valueOf(String accountId) {
         Player player = new Player();
         player.setAccountId(accountId);
-        player.setBattleScore(0);
+        player.setPlayerId(IdUtil.getLongId());
         player.setLevel(1);
         return player;
     }
 
     // get and set
-
     public String getAccountId() {
         return accountId;
     }
@@ -47,12 +44,16 @@ public class Player extends AbstractCreature {
         this.level = level;
     }
 
-    public long getBattleScore() {
-        return battleScore;
+    public long getPlayerId() {
+        return playerId;
     }
 
-    public void setBattleScore(long battleScore) {
-        this.battleScore = battleScore;
+    public void setPlayerId(long playerId) {
+        this.playerId = playerId;
     }
 
+    @Override
+    public String toString() {
+        return "Player{" + "accountId='" + accountId + '\'' + ", playerId=" + playerId + ", level=" + level + '}';
+    }
 }

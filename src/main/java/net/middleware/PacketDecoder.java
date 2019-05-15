@@ -23,7 +23,6 @@ public class PacketDecoder extends ReplayingDecoder<PacketProtocol> {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        logger.debug("packet decoder invoked!");
         byte id = in.readByte();
         int length = in.readInt();
         byte[] data = new byte[length];

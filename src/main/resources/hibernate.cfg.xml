@@ -24,5 +24,6 @@
 
         <!-- 对象关系映射引用 -->
         <mapping class="game.user.login.entity.UserEnt"/>
+        <mapping class="game.user.player.entity.PlayerEnt"/>
     </session-factory>
 </hibernate-configuration>

@@ -12,6 +12,7 @@ import game.base.map.base.MapCreature;
 import game.common.Ii8n;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
+import game.user.player.model.Player;
 import middleware.manager.SessionManager;
 import net.utils.PacketUtil;
 
@@ -28,7 +29,8 @@ public class SceneMapService implements ISceneMapService {
     private SceneMapManager sceneMapManager;
 
     @Override
-    public void enterMap(String accountId, long mapId) {
+    public void enterMap(Player player, long mapId) {
+        String accountId = player.getAccountId();
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
         if (sceneMapManager.existInMap(getPlayerId(accountId))) {
@@ -59,7 +61,8 @@ public class SceneMapService implements ISceneMapService {
 
     // 单位不存在地图中也不会抛异常 避免客户端重复发包
     @Override
-    public void leaveMap(String accountId, long mapId) {
+    public void leaveMap(Player player, long mapId) {
+        String accountId = player.getAccountId();
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
         if (map == null) {
@@ -74,7 +77,7 @@ public class SceneMapService implements ISceneMapService {
 
     // 这个方法暂时放空,后续增加条件再拓展
     @Override
-    public void changeMap(String accountId, long fromMapId, long targetMapId) {
+    public void changeMap(Player player, long fromMapId, long targetMapId) {
 
     }
 
@@ -85,21 +88,24 @@ public class SceneMapService implements ISceneMapService {
     }
 
     @Override
-    public void transfer(String accountId, long mapId) {
+    public void transfer(Player player, long mapId) {
+        long playerId = player.getPlayerId();
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
-        map.transfer(getPlayerId(accountId));
-        PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+        map.transfer(playerId);
+        PacketUtil.send(SessionManager.getSessionByAccountId(player.getAccountId()),
+            SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
 
     }
 
     @Override
-    public void move(String accountId, long mapId, int targetX, int targetY) {
+    public void move(Player player, long mapId, int targetX, int targetY) {
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
-        map.move(getPlayerId(accountId), targetX, targetY);
+        map.move(player.getPlayerId(), targetX, targetY);
 
-        PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+        PacketUtil.send(SessionManager.getSessionByAccountId(player.getAccountId()),
+            SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
     }
 
     @Override

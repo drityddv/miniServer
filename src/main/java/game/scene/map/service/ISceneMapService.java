@@ -1,6 +1,7 @@
 package game.scene.map.service;
 
 import game.base.map.IMap;
+import game.user.player.model.Player;
 
 /**
  * 场景地图service
@@ -14,27 +15,27 @@ public interface ISceneMapService {
     /**
      * 进入指定地图
      *
-     * @param accountId
+     * @param player
      * @param mapId
      */
-    void enterMap(String accountId, long mapId);
+    void enterMap(Player player, long mapId);
 
     /**
      * 离开地图
      *
-     * @param accountId
+     * @param player
      * @param mapId
      */
-    void leaveMap(String accountId, long mapId);
+    void leaveMap(Player player, long mapId);
 
     /**
      * 切换地图
      *
-     * @param accountId
+     * @param player
      * @param fromMapId
      * @param targetMapId
      */
-    void changeMap(String accountId, long fromMapId, long targetMapId);
+    void changeMap(Player player, long fromMapId, long targetMapId);
 
     /**
      * 打印对应map的信息
@@ -46,20 +47,20 @@ public interface ISceneMapService {
     /**
      * 地图特殊传送机制
      *
-     * @param accountId
+     * @param player
      * @param mapId
      */
-    void transfer(String accountId, long mapId);
+    void transfer(Player player, long mapId);
 
     /**
      * 地图中单位移动
      *
-     * @param accountId
+     * @param player
      * @param mapId
      * @param targetX
      * @param targetY
      */
-    void move(String accountId, long mapId, int targetX, int targetY);
+    void move(Player player, long mapId, int targetX, int targetY);
 
     /**
      * 获取地图

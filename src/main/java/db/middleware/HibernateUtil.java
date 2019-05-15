@@ -5,11 +5,13 @@ import java.io.Serializable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @author : ddv
  * @since : 2019/5/5 下午3:28
  */
+@Component
 public class HibernateUtil<K extends Serializable & Comparable<K>, T extends IEntity<K>> implements IOrmTemplate<K, T> {
 
     private static SessionFactory sessionFactory;

@@ -39,6 +39,7 @@ public class GmService implements IGmService {
                     doInvoke(session, method, split);
                 } catch (Exception e) {
                     logger.error("gm命令调用出错,指令[{}],参数个数[{}]", methodName, split.length);
+                    e.printStackTrace();
                 }
             }
         }

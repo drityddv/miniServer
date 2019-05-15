@@ -3,6 +3,7 @@ import db.middleware.HibernateUtil;
 import game.user.login.entity.UserEnt;
 import game.user.login.model.Person;
 import game.user.login.service.LoginManager;
+import game.user.player.model.Player;
 import net.utils.ProtoStuffUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -70,7 +71,9 @@ public class Test {
 	}
 
 	public static void main(String[] args){
-		Integer num = StringConvert.INSTANCE.convertFromString(Integer.class,"2s");
-		System.out.println(num);
+		Player player = Player.valueOf("ddv");
+		byte[] serialize = ProtoStuffUtil.serialize(player);
+		Player player1 = ProtoStuffUtil.deserialize(serialize, Player.class);
+		System.out.println(player1);
 	}
 }

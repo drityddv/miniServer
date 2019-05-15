@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import io.netty.channel.Channel;
 import net.model.USession;
+import utils.SimpleUtil;
 
 /**
  * 用户session管理
@@ -25,17 +26,24 @@ public class SessionManager {
     /**
      * channel-session对应 后期需要增加sessionMap的过期清除,session的单点注册功能
      */
-    private static ConcurrentHashMap<Channel, USession> sessionMap = new ConcurrentHashMap<>();
+    private static Map<Channel, USession> sessionMap = new ConcurrentHashMap<>();
+
+    /**
+     * accountId - session
+     */
+    private static Map<String, USession> playerSession = new ConcurrentHashMap<>();
 
     public static void registerSession(USession session) {
         Channel channel = session.getChannel();
+        String accountId = SimpleUtil.getAccountIdFromSession(session);
 
-        if (sessionMap.contains(channel)) {
+        if (sessionMap.containsKey(channel)) {
             logger.error("重复注册的session[{}]", channel.id().asLongText());
             return;
         }
 
         sessionMap.put(channel, session);
+//        playerSession.put(accountId, session);
     }
 
     public static void removeSession(Channel channel) {
@@ -43,14 +51,14 @@ public class SessionManager {
     }
 
     public static boolean isContainSession(Channel channel) {
-        return sessionMap.contains(channel);
+        return sessionMap.containsKey(channel);
     }
 
     public static USession getSession(Channel channel) {
         return sessionMap.get(channel);
     }
 
-    public static ConcurrentHashMap<Channel, USession> getSessionMap() {
+    public static Map<Channel, USession> getSessionMap() {
         return sessionMap;
     }
 

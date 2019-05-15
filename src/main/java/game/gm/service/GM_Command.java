@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 
 import game.scene.map.service.SceneMapManager;
 import game.user.login.entity.UserEnt;
+import game.user.player.model.Player;
 import net.model.USession;
 import spring.SpringContext;
+import utils.SimpleUtil;
 
 /**
  * gm命令后台实现
@@ -42,4 +44,10 @@ public class GM_Command {
         SpringContext.getSceneMapService().logBasicMapInfo(mapId);
     }
 
+    public void logPlayer(USession session) {
+        Player player =
+            SpringContext.getPlayerService().getPlayerByAccountId(SimpleUtil.getAccountIdFromSession(session));
+
+        System.out.println(player);
+    }
 }

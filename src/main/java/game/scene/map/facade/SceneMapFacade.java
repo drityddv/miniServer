@@ -8,6 +8,7 @@ import game.common.Ii8n;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.scene.map.packet.*;
+import game.user.player.model.Player;
 import middleware.anno.HandlerAnno;
 import net.model.USession;
 import net.utils.PacketUtil;
@@ -34,8 +35,8 @@ public class SceneMapFacade {
     @HandlerAnno
     public void enterMap(USession session, CM_EnterMap request) {
         try {
-            String accountId = SimpleUtil.getAccountIdFromSession(session);
-            SpringContext.getSceneMapService().enterMap(accountId, request.getMapId());
+            Player player = SimpleUtil.getPlayerFromSession(session);
+            SpringContext.getSceneMapService().enterMap(player, request.getMapId());
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -53,8 +54,8 @@ public class SceneMapFacade {
     @HandlerAnno
     public void leaveMap(USession session, CM_LeaveMap request) {
         try {
-            String accountId = SimpleUtil.getAccountIdFromSession(session);
-            SpringContext.getSceneMapService().leaveMap(accountId, request.getMapId());
+            Player player = SimpleUtil.getPlayerFromSession(session);
+            SpringContext.getSceneMapService().leaveMap(player, request.getMapId());
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -72,8 +73,8 @@ public class SceneMapFacade {
     @HandlerAnno
     public void move(USession session, CM_MoveMap request) {
         try {
-            String accountId = SimpleUtil.getAccountIdFromSession(session);
-            SpringContext.getSceneMapService().move(accountId, request.getMapId(), request.getTargetX(),
+            Player player = SimpleUtil.getPlayerFromSession(session);
+            SpringContext.getSceneMapService().move(player, request.getMapId(), request.getTargetX(),
                 request.getTargetY());
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
@@ -92,8 +93,9 @@ public class SceneMapFacade {
     @HandlerAnno
     public void transfer(USession session, CM_TransferMap request) {
         try {
+            Player player = SimpleUtil.getPlayerFromSession(session);
             String accountId = SimpleUtil.getAccountIdFromSession(session);
-            SpringContext.getSceneMapService().transfer(accountId, request.getMapId());
+            SpringContext.getSceneMapService().transfer(player, request.getMapId());
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -111,8 +113,8 @@ public class SceneMapFacade {
     @HandlerAnno
     public void changeMap(USession session, CM_ChangeMap request) {
         try {
-            String accountId = SimpleUtil.getAccountIdFromSession(session);
-            SpringContext.getSceneMapService().changeMap(accountId, request.getFromMapId(), request.getTargetMapId());
+            Player player = SimpleUtil.getPlayerFromSession(session);
+            SpringContext.getSceneMapService().changeMap(player, request.getFromMapId(), request.getTargetMapId());
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
