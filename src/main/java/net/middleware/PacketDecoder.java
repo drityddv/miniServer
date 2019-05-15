@@ -23,10 +23,18 @@ public class PacketDecoder extends ReplayingDecoder<PacketProtocol> {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        in.markReaderIndex();
+
         byte id = in.readByte();
         int length = in.readInt();
-        byte[] data = new byte[length];
 
+        int realLength = in.readableBytes();
+        if (length > realLength) {
+            in.resetReaderIndex();
+            return;
+        }
+
+        byte[] data = new byte[length];
         in.readBytes(data);
 
         PacketProtocol packet = new PacketProtocol();
