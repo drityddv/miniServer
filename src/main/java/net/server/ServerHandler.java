@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.IdleStateEvent;
 import middleware.manager.ClazzManager;
 import middleware.manager.SessionManager;
 import net.model.PacketProtocol;
@@ -17,6 +18,17 @@ import spring.SpringContext;
 public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
     private static final Logger logger = LoggerFactory.getLogger(ServerHandler.class);
+
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        if (evt instanceof IdleStateEvent) {
+            logger.info("channel超时30s,即将清除玩家数据...");
+            SpringContext.getLoginService().logout(SessionManager.getSession(ctx.channel()), null);
+            ctx.channel().close();
+            return;
+        }
+        super.userEventTriggered(ctx, evt);
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {

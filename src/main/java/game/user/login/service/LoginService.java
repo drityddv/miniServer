@@ -18,6 +18,7 @@ import game.user.player.model.Player;
 import middleware.manager.SessionManager;
 import net.model.USession;
 import net.utils.PacketUtil;
+import spring.SpringContext;
 import utils.SimpleUtil;
 
 /**
@@ -64,6 +65,7 @@ public class LoginService implements ILoginService {
         SessionManager.removeSession(session.getChannel());
         SessionManager.removePlayerSession(player.getAccountId());
 
+        SpringContext.getSceneMapService().logOut(player);
     }
 
     @Override

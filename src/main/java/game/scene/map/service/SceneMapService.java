@@ -31,9 +31,10 @@ public class SceneMapService implements ISceneMapService {
     @Override
     public void enterMap(Player player, long mapId) {
         String accountId = player.getAccountId();
+        long playerId = player.getPlayerId();
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
-        if (sceneMapManager.existInMap(getPlayerId(accountId))) {
+        if (sceneMapManager.existInMap(playerId)) {
             logger.warn("玩家[{}]当前处于地图中,请先退出地图!", accountId);
             return;
         }
@@ -43,7 +44,6 @@ public class SceneMapService implements ISceneMapService {
             return;
         }
 
-        long playerId = getPlayerId(accountId);
         MapCreature creature = map.getCreature(playerId);
 
         if (creature != null) {
@@ -51,10 +51,10 @@ public class SceneMapService implements ISceneMapService {
             return;
         }
 
-        creature = MapCreature.valueOf(accountId, getPlayerId(accountId), 0, 0);
+        creature = MapCreature.valueOf(accountId, playerId, 0, 0);
         map.addCreature(creature);
 
-        sceneMapManager.getPlayerMaps().put(getPlayerId(accountId), mapId);
+        sceneMapManager.getPlayerMaps().put(playerId, mapId);
 
         PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
     }
@@ -122,6 +122,7 @@ public class SceneMapService implements ISceneMapService {
     @Override
     public void logOut(Player player) {
         Long mapId = sceneMapManager.getPlayerInMap(player.getPlayerId());
+
         if (mapId == null) {
             return;
         }
