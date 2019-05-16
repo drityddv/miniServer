@@ -41,7 +41,7 @@ public class SceneMapFacade {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
             PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
-            logger.error("玩家进入地图出错:{}", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -60,7 +60,7 @@ public class SceneMapFacade {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
             PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
-            logger.error("玩家离开地图出错:{}", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -80,7 +80,7 @@ public class SceneMapFacade {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
             PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
-            logger.error("玩家地图移动出错:{}", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -100,7 +100,7 @@ public class SceneMapFacade {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
             PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
-            logger.error("玩家地图触发传送出错:{}", e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -119,7 +119,7 @@ public class SceneMapFacade {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
             PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
-            logger.error("玩家切换地图出错:{}", e.getMessage());
+            e.printStackTrace();
         }
     }
 }

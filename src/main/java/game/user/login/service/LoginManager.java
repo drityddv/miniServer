@@ -1,14 +1,11 @@
 package game.user.login.service;
 
-import db.middleware.HibernateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import db.middleware.EntityBuilder;
 import db.middleware.IOrmTemplate;
 import game.user.login.entity.UserEnt;
-import spring.SpringContext;
-import spring.SpringController;
 
 /**
  * 静态资源,持久组件
@@ -19,7 +16,9 @@ import spring.SpringController;
 @Component
 public class LoginManager {
 
-    private IOrmTemplate<String, UserEnt> userHibernateUtil = new HibernateUtil<>();
+    @Autowired
+    private IOrmTemplate<String, UserEnt> userHibernateUtil;
+    // private IOrmTemplate<String, UserEnt> userHibernateUtil = new HibernateUtil<>();
 
     public UserEnt loadOrCreate(String accountId) {
         return userHibernateUtil.loadOrCreate(UserEnt.class, accountId, new EntityBuilder<String, UserEnt>() {

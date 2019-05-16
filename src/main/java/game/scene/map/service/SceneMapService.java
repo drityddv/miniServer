@@ -69,10 +69,10 @@ public class SceneMapService implements ISceneMapService {
             RequestException.throwException(Ii8n.MAP_NOT_EXIST);
         }
 
-        long playerId = getPlayerId(accountId);
+        long playerId = player.getPlayerId();
 
         map.deleteCreature(playerId);
-        sceneMapManager.getPlayerMaps().remove(getPlayerId(accountId));
+        sceneMapManager.getPlayerMaps().remove(playerId);
     }
 
     // 这个方法暂时放空,后续增加条件再拓展
@@ -133,9 +133,4 @@ public class SceneMapService implements ISceneMapService {
         map.deleteCreature(player.getPlayerId());
     }
 
-    // 临时的player转化工具
-    // 原则上应该使用player做业务,完成accountId到playerId的转化,这里先写死,后续添加player模块后修改
-    private long getPlayerId(String accountId) {
-        return accountId.hashCode();
-    }
 }

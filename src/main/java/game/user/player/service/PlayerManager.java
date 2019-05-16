@@ -1,8 +1,8 @@
 package game.user.player.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import db.middleware.HibernateUtil;
 import db.middleware.IOrmTemplate;
 import game.user.player.entity.PlayerEnt;
 
@@ -13,7 +13,8 @@ import game.user.player.entity.PlayerEnt;
 @Component
 public class PlayerManager {
 
-    private IOrmTemplate<String, PlayerEnt> ormTemplate = new HibernateUtil<>();
+    @Autowired
+    private IOrmTemplate<String, PlayerEnt> ormTemplate;
 
     public PlayerEnt loadOrCreate(String accountId) {
         return ormTemplate.loadOrCreate(PlayerEnt.class, accountId, PlayerEnt::valueOf);

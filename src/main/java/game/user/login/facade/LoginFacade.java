@@ -38,7 +38,7 @@ public class LoginFacade {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
             PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
-            logger.error(e.toString());
+            e.printStackTrace();
         }
     }
 

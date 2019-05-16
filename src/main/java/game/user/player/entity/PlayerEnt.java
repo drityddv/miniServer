@@ -26,7 +26,7 @@ public class PlayerEnt extends AbstractEntity<String> {
 
     public static PlayerEnt valueOf(String accountId) {
         PlayerEnt playerEnt = new PlayerEnt();
-		playerEnt.accountId = accountId;
+        playerEnt.accountId = accountId;
         playerEnt.player = Player.valueOf(accountId);
         return playerEnt;
     }

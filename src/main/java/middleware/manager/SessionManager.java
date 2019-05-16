@@ -58,9 +58,9 @@ public class SessionManager {
         sessionMap.remove(channel);
     }
 
-    public static void removePlayerSession(String accountId){
-		playerSession.remove(accountId);
-	}
+    public static void removePlayerSession(String accountId) {
+        playerSession.remove(accountId);
+    }
 
     public static boolean isContainSession(Channel channel) {
         return sessionMap.containsKey(channel);
