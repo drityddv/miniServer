@@ -112,10 +112,35 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+
+        <!--apache csv-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.6</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>c3p0</artifactId>
             <version>0.9.5.3</version>
         </dependency>
+
+        <!--<dependency>-->
+        <!--<groupId>com.mchange</groupId>-->
+        <!--<artifactId>c3p0</artifactId>-->
+        <!--<version>0.9.5.2</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+        <!--<groupId>org.springframework</groupId>-->
+        <!--<artifactId>spring-jdbc</artifactId>-->
+        <!--<version>5.1.5.RELEASE</version>-->
+        <!--</dependency>-->
 
     </dependencies>
 
