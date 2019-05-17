@@ -15,6 +15,7 @@ import game.user.login.service.ILoginService;
 import game.user.player.service.IPlayerService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
+import middleware.resource.storage.StorageManager;
 
 /**
  * @author : ddv
@@ -34,6 +35,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private SessionManager sessionManager;
+
+    @Autowired
+    private StorageManager storageManager;
 
     // 业务service区
 
@@ -74,6 +78,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static GM_Command getGmCommand() {
         return instance.gmCommand;
+    }
+
+    public static StorageManager getStorageManager() {
+        return instance.storageManager;
     }
 
     public static IPlayerService getPlayerService() {

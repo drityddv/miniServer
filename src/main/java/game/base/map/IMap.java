@@ -1,5 +1,7 @@
 package game.base.map;
 
+import java.util.List;
+
 import game.base.map.base.MapCreature;
 
 /**
@@ -8,6 +10,8 @@ import game.base.map.base.MapCreature;
  */
 
 public interface IMap {
+
+    String FILE_NAME = "MapResource";
 
     /**
      * 目标物体移动
@@ -76,5 +80,19 @@ public interface IMap {
      * @return
      */
     double calculateDistance(long objectId, long targetObjectId);
+
+    /**
+     *
+     * 加载地图数据
+     *
+     * @param values
+     * @return
+     */
+    void init(List<String> values);
+
+    /**
+     * 初始化地图生物
+     */
+    void initMapCreature();
 
 }

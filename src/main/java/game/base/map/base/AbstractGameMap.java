@@ -1,5 +1,7 @@
 package game.base.map.base;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -8,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import game.base.map.IMap;
 import game.common.Ii8n;
 import game.common.exception.RequestException;
+import utils.JodaUtil;
 
 /**
  * @author : ddv
@@ -145,4 +148,28 @@ public abstract class AbstractGameMap implements IMap {
         return true;
     }
 
+    // 地图比较特殊 需要手动加载
+    @Override
+    public void init(List<String> values) {
+
+        // 初始化地图数据 暂时npc还是写死,后续再改
+        mapData = new int[x][y];
+        mapCreatures = new ConcurrentHashMap<>();
+
+        String[] split = values.get(5).split(",");
+        int index = 0;
+
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                mapData[i][j] = JodaUtil.convertFromString(int.class, split[index++]);
+            }
+        }
+
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractGameMap{" + "mapId=" + mapId + ", x=" + x + ", y=" + y + ", mapData=" + Arrays.toString(mapData)
+            + ", mapCreatures=" + mapCreatures + '}';
+    }
 }

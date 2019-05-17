@@ -5,6 +5,7 @@ import game.base.map.base.AbstractGameMap;
 import game.base.map.base.MapCreature;
 import game.common.Ii8n;
 import game.common.exception.RequestException;
+import middleware.anno.MapResource;
 import spring.SpringContext;
 
 /**
@@ -13,7 +14,7 @@ import spring.SpringContext;
  * @author : ddv
  * @since : 2019/5/6 下午5:59
  */
-
+@MapResource
 public class NoviceVillage extends AbstractGameMap {
 
     private static long oldMan = 8L;
@@ -47,7 +48,6 @@ public class NoviceVillage extends AbstractGameMap {
 
         if (creature == null) {
             RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
-            return;
         }
 
         double distance = calculateDistance(objectId, oldMan);
@@ -68,4 +68,13 @@ public class NoviceVillage extends AbstractGameMap {
         SpringContext.getSceneMapService().modifyPlayerMapStatus(objectId, 2L);
     }
 
+    @Override
+    public void initMapCreature() {
+        addCreature(MapCreature.valueOf("传送老头", oldMan, 4, 4));
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

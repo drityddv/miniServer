@@ -10,7 +10,6 @@ import game.base.map.base.MapCreature;
  * @author : ddv
  * @since : 2019/5/7 下午9:44
  */
-
 public class StormWind extends AbstractGameMap {
 
     public static StormWind valueOf(long mapId, int x, int y) {
@@ -41,5 +40,12 @@ public class StormWind extends AbstractGameMap {
     @Override
     public void transfer(long objectId) {
 
+    }
+
+    @Override
+    public void initMapCreature() {
+        addCreature(MapCreature.valueOf("新手军官", 9L, 1, 1));
+        addCreature(MapCreature.valueOf("武器商人", 10L, 2, 2));
+        addCreature(MapCreature.valueOf("护甲商人", 11L, 3, 3));
     }
 }

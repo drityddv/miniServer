@@ -33,7 +33,6 @@ public class SessionHandler extends SimpleChannelInboundHandler<PacketProtocol> 
         Channel channel = ctx.channel();
         String accountId = null;
         try {
-
             USession session = SessionManager.getSession(channel);
             accountId = (String)session.getSessionAttribute("accountId");
         } catch (NullPointerException e) {

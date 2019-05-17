@@ -1,8 +1,8 @@
 package db.cache;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
     @Autowired
     private IOrmTemplate<K, T> ormTemplate;
 
-    private Map<Class<?>, EntityCache<K, T>> entityCacheMap = new HashMap<>();
+    private Map<Class<?>, EntityCache<K, T>> entityCacheMap = new ConcurrentHashMap<>();
 
     private EntityCache<K, T> getEntityCache(Class<?> clazz) {
         return entityCacheMap.get(clazz);
@@ -30,10 +30,13 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
 
     @Override
     public T loadOrCreate(Class<T> entityType, K id, EntityBuilder<K, T> builder) {
+        if (!entityCacheMap.containsKey(entityType)) {
+            entityCacheMap.put(entityType, new EntityCache<>());
+        }
         EntityCache<K, T> entityCache = entityCacheMap.get(entityType);
-		if(entityCache == null){
-			entityCache = new EntityCache<>();
-		}
+        if (entityCache == null) {
+            entityCache = entityCacheMap.putIfAbsent(entityType, new EntityCache<>());
+        }
         T t = null;
         if (!entityCache.inCache(id)) {
             t = ormTemplate.loadOrCreate(entityType, id, builder);
@@ -44,27 +47,37 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
 
     @Override
     public T load(Class<T> entityType, K id) {
-        EntityCache<K, T> entityCache = entityCacheMap.get(entityType);
-        if(entityCache == null){
-			entityCache = new EntityCache<>();
-		}
+        if (!entityCacheMap.containsKey(entityType)) {
+            entityCacheMap.put(entityType, new EntityCache<>());
+        }
+
+        EntityCache<K, T> entityCache = entityCacheMap.putIfAbsent(entityType, new EntityCache<>());
+
         T t = null;
         if (!entityCache.inCache(id)) {
             t = ormTemplate.load(entityType, id);
             entityCache.put(id, t);
+        } else {
+            t = entityCache.get(id);
         }
         return t;
     }
 
     @Override
     public void save(T object) {
-        EntityCache<K, T> entityCache = entityCacheMap.get(object.getClass());
-		if(entityCache == null){
-			entityCache = new EntityCache<>();
-		}
         if (object == null) {
             throw new RuntimeException("cache object has been deleted");
         }
+
+        if (!entityCacheMap.containsKey(object.getClass())) {
+            entityCacheMap.put(object.getClass(), new EntityCache<>());
+        }
+
+        EntityCache<K, T> entityCache = entityCacheMap.get(object.getClass());
+        if (entityCache == null) {
+            entityCache = entityCacheMap.putIfAbsent(object.getClass(), new EntityCache<>());
+        }
+
         ormTemplate.save(object);
         entityCache.put(object.getId(), object);
     }
