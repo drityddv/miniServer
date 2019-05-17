@@ -1,10 +1,10 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import game.scene.map.service.SceneMapManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.scene.map.service.SceneMapManager;
 import middleware.resource.storage.StorageManager;
 import net.server.Server;
 import spring.SpringController;
@@ -31,10 +31,10 @@ public class Start {
             server.run();
         });
 
-		StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
+        StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
 
-		SceneMapManager mapManager = SpringController.getContext().getBean(SceneMapManager.class);
+        SceneMapManager mapManager = SpringController.getContext().getBean(SceneMapManager.class);
 
-		logger.info("服务器启动成功,Start线程关闭...");
+        logger.info("服务器启动成功,Start线程关闭...");
     }
 }

@@ -1,4 +1,4 @@
-mapId,mapName,x,y,mapType,mapData
-Long,String,Integer,Integer,mapType,arrays
-1,新手村,5,5,NoviceVillage,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
-2,暴风城,5,5,StormWind,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+mapId,mapClass,mapName,x,y,mapData
+Long,className,String,Integer,Integer,arrays
+1,game.scene.map.resource.NoviceVillage,新手村,5,5,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
+2,game.scene.map.resource.StormWind,暴风城,5,5,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"

@@ -6,6 +6,8 @@ import db.middleware.EntityBuilder;
 import db.middleware.IEntity;
 
 /**
+ * 缓存中间件
+ *
  * @author : ddv
  * @since : 2019/5/16 下午4:41
  */

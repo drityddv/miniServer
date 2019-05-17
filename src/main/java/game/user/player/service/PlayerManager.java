@@ -3,7 +3,7 @@ package game.user.player.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import db.middleware.IOrmTemplate;
+import db.cache.IEntityCacheService;
 import game.user.player.entity.PlayerEnt;
 
 /**
@@ -14,13 +14,13 @@ import game.user.player.entity.PlayerEnt;
 public class PlayerManager {
 
     @Autowired
-    private IOrmTemplate<String, PlayerEnt> ormTemplate;
+    private IEntityCacheService<String, PlayerEnt> entEntityCache;
 
     public PlayerEnt loadOrCreate(String accountId) {
-        return ormTemplate.loadOrCreate(PlayerEnt.class, accountId, PlayerEnt::valueOf);
+        return entEntityCache.loadOrCreate(PlayerEnt.class, accountId, PlayerEnt::valueOf);
     }
 
     public void saveEntity(PlayerEnt playerEnt) {
-        ormTemplate.save(playerEnt);
+        entEntityCache.save(playerEnt);
     }
 }

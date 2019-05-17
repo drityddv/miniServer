@@ -2,8 +2,9 @@ package game.scene.map.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,8 +16,6 @@ import middleware.anno.Manager;
 import middleware.resource.IManager;
 import middleware.resource.storage.Storage;
 import middleware.resource.storage.StorageManager;
-
-import javax.annotation.PostConstruct;
 
 /**
  * 地图配置先在这里写死,等待后续增加静态资源功能后修改 1: 新手村
@@ -55,6 +54,10 @@ public class SceneMapManager implements IManager {
         return map;
     }
 
+    public void addMap(long mapId, IMap map) {
+        sceneMaps.put(mapId, map);
+    }
+
     public Map<Long, IMap> getSceneMaps() {
         return sceneMaps;
     }
@@ -71,7 +74,6 @@ public class SceneMapManager implements IManager {
         Map<Long, IMap> tempMap = new HashMap<>();
 
         sceneMaps.forEach((aLong, iMap) -> {
-            iMap = iMap.initFromInputStream(storageManager.getCache(iMap.getClass()), aLong.intValue() + 1);
             tempMap.put(iMap.getCurrentMapId(), iMap);
         });
 

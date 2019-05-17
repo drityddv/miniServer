@@ -13,17 +13,10 @@ public class ResourceDefinition {
 
     private String location;
 
-    // 无奈 这里先写死吧,后续再改 2019-05-13 21:56:12
+    // 写死即可
     public ResourceDefinition(Class<?> clz) {
         this.clz = clz;
         location = PATH_NAME + "MapResource";
-        // MapResource anno = clz.getAnnotation(MapResource.class);
-        // if (anno != null) {
-        // // 这里默认用ClazzName做资源文件名
-        // location = PATH_NAME + anno.name();
-        // } else {
-        // location = PATH_NAME + "MapResource";
-        // }
     }
 
     public String getPATH_NAME() {

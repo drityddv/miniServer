@@ -1,25 +1,26 @@
 package spring;
 
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import game.base.map.IMap;
-import game.base.map.base.AbstractGameMap;
+import game.scene.map.service.SceneMapManager;
 import middleware.anno.HandlerAnno;
-import middleware.anno.Manager;
-import middleware.anno.MapResource;
 import middleware.dispatch.Dispatcher;
 import middleware.dispatch.HandlerInvoke;
-import middleware.resource.IManager;
 import middleware.resource.middle.ResourceDefinition;
 import middleware.resource.storage.StorageManager;
+import utils.ClassUtil;
 import utils.SimpleUtil;
 
 /**
@@ -44,10 +45,12 @@ public class SpringController {
         initHandlerDestinationMap();
         initResourceDefinition();
         initMapCsvCaches();
-        initCsvCache();
-        initStaticResource();
-        initResourceManager();
+        // initCsvCache();
+        // initStaticResource();
+        initMapResourceManager();
     }
+
+    private SpringController() {}
 
     private static void initBeanClasses() {
         beanClasses = new ArrayList<>();
@@ -55,8 +58,6 @@ public class SpringController {
             beanClasses.add(CONTEXT.getBean(beanName).getClass());
         });
     }
-
-    private SpringController() {}
 
     public static SpringController getInstance() {
         return instance;
@@ -110,24 +111,17 @@ public class SpringController {
     private static void initResourceDefinition() {
         StorageManager storageManager = SpringContext.getStorageManager();
 
-        List<Class<?>> classList = beanClasses.stream()
-            .filter(aClass -> aClass.getAnnotation(MapResource.class) != null).collect(Collectors.toList());
+        // List<Class<?>> classList = beanClasses.stream()
+        // .filter(aClass -> aClass.getAnnotation(MapResource.class) != null).collect(Collectors.toList());
 
-        classList.forEach(beanClass -> {
-            MapResource annotation = beanClass.getAnnotation(MapResource.class);
+        // classList.forEach(beanClass -> {
 
-            if (!AbstractGameMap.class.isAssignableFrom(beanClass)) {
-                logger.error("地图资源文件错误,类[{}]不是IMap接口的实现类", beanClass);
-                return;
-            }
+        ResourceDefinition definition = new ResourceDefinition(IMap.class);
+        storageManager.registerMapResourceDefinition(IMap.class, definition);
 
-            ResourceDefinition definition = new ResourceDefinition(beanClass);
-            storageManager.registerMapResourceDefinition((Class<? extends IMap>)beanClass, definition);
+        // });
 
-        });
-
-        logger.info("初始化地图静态资源文件目的地结束,文件数组长度[{}],最终加载了[{}]条数据", classList.size(),
-            storageManager.getMapResourceDefinitionMap().size());
+        logger.info("初始化地图静态资源文件目的地完毕,加载了[{}]条注解数据", 1, storageManager.getMapResourceDefinitionMap().size());
     }
 
     // 这里地图资源写死用IMap.class做key
@@ -163,14 +157,51 @@ public class SpringController {
         SpringContext.getStorageManager().initStorageMap();
     }
 
-    private static void initResourceManager() {
-        List<Class<?>> classList = beanClasses.stream().filter(aClass -> aClass.getAnnotation(Manager.class) != null)
-            .collect(Collectors.toList());
+    private static void initMapResourceManager() {
+        StorageManager storageManager = SpringContext.getStorageManager();
 
-        classList.forEach(aClass -> {
-            IManager manager = (IManager)CONTEXT.getBean(aClass);
-            manager.initManager();
+        InputStream cache = storageManager.getCache(IMap.class);
+        SceneMapManager sceneMapManager = CONTEXT.getBean(SceneMapManager.class);
+
+        CSVParser parser = SimpleUtil.getParserFromStream(cache);
+        List<String> fieldNames = null;
+        List<String> fieldType = null;
+        List<CSVRecord> records = null;
+        try {
+            records = parser.getRecords();
+            fieldNames = SimpleUtil.toListFromIterator(records.get(0).iterator());
+            fieldType = SimpleUtil.toListFromIterator(records.get(1).iterator());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        records.stream().skip(2).forEach(record -> {
+            String clazzName = record.get(1);
+            List<String> fieldTypes = SimpleUtil.toListFromIterator(record.iterator());
+            Class aClass = null;
+            Object newInstance = null;
+            try {
+                aClass = Class.forName(clazzName);
+                newInstance = aClass.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            Field[] fields = aClass.getSuperclass().getDeclaredFields();
+            List<Field> collectFields = Arrays.asList(fields).stream()
+                .filter(field -> SimpleUtil.isSimpleClazz(field.getType())).collect(Collectors.toList());
+
+            List<String> collectValues = Arrays.asList(record.get(0), record.get(3), record.get(4));
+
+            ClassUtil.insertFields(newInstance, collectFields, collectValues);
+
+            IMap instance = (IMap)newInstance;
+
+            instance.init(SimpleUtil.toListFromIterator(record.iterator()));
+            instance.initMapCreature();
+            sceneMapManager.addMap(instance.getCurrentMapId(), instance);
         });
+
     }
 
     private static void registerCsvCaches(StorageManager storageManager,

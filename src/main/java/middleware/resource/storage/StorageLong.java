@@ -17,7 +17,7 @@ public class StorageLong<V> extends Storage<Long, V> {
         addIntoStorageMap(k, v);
     }
 
-    public Map<Long,V> getStorageData(){
-		return getStorageMap();
-	}
+    public Map<Long, V> getStorageData() {
+        return getStorageMap();
+    }
 }

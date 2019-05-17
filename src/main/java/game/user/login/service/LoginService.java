@@ -59,6 +59,15 @@ public class LoginService implements ILoginService {
 
     @Override
     public void logout(USession session, CM_UserLogout request) {
+
+        // 这里要check一下用户是否已经登录,因为心跳也会调用这个接口,用户可能一直没登录
+        String accountId = SimpleUtil.getAccountIdFromSession(session);
+        if (accountId == null) {
+            SessionManager.removeSession(session.getChannel());
+            session.getChannel().close();
+            return;
+        }
+
         Player player = SimpleUtil.getPlayerFromSession(session);
         PacketUtil.send(session, SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
 

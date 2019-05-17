@@ -1,7 +1,5 @@
 package game.scene.map.resource;
 
-import java.io.InputStream;
-
 import game.base.map.IMap;
 import game.base.map.base.AbstractGameMap;
 import game.base.map.base.MapCreature;
@@ -16,7 +14,7 @@ import spring.SpringContext;
  * @author : ddv
  * @since : 2019/5/6 下午5:59
  */
-@MapResource()
+@MapResource
 public class NoviceVillage extends AbstractGameMap {
 
     private static long oldMan = 8L;
@@ -50,7 +48,6 @@ public class NoviceVillage extends AbstractGameMap {
 
         if (creature == null) {
             RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
-            return;
         }
 
         double distance = calculateDistance(objectId, oldMan);
@@ -72,11 +69,8 @@ public class NoviceVillage extends AbstractGameMap {
     }
 
     @Override
-    public IMap initFromInputStream(InputStream inputStream, int index) {
-        NoviceVillage noviceVillage = new NoviceVillage();
-        noviceVillage.init(inputStream, index);
-        noviceVillage.addCreature(MapCreature.valueOf("传送老头", oldMan, 4, 4));
-        return noviceVillage;
+    public void initMapCreature() {
+        addCreature(MapCreature.valueOf("传送老头", oldMan, 4, 4));
     }
 
     @Override

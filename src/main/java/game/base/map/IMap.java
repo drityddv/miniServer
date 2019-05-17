@@ -1,6 +1,6 @@
 package game.base.map;
 
-import java.io.InputStream;
+import java.util.List;
 
 import game.base.map.base.MapCreature;
 
@@ -8,6 +8,7 @@ import game.base.map.base.MapCreature;
  * @author : ddv
  * @since : 2019/5/6 下午6:00
  */
+
 public interface IMap {
 
     String FILE_NAME = "MapResource";
@@ -81,11 +82,17 @@ public interface IMap {
     double calculateDistance(long objectId, long targetObjectId);
 
     /**
-     * 从csv缓存流中加载地图
      *
-     * @param inputStream
+     * 加载地图数据
+     *
+     * @param values
      * @return
      */
-    IMap initFromInputStream(InputStream inputStream, int index);
+    void init(List<String> values);
+
+    /**
+     * 初始化地图生物
+     */
+    void initMapCreature();
 
 }

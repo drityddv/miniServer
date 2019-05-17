@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import db.cache.EntityCacheService;
 import db.middleware.EntityBuilder;
-import db.middleware.IOrmTemplate;
 import game.user.login.entity.UserEnt;
 
 /**
@@ -20,18 +19,7 @@ public class LoginManager {
     @Autowired
     private EntityCacheService<String, UserEnt> entityCacheService;
 
-    @Autowired
-    private IOrmTemplate<String, UserEnt> userHibernateUtil;
-    // private IOrmTemplate<String, UserEnt> userHibernateUtil = new HibernateUtil<>();
-
     public UserEnt loadOrCreate(String accountId) {
-        // return userHibernateUtil.loadOrCreate(UserEnt.class, accountId, new EntityBuilder<String, UserEnt>() {
-        // @Override
-        // public UserEnt newInstance(String accountId) {
-        // return UserEnt.valueOf(accountId);
-        // }
-        // });
-
         return entityCacheService.loadOrCreate(UserEnt.class, accountId, new EntityBuilder<String, UserEnt>() {
             @Override
             public UserEnt newInstance(String accountId) {
@@ -45,11 +33,11 @@ public class LoginManager {
     }
 
     public void save(String accountId) {
-        userHibernateUtil.save(loadOrCreate(accountId));
+        entityCacheService.save(loadOrCreate(accountId));
     }
 
     public void saveEntity(UserEnt userEnt) {
-        userHibernateUtil.save(userEnt);
+        entityCacheService.save(userEnt);
     }
 
 }

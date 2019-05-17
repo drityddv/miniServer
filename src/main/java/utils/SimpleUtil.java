@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
@@ -100,9 +102,15 @@ public class SimpleUtil {
         });
 
     }
+
     public static Player getPlayerFromSession(USession session) {
         String accountId = getAccountIdFromSession(session);
         return SpringContext.getPlayerService().getPlayerByAccountId(accountId);
     }
 
+    public static List<String> toListFromIterator(Iterator<String> iterable) {
+        List<String> list = new ArrayList<>();
+        iterable.forEachRemaining(list::add);
+        return list;
+    }
 }

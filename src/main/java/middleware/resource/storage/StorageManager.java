@@ -1,7 +1,6 @@
 package middleware.resource.storage;
 
 import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -64,42 +63,7 @@ public class StorageManager {
 
     // 初始化静态资源类
     public void initStorageMap() {
-        // Iterator<Map.Entry<Class<?>, ResourceDefinition>> iterator = definitionMap.entrySet().iterator();
-        //
-        // while (iterator.hasNext()) {
-        // long index = 1;
-        // Map.Entry<Class<?>, ResourceDefinition> next = iterator.next();
-        // Class<?> key = null;
-        // Storage<Long, Object> storage = new StorageLong<>();
-        // try {
-        // key = next.getKey();
-        // Object instance = key.newInstance();
-        // storage.addIntoStorageMap(index++, instance);
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // }
-        // storageMap.put(key, storage);
-        // }
 
-        Iterator<Map.Entry<Class<? extends IMap>, ResourceDefinition>> mapIterator =
-            mapResourceDefinitionMap.entrySet().iterator();
-        Storage<Long, Object> storage = new StorageLong<>();
-		long index = 1;
-        while (mapIterator.hasNext()) {
-            Map.Entry<Class<? extends IMap>, ResourceDefinition> next = mapIterator.next();
-            ResourceDefinition nextValue = next.getValue();
-            Object instance = null;
-
-            try {
-                instance = nextValue.getClz().newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            storage.addIntoStorageMap(index++, instance);
-
-        }
-        storageMap.put(IMap.class, storage);
     }
 
     // get
@@ -120,7 +84,6 @@ public class StorageManager {
     }
 
     // 业务区
-
     public InputStream getCache(Class<?> clazz) {
         ResourceDefinition resourceDefinition = mapResourceDefinitionMap.get(clazz);
         String location = resourceDefinition.getLocation();
