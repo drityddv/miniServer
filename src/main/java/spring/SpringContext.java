@@ -2,6 +2,7 @@ package spring;
 
 import javax.annotation.PostConstruct;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

@@ -24,21 +24,13 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
 
     private Map<Class<?>, EntityCache<K, T>> entityCacheMap = new ConcurrentHashMap<>();
 
-    private EntityCache<K, T> getEntityCache(Class<?> clazz) {
-        return entityCacheMap.get(clazz);
-    }
-
     @Override
     public T loadOrCreate(Class<T> entityType, K id, EntityBuilder<K, T> builder) {
-        if (!entityCacheMap.containsKey(entityType)) {
-            entityCacheMap.put(entityType, new EntityCache<>());
-        }
-        EntityCache<K, T> entityCache = entityCacheMap.get(entityType);
-        if (entityCache == null) {
-            entityCache = entityCacheMap.putIfAbsent(entityType, new EntityCache<>());
-        }
-        T t = null;
-        if (!entityCache.inCache(id)) {
+		checkEntityCacheMap(entityCacheMap, entityType);
+        EntityCache<K, T> entityCache = entityCacheMap.putIfAbsent(entityType, new EntityCache<>());
+
+        T t = entityCache.get(id);
+        if (t == null) {
             t = ormTemplate.loadOrCreate(entityType, id, builder);
             entityCache.put(id, t);
         }
@@ -47,18 +39,19 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
 
     @Override
     public T load(Class<T> entityType, K id) {
-        if (!entityCacheMap.containsKey(entityType)) {
-            entityCacheMap.put(entityType, new EntityCache<>());
-        }
+
+        checkEntityCacheMap(entityCacheMap, entityType);
 
         EntityCache<K, T> entityCache = entityCacheMap.putIfAbsent(entityType, new EntityCache<>());
 
-        T t = null;
-        if (!entityCache.inCache(id)) {
+        T t = entityCache.get(id);
+
+        if (t == null) {
             t = ormTemplate.load(entityType, id);
+            if (t == null) {
+                return t;
+            }
             entityCache.put(id, t);
-        } else {
-            t = entityCache.get(id);
         }
         return t;
     }
@@ -69,16 +62,16 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
             throw new RuntimeException("cache object has been deleted");
         }
 
-        if (!entityCacheMap.containsKey(object.getClass())) {
-            entityCacheMap.put(object.getClass(), new EntityCache<>());
-        }
-
-        EntityCache<K, T> entityCache = entityCacheMap.get(object.getClass());
-        if (entityCache == null) {
-            entityCache = entityCacheMap.putIfAbsent(object.getClass(), new EntityCache<>());
-        }
+		checkEntityCacheMap(entityCacheMap, (Class<T>) object.getClass());
+        EntityCache<K, T> entityCache = entityCacheMap.putIfAbsent(object.getClass(), new EntityCache<>());
 
         ormTemplate.save(object);
         entityCache.put(object.getId(), object);
+    }
+
+    private void checkEntityCacheMap(Map<Class<?>, EntityCache<K, T>> entityCacheMap, Class<T> entityType) {
+        if (!entityCacheMap.containsKey(entityType)) {
+            entityCacheMap.put(entityType, new EntityCache<>());
+        }
     }
 }

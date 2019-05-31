@@ -1,13 +1,13 @@
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.nio.charset.Charset;
-import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
 import middleware.anno.MapResource;
-import utils.ClassUtil;
 
 /**
  * @author : ddv
@@ -28,17 +28,14 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        try {
-            Class<?> aClass = Class.forName("game.user.login.packet.CM_UserLogin");
-            Object object = aClass.newInstance();
+        Map<Integer, Integer> map = new ConcurrentHashMap<>();
 
-			ClassUtil.insertDefaultFields(object, Arrays.asList("account—_1","112233"));
+        map.put(1, 1);
+        map.put(2, null);
 
-			System.out.println(1);
+        Integer r = map.get(2);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println(1);
     }
 
     private static CSVParser method() throws FileNotFoundException {

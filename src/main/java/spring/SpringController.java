@@ -110,17 +110,8 @@ public class SpringController {
     // 静态资源目的地加载
     private static void initResourceDefinition() {
         StorageManager storageManager = SpringContext.getStorageManager();
-
-        // List<Class<?>> classList = beanClasses.stream()
-        // .filter(aClass -> aClass.getAnnotation(MapResource.class) != null).collect(Collectors.toList());
-
-        // classList.forEach(beanClass -> {
-
         ResourceDefinition definition = new ResourceDefinition(IMap.class);
         storageManager.registerMapResourceDefinition(IMap.class, definition);
-
-        // });
-
         logger.info("初始化地图静态资源文件目的地完毕,加载了[{}]条注解数据", 1, storageManager.getMapResourceDefinitionMap().size());
     }
 

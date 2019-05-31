@@ -33,6 +33,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         logger.info("客户端与服务端通讯成功!");
+        logger.info("示例输入如下：\nsend 1 ddv ddv");
         Executors.newSingleThreadExecutor().submit(() -> {
             while (true) {
                 dispatch.handler(ctx, scanner.nextLine());
