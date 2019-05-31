@@ -1,6 +1,6 @@
 package utils;
 
-import java.util.UUID;
+import utils.snow.SnowFlake;
 
 /**
  * 临时的id,key,生成工具
@@ -11,8 +11,10 @@ import java.util.UUID;
 
 public class IdUtil {
 
+    private static SnowFlake snowFlake = new SnowFlake(1, 1);
+
     public static long getLongId() {
-        return UUID.randomUUID().hashCode();
+        return snowFlake.nextId();
     }
 
 }

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.gm.packet.CM_GmCommand;
 import io.netty.channel.ChannelHandlerContext;
 import middleware.manager.ClazzManager;
 import net.model.PacketProtocol;
@@ -43,6 +44,11 @@ public class ClientDispatch {
                 break;
             }
 
+            case "gm": {
+                sendGmCommand(ctx, input, list);
+                break;
+            }
+
             case "close": {
                 break;
             }
@@ -50,6 +56,18 @@ public class ClientDispatch {
             default:
                 break;
         }
+    }
+
+    private void sendGmCommand(ChannelHandlerContext ctx, String input, List<String> list) {
+        CM_GmCommand cm = new CM_GmCommand();
+        List<String> stringList = list.stream().skip(1).collect(Collectors.toList());
+        String content = "";
+        for (int i = 0; i < stringList.size(); i++) {
+            content +=stringList.get(i)+" ";
+        }
+        cm.setMethodAndParams(content);
+        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
+        logger.info("执行gm命令,[{}]", cm.toString());
     }
 
     // 发包

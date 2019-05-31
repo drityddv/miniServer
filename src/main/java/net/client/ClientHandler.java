@@ -40,4 +40,10 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
             }
         });
     }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        logger.info("服务器主动断开连接...");
+        System.exit(1);
+    }
 }
