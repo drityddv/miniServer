@@ -1,20 +1,16 @@
 package net.client;
 
-import java.util.Scanner;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.gm.packet.CM_GmCommand;
-import game.scene.map.packet.CM_EnterMap;
-import game.scene.map.packet.CM_LeaveMap;
-import game.scene.map.packet.CM_MoveMap;
-import game.scene.map.packet.CM_TransferMap;
-import game.user.login.packet.CM_UserLogin;
-import game.user.login.packet.CM_UserLogout;
-import game.user.login.packet.CM_UserRegister;
 import io.netty.channel.ChannelHandlerContext;
+import middleware.manager.ClazzManager;
 import net.model.PacketProtocol;
+import utils.ClassUtil;
 
 /**
  * @author : ddv
@@ -28,121 +24,53 @@ public class ClientDispatch {
 
     private static final String MAP_TIPS = "1: [进入地图]\n" + "2: [地图移动]\n" + "3: [触发传送]\n" + "4: [离开地图]";;
 
-    private static StringBuffer stringBuffer = new StringBuffer();
-
     // 临时的客户端应用层派发器
-    public void handler(ChannelHandlerContext ctx, Scanner scanner, int id) {
-        switch (id) {
-            case 1: {
-                System.out.println(ACCOUNT_TIPS);
-                int nextId = scanner.nextInt();
+    // 使用格式为 CM_Class param... 空格分隔
+    public void handler(ChannelHandlerContext ctx, String input) {
+        if (input == null || "".equals(input)) {
+            return;
+        }
 
-                switch (nextId) {
-                    case 1: {
-                        System.out.println("请换行输入注册账号,注册密码,游戏昵称,身份证号,真实姓名!");
-                        CM_UserRegister cm = new CM_UserRegister();
-                        cm.setAccountId(scanner.next());
-                        cm.setPassword(scanner.next());
-                        cm.setUsername(scanner.next());
-                        cm.setIdCard(scanner.next());
-                        cm.setName(scanner.next());
-                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-                        break;
-                    }
+        String[] strings = input.split(" ");
 
-                    case 2: {
-                        System.out.println("请换行输入账号,密码!");
-                        CM_UserLogin cm = new CM_UserLogin();
-                        cm.setAccountId(scanner.next());
-                        cm.setPassword(scanner.next());
-                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-                        break;
-                    }
+        List<String> list = Arrays.asList(strings);
 
-                    case 3: {
-                        CM_UserLogout cm = new CM_UserLogout();
-                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-                        break;
-                    }
+        String operation = list.get(0);
 
-                    default: {
-                        defaultTips(nextId);
-                        break;
-                    }
-                }
-
-                return;
-            }
-
-            case 2: {
-                System.out.println(MAP_TIPS);
-
-                int nextId = scanner.nextInt();
-
-                switch (nextId) {
-
-                    case 1: {
-                        System.out.println("请输入想要进去的地图Id!");
-                        CM_EnterMap cm = new CM_EnterMap();
-                        cm.setMapId(scanner.nextLong());
-                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-                        break;
-                    }
-
-                    case 2: {
-                        System.out.println("请输入地图Id,移动终点x,y坐标!");
-                        CM_MoveMap cm = new CM_MoveMap();
-                        cm.setMapId(scanner.nextLong());
-                        cm.setTargetX(scanner.nextInt());
-                        cm.setTargetY(scanner.nextInt());
-                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-                        break;
-                    }
-
-                    case 3: {
-                        System.out.println("请输入当前地图Id!");
-                        CM_TransferMap cm = new CM_TransferMap();
-                        cm.setMapId(scanner.nextLong());
-                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-                        break;
-                    }
-
-                    case 4: {
-                        System.out.println("请输入地图Id!");
-                        CM_LeaveMap cm = new CM_LeaveMap();
-                        cm.setMapId(scanner.nextLong());
-                        ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-                        break;
-                    }
-
-                    default: {
-                        defaultTips(nextId);
-                        break;
-                    }
-
-                }
-                return;
-            }
-
-            case 3: {
-                stringBuffer.setLength(0);
-                // nextLine不阻塞 这里先暂时用参数个数占位
-                System.out.println("请依次输入指令命令与参数个数!");
-                CM_GmCommand cm = new CM_GmCommand();
-                stringBuffer.append(scanner.next() + " ");
-                int paramNum = scanner.nextInt();
-                for (int i = 0; i < paramNum; i++) {
-                    stringBuffer.append(scanner.next() + " ");
-                }
-                cm.setMethodAndParams(stringBuffer.toString());
-                ctx.writeAndFlush(PacketProtocol.valueOf(cm));
+        switch (operation) {
+            case "send": {
+                send(ctx, input, list);
                 break;
             }
 
-            default: {
-                defaultTips(id);
+            case "close": {
                 break;
             }
+
+            default:
+                break;
+        }
+    }
+
+    // 发包
+    private void send(ChannelHandlerContext ctx, String input, List<String> list) {
+        String classId = list.get(1);
+
+        try {
+            Class<?> aClass = ClazzManager.getClazz(Integer.valueOf(classId));
+
+            if (aClass == null) {
+                logger.error("发包序列号错误,id[{}]", classId);
+                return;
+            }
+
+            Object newInstance = aClass.newInstance();
+            ClassUtil.insertDefaultFields(newInstance, list.stream().skip(2).collect(Collectors.toList()));
+            ctx.writeAndFlush(PacketProtocol.valueOf(newInstance));
+            logger.info("执行命令,[{}]", newInstance.toString());
+        } catch (Exception e) {
+            logger.error("派发器执行错误,input[{}]", input);
+            e.printStackTrace();
         }
     }
 

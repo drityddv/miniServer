@@ -18,8 +18,6 @@ import net.model.PacketProtocol;
 
 public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
-    private static final String MESSAGE = "1: 账号相关\n" + "2: 地图相关\n" + "3: 后台命令";
-
     private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
 
     private Scanner scanner = new Scanner(System.in);
@@ -37,10 +35,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
         logger.info("客户端与服务端通讯成功!");
         Executors.newSingleThreadExecutor().submit(() -> {
             while (true) {
-                Thread.sleep(1000);
-                System.out.println("请选择操作!\n" + MESSAGE);
-                dispatch.handler(ctx, scanner, scanner.nextInt());
-
+                dispatch.handler(ctx, scanner.nextLine());
             }
         });
     }

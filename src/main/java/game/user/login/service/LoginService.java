@@ -75,6 +75,8 @@ public class LoginService implements ILoginService {
         SessionManager.removePlayerSession(player.getAccountId());
 
         SpringContext.getSceneMapService().logOut(player);
+
+        session.getChannel().close();
     }
 
     @Override
