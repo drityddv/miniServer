@@ -23,16 +23,3 @@
 *   必须进行登陆才能操作[注册例外,但是注册完也要登陆]
 *   gm指令可以直接查看GM_Command.java文件
 *   服务端报错目前只通过i18n序列号通知,客户端不做翻译 game.common.i18n可以查看序列号含义
-*   客户端指令步骤图在doc文件夹中
-
-#   指定步骤示例
-*   注册
-*   ![Image text](http://pr6emg3up.bkt.clouddn.com/register.png)
-*   登陆
-*   ![Image text](http://pr6emg3up.bkt.clouddn.com/login.png)
-*   进入地图
-*   ![Image text](http://pr6emg3up.bkt.clouddn.com/enterMap.png)
-*   地图内移动
-*   ![Image text](http://pr6emg3up.bkt.clouddn.com/moveMap.png)
-*   gmCommand
-*   ![Image text](http://pr6emg3up.bkt.clouddn.com/gmCommand.png)
