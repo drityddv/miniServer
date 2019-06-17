@@ -6,6 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.stereotype.Component;
 
 import game.base.map.IMap;
@@ -18,7 +21,7 @@ import middleware.resource.middle.ResourceDefinition;
  * @since : 2019/5/9 下午2:39
  */
 @Component
-public class StorageManager {
+public class StorageManager implements ApplicationListener<ApplicationEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
 
@@ -34,7 +37,7 @@ public class StorageManager {
     // csv读取的缓存流容器
     private Map<String, InputStream> caches = new ConcurrentHashMap<>();
 
-    // 注册静态类目的地
+    // 注册普通静态资源类目的地
     public void registerDefinition(Class<?> beanClass, ResourceDefinition definition) {
         if (!definitionMap.containsKey(beanClass)) {
             definitionMap.put(beanClass, definition);
@@ -90,4 +93,8 @@ public class StorageManager {
         return caches.get(location);
     }
 
+	@Override
+	public void onApplicationEvent(ApplicationEvent event) {
+
+	}
 }

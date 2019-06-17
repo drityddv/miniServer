@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import game.scene.map.service.SceneMapManager;
 import game.user.login.entity.UserEnt;
+import game.user.pack.model.Pack;
 import game.user.player.model.Player;
 import net.model.USession;
 import spring.SpringContext;
@@ -49,5 +50,12 @@ public class GM_Command {
             SpringContext.getPlayerService().getPlayerByAccountId(SimpleUtil.getAccountIdFromSession(session));
 
         System.out.println(player);
+    }
+
+    public void run(USession session) {
+        Player player = SimpleUtil.getPlayerFromSession(session);
+        Pack pack = SpringContext.getPackService().getPlayerPack(player);
+
+        logger.info("done");
     }
 }

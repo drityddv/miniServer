@@ -4,13 +4,6 @@ package utils.snow;
  * @author : ddv
  * @since : 2019/5/31 下午4:17
  */
-
-/**
- * twitter的snowflake算法 -- java实现
- *
- * @author beyond
- * @date 2016/11/26
- */
 public class SnowFlake {
 
     /**

@@ -2,7 +2,6 @@ package spring;
 
 import javax.annotation.PostConstruct;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +12,7 @@ import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
 import game.scene.map.service.ISceneMapService;
 import game.user.login.service.ILoginService;
+import game.user.pack.service.IPackService;
 import game.user.player.service.IPlayerService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
@@ -57,6 +57,9 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private IPlayerService playerService;
 
+    @Autowired
+    private IPackService packService;
+
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
     }
@@ -87,6 +90,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IPlayerService getPlayerService() {
         return instance.playerService;
+    }
+
+    public static IPackService getPackService() {
+        return instance.packService;
     }
 
     @PostConstruct

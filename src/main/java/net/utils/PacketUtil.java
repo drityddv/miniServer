@@ -3,7 +3,9 @@ package net.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.user.player.model.Player;
 import middleware.manager.ClazzManager;
+import middleware.manager.SessionManager;
 import net.model.PacketProtocol;
 import net.model.USession;
 
@@ -34,4 +36,15 @@ public class PacketUtil {
         PacketProtocol protocol = PacketProtocol.valueOf(object);
         session.getChannel().writeAndFlush(protocol);
     }
+
+    public static void send(Player player, Object object) {
+        USession session = SessionManager.getSessionByAccountId(player.getAccountId());
+
+        if (session == null) {
+            return;
+        }
+
+        send(session, object);
+    }
+
 }

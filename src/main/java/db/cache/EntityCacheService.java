@@ -26,7 +26,7 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
 
     @Override
     public T loadOrCreate(Class<T> entityType, K id, EntityBuilder<K, T> builder) {
-		checkEntityCacheMap(entityCacheMap, entityType);
+        checkEntityCacheMap(entityCacheMap, entityType);
         EntityCache<K, T> entityCache = entityCacheMap.putIfAbsent(entityType, new EntityCache<>());
 
         T t = entityCache.get(id);
@@ -62,7 +62,7 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
             throw new RuntimeException("cache object has been deleted");
         }
 
-		checkEntityCacheMap(entityCacheMap, (Class<T>) object.getClass());
+        checkEntityCacheMap(entityCacheMap, (Class<T>)object.getClass());
         EntityCache<K, T> entityCache = entityCacheMap.putIfAbsent(object.getClass(), new EntityCache<>());
 
         ormTemplate.save(object);

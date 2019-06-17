@@ -22,4 +22,8 @@
     <!--gm命令 51 - 70-->
     <message id="51" value="game.gm.packet.CM_GmCommand"/>
 
+    <!--玩家背包相关 91 - 120 -->
+    <message id="91" value="game.user.pack.packet.SM_PackInfo"/>
+    <message id="92" value="game.user.pack.packet.CM_PackInfo"/>
+
 </protocols>

@@ -1,5 +1,7 @@
 package middleware.resource.middle;
 
+import game.user.pack.model.Pack;
+
 /**
  * @author : ddv
  * @since : 2019/5/10 下午2:55
@@ -14,9 +16,13 @@ public class ResourceDefinition {
     private String location;
 
     // 写死即可
-    public ResourceDefinition(Class<?> clz) {
+    public ResourceDefinition(Class<?> clz, boolean isSimple) {
         this.clz = clz;
-        location = PATH_NAME + "MapResource";
+        if (isSimple) {
+			location = PATH_NAME + clz.getSimpleName()+"Resource";
+        } else {
+            location = PATH_NAME + "MapResource";
+        }
     }
 
     public String getPATH_NAME() {

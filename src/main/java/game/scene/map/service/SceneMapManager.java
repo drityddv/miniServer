@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,16 +32,6 @@ public class SceneMapManager implements IManager {
 
     // 对应玩家-存在地图状态表
     private Map<Long, Long> playerMaps = new ConcurrentHashMap<>();
-
-    @PostConstruct
-    public void init() {
-        // IMap noviceVillage = NoviceVillage.valueOf(1L, 6, 6);
-        // // StorageLong<IMap> storage =
-        // // (StorageLong<IMap>)SpringContext.getStorageManager().getStorageMap().get(MapResource.class);
-        // sceneMaps.put(noviceVillage.getCurrentMapId(), noviceVillage);
-        // // sceneMaps.put(storage.get(1L).getCurrentMapId(), storage.get(1L));
-        // sceneMaps.put(2L, StormWind.valueOf(2, 9, 9));
-    }
 
     public IMap getMapByMapId(long mapId) {
         IMap map = sceneMaps.get(mapId);

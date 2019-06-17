@@ -16,6 +16,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import game.base.map.IMap;
 import game.scene.map.service.SceneMapManager;
 import middleware.anno.HandlerAnno;
+import middleware.anno.MiniResource;
 import middleware.dispatch.Dispatcher;
 import middleware.dispatch.HandlerInvoke;
 import middleware.resource.middle.ResourceDefinition;
@@ -86,7 +87,6 @@ public class SpringController {
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
 
-                // HandlerAnno注解处理
                 if (method.isAnnotationPresent(HandlerAnno.class)) {
                     Class<?>[] parameterTypes = method.getParameterTypes();
 
@@ -110,9 +110,20 @@ public class SpringController {
     // 静态资源目的地加载
     private static void initResourceDefinition() {
         StorageManager storageManager = SpringContext.getStorageManager();
-        ResourceDefinition definition = new ResourceDefinition(IMap.class);
+
+        List<Class<?>> simpleClasses = beanClasses.stream()
+            .filter(aClass -> aClass.getAnnotation(MiniResource.class) != null).collect(Collectors.toList());
+
+        simpleClasses.forEach(aClass -> {
+            ResourceDefinition definition = new ResourceDefinition(aClass, true);
+            storageManager.registerDefinition(aClass, definition);
+        });
+
+        logger.info("初始化普通静态资源文件目的地完毕,加载了[{}]条注解数据", storageManager.getDefinitionMap().size());
+
+        ResourceDefinition definition = new ResourceDefinition(IMap.class, false);
         storageManager.registerMapResourceDefinition(IMap.class, definition);
-        logger.info("初始化地图静态资源文件目的地完毕,加载了[{}]条注解数据", 1, storageManager.getMapResourceDefinitionMap().size());
+        logger.info("初始化地图静态资源文件目的地完毕,加载了[{}]条注解数据", storageManager.getMapResourceDefinitionMap().size());
     }
 
     // 这里地图资源写死用IMap.class做key

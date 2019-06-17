@@ -63,7 +63,7 @@ public class ClientDispatch {
         List<String> stringList = list.stream().skip(1).collect(Collectors.toList());
         String content = "";
         for (int i = 0; i < stringList.size(); i++) {
-            content +=stringList.get(i)+" ";
+            content += stringList.get(i) + " ";
         }
         cm.setMethodAndParams(content);
         ctx.writeAndFlush(PacketProtocol.valueOf(cm));
