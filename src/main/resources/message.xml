@@ -12,18 +12,19 @@
     <message id="3" value="game.user.login.packet.SM_LoginSuccess"/>
     <message id="4" value="game.user.login.packet.CM_UserRegister"/>
 
-    <!--地图基础协议 11 - 50-->
-    <message id="11" value="game.scene.map.packet.CM_EnterMap"/>
-    <message id="12" value="game.scene.map.packet.CM_LeaveMap"/>
-    <message id="13" value="game.scene.map.packet.CM_MoveMap"/>
-    <message id="14" value="game.scene.map.packet.CM_TransferMap"/>
-    <message id="15" value="game.scene.map.packet.CM_ChangeMap"/>
-
     <!--gm命令 51 - 70-->
     <message id="51" value="game.gm.packet.CM_GmCommand"/>
 
     <!--玩家背包相关 91 - 120 -->
     <message id="91" value="game.user.pack.packet.SM_PackInfo"/>
     <message id="92" value="game.user.pack.packet.CM_PackInfo"/>
+
+    <!--地图协议根据id走地图线程池-->
+    <!--地图基础协议 2001 - 2005-->
+    <message id="2001" value="game.scene.map.packet.CM_EnterMap"/>
+    <message id="2002" value="game.scene.map.packet.CM_LeaveMap"/>
+    <message id="2003" value="game.scene.map.packet.CM_MoveMap"/>
+    <message id="2004" value="game.scene.map.packet.CM_TransferMap"/>
+    <message id="2005" value="game.scene.map.packet.CM_ChangeMap"/>
 
 </protocols>

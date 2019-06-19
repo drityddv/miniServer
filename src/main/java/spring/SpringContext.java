@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import game.base.executor.service.IMiniExecutorService;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
 import game.scene.map.service.ISceneMapService;
@@ -39,6 +40,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private StorageManager storageManager;
+
+    @Autowired
+    private IMiniExecutorService miniExecutorService;
 
     // 业务service区
 
@@ -94,6 +98,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IPackService getPackService() {
         return instance.packService;
+    }
+
+    public static IMiniExecutorService getMiniExecutorService() {
+        return instance.miniExecutorService;
     }
 
     @PostConstruct

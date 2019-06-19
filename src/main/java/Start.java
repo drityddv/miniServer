@@ -1,12 +1,15 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import game.base.executor.service.AccountExecutor;
+import game.base.executor.service.MiniExecutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.scene.map.service.SceneMapManager;
 import middleware.resource.storage.StorageManager;
 import net.server.Server;
+import spring.SpringContext;
 import spring.SpringController;
 
 /**
@@ -35,6 +38,10 @@ public class Start {
 
         SceneMapManager mapManager = SpringController.getContext().getBean(SceneMapManager.class);
 
-        logger.info("服务器启动成功,Start线程关闭...");
+		AccountExecutor accountExecutor = SpringController.getContext().getBean(AccountExecutor.class);
+
+		MiniExecutorService miniExecutorService = SpringController.getContext().getBean(MiniExecutorService.class);
+
+		logger.info("服务器启动成功,Start线程关闭...");
     }
 }

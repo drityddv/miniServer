@@ -1,5 +1,8 @@
 package utils;
 
+import game.scene.map.packet.CM_EnterMap;
+import org.apache.poi.ss.formula.functions.T;
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -48,4 +51,27 @@ public class ClassUtil {
         Field[] declaredFields = object.getClass().getDeclaredFields();
         insertValue(object, Arrays.asList(declaredFields), values);
     }
+
+    public static <T> T getFieldByName(Object object,String fieldName,Class<T> type){
+		Field[] declaredFields = object.getClass().getDeclaredFields();
+		for(Field field:declaredFields){
+			field.setAccessible(true);
+			if(field.getName().equals(fieldName)){
+				try {
+					return (T) field.get(object);
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
+
+	public static void main(String[] args){
+		CM_EnterMap cm =new CM_EnterMap();
+		cm.setMapId(1);
+
+		Long mapId = getFieldByName(cm, "map1Id", Long.class);
+		System.out.println(mapId);
+	}
 }

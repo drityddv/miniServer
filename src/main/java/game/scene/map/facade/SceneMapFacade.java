@@ -114,7 +114,7 @@ public class SceneMapFacade {
     public void changeMap(USession session, CM_ChangeMap request) {
         try {
             Player player = SimpleUtil.getPlayerFromSession(session);
-            SpringContext.getSceneMapService().changeMap(player, request.getFromMapId(), request.getTargetMapId());
+            SpringContext.getSceneMapService().changeMap(player, request.getMapId(), request.getTargetMapId());
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

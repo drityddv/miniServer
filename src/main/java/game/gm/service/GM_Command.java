@@ -49,13 +49,12 @@ public class GM_Command {
         Player player =
             SpringContext.getPlayerService().getPlayerByAccountId(SimpleUtil.getAccountIdFromSession(session));
 
-        System.out.println(player);
+		logger.info(player.toString());
     }
 
     public void run(USession session) {
         Player player = SimpleUtil.getPlayerFromSession(session);
         Pack pack = SpringContext.getPackService().getPlayerPack(player);
-
-        logger.info("done");
+        
     }
 }

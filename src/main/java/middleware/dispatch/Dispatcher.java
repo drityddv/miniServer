@@ -5,8 +5,12 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.executor.service.IMiniExecutorService;
+import game.user.login.packet.CM_UserLogin;
+import middleware.manager.ClazzManager;
 import net.model.USession;
 
 /**
@@ -20,6 +24,9 @@ import net.model.USession;
 public class Dispatcher {
 
     private static Logger logger = LoggerFactory.getLogger(Dispatcher.class);
+
+    @Autowired
+    private IMiniExecutorService miniExecutorService;
 
     /**
      * 方法invoke对应表
@@ -40,6 +47,8 @@ public class Dispatcher {
     }
 
     public void invoke(USession session, Object packet) {
+        logger.info("invoke [{}]", packet.getClass());
+
         HandlerInvoke handlerInvoke = handlerDestinationMap.get(packet.getClass());
 
         if (handlerInvoke == null) {
@@ -47,6 +56,13 @@ public class Dispatcher {
             return;
         }
 
-        handlerInvoke.invoke(session, packet);
+        // 登陆走net线程
+        if (packet.getClass() == CM_UserLogin.class) {
+            handlerInvoke.invoke(session, packet);
+            return;
+        }
+
+        miniExecutorService.handle(handlerInvoke, session, packet, ClazzManager.getIdByClazz(packet.getClass()));
+
     }
 }
