@@ -3,6 +3,7 @@ package game.base.map.base;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.game.attribute.AttributeContainer;
 import game.base.object.AbstractCreature;
 
 /**
@@ -19,6 +20,8 @@ public class MapCreature extends AbstractCreature {
     private String accountId;
     private int x;
     private int y;
+    private CreatureType type;
+    private AttributeContainer attributeContainer;
 
     public static MapCreature valueOf(String accountId, long objectId, int x, int y) {
         MapCreature creature = new MapCreature();
@@ -69,7 +72,7 @@ public class MapCreature extends AbstractCreature {
     public void reset() {
         this.x = 0;
         this.y = 0;
-        this.setIsAlive(0);
+        this.setIsAlive(1);
     }
 
 }

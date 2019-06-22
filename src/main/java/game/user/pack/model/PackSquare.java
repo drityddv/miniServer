@@ -1,6 +1,6 @@
 package game.user.pack.model;
 
-import game.base.item.Item;
+import game.base.game.item.Item;
 
 /**
  * 背包格子

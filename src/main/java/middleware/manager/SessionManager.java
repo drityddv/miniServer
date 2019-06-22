@@ -48,7 +48,7 @@ public class SessionManager {
 
     public static void registerPlayerSession(String accountId, USession session) {
         if (playerSession.containsKey(accountId)) {
-            logger.error("重复注册的accountId[{}]", accountId);
+            logger.error("重复注册的session,accountId[{}]", accountId);
             return;
         }
         playerSession.put(accountId, session);

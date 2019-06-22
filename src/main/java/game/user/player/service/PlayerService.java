@@ -19,4 +19,9 @@ public class PlayerService implements IPlayerService {
     public Player getPlayerByAccountId(String accountId) {
         return playerManager.loadOrCreate(accountId).getPlayer();
     }
+
+	@Override
+	public void loadPlayerAttribute(Player player) {
+		
+	}
 }

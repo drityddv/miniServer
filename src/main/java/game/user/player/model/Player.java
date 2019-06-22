@@ -1,5 +1,6 @@
 package game.user.player.model;
 
+import game.base.game.attribute.AttributeContainer;
 import utils.IdUtil;
 
 /**
@@ -17,15 +18,27 @@ public class Player {
 
     private int level;
 
+    private AttributeContainer attributeContainer;
+
     private Player() {}
 
     public static Player valueOf(String accountId) {
         Player player = new Player();
-        player.setAccountId(accountId);
-        player.setPlayerId(IdUtil.getLongId());
-        player.setLevel(1);
+        player.accountId = accountId;
+        player.playerId = IdUtil.getLongId();
+        player.level = 1;
+        player.attributeContainer = AttributeContainer.valueOf(player.playerId);
         return player;
     }
+
+	public AttributeContainer getAttributeContainer() {
+		if (attributeContainer == null) {
+			attributeContainer = AttributeContainer.valueOf(playerId);
+		}
+		return attributeContainer;
+	}
+
+//	private AttributeContainer recopute
 
     // get and set
     public String getAccountId() {
@@ -50,6 +63,10 @@ public class Player {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
+    }
+
+    public void setAttributeContainer(AttributeContainer attributeContainer) {
+        this.attributeContainer = attributeContainer;
     }
 
     @Override

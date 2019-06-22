@@ -19,7 +19,7 @@ public class PacketEncoder extends MessageToByteEncoder<PacketProtocol> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx, PacketProtocol protocol, ByteBuf out) throws Exception {
-        out.writeByte(protocol.getId());
+        out.writeInt(protocol.getId());
         out.writeInt(protocol.getLength());
         out.writeBytes(protocol.getData());
     }

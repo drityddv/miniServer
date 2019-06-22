@@ -1,4 +1,4 @@
-package game.base.item;
+package game.base.game.item;
 
 import middleware.anno.MiniResource;
 

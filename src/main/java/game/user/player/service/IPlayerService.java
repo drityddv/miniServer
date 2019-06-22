@@ -16,4 +16,11 @@ public interface IPlayerService {
      */
     Player getPlayerByAccountId(String accountId);
 
+    /**
+     * 加载玩家属性容器
+     *
+     * @param player
+     */
+    void loadPlayerAttribute(Player player);
+
 }

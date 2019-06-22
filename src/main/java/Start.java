@@ -1,8 +1,11 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import game.base.ebus.EventBus;
 import game.base.executor.service.AccountExecutor;
 import game.base.executor.service.MiniExecutorService;
+import game.user.login.event.PlayerLoginBeforeEvent;
+import middleware.manager.ClazzManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +37,7 @@ public class Start {
             server.run();
         });
 
+
         StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
 
         SceneMapManager mapManager = SpringController.getContext().getBean(SceneMapManager.class);
@@ -41,6 +45,10 @@ public class Start {
 		AccountExecutor accountExecutor = SpringController.getContext().getBean(AccountExecutor.class);
 
 		MiniExecutorService miniExecutorService = SpringController.getContext().getBean(MiniExecutorService.class);
+
+		EventBus eventBus = SpringController.getContext().getBean(EventBus.class);
+
+		eventBus.pushEventSyn(new PlayerLoginBeforeEvent());
 
 		logger.info("服务器启动成功,Start线程关闭...");
     }

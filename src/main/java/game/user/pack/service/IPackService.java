@@ -1,6 +1,6 @@
 package game.user.pack.service;
 
-import game.base.item.Item;
+import game.base.game.item.Item;
 import game.user.pack.model.Pack;
 import game.user.player.model.Player;
 

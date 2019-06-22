@@ -25,7 +25,7 @@ public class PacketDecoder extends ReplayingDecoder<PacketProtocol> {
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         in.markReaderIndex();
 
-        byte id = in.readByte();
+        int id = in.readInt();
         int length = in.readInt();
 
         int realLength = in.readableBytes();

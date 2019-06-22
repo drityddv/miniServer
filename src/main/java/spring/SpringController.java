@@ -13,8 +13,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import game.base.ebus.EventBus;
+import game.base.ebus.IEvent;
 import game.base.map.IMap;
 import game.scene.map.service.SceneMapManager;
+import middleware.anno.EventReceiver;
 import middleware.anno.HandlerAnno;
 import middleware.anno.MiniResource;
 import middleware.dispatch.Dispatcher;
@@ -49,6 +52,7 @@ public class SpringController {
         // initCsvCache();
         // initStaticResource();
         initMapResourceManager();
+        // initEventBus();
     }
 
     private SpringController() {}
@@ -77,7 +81,10 @@ public class SpringController {
      */
     private static void initHandlerDestinationMap() {
         Dispatcher dispatcher = CONTEXT.getBean(Dispatcher.class);
-        int totalHandlerMapSize = 0;
+        EventBus eventBus = CONTEXT.getBean(EventBus.class);
+
+        int dispatchHandlerMapSize = 0;
+        int eventBusHandlerMapSize = 0;
 
         for (String name : beanNames) {
             Object bean = CONTEXT.getBean(name);
@@ -87,6 +94,7 @@ public class SpringController {
             for (int i = 0; i < methods.length; i++) {
                 Method method = methods[i];
 
+                // gateway注解
                 if (method.isAnnotationPresent(HandlerAnno.class)) {
                     Class<?>[] parameterTypes = method.getParameterTypes();
 
@@ -98,13 +106,27 @@ public class SpringController {
                     Class<?> aClass = parameterTypes[1];
 
                     dispatcher.addHandlerDestination(aClass, HandlerInvoke.createHandlerInvoke(bean, method, aClass));
-                    totalHandlerMapSize++;
+                    dispatchHandlerMapSize++;
+
+                }
+                // 事件消费者注解
+                else if (method.isAnnotationPresent(EventReceiver.class)) {
+                    Class<?>[] parameterTypes = method.getParameterTypes();
+                    if (parameterTypes == null || parameterTypes.length != 1) {
+                        logger.error("EventReceiver注解处理出错,{}方法有误!", method);
+                        throw new RuntimeException("facade方法参数定义有误!");
+                    }
+
+                    Class<? extends IEvent> aClass = (Class<? extends IEvent>)parameterTypes[0];
+                    eventBus.addHandlerDestination(aClass, HandlerInvoke.createHandlerInvoke(bean, method, aClass));
+                    eventBusHandlerMapSize++;
                 }
 
             }
         }
 
-        logger.info("初始化handlerMap完毕,总共加载了[{}]条数据", totalHandlerMapSize);
+        logger.info("初始化handlerMap完毕,总共加载了[{}]条数据", dispatchHandlerMapSize);
+        logger.info("初始化eventBus消费者完毕,总共加载了[{}]条数据", eventBusHandlerMapSize);
     }
 
     // 静态资源目的地加载
@@ -218,4 +240,5 @@ public class SpringController {
                 storageManager.getCaches().size());
         });
     }
+
 }

@@ -1,5 +1,7 @@
 package game.user.login.service;
 
+import game.user.login.event.PlayerLoginBeforeEvent;
+import middleware.anno.EventReceiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,4 +110,5 @@ public class LoginService implements ILoginService {
     public UserEnt getUserEnt(USession session) {
         return loginManager.load((String)session.getAttributes().get("accountId"));
     }
+
 }

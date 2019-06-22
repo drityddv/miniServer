@@ -1,5 +1,6 @@
 package game.gm.service;
 
+import game.base.game.attribute.AttributeContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +49,13 @@ public class GM_Command {
     public void logPlayer(USession session) {
         Player player =
             SpringContext.getPlayerService().getPlayerByAccountId(SimpleUtil.getAccountIdFromSession(session));
-
+		AttributeContainer attributeContainer = player.getAttributeContainer();
 		logger.info(player.toString());
     }
 
     public void run(USession session) {
         Player player = SimpleUtil.getPlayerFromSession(session);
         Pack pack = SpringContext.getPackService().getPlayerPack(player);
-        
+
     }
 }

@@ -22,7 +22,7 @@ public class HandlerInvoke implements IHandlerInvoke {
      */
     private final Method method;
     /**
-     * 对应packet
+     * 对应class
      */
     private final Class<?> clazz;
 
@@ -49,7 +49,7 @@ public class HandlerInvoke implements IHandlerInvoke {
     }
 
     @Override
-    public Object invoke(USession session, Object packet) {
-        return ReflectionUtils.invokeMethod(method, bean, session, packet);
+    public Object invoke(Object... args) {
+        return ReflectionUtils.invokeMethod(method, bean, args);
     }
 }

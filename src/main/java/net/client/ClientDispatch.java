@@ -21,10 +21,6 @@ public class ClientDispatch {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientDispatch.class);
 
-    private static final String ACCOUNT_TIPS = "1: 账号创建[创建后请手动登陆]\n" + "2: 账号登陆\n" + "3: 账号登出";
-
-    private static final String MAP_TIPS = "1: [进入地图]\n" + "2: [地图移动]\n" + "3: [触发传送]\n" + "4: [离开地图]";;
-
     // 临时的客户端应用层派发器
     // 使用格式为 CM_Class param... 空格分隔
     public void handler(ChannelHandlerContext ctx, String input) {
@@ -88,11 +84,7 @@ public class ClientDispatch {
             logger.info("执行命令,[{}]", newInstance.toString());
         } catch (Exception e) {
             logger.error("派发器执行错误,input[{}]", input);
-            e.printStackTrace();
         }
     }
 
-    private void defaultTips(int id) {
-        System.out.println("派发器未找到相应操作命令,请确认指令" + id);
-    }
 }
