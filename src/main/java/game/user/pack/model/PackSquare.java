@@ -1,6 +1,6 @@
 package game.user.pack.model;
 
-import game.base.game.item.Item;
+import game.center.item.resource.Item;
 
 /**
  * 背包格子
@@ -42,8 +42,8 @@ public class PackSquare {
     }
 
     public void reduceCounts(int count) {
-    	this.counts-=count;
-	}
+        this.counts -= count;
+    }
 
     // get and set
     public int getIndex() {

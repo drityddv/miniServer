@@ -1,6 +1,6 @@
 package middleware.resource.storage;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +20,23 @@ public class Storage<K, V> {
     private Map<K, V> data = new HashMap<>();
 
     private Map<K, List<V>> dataList = new HashMap<>();
+
+    public static <K, V> Storage valueOf(List<V> dataList) {
+        Storage storage = new Storage();
+        dataList.forEach(value -> {
+            Field field = value.getClass().getDeclaredFields()[0];
+            field.setAccessible(true);
+            try {
+                Object o = field.get(value);
+                storage.data.put(o, value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        });
+
+        return storage;
+    }
 
     public void addIntoStorageMap(K k, V v) {
         data.put(k, v);
@@ -41,11 +58,4 @@ public class Storage<K, V> {
         return dataList.get(k);
     }
 
-    public void addIntoStorageList(K k, V v) {
-        List<V> list = getFromStorageList(k);
-        if (list == null) {
-            list = new ArrayList<>();
-        }
-        list.add(v);
-    }
 }

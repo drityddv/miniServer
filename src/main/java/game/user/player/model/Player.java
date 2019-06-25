@@ -31,14 +31,18 @@ public class Player {
         return player;
     }
 
-	public AttributeContainer getAttributeContainer() {
-		if (attributeContainer == null) {
-			attributeContainer = AttributeContainer.valueOf(playerId);
-		}
-		return attributeContainer;
-	}
+    public AttributeContainer getAttributeContainer() {
+        if (attributeContainer == null) {
+            attributeContainer = AttributeContainer.valueOf(playerId);
+        }
+        return attributeContainer;
+    }
 
-//	private AttributeContainer recopute
+    // private AttributeContainer recopute
+
+    public void setAttributeContainer(AttributeContainer attributeContainer) {
+        this.attributeContainer = attributeContainer;
+    }
 
     // get and set
     public String getAccountId() {
@@ -63,10 +67,6 @@ public class Player {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
-    }
-
-    public void setAttributeContainer(AttributeContainer attributeContainer) {
-        this.attributeContainer = attributeContainer;
     }
 
     @Override

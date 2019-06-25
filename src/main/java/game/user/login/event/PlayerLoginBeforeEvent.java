@@ -12,11 +12,22 @@ public class PlayerLoginBeforeEvent implements IEvent {
 
     private Player player;
 
-	public Player getPlayer() {
-		return player;
-	}
+    public static PlayerLoginBeforeEvent valueOf(Player player) {
+        PlayerLoginBeforeEvent event = new PlayerLoginBeforeEvent();
+        event.player = player;
+        return event;
+    }
 
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    @Override
+    public String toString() {
+        return "PlayerLoginBeforeEvent{" + "player=" + player + '}';
+    }
 }

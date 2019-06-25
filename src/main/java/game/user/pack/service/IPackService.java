@@ -1,6 +1,6 @@
 package game.user.pack.service;
 
-import game.base.game.item.Item;
+import game.center.item.resource.Item;
 import game.user.pack.model.Pack;
 import game.user.player.model.Player;
 
@@ -30,11 +30,12 @@ public interface IPackService {
      */
     void addItem(Player player, Item item, int count);
 
-	/**
-	 * 使用道具
-	 * @param player
-	 * @param item
-	 * @param count
-	 */
-    void useItem(Player player,Item item,int count);
+    /**
+     * 使用道具
+     *
+     * @param player
+     * @param item
+     * @param count
+     */
+    void useItem(Player player, Item item, int count);
 }

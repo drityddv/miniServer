@@ -1,7 +1,5 @@
 package game.user.login.service;
 
-import game.user.login.event.PlayerLoginBeforeEvent;
-import middleware.anno.EventReceiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import game.common.Ii8n;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.user.login.entity.UserEnt;
+import game.user.login.event.PlayerLoginBeforeEvent;
 import game.user.login.model.Person;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
@@ -56,6 +55,10 @@ public class LoginService implements ILoginService {
         // 下发登陆成功状态,注册session
         session.putSessionAttribute("accountId", accountId);
         SessionManager.registerPlayerSession(accountId, session);
+
+        SpringContext.getEventBus().pushEventSyn(
+            PlayerLoginBeforeEvent.valueOf(SpringContext.getPlayerService().getPlayerByAccountId(accountId)));
+
         PacketUtil.send(session, new SM_LoginSuccess());
     }
 

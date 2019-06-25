@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import game.base.ebus.EventBus;
 import game.base.executor.service.IMiniExecutorService;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
@@ -43,6 +44,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private IMiniExecutorService miniExecutorService;
+
+    @Autowired
+    private EventBus eventBus;
 
     // 业务service区
 
@@ -102,6 +106,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IMiniExecutorService getMiniExecutorService() {
         return instance.miniExecutorService;
+    }
+
+    public static EventBus getEventBus() {
+        return instance.eventBus;
     }
 
     @PostConstruct

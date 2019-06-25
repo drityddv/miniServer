@@ -23,19 +23,19 @@ public enum AttributeType {
      */
     MAGIC_ARMOR(4, "魔法护甲"),;
 
+    private int typeId;
+    private String typeName;
+
     AttributeType(int id, String typeName) {
         this.typeId = id;
         this.typeName = typeName;
     }
 
-    private int typeId;
-    private String typeName;
+    public int getTypeId() {
+        return typeId;
+    }
 
-	public int getTypeId() {
-		return typeId;
-	}
-
-	public String getTypeName() {
+    public String getTypeName() {
         return typeName;
     }
 }

@@ -7,8 +7,8 @@ package game.user.pack.constant;
 
 public interface PackConstant {
 
-	/**
-	 * 背包最大容量
-	 */
+    /**
+     * 背包最大容量
+     */
     int PACK_MAX_SIZE = 32;
 }

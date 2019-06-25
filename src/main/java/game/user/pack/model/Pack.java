@@ -3,7 +3,7 @@ package game.user.pack.model;
 import java.util.List;
 import java.util.Vector;
 
-import game.base.game.item.Item;
+import game.center.item.resource.Item;
 import game.user.pack.constant.PackConstant;
 
 /**

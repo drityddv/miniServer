@@ -1,7 +1,10 @@
 package game.base.game.attribute;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import game.base.game.player.PlayerModel;
 
 /**
  * @author : ddv
@@ -22,7 +25,7 @@ public class AttributeContainer {
     public static AttributeContainer valueOf(long id) {
         AttributeContainer attributeContainer = new AttributeContainer();
 
-		attributeContainer.id = id;
+        attributeContainer.id = id;
         AttributeType[] attributeTypes = AttributeType.values();
         attributeContainer.attributes = new ConcurrentHashMap<>(attributeTypes.length);
 
@@ -31,6 +34,27 @@ public class AttributeContainer {
         }
 
         return attributeContainer;
+    }
+
+    public void reCompute(Attribute attribute) {
+        Iterator<Map.Entry<AttributeType, AttributeSquare>> iterator = attributes.entrySet().iterator();
+
+        PlayerModel model = attribute.getModel();
+        Map<AttributeType, Long> newModelValue = attribute.getModelValue();
+
+        while (iterator.hasNext()) {
+            Map.Entry<AttributeType, AttributeSquare> next = iterator.next();
+            AttributeType key = next.getKey();
+            AttributeSquare square = next.getValue();
+
+            Map<PlayerModel, Long> modelValue = square.getModelValue();
+            if (modelValue != null) {
+                modelValue.put(model, newModelValue.get(key));
+            }
+
+            square.reCompute();
+        }
+
     }
 
     // get and set

@@ -1,6 +1,8 @@
 package middleware.resource.storage;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -8,11 +10,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ReflectionUtils;
 
 import game.base.map.IMap;
+import middleware.anno.Init;
 import middleware.resource.middle.ResourceDefinition;
+import utils.ClassUtil;
+import utils.ResourceUtil;
+import utils.SimpleUtil;
 
 /**
  * 静态资源管理
@@ -25,10 +31,10 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
 
     private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
 
-    // 静态类容器
+    // 普通静态类容器
     private Map<Class<?>, ResourceDefinition> definitionMap = new ConcurrentHashMap<>();
 
-    // 地图静态类容器
+    // 地图静态容器
     private Map<Class<? extends IMap>, ResourceDefinition> mapResourceDefinitionMap = new ConcurrentHashMap<>();
 
     // 静态资源存储容器
@@ -65,7 +71,36 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
     }
 
     // 初始化静态资源类
-    public void initStorageMap() {
+    public void initSimpleResource() {
+        definitionMap.forEach((aClass, resourceDefinition) -> {
+            String resourceLocation = resourceDefinition.getLocation();
+            InputStream inputStream = caches.get(resourceLocation);
+            List objectList = ResourceUtil.loadObjectFromCsv(aClass, SimpleUtil.getParserFromStream(inputStream));
+            storageMap.put(aClass, Storage.valueOf(objectList));
+        });
+        storageResourceSecondInit();
+    }
+
+    public InputStream getCache(Class<?> clazz) {
+        ResourceDefinition resourceDefinition = mapResourceDefinitionMap.get(clazz);
+        String location = resourceDefinition.getLocation();
+        return caches.get(location);
+    }
+
+    public void storageResourceSecondInit() {
+        storageMap.forEach((aClass, storage) -> {
+            storage.getStorageListMap().forEach((o, objects) -> {
+                objects.forEach(o1 -> {
+                    Method method = ClassUtil.getMethodByAnnotation(o1, Init.class);
+                    method.setAccessible(true);
+                    ReflectionUtils.invokeMethod(method, o1);
+                });
+            });
+        });
+    }
+
+    @Override
+    public void onApplicationEvent(ApplicationEvent event) {
 
     }
 
@@ -86,15 +121,4 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
         return mapResourceDefinitionMap;
     }
 
-    // 业务区
-    public InputStream getCache(Class<?> clazz) {
-        ResourceDefinition resourceDefinition = mapResourceDefinitionMap.get(clazz);
-        String location = resourceDefinition.getLocation();
-        return caches.get(location);
-    }
-
-	@Override
-	public void onApplicationEvent(ApplicationEvent event) {
-
-	}
 }

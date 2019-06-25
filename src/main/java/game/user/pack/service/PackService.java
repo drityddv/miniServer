@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import game.base.game.item.Item;
+import game.center.item.resource.Item;
 import game.user.pack.model.Pack;
 import game.user.pack.model.PackSquare;
 import game.user.pack.packet.SM_PackInfo;

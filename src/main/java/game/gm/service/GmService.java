@@ -24,10 +24,6 @@ public class GmService implements IGmService {
     @Override
     public void invoke(USession session, CM_GmCommand request) {
         String[] split = request.getMethodAndParams().split(" ");
-        for (String word : split) {
-            System.out.print(word + " ");
-        }
-
         String methodName = split[0];
 
         // 先循环遍历,,后期用map存储,增加热更等功能

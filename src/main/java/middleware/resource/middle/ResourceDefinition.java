@@ -1,7 +1,5 @@
 package middleware.resource.middle;
 
-import game.user.pack.model.Pack;
-
 /**
  * @author : ddv
  * @since : 2019/5/10 下午2:55
@@ -15,11 +13,11 @@ public class ResourceDefinition {
 
     private String location;
 
-    // 写死即可
+    // isSimple为true表示普通静态资源 否则为地图资源
     public ResourceDefinition(Class<?> clz, boolean isSimple) {
         this.clz = clz;
         if (isSimple) {
-			location = PATH_NAME + clz.getSimpleName()+"Resource";
+            location = PATH_NAME + clz.getSimpleName() + "Resource";
         } else {
             location = PATH_NAME + "MapResource";
         }

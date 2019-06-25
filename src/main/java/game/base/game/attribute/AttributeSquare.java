@@ -23,7 +23,7 @@ public class AttributeSquare {
         PlayerModel[] playerModels = PlayerModel.values();
 
         square.modelValue = new ConcurrentHashMap<>(playerModels.length);
-		long tempValue = 1;
+
         // TODO 属性数值需要从service加载
         for (PlayerModel model : playerModels) {
             square.modelValue.put(model, 0L);
@@ -34,9 +34,20 @@ public class AttributeSquare {
         return square;
     }
 
+    public void reCompute() {
+        value = 0;
+        modelValue.forEach((model, aLong) -> {
+            value += aLong;
+        });
+    }
+
     // get and set
     public AttributeType getType() {
         return type;
+    }
+
+    public void setType(AttributeType type) {
+        this.type = type;
     }
 
     public long getValue() {
@@ -47,8 +58,17 @@ public class AttributeSquare {
         this.value = value;
     }
 
+    public Map<PlayerModel, Long> getModelValue() {
+        return modelValue;
+    }
+
+    public void setModelValue(Map<PlayerModel, Long> modelValue) {
+        this.modelValue = modelValue;
+    }
+
     @Override
     public String toString() {
         return "AttributeSquare{" + "type=" + type + ", value=" + value + '}';
     }
+
 }

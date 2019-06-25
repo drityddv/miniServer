@@ -23,4 +23,12 @@ public interface IPlayerService {
      */
     void loadPlayerAttribute(Player player);
 
+    /**
+     * 玩家增加经验
+     *
+     * @param player
+     * @param exception
+     */
+    void addException(Player player, long exception);
+
 }

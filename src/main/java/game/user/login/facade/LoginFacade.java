@@ -1,7 +1,5 @@
 package game.user.login.facade;
 
-import game.user.login.event.PlayerLoginBeforeEvent;
-import middleware.anno.EventReceiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -73,10 +71,5 @@ public class LoginFacade {
             e.printStackTrace();
         }
     }
-
-	@EventReceiver
-	public void playerLoginBefore(PlayerLoginBeforeEvent event){
-		logger.info("玩家登陆前置事件消费。。。");
-	}
 
 }
