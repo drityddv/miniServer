@@ -1,3 +1,5 @@
-id,itemName,effectString
-1,经验药丸,EXP:200
-2,等级药丸,LEVEL:5
+configId,itemName,itemLevel,overLimit,typeString,effectString,attributeString
+1,红药水,1,0,MEDICINE,HP:30,
+2,蓝药水,1,0,MEDICINE,MANA:20,
+3,经验仙丹,1,99,ELIXIR,EXP:100,
+4,等级仙丹,1,99,ELIXIR,LEVEL:1,

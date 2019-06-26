@@ -31,4 +31,17 @@ public interface IPlayerService {
      */
     void addException(Player player, long exception);
 
+    /**
+     * 玩家升级
+     *
+     * @param player
+     */
+    void playerLevelUp(Player player);
+
+    /**
+     * 保存玩家信息
+     *
+     * @param player
+     */
+    void savePlayer(Player player);
 }

@@ -7,7 +7,6 @@ package game.scene.map.packet;
  */
 
 public class CM_EnterMap {
-
     private long mapId;
 
     public long getMapId() {

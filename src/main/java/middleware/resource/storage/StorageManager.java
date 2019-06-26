@@ -96,7 +96,15 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
                     ReflectionUtils.invokeMethod(method, o1);
                 });
             });
+
+            storage.getStorageMap().forEach((o, o2) -> {
+				Method method = ClassUtil.getMethodByAnnotation(o2, Init.class);
+				method.setAccessible(true);
+				ReflectionUtils.invokeMethod(method, o2);
+			});
+
         });
+
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.common.Ii8n;
+import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.user.login.entity.UserEnt;
@@ -43,11 +43,11 @@ public class LoginService implements ILoginService {
         UserEnt userEnt = loginManager.load(accountId);
 
         if (userEnt == null) {
-            RequestException.throwException(Ii8n.USER_NOT_EXIST);
+            RequestException.throwException(I18N.USER_NOT_EXIST);
         }
 
         if (!userEnt.getPassword().equals(password)) {
-            RequestException.throwException(Ii8n.PASSWORD_ERROR);
+            RequestException.throwException(I18N.PASSWORD_ERROR);
         }
 
         // 暂时单点会把相同accountId的session干掉 后续sessionManager需要做支持
@@ -74,7 +74,7 @@ public class LoginService implements ILoginService {
         }
 
         Player player = SimpleUtil.getPlayerFromSession(session);
-        PacketUtil.send(session, SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+        PacketUtil.send(session, SM_Message.valueOf(I18N.OPERATION_SUCCESS));
 
         SessionManager.removeSession(session.getChannel());
         SessionManager.removePlayerSession(player.getAccountId());
@@ -92,7 +92,7 @@ public class LoginService implements ILoginService {
         UserEnt userEnt = loginManager.load(accountId);
 
         if (userEnt != null) {
-            RequestException.throwException(Ii8n.USER_EXIST);
+            RequestException.throwException(I18N.USER_EXIST);
         }
 
         Person person = Person.valueOf();
@@ -106,7 +106,7 @@ public class LoginService implements ILoginService {
 
         loginManager.saveEntity(userEnt);
 
-        PacketUtil.send(session, SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+        PacketUtil.send(session, SM_Message.valueOf(I18N.OPERATION_SUCCESS));
     }
 
     @Override

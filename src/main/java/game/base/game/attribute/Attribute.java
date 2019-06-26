@@ -1,5 +1,6 @@
 package game.base.game.attribute;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import game.base.game.player.PlayerModel;
@@ -13,7 +14,7 @@ public class Attribute {
 
     private PlayerModel model;
 
-    private Map<AttributeType, Long> modelValue;
+    private Map<AttributeType, Long> modelValue = new HashMap<>();
 
     public PlayerModel getModel() {
         return model;
@@ -27,7 +28,11 @@ public class Attribute {
         return modelValue;
     }
 
-    public void setModelValue(Map<AttributeType, Long> modelValue) {
-        this.modelValue = modelValue;
-    }
+	public void setModelValue(Map<AttributeType, Long> modelValue) {
+		this.modelValue = modelValue;
+	}
+
+	public void addAttribute(AttributeType attributeType, Long value){
+		modelValue.put(attributeType,value);
+	}
 }

@@ -29,7 +29,7 @@ public class HibernateUtil<K extends Serializable & Comparable<K>, T extends IEn
         Session session = getSession();
         object.serialize();
         object.setTimeStamp();
-        session.save(object);
+        session.saveOrUpdate(object);
     }
 
     @Override

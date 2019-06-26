@@ -1,6 +1,8 @@
 package game.user.player.model;
 
 import game.base.game.attribute.AttributeContainer;
+import game.user.pack.model.Pack;
+import spring.SpringContext;
 import utils.IdUtil;
 
 /**
@@ -19,6 +21,9 @@ public class Player {
     private int level;
 
     private AttributeContainer attributeContainer;
+
+    // 战斗单元
+    private transient AttributeContainer battleUnit;
 
     private Player() {}
 
@@ -42,6 +47,10 @@ public class Player {
 
     public void setAttributeContainer(AttributeContainer attributeContainer) {
         this.attributeContainer = attributeContainer;
+    }
+
+    public Pack getPack() {
+        return SpringContext.getPackService().getPlayerPack(this);
     }
 
     // get and set
@@ -69,8 +78,17 @@ public class Player {
         this.playerId = playerId;
     }
 
+    public AttributeContainer getBattleUnit() {
+        return battleUnit;
+    }
+
+    public void setBattleUnit(AttributeContainer battleUnit) {
+        this.battleUnit = battleUnit;
+    }
+
     @Override
     public String toString() {
         return "Player{" + "accountId='" + accountId + '\'' + ", playerId=" + playerId + ", level=" + level + '}';
     }
+
 }

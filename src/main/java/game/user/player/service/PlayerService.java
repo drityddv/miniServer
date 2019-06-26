@@ -10,6 +10,7 @@ import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.game.player.PlayerModel;
 import game.user.player.model.Player;
+import game.user.player.resource.PlayerResource;
 
 /**
  * @author : ddv
@@ -48,4 +49,16 @@ public class PlayerService implements IPlayerService {
     public void addException(Player player, long exception) {
 
     }
+
+    @Override
+    public void playerLevelUp(Player player) {
+        PlayerResource playerResource = playerManager.getPlayerResource(player.getLevel());
+        player.getAttributeContainer().reCompute(playerResource.getAttribute());
+    }
+
+    @Override
+    public void savePlayer(Player player) {
+        playerManager.saveEntity(playerManager.loadOrCreate(player.getAccountId()));
+    }
+
 }

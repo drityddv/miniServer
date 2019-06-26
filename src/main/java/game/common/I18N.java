@@ -5,7 +5,7 @@ package game.common;
  * @since : 2019/5/6 下午2:07
  */
 
-public interface Ii8n {
+public interface I18N {
 
     // 操作成功 开发阶段用来显示效果
     int OPERATION_SUCCESS = -1;
@@ -37,4 +37,15 @@ public interface Ii8n {
     // 地图移动坐标有误
     int TARGET_POSITION_ERROR = 9;
 
+    // 背包已满
+    int PACK_FULL = 10;
+
+    // 添加道具失败 背包容量不足
+    int PACK_SIZE_NOT_ENOUGH = 11;
+
+    // 资源文件不存在
+    int RESOURCE_NOT_EXIST = 12;
+
+    // 道具数量不足
+    int ITEM_NUM_NOT_ENOUGH = 13;
 }

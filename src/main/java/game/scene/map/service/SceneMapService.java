@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import game.base.map.IMap;
 import game.base.map.base.MapCreature;
-import game.common.Ii8n;
+import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.user.player.model.Player;
@@ -56,7 +56,7 @@ public class SceneMapService implements ISceneMapService {
 
         sceneMapManager.getPlayerMaps().put(playerId, mapId);
 
-        PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+        PacketUtil.send(SessionManager.getSessionByAccountId(accountId), SM_Message.valueOf(I18N.OPERATION_SUCCESS));
     }
 
     // 单位不存在地图中也不会抛异常 避免客户端重复发包
@@ -66,7 +66,7 @@ public class SceneMapService implements ISceneMapService {
         IMap map = sceneMapManager.getMapByMapId(mapId);
 
         if (map == null) {
-            RequestException.throwException(Ii8n.MAP_NOT_EXIST);
+            RequestException.throwException(I18N.MAP_NOT_EXIST);
         }
 
         long playerId = player.getPlayerId();
@@ -94,7 +94,7 @@ public class SceneMapService implements ISceneMapService {
 
         map.transfer(playerId);
         PacketUtil.send(SessionManager.getSessionByAccountId(player.getAccountId()),
-            SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+            SM_Message.valueOf(I18N.OPERATION_SUCCESS));
 
     }
 
@@ -105,7 +105,7 @@ public class SceneMapService implements ISceneMapService {
         map.move(player.getPlayerId(), targetX, targetY);
 
         PacketUtil.send(SessionManager.getSessionByAccountId(player.getAccountId()),
-            SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+            SM_Message.valueOf(I18N.OPERATION_SUCCESS));
     }
 
     @Override

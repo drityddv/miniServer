@@ -1,6 +1,6 @@
 package game.user.pack.model;
 
-import game.center.item.resource.Item;
+import game.user.item.base.model.AbstractItem;
 
 /**
  * 背包格子
@@ -15,12 +15,12 @@ public class PackSquare {
     private int index;
 
     // 物品
-    private Item item;
+    private AbstractItem item;
 
     // 数量
     private int counts;
 
-    public static PackSquare valueOf(int index, Item item, int counts) {
+    public static PackSquare valueOf(int index, AbstractItem item, int counts) {
         PackSquare packSquare = new PackSquare();
         packSquare.index = index;
         packSquare.item = item;
@@ -34,7 +34,7 @@ public class PackSquare {
     }
 
     public boolean isEmpty() {
-        return counts == 0;
+        return counts == 0 && item == null;
     }
 
     public void addCounts(int count) {
@@ -54,11 +54,11 @@ public class PackSquare {
         this.index = index;
     }
 
-    public Item getItem() {
+    public AbstractItem getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(AbstractItem item) {
         this.item = item;
     }
 
@@ -70,9 +70,19 @@ public class PackSquare {
         this.counts = counts;
     }
 
+    // 添加前调用者确认是否超过重叠上限
+    public void addItem(AbstractItem item, int num) {
+        this.item = item;
+        this.counts += num;
+    }
+
+    public void addUnOverLimitItem(AbstractItem item) {
+        this.item = item;
+        this.counts = 1;
+    }
+
     @Override
     public String toString() {
         return "PackSquare{" + "index=" + index + ", item=" + item + ", counts=" + counts + '}';
     }
-
 }

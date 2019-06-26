@@ -1,5 +1,8 @@
 package game.base.game.attribute;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author : ddv
  * @since : 2019/6/20 下午10:21
@@ -31,6 +34,20 @@ public enum AttributeType {
         this.typeName = typeName;
     }
 
+    public static AttributeType getByName(String name){
+    	return NAME_TO_TYPE.get(name);
+	}
+
+    private final static Map<String, AttributeType> NAME_TO_TYPE = new HashMap<>();
+
+    static {
+        AttributeType[] values = AttributeType.values();
+        for (AttributeType attributeType : values) {
+            NAME_TO_TYPE.put(attributeType.name(), attributeType);
+        }
+    }
+
+    // get and set
     public int getTypeId() {
         return typeId;
     }
@@ -38,4 +55,5 @@ public enum AttributeType {
     public String getTypeName() {
         return typeName;
     }
+
 }

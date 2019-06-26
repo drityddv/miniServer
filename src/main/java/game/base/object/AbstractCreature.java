@@ -7,7 +7,7 @@ package game.base.object;
  * @since : 2019/5/6 下午8:46
  */
 
-public abstract class AbstractCreature extends AbstractObject {
+public abstract class AbstractCreature extends AbstractGameObject {
 
     // 属性容器
 

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.map.IMap;
-import game.common.Ii8n;
+import game.common.I18N;
 import game.common.exception.RequestException;
 import middleware.anno.Manager;
 import middleware.resource.IManager;
@@ -37,7 +37,7 @@ public class SceneMapManager implements IManager {
         IMap map = sceneMaps.get(mapId);
 
         if (map == null) {
-            RequestException.throwException(Ii8n.MAP_NOT_EXIST);
+            RequestException.throwException(I18N.MAP_NOT_EXIST);
         }
         return map;
     }

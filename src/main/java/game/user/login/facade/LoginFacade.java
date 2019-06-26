@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import game.common.Ii8n;
+import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.user.login.packet.CM_UserLogin;
@@ -37,7 +37,7 @@ public class LoginFacade {
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
-            PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
+            PacketUtil.send(session, SM_Message.valueOf(I18N.SERVER_ERROR));
             e.printStackTrace();
         }
     }
@@ -49,7 +49,7 @@ public class LoginFacade {
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
-            PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
+            PacketUtil.send(session, SM_Message.valueOf(I18N.SERVER_ERROR));
             e.printStackTrace();
         }
     }
@@ -67,7 +67,7 @@ public class LoginFacade {
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
-            PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
+            PacketUtil.send(session, SM_Message.valueOf(I18N.SERVER_ERROR));
             e.printStackTrace();
         }
     }

@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import game.common.Ii8n;
+import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.gm.packet.CM_GmCommand;
@@ -32,11 +32,11 @@ public class GmFacade {
     public void invoke(USession session, CM_GmCommand request) {
         try {
             SpringContext.getGmService().invoke(session, request);
-            PacketUtil.send(session, SM_Message.valueOf(Ii8n.OPERATION_SUCCESS));
+            PacketUtil.send(session, SM_Message.valueOf(I18N.OPERATION_SUCCESS));
         } catch (RequestException e) {
             PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
-            PacketUtil.send(session, SM_Message.valueOf(Ii8n.SERVER_ERROR));
+            PacketUtil.send(session, SM_Message.valueOf(I18N.SERVER_ERROR));
             logger.error(e.toString());
         }
     }

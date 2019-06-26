@@ -17,7 +17,7 @@ public class ResourceDefinition {
     public ResourceDefinition(Class<?> clz, boolean isSimple) {
         this.clz = clz;
         if (isSimple) {
-            location = PATH_NAME + clz.getSimpleName() + "Resource";
+            location = PATH_NAME + clz.getSimpleName();
         } else {
             location = PATH_NAME + "MapResource";
         }

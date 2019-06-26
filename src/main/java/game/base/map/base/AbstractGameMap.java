@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.map.IMap;
-import game.common.Ii8n;
+import game.common.I18N;
 import game.common.exception.RequestException;
 import utils.JodaUtil;
 
@@ -58,12 +58,12 @@ public abstract class AbstractGameMap implements IMap {
 
         if (creature == null) {
             logger.warn("角色[{}]不存在地图[{}],无法移动!", objectId, mapId);
-            RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
+            RequestException.throwException(I18N.MAP_CREATURE_NOT_EXIST);
         }
 
         if (!checkTarget(targetX, targetY)) {
             logger.warn("玩家移动坐标有误,坐标[{},{}]", targetX, targetY);
-            RequestException.throwException(Ii8n.TARGET_POSITION_ERROR);
+            RequestException.throwException(I18N.TARGET_POSITION_ERROR);
         }
 
         creature.setX(targetX);
@@ -78,7 +78,7 @@ public abstract class AbstractGameMap implements IMap {
 
     @Override
     public void addCreature(MapCreature creature) {
-        long id = creature.getId();
+        long id = creature.getObjectId();
         if (!mapCreatures.contains(id)) {
             mapCreatures.put(id, creature);
         }
@@ -95,7 +95,7 @@ public abstract class AbstractGameMap implements IMap {
         MapCreature target = mapCreatures.get(targetObjectId);
 
         if (from == null || target == null) {
-            RequestException.throwException(Ii8n.MAP_CREATURE_NOT_EXIST);
+            RequestException.throwException(I18N.MAP_CREATURE_NOT_EXIST);
         }
 
         double distanceX = Math.pow((from.getX() - target.getX()), 2);

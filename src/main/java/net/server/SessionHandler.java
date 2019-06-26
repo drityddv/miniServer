@@ -3,7 +3,7 @@ package net.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.common.Ii8n;
+import game.common.I18N;
 import game.common.packet.SM_Message;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserRegister;
@@ -47,7 +47,7 @@ public class SessionHandler extends SimpleChannelInboundHandler<PacketProtocol> 
             return;
         }
 
-        ctx.writeAndFlush(PacketProtocol.valueOf(SM_Message.valueOf(Ii8n.ILLEGAL_SESSION)));
+        ctx.writeAndFlush(PacketProtocol.valueOf(SM_Message.valueOf(I18N.ILLEGAL_SESSION)));
     }
 
     @Override

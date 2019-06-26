@@ -1,5 +1,6 @@
 package game.gm.service;
 
+import game.user.item.base.model.AbstractItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,8 @@ import org.springframework.stereotype.Component;
 import game.base.game.attribute.AttributeContainer;
 import game.scene.map.service.SceneMapManager;
 import game.user.login.entity.UserEnt;
-import game.user.login.event.PlayerLoginBeforeEvent;
+import game.user.pack.model.Pack;
+import game.user.pack.service.PackService;
 import game.user.player.model.Player;
 import net.model.USession;
 import spring.SpringContext;
@@ -28,6 +30,8 @@ public class GM_Command {
 
     @Autowired
     private SceneMapManager sceneMapManager;
+    @Autowired
+    private PackService packService;
 
     public void logUserEnt(USession session) {
         UserEnt userEnt = SpringContext.getLoginService().getUserEnt(session);
@@ -50,12 +54,27 @@ public class GM_Command {
         Player player =
             SpringContext.getPlayerService().getPlayerByAccountId(SimpleUtil.getAccountIdFromSession(session));
         AttributeContainer attributeContainer = player.getAttributeContainer();
+        Pack pack = SpringContext.getPackService().getPlayerPack(player);
         logger.info(player.toString());
     }
 
     public void run(USession session) {
         Player player = SimpleUtil.getPlayerFromSession(session);
-        SpringContext.getEventBus().pushEventSyn(PlayerLoginBeforeEvent.valueOf(player));
+		int itemNum = packService.getItemNum(player, packService.createItem(3L));
+		System.out.println(1);
+	}
 
-    }
+	public void addItemToPack(USession session,Long itemConfigId,int num){
+		Player player = SimpleUtil.getPlayerFromSession(session);
+		AbstractItem item = packService.createItem(itemConfigId);
+		packService.addItem(player,item,100);
+	}
+
+	public void reduceItem(USession session,Long itemConfigId,int num){
+		Player player = SimpleUtil.getPlayerFromSession(session);
+		AbstractItem item = packService.createItem(itemConfigId);
+		packService.reduceItem(player,item,num);
+	}
+
+
 }
