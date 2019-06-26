@@ -60,8 +60,6 @@ public class PackService implements IPackService {
     @Override
     public AbstractItem createItem(Long configId) {
         ItemResource itemResource = packManager.getResource(Long.valueOf(configId));
-        Class<? extends Long> aClass = configId.getClass();
-        System.out.println(aClass);
         if (itemResource == null) {
             logger.warn("配置表id:[{}]的资源文件不存在", configId);
             RequestException.throwException(I18N.RESOURCE_NOT_EXIST);

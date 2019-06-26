@@ -1,6 +1,5 @@
 package game.gm.service;
 
-import game.user.item.base.model.AbstractItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,8 @@ import org.springframework.stereotype.Component;
 
 import game.base.game.attribute.AttributeContainer;
 import game.scene.map.service.SceneMapManager;
+import game.user.item.base.model.AbstractItem;
+import game.user.item.base.model.AbstractUsableItem;
 import game.user.login.entity.UserEnt;
 import game.user.pack.model.Pack;
 import game.user.pack.service.PackService;
@@ -60,21 +61,21 @@ public class GM_Command {
 
     public void run(USession session) {
         Player player = SimpleUtil.getPlayerFromSession(session);
-		int itemNum = packService.getItemNum(player, packService.createItem(3L));
-		System.out.println(1);
-	}
 
-	public void addItemToPack(USession session,Long itemConfigId,int num){
-		Player player = SimpleUtil.getPlayerFromSession(session);
-		AbstractItem item = packService.createItem(itemConfigId);
-		packService.addItem(player,item,100);
-	}
+        AbstractUsableItem item = (AbstractUsableItem)packService.createItem(3L);
+        item.useEffect(player, 1);
+    }
 
-	public void reduceItem(USession session,Long itemConfigId,int num){
-		Player player = SimpleUtil.getPlayerFromSession(session);
-		AbstractItem item = packService.createItem(itemConfigId);
-		packService.reduceItem(player,item,num);
-	}
+    public void addItemToPack(USession session, Long itemConfigId, int num) {
+        Player player = SimpleUtil.getPlayerFromSession(session);
+        AbstractItem item = packService.createItem(itemConfigId);
+        packService.addItem(player, item, 100);
+    }
 
+    public void reduceItem(USession session, Long itemConfigId, int num) {
+        Player player = SimpleUtil.getPlayerFromSession(session);
+        AbstractItem item = packService.createItem(itemConfigId);
+        packService.reduceItem(player, item, num);
+    }
 
 }

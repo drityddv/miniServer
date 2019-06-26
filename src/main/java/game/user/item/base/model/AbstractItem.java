@@ -17,17 +17,17 @@ public abstract class AbstractItem extends AbstractGameObject implements Compara
         return getResource().getOverLimit();
     }
 
-    public boolean canOverLimit(){
-    	return getOverLimit()!=1;
-	}
+    public boolean canOverLimit() {
+        return getOverLimit() != 1;
+    }
 
     public ItemResource getResource() {
         return SpringContext.getPackService().getResource(configId);
     }
 
-	public void init(ItemResource itemResource){
-		configId = itemResource.getConfigId();
-	}
+    public void init(ItemResource itemResource) {
+        configId = itemResource.getConfigId();
+    }
 
     @Override
     public int compareTo(AbstractItem abstractItem) {

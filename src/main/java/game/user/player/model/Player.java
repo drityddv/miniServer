@@ -20,7 +20,7 @@ public class Player {
 
     private int level;
 
-    private AttributeContainer attributeContainer;
+    private transient AttributeContainer attributeContainer;
 
     // 战斗单元
     private transient AttributeContainer battleUnit;

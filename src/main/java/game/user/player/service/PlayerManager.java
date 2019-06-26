@@ -1,7 +1,6 @@
 package game.user.player.service;
 
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,8 +31,8 @@ public class PlayerManager {
         entEntityCache.save(playerEnt);
     }
 
-    public PlayerResource getPlayerResource(int level){
-    	return resourceMap.get(level);
-	}
+    public PlayerResource getPlayerResource(int level) {
+        return resourceMap.get(level);
+    }
 
 }

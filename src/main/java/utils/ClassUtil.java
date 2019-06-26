@@ -92,15 +92,15 @@ public class ClassUtil {
 
     public static void main(String[] args) {
         CM_EnterMap cm = new CM_EnterMap();
-		Field field = cm.getClass().getDeclaredFields()[0];
-		field.setAccessible(true);
-		try {
-			field.set(cm,null);
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
+        Field field = cm.getClass().getDeclaredFields()[0];
+        field.setAccessible(true);
+        try {
+            field.set(cm, null);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
 
-		System.out.println(cm.toString());
+        System.out.println(cm.toString());
 
     }
 }

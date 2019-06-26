@@ -1,11 +1,17 @@
 package game.user.item.base.model;
 
+import java.util.Map;
+
 import game.common.exception.RequestException;
+import game.user.item.base.constant.ItemEffectType;
+import game.user.item.base.effect.IEffectProcessor;
+import game.user.item.resource.ItemResource;
 import game.user.player.model.Player;
 
 /**
  *
  * 经验仙丹
+ *
  * @author : ddv
  * @since : 2019/6/26 上午10:23
  */
@@ -23,6 +29,11 @@ public class Elixir extends AbstractUsableItem {
 
     @Override
     public void useEffect(Player player, int num) {
-
+        ItemResource resource = getResource();
+        Map<String, Long> effectParam = resource.getEffectParam();
+        effectParam.forEach((type, value) -> {
+            IEffectProcessor processor = ItemEffectType.getProcessor(type);
+            processor.invokeItemEffect(player, value);
+        });
     }
 }

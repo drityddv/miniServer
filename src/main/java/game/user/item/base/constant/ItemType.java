@@ -3,9 +3,7 @@ package game.user.item.base.constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.user.item.base.model.AbstractItem;
-import game.user.item.base.model.Elixir;
-import game.user.item.base.model.Medicine;
+import game.user.item.base.model.*;
 
 /**
  * 道具类型
@@ -23,7 +21,25 @@ public enum ItemType {
     /**
      * 经验仙丹
      */
-    ELIXIR(2, Elixir.class);
+    ELIXIR(2, Elixir.class),
+
+    /**
+     * 兑换卡
+     */
+    EXCHANGE_CARD(3, ExchangeCard.class),
+
+    /**
+     * 装备
+     */
+    EQUIPMENT(4, Equipment.class);
+
+    private final static Map<String, ItemType> NAME_TO_TYPE = new HashMap<>();
+
+    static {
+        for (ItemType itemType : ItemType.values()) {
+            NAME_TO_TYPE.put(itemType.name(), itemType);
+        }
+    }
 
     // 道具类型id
     private int typeId;
@@ -33,14 +49,6 @@ public enum ItemType {
     ItemType(int typeId, Class<? extends AbstractItem> typeClass) {
         this.typeId = typeId;
         this.typeClass = typeClass;
-    }
-
-    private final static Map<String, ItemType> NAME_TO_TYPE = new HashMap<>();
-
-    static {
-        for (ItemType itemType : ItemType.values()) {
-            NAME_TO_TYPE.put(itemType.name(), itemType);
-        }
     }
 
     public static ItemType getTypeByName(String name) {
@@ -56,20 +64,4 @@ public enum ItemType {
         return null;
     }
 
-    // get and set
-    public int getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
-    public Class getTypeClass() {
-        return typeClass;
-    }
-
-    public void setTypeClass(Class typeClass) {
-        this.typeClass = typeClass;
-    }
 }

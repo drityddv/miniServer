@@ -1,8 +1,12 @@
 package game.user.item.resource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import game.user.item.base.constant.ItemType;
 import middleware.anno.Init;
 import middleware.anno.MiniResource;
+import utils.JodaUtil;
 
 /**
  * @author : ddv
@@ -21,14 +25,28 @@ public class ItemResource {
     // 物品类型
     private String typeString;
     private ItemType itemType;
-    // 道具效果
+    // 道具效果配置
     private String effectString;
+    private transient Map<String, Long> effectParam;
     // 属性信息
     private String attributeString;
 
     @Init
     private void init() {
         itemType = ItemType.getTypeByName(typeString);
+        analysisEffect();
+
+    }
+
+    private void analysisEffect() {
+        if (effectString != null && !effectString.equals("")) {
+            String[] split = effectString.split(",");
+            effectParam = new HashMap<>();
+            for (String singleString : split) {
+                String[] strings = singleString.split(":");
+                effectParam.put(strings[0], JodaUtil.convertFromString(Long.class, strings[1]));
+            }
+        }
     }
 
     // get and set
@@ -96,7 +114,15 @@ public class ItemResource {
         this.overLimit = overLimit;
     }
 
-    @Override
+	public Map<String, Long> getEffectParam() {
+		return effectParam;
+	}
+
+	public void setEffectParam(Map<String, Long> effectParam) {
+		this.effectParam = effectParam;
+	}
+
+	@Override
     public String toString() {
         return "ItemResource{" + "configId=" + configId + ", itemName='" + itemName + '\'' + ", effectString='"
             + effectString + '\'' + '}';

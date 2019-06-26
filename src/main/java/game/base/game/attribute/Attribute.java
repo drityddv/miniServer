@@ -28,11 +28,11 @@ public class Attribute {
         return modelValue;
     }
 
-	public void setModelValue(Map<AttributeType, Long> modelValue) {
-		this.modelValue = modelValue;
-	}
+    public void setModelValue(Map<AttributeType, Long> modelValue) {
+        this.modelValue = modelValue;
+    }
 
-	public void addAttribute(AttributeType attributeType, Long value){
-		modelValue.put(attributeType,value);
-	}
+    public void addAttribute(AttributeType attributeType, Long value) {
+        modelValue.put(attributeType, value);
+    }
 }

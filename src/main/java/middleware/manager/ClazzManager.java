@@ -25,7 +25,7 @@ import net.utils.ProtoStuffUtil;
 public class ClazzManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ClazzManager.class);
-//    private static final String MESSAGE_XML = "miniServer/message.xml";
+    // private static final String MESSAGE_XML = "miniServer/message.xml";
     private static final String MESSAGE_XML = "src/main/resources/message.xml";
     private static Map<Integer, String> clazzMap;
     private static Map<Class<?>, Integer> idMap;

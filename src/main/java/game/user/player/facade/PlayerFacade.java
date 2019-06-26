@@ -35,11 +35,11 @@ public class PlayerFacade {
 
     @EventReceiver
     public void playerLevelUp(PlayerLevelUpEvent event) {
-		try {
-			playerService.playerLevelUp(event.getPlayer());
-		} catch (Exception e) {
-			logger.info("玩家升级事件出错,[{}]", e.getClass());
-			e.printStackTrace();
-		}
+        try {
+            playerService.playerLevelUp(event.getPlayer());
+        } catch (Exception e) {
+            logger.info("玩家升级事件出错,[{}]", e.getClass());
+            e.printStackTrace();
+        }
     }
 }

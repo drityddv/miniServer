@@ -61,7 +61,7 @@ public class PlayerResource {
         this.attributeString = attributeString;
     }
 
-	public Attribute getAttribute() {
-		return attribute;
-	}
+    public Attribute getAttribute() {
+        return attribute;
+    }
 }

@@ -20,6 +20,11 @@ public class AttributeContainer {
     // 基础属性容器
     private Map<AttributeType, AttributeSquare> attributes;
 
+    // 属性容器必须走valueOf创建
+    private AttributeContainer() {
+
+    }
+
     public static AttributeContainer valueOf(long id) {
         AttributeContainer attributeContainer = new AttributeContainer();
 
@@ -33,6 +38,8 @@ public class AttributeContainer {
 
         return attributeContainer;
     }
+
+    // get and set
 
     public void reCompute(Attribute attribute) {
         Iterator<Map.Entry<AttributeType, AttributeSquare>> iterator = attributes.entrySet().iterator();
@@ -54,13 +61,6 @@ public class AttributeContainer {
         }
 
     }
-
-    // get and set
-
-	// 属性容器必须走valueOf创建
-	private AttributeContainer() {
-
-	}
 
     public long getId() {
         return id;
