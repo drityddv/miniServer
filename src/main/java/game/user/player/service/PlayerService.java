@@ -1,14 +1,13 @@
 package game.user.player.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.game.attribute.Attribute;
-import game.base.game.attribute.AttributeType;
-import game.base.game.player.PlayerModel;
+import game.base.game.attribute.id.AttributeIdEnum;
+import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.user.player.model.Player;
 import game.user.player.resource.PlayerResource;
 
@@ -30,19 +29,14 @@ public class PlayerService implements IPlayerService {
     // 加载玩家自身基本属性
     @Override
     public void loadPlayerAttribute(Player player) {
+        PlayerResource playerResource = playerManager.getPlayerResource(player.getLevel());
+        List<Attribute> attributeList = playerResource.getAttributeList();
 
-        // 写死测试一下
-        Attribute attribute = new Attribute();
-        attribute.setModel(PlayerModel.PLAYER_SELF);
+        PlayerAttributeContainer playerAttributeContainer = player.getAttributeContainer();
+        playerAttributeContainer.putAttributes(AttributeIdEnum.BASE, attributeList, null);
+		playerAttributeContainer.containerRecompute();
 
-        attribute.setModelValue(new HashMap<>(16));
-        Map<AttributeType, Long> modelValue = attribute.getModelValue();
-
-        for (AttributeType type : AttributeType.values()) {
-            modelValue.put(type, 100L);
-        }
-
-        player.getAttributeContainer().reCompute(attribute);
+		System.out.println(1);
     }
 
     @Override
@@ -53,12 +47,17 @@ public class PlayerService implements IPlayerService {
     @Override
     public void playerLevelUp(Player player) {
         PlayerResource playerResource = playerManager.getPlayerResource(player.getLevel());
-        player.getAttributeContainer().reCompute(playerResource.getAttribute());
+        // player.getAttributeContainer().reCompute(playerResource.getAttributeList());
     }
 
     @Override
     public void savePlayer(Player player) {
         playerManager.saveEntity(playerManager.loadOrCreate(player.getAccountId()));
+    }
+
+    @Override
+    public PlayerResource getResource(int id) {
+        return playerManager.getPlayerResource(id);
     }
 
 }

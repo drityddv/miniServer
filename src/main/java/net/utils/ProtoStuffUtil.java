@@ -8,6 +8,8 @@ import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * pojo反序列化工具 这个只能序列化传递的class 父类字段不会序列化,成员的父类会进行序列化
@@ -17,6 +19,8 @@ import io.protostuff.runtime.RuntimeSchema;
  */
 
 public class ProtoStuffUtil {
+
+	private static final Logger logger = LoggerFactory.getLogger(ProtoStuffUtil.class);
     /**
      * 缓存Schema
      */
@@ -32,6 +36,7 @@ public class ProtoStuffUtil {
     @SuppressWarnings("unchecked")
     public static <T> byte[] serialize(T obj) {
         Class<T> clazz = (Class<T>)obj.getClass();
+		logger.info("序列化clazz [{}]",clazz.getSimpleName());
         Schema<T> schema = getSchema(clazz);
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         byte[] data;

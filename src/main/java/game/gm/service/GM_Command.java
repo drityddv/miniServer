@@ -6,13 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.game.attribute.AttributeContainer;
+import game.base.game.attribute.id.AttributeIdEnum;
+import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.scene.map.service.SceneMapManager;
 import game.user.item.base.model.AbstractItem;
-import game.user.item.base.model.AbstractUsableItem;
 import game.user.login.entity.UserEnt;
 import game.user.pack.model.Pack;
 import game.user.pack.service.PackService;
 import game.user.player.model.Player;
+import game.user.player.service.PlayerService;
 import net.model.USession;
 import spring.SpringContext;
 import utils.SimpleUtil;
@@ -33,6 +35,9 @@ public class GM_Command {
     private SceneMapManager sceneMapManager;
     @Autowired
     private PackService packService;
+
+    @Autowired
+    private PlayerService playerService;
 
     public void logUserEnt(USession session) {
         UserEnt userEnt = SpringContext.getLoginService().getUserEnt(session);
@@ -61,9 +66,10 @@ public class GM_Command {
 
     public void run(USession session) {
         Player player = SimpleUtil.getPlayerFromSession(session);
+        PlayerAttributeContainer attributeContainer = player.getAttributeContainer();
+        attributeContainer.putAttributes(AttributeIdEnum.BASE, playerService.getResource(1).getAttributeList(), null);
+        System.out.println(1);
 
-        AbstractUsableItem item = (AbstractUsableItem)packService.createItem(3L);
-        item.useEffect(player, 1);
     }
 
     public void addItemToPack(USession session, Long itemConfigId, int num) {

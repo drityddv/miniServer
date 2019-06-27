@@ -1,5 +1,7 @@
 package game.base.object;
 
+import game.base.game.attribute.CreatureAttributeContainer;
+
 /**
  * 生物单位抽象类
  *
@@ -7,18 +9,27 @@ package game.base.object;
  * @since : 2019/5/6 下午8:46
  */
 
-public abstract class AbstractCreature extends AbstractGameObject {
+public abstract class AbstractCreature<T extends AbstractCreature> extends AbstractGameObject {
 
     // 属性容器
+    public CreatureAttributeContainer<T> attributeContainer;
 
-    // 是否存活 1:存活
-    private int isAlive = 1;
+    // buff容器
+    public AbstractCreature() {
 
-    public int getIsAlive() {
-        return isAlive;
     }
 
-    public void setIsAlive(int isAlive) {
-        this.isAlive = isAlive;
+    public AbstractCreature(long objectId) {
+        setObjectId(objectId);
     }
+
+	public CreatureAttributeContainer<? extends AbstractCreature> getAttributeContainer() {
+		return attributeContainer;
+	}
+
+	public void setAttributeContainer(CreatureAttributeContainer<T> attributeContainer) {
+		this.attributeContainer = attributeContainer;
+	}
+
+
 }

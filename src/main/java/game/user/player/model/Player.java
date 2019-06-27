@@ -1,6 +1,7 @@
 package game.user.player.model;
 
-import game.base.game.attribute.AttributeContainer;
+import game.base.game.attribute.model.PlayerAttributeContainer;
+import game.base.object.AbstractCreature;
 import game.user.pack.model.Pack;
 import spring.SpringContext;
 import utils.IdUtil;
@@ -12,18 +13,13 @@ import utils.IdUtil;
  * @since : 2019/5/6 下午8:51
  */
 
-public class Player {
+public class Player extends AbstractCreature<Player> {
 
     private String accountId;
 
     private long playerId;
 
     private int level;
-
-    private transient AttributeContainer attributeContainer;
-
-    // 战斗单元
-    private transient AttributeContainer battleUnit;
 
     private Player() {}
 
@@ -32,21 +28,13 @@ public class Player {
         player.accountId = accountId;
         player.playerId = IdUtil.getLongId();
         player.level = 1;
-        player.attributeContainer = AttributeContainer.valueOf(player.playerId);
+        player.setAttributeContainer(new PlayerAttributeContainer(player));
         return player;
     }
 
-    public AttributeContainer getAttributeContainer() {
-        if (attributeContainer == null) {
-            attributeContainer = AttributeContainer.valueOf(playerId);
-        }
-        return attributeContainer;
-    }
-
-    // private AttributeContainer recopute
-
-    public void setAttributeContainer(AttributeContainer attributeContainer) {
-        this.attributeContainer = attributeContainer;
+    @Override
+    public PlayerAttributeContainer getAttributeContainer() {
+        return (PlayerAttributeContainer)super.getAttributeContainer();
     }
 
     public Pack getPack() {
@@ -76,14 +64,6 @@ public class Player {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
-    }
-
-    public AttributeContainer getBattleUnit() {
-        return battleUnit;
-    }
-
-    public void setBattleUnit(AttributeContainer battleUnit) {
-        this.battleUnit = battleUnit;
     }
 
     @Override

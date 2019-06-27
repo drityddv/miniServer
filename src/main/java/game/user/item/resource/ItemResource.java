@@ -28,8 +28,6 @@ public class ItemResource {
     // 道具效果配置
     private String effectString;
     private transient Map<String, Long> effectParam;
-    // 属性信息
-    private String attributeString;
 
     @Init
     private void init() {
@@ -98,14 +96,6 @@ public class ItemResource {
         this.effectString = effectString;
     }
 
-    public String getAttributeString() {
-        return attributeString;
-    }
-
-    public void setAttributeString(String attributeString) {
-        this.attributeString = attributeString;
-    }
-
     public int getOverLimit() {
         return overLimit;
     }
@@ -114,15 +104,15 @@ public class ItemResource {
         this.overLimit = overLimit;
     }
 
-	public Map<String, Long> getEffectParam() {
-		return effectParam;
-	}
+    public Map<String, Long> getEffectParam() {
+        return effectParam;
+    }
 
-	public void setEffectParam(Map<String, Long> effectParam) {
-		this.effectParam = effectParam;
-	}
+    public void setEffectParam(Map<String, Long> effectParam) {
+        this.effectParam = effectParam;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "ItemResource{" + "configId=" + configId + ", itemName='" + itemName + '\'' + ", effectString='"
             + effectString + '\'' + '}';

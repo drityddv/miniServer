@@ -1,6 +1,7 @@
 package game.user.player.service;
 
 import game.user.player.model.Player;
+import game.user.player.resource.PlayerResource;
 
 /**
  * @author : ddv
@@ -44,4 +45,12 @@ public interface IPlayerService {
      * @param player
      */
     void savePlayer(Player player);
+
+    /**
+     * 获取玩家资源文件
+     *
+     * @param id
+     * @return
+     */
+    PlayerResource getResource(int id);
 }

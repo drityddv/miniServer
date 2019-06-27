@@ -1,8 +1,10 @@
 package game.user.player.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
-import game.base.game.player.PlayerModel;
 import middleware.anno.Init;
 import middleware.anno.MiniResource;
 import utils.JodaUtil;
@@ -18,21 +20,19 @@ public class PlayerResource {
     private int level;
     private long experience;
     private String attributeString;
-
-    private Attribute attribute;
+    private List<Attribute> attributeList;
 
     @Init
     public void init() {
         String[] split = attributeString.split(",");
-        attribute = new Attribute();
-        attribute.setModel(PlayerModel.PLAYER_SELF);
-
-        for (String temp : split) {
-            String[] split1 = temp.split(":");
-            AttributeType attributeType = AttributeType.getByName(split1[0]);
-            attribute.addAttribute(attributeType, JodaUtil.convertFromString(Long.class, split1[1]));
+        attributeList = new ArrayList<>();
+        for (String attrStrings : split) {
+            String[] attrWords = attrStrings.split(":");
+            AttributeType attributeType = AttributeType.getByName(attrWords[0]);
+            long value = JodaUtil.convertFromString(Long.class, attrWords[1]);
+            Attribute attribute = Attribute.valueOf(attributeType, value);
+            attributeList.add(attribute);
         }
-
     }
 
     // get and set
@@ -61,7 +61,7 @@ public class PlayerResource {
         this.attributeString = attributeString;
     }
 
-    public Attribute getAttribute() {
-        return attribute;
+    public List<Attribute> getAttributeList() {
+        return attributeList;
     }
 }

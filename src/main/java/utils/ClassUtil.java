@@ -6,7 +6,12 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
+import game.base.game.attribute.CreatureAttributeContainer;
+import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.scene.map.packet.CM_EnterMap;
+import game.user.player.model.Player;
+import io.protostuff.Morph;
+import net.utils.ProtoStuffUtil;
 
 /**
  * @author : ddv
@@ -90,17 +95,20 @@ public class ClassUtil {
         return null;
     }
 
-    public static void main(String[] args) {
-        CM_EnterMap cm = new CM_EnterMap();
-        Field field = cm.getClass().getDeclaredFields()[0];
-        field.setAccessible(true);
-        try {
-            field.set(cm, null);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    static class A{
+    	@Morph
+		int a = 10;
 
-        System.out.println(cm.toString());
+    	int b = 10;
+	}
 
-    }
+    public static void main(String[] args){
+    	A a = new A();
+//		CreatureAttributeContainer<Player> playerCreatureAttributeContainer = new PlayerAttributeContainer(Player.valueOf("ddv"));
+		byte[] serialize = ProtoStuffUtil.serialize(a);
+		System.out.println(serialize.length);
+		A target = ProtoStuffUtil.deserialize(serialize,A.class);
+
+		System.out.println(1);
+	}
 }

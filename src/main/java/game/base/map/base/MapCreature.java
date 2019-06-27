@@ -28,7 +28,6 @@ public class MapCreature extends AbstractCreature {
         creature.setAccountId(accountId);
         creature.setX(x);
         creature.setY(y);
-        creature.setIsAlive(1);
         creature.setObjectId(objectId);
         return creature;
     }
@@ -65,14 +64,14 @@ public class MapCreature extends AbstractCreature {
 
     // 地图单位状态,坐标打印
     public void print() {
-        logger.info("单位所属[{}],单位id[{}],坐标[{},{}],存活状态[{}]", accountId, getObjectId(), x, y, getIsAlive());
+        logger.info("单位所属[{}],单位id[{}],坐标[{},{}],存活状态[{}]", accountId, getObjectId(), x, y);
     }
 
     // 重置单位状态
     public void reset() {
         this.x = 0;
         this.y = 0;
-        this.setIsAlive(1);
+
     }
 
 }

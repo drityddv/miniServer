@@ -31,8 +31,8 @@ public class PlayerManager {
         entEntityCache.save(playerEnt);
     }
 
-    public PlayerResource getPlayerResource(int level) {
-        return resourceMap.get(level);
+    public PlayerResource getPlayerResource(Integer id) {
+        return resourceMap.get(id);
     }
 
 }

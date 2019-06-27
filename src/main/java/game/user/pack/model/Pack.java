@@ -51,27 +51,25 @@ public class Pack {
                 RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
             }
 
-            while (remainCount > 0) {
-                for (PackSquare square : squareList) {
-                    if (remainCount <= 0) {
-                        return;
-                    }
-                    int counts = square.getCounts();
-                    // 此次添加的实际数量
-                    int addCount = remainCount > (overLimit - counts) ? overLimit - counts : remainCount;
-                    square.addItem(item, addCount);
-                    remainCount -= addCount;
+            for (PackSquare square : squareList) {
+                if (remainCount <= 0) {
+                    return;
+                }
+                int counts = square.getCounts();
+                // 此次添加的实际数量
+                int addCount = remainCount > (overLimit - counts) ? overLimit - counts : remainCount;
+                square.addItem(item, addCount);
+                remainCount -= addCount;
+            }
+
+            for (PackSquare square : emptySquares) {
+                if (remainCount <= 0) {
+                    return;
                 }
 
-                for (PackSquare square : emptySquares) {
-                    if (remainCount <= 0) {
-                        return;
-                    }
-
-                    int addCount = remainCount > overLimit ? overLimit : remainCount;
-                    square.addItem(item, addCount);
-                    remainCount -= addCount;
-                }
+                int addCount = remainCount > overLimit ? overLimit : remainCount;
+                square.addItem(item, addCount);
+                remainCount -= addCount;
             }
 
         } else if (overLimit == 1) {

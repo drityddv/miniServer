@@ -1,10 +1,5 @@
 package game.base.game.attribute;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import game.base.game.player.PlayerModel;
-
 /**
  * @author : ddv
  * @since : 2019/6/25 上午9:50
@@ -12,27 +7,36 @@ import game.base.game.player.PlayerModel;
 
 public class Attribute {
 
-    private PlayerModel model;
+    private AttributeType attributeType;
 
-    private Map<AttributeType, Long> modelValue = new HashMap<>();
+    private long value;
 
-    public PlayerModel getModel() {
-        return model;
+    public static Attribute valueOf(AttributeType attributeType, long value) {
+        Attribute attribute = new Attribute();
+        attribute.attributeType = attributeType;
+        attribute.value = value;
+        return attribute;
     }
 
-    public void setModel(PlayerModel model) {
-        this.model = model;
+    public void alter(long value) {
+        attributeType.alter(this, value);
     }
 
-    public Map<AttributeType, Long> getModelValue() {
-        return modelValue;
+    // get and set
+    public AttributeType getAttributeType() {
+        return attributeType;
     }
 
-    public void setModelValue(Map<AttributeType, Long> modelValue) {
-        this.modelValue = modelValue;
+    public void setAttributeType(AttributeType attributeType) {
+        this.attributeType = attributeType;
     }
 
-    public void addAttribute(AttributeType attributeType, Long value) {
-        modelValue.put(attributeType, value);
+    public long getValue() {
+        return value;
     }
+
+    public void setValue(long value) {
+        this.value = value;
+    }
+
 }

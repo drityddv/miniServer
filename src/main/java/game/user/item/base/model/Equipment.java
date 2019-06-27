@@ -15,4 +15,6 @@ public class Equipment extends AbstractItem {
     private int score;
     // 装备的部位
     private int type;
+
+    private int equipType;
 }
