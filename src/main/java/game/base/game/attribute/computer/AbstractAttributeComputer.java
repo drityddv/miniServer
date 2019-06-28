@@ -11,12 +11,12 @@ public abstract class AbstractAttributeComputer implements IAttributeComputer {
 
     private AttributeType attributeType;
 
+    public AbstractAttributeComputer(AttributeType type) {
+        this.attributeType = type;
+    }
+
     @Override
     public AttributeType getAttributeType() {
         return this.attributeType;
-    }
-
-    public AbstractAttributeComputer(AttributeType type) {
-        this.attributeType = type;
     }
 }

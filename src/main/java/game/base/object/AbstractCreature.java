@@ -23,13 +23,12 @@ public abstract class AbstractCreature<T extends AbstractCreature> extends Abstr
         setObjectId(objectId);
     }
 
-	public CreatureAttributeContainer<? extends AbstractCreature> getAttributeContainer() {
-		return attributeContainer;
-	}
+    public CreatureAttributeContainer<? extends AbstractCreature> getAttributeContainer() {
+        return attributeContainer;
+    }
 
-	public void setAttributeContainer(CreatureAttributeContainer<T> attributeContainer) {
-		this.attributeContainer = attributeContainer;
-	}
-
+    public void setAttributeContainer(CreatureAttributeContainer<T> attributeContainer) {
+        this.attributeContainer = attributeContainer;
+    }
 
 }

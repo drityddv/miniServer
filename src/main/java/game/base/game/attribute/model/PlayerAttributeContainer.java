@@ -27,9 +27,8 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
         super(owner);
     }
 
-
-	@Override
-	protected void recompute(AttributeUpdateRecords records, boolean needSyn) {
-		super.recompute(records, needSyn);
-	}
+    @Override
+    protected void recompute(AttributeUpdateRecords records, boolean needSyn) {
+        super.recompute(records, needSyn);
+    }
 }

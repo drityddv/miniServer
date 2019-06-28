@@ -34,6 +34,13 @@ public abstract class AttributeContainer<T> {
      */
     protected Map<AttributeType, Attribute> accumulateAttributes = new HashMap<>();
 
+    // get and set
+    public AttributeContainer() {}
+
+    public AttributeContainer(T owner) {
+        this.owner = owner;
+    }
+
     /**
      * 将模块属性累加到属性集中
      *
@@ -64,6 +71,24 @@ public abstract class AttributeContainer<T> {
     }
 
     /**
+     * 模块属性变动 调用这个方法 如果要删除某个模块 不要调用这里
+     *
+     * @param id
+     * @param attrs
+     * @param needSync
+     */
+    public void putAttributesWithRecompute(AttributeId id, List<Attribute> attrs, boolean needSync) {
+        AttributeUpdateRecords records = new AttributeUpdateRecords(id);
+        // 这里的record传递给模块各自的计算方法 不需要全部遍历一遍去计算
+        if (modelAttributeSet.containsKey(id) || (attrs != null && attrs.size() > 0)) {
+
+            putAttributes(id, attrs, records);
+            recompute(records, needSync);
+        }
+
+    }
+
+    /**
      * 设置模块属性,不重新计算
      *
      * @param id
@@ -74,7 +99,6 @@ public abstract class AttributeContainer<T> {
             return;
         }
         putAttributes(id, attributes, null);
-
     }
 
     /**
@@ -82,7 +106,13 @@ public abstract class AttributeContainer<T> {
      */
     public void putAttributes(AttributeId id, List<Attribute> attrs, AttributeUpdateRecords records) {
         if (records != null) {
-            // 需要做更新
+            AttributeSet oldAttrs = modelAttributeSet.get(id);
+            records.addAttrs(attrs);
+
+            if (oldAttrs != null) {
+                records.addAttrs(oldAttrs.getAttributeMap().values());
+                records.setRemovedAttributes(oldAttrs.getAttributeMap().values());
+            }
         }
 
         if (attrs.size() == 0) {
@@ -95,13 +125,6 @@ public abstract class AttributeContainer<T> {
     // 容器加载完成后重新计算
     public void containerRecompute() {
         recompute(null, false);
-    }
-
-    // get and set
-    public AttributeContainer() {}
-
-    public AttributeContainer(T owner) {
-        this.owner = owner;
     }
 
     public T getOwner() {

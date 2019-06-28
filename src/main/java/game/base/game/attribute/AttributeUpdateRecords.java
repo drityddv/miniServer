@@ -29,6 +29,10 @@ public class AttributeUpdateRecords {
      */
     private Collection<Attribute> removedAttributes = null;
 
+    public AttributeUpdateRecords(AttributeId attributeId) {
+        this.attributeId = attributeId;
+    }
+
     public void addAttrs(Collection<Attribute> attrs) {
         if (CollectionUtil.isNotBlank(attrs)) {
             for (Attribute attr : attrs) {
@@ -50,24 +54,19 @@ public class AttributeUpdateRecords {
         }
     }
 
-    public AttributeUpdateRecords(AttributeId attributeId) {
-        this.attributeId = attributeId;
+    public AttributeId getAttributeId() {
+        return attributeId;
     }
 
+    public Set<AttributeType> getTypes() {
+        return types;
+    }
 
-	public AttributeId getAttributeId() {
-		return attributeId;
-	}
+    public Collection<Attribute> getRemovedAttributes() {
+        return removedAttributes;
+    }
 
-	public Set<AttributeType> getTypes() {
-		return types;
-	}
-
-	public Collection<Attribute> getRemovedAttributes() {
-		return removedAttributes;
-	}
-
-	public void setRemovedAttributes(Collection<Attribute> removedAttributes) {
-		this.removedAttributes = removedAttributes;
-	}
+    public void setRemovedAttributes(Collection<Attribute> removedAttributes) {
+        this.removedAttributes = removedAttributes;
+    }
 }

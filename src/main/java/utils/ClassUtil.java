@@ -6,10 +6,6 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import game.base.game.attribute.CreatureAttributeContainer;
-import game.base.game.attribute.model.PlayerAttributeContainer;
-import game.scene.map.packet.CM_EnterMap;
-import game.user.player.model.Player;
 import io.protostuff.Morph;
 import net.utils.ProtoStuffUtil;
 
@@ -95,20 +91,21 @@ public class ClassUtil {
         return null;
     }
 
-    static class A{
-    	@Morph
-		int a = 10;
+    public static void main(String[] args) {
+        A a = new A();
+        // CreatureAttributeContainer<Player> playerCreatureAttributeContainer = new
+        // PlayerAttributeContainer(Player.valueOf("ddv"));
+        byte[] serialize = ProtoStuffUtil.serialize(a);
+        System.out.println(serialize.length);
+        A target = ProtoStuffUtil.deserialize(serialize, A.class);
 
-    	int b = 10;
-	}
+        System.out.println(1);
+    }
 
-    public static void main(String[] args){
-    	A a = new A();
-//		CreatureAttributeContainer<Player> playerCreatureAttributeContainer = new PlayerAttributeContainer(Player.valueOf("ddv"));
-		byte[] serialize = ProtoStuffUtil.serialize(a);
-		System.out.println(serialize.length);
-		A target = ProtoStuffUtil.deserialize(serialize,A.class);
+    static class A {
+        @Morph
+        int a = 10;
 
-		System.out.println(1);
-	}
+        int b = 10;
+    }
 }

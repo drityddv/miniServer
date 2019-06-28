@@ -16,7 +16,15 @@ public enum AttributeIdEnum implements AttributeId {
         }
     },
 
-    ;
+    /**
+     * 基础装备
+     */
+    BASE_EQUIPMENT {
+        @Override
+        public String getName() {
+            return "BASE_EQUIPMENT";
+        }
+    };
 
     @Override
     public String getName() {

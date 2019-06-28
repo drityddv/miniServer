@@ -17,19 +17,6 @@ public enum ItemEffectType {
      */
     EXP(1, "EXP", ExpEffectProcessor.class),;
 
-    /**
-     * typeId
-     */
-    private int id;
-    /**
-     * 配置表的type
-     */
-    private String effectType;
-    /**
-     * 具体的执行器
-     */
-    private Class<? extends IEffectProcessor> effectProcessor;
-
     private static Map<String, IEffectProcessor> processors;
 
     static {
@@ -44,15 +31,28 @@ public enum ItemEffectType {
         }
     }
 
-    // 获取处理器
-    public static IEffectProcessor getProcessor(String type) {
-        return processors.get(type);
-    }
+    /**
+     * typeId
+     */
+    private int id;
+    /**
+     * 配置表的type
+     */
+    private String effectType;
+    /**
+     * 具体的执行器
+     */
+    private Class<? extends IEffectProcessor> effectProcessor;
 
     ItemEffectType(int id, String effectType, Class<? extends IEffectProcessor> effectProcessor) {
         this.id = id;
         this.effectType = effectType;
         this.effectProcessor = effectProcessor;
+    }
+
+    // 获取处理器
+    public static IEffectProcessor getProcessor(String type) {
+        return processors.get(type);
     }
 
     public int getId() {

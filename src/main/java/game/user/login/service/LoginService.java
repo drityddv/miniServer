@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.game.attribute.id.AttributeIdEnum;
 import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
@@ -56,8 +57,14 @@ public class LoginService implements ILoginService {
         session.putSessionAttribute("accountId", accountId);
         SessionManager.registerPlayerSession(accountId, session);
 
-        SpringContext.getEventBus().pushEventSyn(
-            PlayerLoginBeforeEvent.valueOf(SpringContext.getPlayerService().getPlayerByAccountId(accountId)));
+        Player player = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
+        SpringContext.getEventBus().pushEventSyn(PlayerLoginBeforeEvent.valueOf(player));
+
+        // 重新计算属性
+        player.getAttributeContainer().containerRecompute();
+
+        player.getAttributeContainer().putAttributesWithRecompute(AttributeIdEnum.BASE_EQUIPMENT,
+            SpringContext.getPlayerService().getResource(2).getAttributeList(), false);
 
         PacketUtil.send(session, new SM_LoginSuccess());
     }
@@ -86,9 +93,7 @@ public class LoginService implements ILoginService {
 
     @Override
     public void register(USession session, CM_UserRegister request) {
-        logger.info("register invoked ...");
         String accountId = request.getAccountId();
-
         UserEnt userEnt = loginManager.load(accountId);
 
         if (userEnt != null) {
