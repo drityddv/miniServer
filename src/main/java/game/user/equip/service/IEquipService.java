@@ -70,4 +70,18 @@ public interface IEquipService {
      */
     void loadEquipStorage(Player player);
 
+    /**
+     * 客户端请求发包装备栏数据
+     *
+     * @param player
+     */
+    void requestEquipStorage(Player player);
+
+    /**
+     * 客户端请求装备栏的装备数据
+     *
+     * @param player
+     * @param position
+     */
+    void requestEquipment(Player player, int position);
 }

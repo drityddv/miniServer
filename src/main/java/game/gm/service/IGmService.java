@@ -1,6 +1,7 @@
 package game.gm.service;
 
 import game.gm.packet.CM_GmCommand;
+import game.user.player.model.Player;
 import net.model.USession;
 
 /**
@@ -15,8 +16,8 @@ public interface IGmService {
     /**
      * 反射调用
      *
-     * @param session
+     * @param player
      * @param request
      */
-    void invoke(USession session, CM_GmCommand request);
+    void invoke(Player player, CM_GmCommand request);
 }

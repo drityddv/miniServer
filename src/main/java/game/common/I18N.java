@@ -51,4 +51,12 @@ public interface I18N {
 
     // 操作容器的下标非法 防止非法发包
     int INDEX_ERROR = 14;
+
+    // 执行器为空
+    int ENUM_NULL = 15;
+
+	/**
+	 * 穿戴装备条件不满足
+	 */
+	int EQUIP_WEAR_CONDITION_NOT_QUALIFIED = 16;
 }

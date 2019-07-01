@@ -22,6 +22,11 @@
     <!--玩家装备栏相关  140 - 160 -->
     <message id="140" value="game.user.equip.packet.CM_EquipStorage"/>
     <message id="141" value="game.user.equip.packet.SM_EquipStorage"/>
+    <message id="142" value="game.user.equip.packet.CM_DressEquip"/>
+    <message id="143" value="game.user.equip.packet.CM_UndressEquip"/>
+    <message id="144" value="game.user.equip.packet.CM_EnhanceEquipSquare"/>
+    <message id="145" value="game.user.equip.packet.SM_EquipmentVo"/>
+    <message id="146" value="game.user.equip.packet.CM_Equipment"/>
 
     <!--地图协议根据id走地图线程池-->
     <!--地图基础协议 2001 - 2005-->

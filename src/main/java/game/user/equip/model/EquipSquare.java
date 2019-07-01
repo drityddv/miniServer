@@ -30,7 +30,7 @@ public class EquipSquare {
     private transient Map<AttributeType, Attribute> finalAttrs = new HashMap<>();
     // 装备的单独属性
     private transient Map<AttributeType, Attribute> equipAttrs = new HashMap<>();
-    // 孔位的单独属性
+    // 孔位的单独属性 不要直接使用 请通过service访问资源文件
     private transient Map<AttributeType, Attribute> squareAttrs = new HashMap<>();
 
     public static EquipSquare valueOf(EquipPosition equipPosition) {
@@ -40,8 +40,15 @@ public class EquipSquare {
         square.equipPosition = equipPosition;
         square.level = equipEnhanceResource.getLevel();
         square.configId = equipEnhanceResource.getConfigId();
-        AttributeUtils.accumulateToMap(equipEnhanceResource.getAttributes(), square.squareAttrs);
+        square.squareAttrs = equipEnhanceResource.getAttributeMap();
         return square;
+    }
+
+    // 直接访问资源文件的属性
+    public Map<AttributeType, Attribute> getSquareAttrs() {
+        EquipSquareEnhanceResource resource =
+            SpringContext.getEquipService().getEquipEnhanceResource(equipPosition.getConfigId());
+        return resource.getAttributeMap();
     }
 
     public boolean isEmpty() {
@@ -58,6 +65,9 @@ public class EquipSquare {
     }
 
     public void reSetAttrs() {
+        // 更新孔位属性
+        squareAttrs = getSquareAttrs();
+
         // 更新装备属性
         if (equipment != null) {
             List<Attribute> equipmentAttrs = equipment.getAttributeList();
@@ -87,15 +97,7 @@ public class EquipSquare {
         this.squareAttrs = newSquareAttrs;
     }
 
-    /// get and set
-
-    public EquipPosition getEquipPosition() {
-        return equipPosition;
-    }
-
-    public void setEquipPosition(EquipPosition equipPosition) {
-        this.equipPosition = equipPosition;
-    }
+    // get and set
 
     public Equipment getEquipment() {
         return equipment;
@@ -117,24 +119,8 @@ public class EquipSquare {
         return finalAttrs;
     }
 
-    public void setFinalAttrs(Map<AttributeType, Attribute> finalAttrs) {
-        this.finalAttrs = finalAttrs;
-    }
-
     public Map<AttributeType, Attribute> getEquipAttrs() {
         return equipAttrs;
-    }
-
-    public void setEquipAttrs(Map<AttributeType, Attribute> equipAttrs) {
-        this.equipAttrs = equipAttrs;
-    }
-
-    public Map<AttributeType, Attribute> getSquareAttrs() {
-        return squareAttrs;
-    }
-
-    public void setSquareAttrs(Map<AttributeType, Attribute> squareAttrs) {
-        this.squareAttrs = squareAttrs;
     }
 
     public long getConfigId() {

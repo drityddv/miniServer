@@ -75,6 +75,13 @@ public class EquipStorage {
         return MAX_SIZE;
     }
 
+    /**
+     * 从配置文件中加载属性
+     */
+    public void load() {
+        equipSlotMap.values().forEach(EquipSquare::reSetAttrs);
+    }
+
     // get and set
 
     public Map<Integer, EquipSquare> getEquipSlotMap() {
@@ -87,6 +94,7 @@ public class EquipStorage {
 
     @Override
     public String toString() {
-        return "EquipStorage{" + "equipSlotMap=" + equipSlotMap + '}';
+        return "EquipStorage{" + "equipSlotMap=" + '\n' + equipSlotMap + '}';
     }
+
 }

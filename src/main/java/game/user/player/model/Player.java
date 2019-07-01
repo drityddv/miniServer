@@ -2,6 +2,7 @@ package game.user.player.model;
 
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.object.AbstractCreature;
+import game.user.equip.model.EquipStorage;
 import game.user.pack.model.Pack;
 import spring.SpringContext;
 import utils.IdUtil;
@@ -20,6 +21,10 @@ public class Player extends AbstractCreature<Player> {
     private long playerId;
 
     private int level;
+    /**
+     * 黄金
+     */
+    private int gold;
 
     private Player() {}
 
@@ -28,6 +33,7 @@ public class Player extends AbstractCreature<Player> {
         player.accountId = accountId;
         player.playerId = IdUtil.getLongId();
         player.level = 1;
+        player.gold = 1000;
         player.setAttributeContainer(new PlayerAttributeContainer(player));
         return player;
     }
@@ -39,6 +45,10 @@ public class Player extends AbstractCreature<Player> {
 
     public Pack getPack() {
         return SpringContext.getPackService().getPlayerPack(this);
+    }
+
+    public EquipStorage getEquipStorage() {
+        return SpringContext.getEquipService().getEquipStorage(this);
     }
 
     // get and set
@@ -64,6 +74,10 @@ public class Player extends AbstractCreature<Player> {
 
     public void setPlayerId(long playerId) {
         this.playerId = playerId;
+    }
+
+    public int getGold() {
+        return gold;
     }
 
     @Override

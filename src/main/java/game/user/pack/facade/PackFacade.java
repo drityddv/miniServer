@@ -10,10 +10,8 @@ import game.common.packet.SM_Message;
 import game.user.pack.packet.CM_PackInfo;
 import game.user.player.model.Player;
 import middleware.anno.HandlerAnno;
-import net.model.USession;
 import net.utils.PacketUtil;
 import spring.SpringContext;
-import utils.SimpleUtil;
 
 /**
  * @author : ddv
@@ -27,18 +25,17 @@ public class PackFacade {
     /**
      * 玩家获取背包详情
      *
-     * @param session
+     * @param player
      * @param request
      */
     @HandlerAnno
-    public void getPlayerPack(USession session, CM_PackInfo request) {
+    public void getPlayerPack(Player player, CM_PackInfo request) {
         try {
-            Player player = SimpleUtil.getPlayerFromSession(session);
             SpringContext.getPackService().getPlayerPack(player);
         } catch (RequestException e) {
-            PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
-            PacketUtil.send(session, SM_Message.valueOf(I18N.SERVER_ERROR));
+            PacketUtil.send(player, SM_Message.valueOf(I18N.SERVER_ERROR));
             e.printStackTrace();
         }
     }

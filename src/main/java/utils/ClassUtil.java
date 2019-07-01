@@ -1,16 +1,13 @@
 package utils;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-
-import io.protostuff.Morph;
-import net.utils.ProtoStuffUtil;
-import org.springframework.util.CollectionUtils;
+import java.util.Map;
 
 /**
  * @author : ddv
@@ -94,16 +91,37 @@ public class ClassUtil {
         return null;
     }
 
-	public static List<Field> getFieldsByAnnotation(Object object, Class<? extends Annotation> annotation) {
-		List<Field> list = new ArrayList<>();
-		Field[] declaredFields = object.getClass().getDeclaredFields();
-		for (Field field : declaredFields) {
-			if (field.isAnnotationPresent(annotation)) {
-				field.setAccessible(true);
-				list.add(field);
-			}
-		}
-		return list;
-	}
+    public static List<Field> getFieldsByAnnotation(Object object, Class<? extends Annotation> annotation) {
+        List<Field> list = new ArrayList<>();
+        Field[] declaredFields = object.getClass().getDeclaredFields();
+        for (Field field : declaredFields) {
+            if (field.isAnnotationPresent(annotation)) {
+                field.setAccessible(true);
+                list.add(field);
+            }
+        }
+        return list;
+    }
+
+    public static <T> T createProcessor(Class<T> clazz, Map<Object, Object> params, int constructorParamCount) {
+        Constructor<?>[] constructors = clazz.getConstructors();
+        for (Constructor<?> constructor : constructors) {
+            if (constructor.getParameterCount() == constructorParamCount) {
+                try {
+                    return (T)constructor.newInstance(params);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (constructorParamCount == 0) {
+            try {
+                return clazz.newInstance();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 }

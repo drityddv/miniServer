@@ -58,6 +58,7 @@ public class LoginService implements ILoginService {
         SessionManager.registerPlayerSession(accountId, session);
 
         Player player = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
+        player.getAttributeContainer().clear();
         SpringContext.getEventBus().pushEventSyn(PlayerLoginBeforeEvent.valueOf(player));
 
         // 重新计算属性

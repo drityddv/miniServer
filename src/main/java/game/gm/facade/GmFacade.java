@@ -8,8 +8,8 @@ import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.gm.packet.CM_GmCommand;
+import game.user.player.model.Player;
 import middleware.anno.HandlerAnno;
-import net.model.USession;
 import net.utils.PacketUtil;
 import spring.SpringContext;
 
@@ -25,18 +25,18 @@ public class GmFacade {
     /**
      * 用户登录
      *
-     * @param session
+     * @param player
      * @param request
      */
     @HandlerAnno
-    public void invoke(USession session, CM_GmCommand request) {
+    public void invoke(Player player, CM_GmCommand request) {
         try {
-            SpringContext.getGmService().invoke(session, request);
-            PacketUtil.send(session, SM_Message.valueOf(I18N.OPERATION_SUCCESS));
+            SpringContext.getGmService().invoke(player, request);
+            PacketUtil.send(player, SM_Message.valueOf(I18N.OPERATION_SUCCESS));
         } catch (RequestException e) {
-            PacketUtil.send(session, SM_Message.valueOf(e.getErrorCode()));
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
-            PacketUtil.send(session, SM_Message.valueOf(I18N.SERVER_ERROR));
+            PacketUtil.send(player, SM_Message.valueOf(I18N.SERVER_ERROR));
             logger.error(e.toString());
         }
     }

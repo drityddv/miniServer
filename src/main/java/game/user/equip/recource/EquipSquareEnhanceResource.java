@@ -40,6 +40,7 @@ public class EquipSquareEnhanceResource {
      * 属性 实际存放的是LockAttribute
      */
     private List<Attribute> attributes;
+    private Map<AttributeType, Attribute> attributeMap;
     private String attributeString;
     /**
      * 强化消耗
@@ -57,10 +58,15 @@ public class EquipSquareEnhanceResource {
     private void analysisAttrs() {
         String[] attrs = attributeString.split(",");
         attributes = new ArrayList<>();
+        attributeMap = new HashMap<>();
         for (String attr : attrs) {
             String[] params = attr.split(":");
             attributes.add(LockAttribute.wrapper(Attribute.valueOf(AttributeType.getByName(params[0]),
                 JodaUtil.convertFromString(Integer.class, params[1]))));
+        }
+
+        for (Attribute attribute : attributes) {
+            attributeMap.put(attribute.getAttributeType(), attribute);
         }
     }
 
@@ -68,7 +74,7 @@ public class EquipSquareEnhanceResource {
         processors = new ArrayList<>();
         String[] consumers = consumeString.split(",");
         for (String consumer : consumers) {
-            Map<Long, Integer> paramsMap = new HashMap<>();
+            Map<Object, Object> paramsMap = new HashMap<>();
             String[] params = consumer.split(":");
             EquipConsumeType consumeType = EquipConsumeType.getConsumer(params[0]);
             paramsMap.put(JodaUtil.convertFromString(Long.class, params[1]),
@@ -98,7 +104,11 @@ public class EquipSquareEnhanceResource {
         return attributes;
     }
 
-    public List<AbstractConsumeProcessor> getProcessors() {
+	public Map<AttributeType, Attribute> getAttributeMap() {
+		return attributeMap;
+	}
+
+	public List<AbstractConsumeProcessor> getProcessors() {
         return processors;
     }
 

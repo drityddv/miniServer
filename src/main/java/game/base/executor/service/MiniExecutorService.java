@@ -36,7 +36,7 @@ public class MiniExecutorService implements IMiniExecutorService {
             @Override
             public void run() {
                 logger.info("线程池接受任务[{}]", packet.getClass());
-                handlerInvoke.invoke(session, packet);
+                handlerInvoke.invoke(SimpleUtil.getPlayerFromSession(session), packet);
             }
         });
     }

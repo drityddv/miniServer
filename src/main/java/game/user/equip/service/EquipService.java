@@ -7,7 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.game.attribute.id.AttributeIdEnum;
+import game.common.I18N;
 import game.common.exception.RequestException;
+import game.user.equip.base.condition.AbstractConditionProcessor;
 import game.user.equip.base.consumer.AbstractConsumeProcessor;
 import game.user.equip.constant.EquipPosition;
 import game.user.equip.entity.EquipStorageEnt;
@@ -15,8 +18,10 @@ import game.user.equip.model.EquipSquare;
 import game.user.equip.model.EquipStorage;
 import game.user.equip.model.Equipment;
 import game.user.equip.packet.SM_EquipStorage;
+import game.user.equip.packet.SM_EquipmentVo;
 import game.user.equip.recource.EquipResource;
 import game.user.equip.recource.EquipSquareEnhanceResource;
+import game.user.item.base.model.AbstractItem;
 import game.user.pack.service.IPackService;
 import game.user.player.model.Player;
 import net.utils.PacketUtil;
@@ -60,6 +65,8 @@ public class EquipService implements IEquipService {
         EquipSquareEnhanceResource newEnhanceResource =
             equipManager.getEquipEnhanceResource(resource.getNextLevelConfigId());
         equipSquare.enhance(newEnhanceResource);
+        equipManager.save(ent);
+
         equipStorage.reCompute(player);
         sendStorageInfo(player);
     }
@@ -68,7 +75,7 @@ public class EquipService implements IEquipService {
     @Override
     public void equip(Player player, long itemConfigId, int position) {
         IPackService packService = SpringContext.getPackService();
-        game.user.item.base.model.AbstractItem item = packService.getItemFromPack(player, itemConfigId);
+        AbstractItem item = packService.getItemFromPack(player, itemConfigId);
         if (item == null) {
             logger.warn("玩家[{}]穿戴装备失败,道具[{}]不存在于背包中", player.getAccountId(), itemConfigId);
             return;
@@ -80,6 +87,15 @@ public class EquipService implements IEquipService {
             EquipStorageEnt ent = getEquipStorageEnt(player);
             EquipStorage equipStorage = ent.getEquipStorage();
             EquipPosition equipPosition = EquipPosition.getPosition(position);
+
+            // 穿戴条件检查
+            EquipResource equipResource = equipManager.getEquipResource(equipment.getConfigId());
+            for (AbstractConditionProcessor processor : equipResource.getConditionProcessors()) {
+                boolean result = processor.doVerify(player);
+                if (!result) {
+                    RequestException.throwException(I18N.EQUIP_WEAR_CONDITION_NOT_QUALIFIED);
+                }
+            }
 
             if (equipment.getEquipPosition() != equipPosition) {
                 logger.warn("玩家[{}]穿戴装备失败,装备栏类型[{}]和装备不匹配", player.getAccountId(), equipPosition.getId());
@@ -142,7 +158,24 @@ public class EquipService implements IEquipService {
 
     @Override
     public void loadEquipStorage(Player player) {
+        EquipStorage equipStorage = getEquipStorage(player);
+        equipStorage.load();
+        player.getAttributeContainer().putAttributes(AttributeIdEnum.BASE_EQUIPMENT,
+            equipStorage.getCurrentAttribute());
+    }
 
+    @Override
+    public void requestEquipStorage(Player player) {
+        sendStorageInfo(player);
+    }
+
+    @Override
+    public void requestEquipment(Player player, int position) {
+        EquipPosition.getPosition(position);
+        EquipSquare equipSquare = getEquipStorage(player).getEquipSquare(position);
+        Equipment equipment = equipSquare.getEquipment();
+        EquipResource equipResource = getEquipResource(equipment.getConfigId());
+        PacketUtil.send(player, SM_EquipmentVo.valueOf(equipment, equipResource.getAttributes()));
     }
 
     private void sendStorageInfo(Player player) {

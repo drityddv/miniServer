@@ -31,4 +31,15 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
     protected void recompute(AttributeUpdateRecords records, boolean needSyn) {
         super.recompute(records, needSyn);
     }
+
+    @Override
+    public void clear() {
+        modelAttributeSet.clear();
+        accumulateAttributes.clear();
+        finalAttributes.clear();
+
+        finalAttrExcludeBuff.clear();
+        originAttributes.clear();
+
+    }
 }

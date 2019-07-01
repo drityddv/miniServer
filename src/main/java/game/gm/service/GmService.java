@@ -3,6 +3,7 @@ package game.gm.service;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import game.user.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class GmService implements IGmService {
     private static final Logger logger = LoggerFactory.getLogger(GmService.class);
 
     @Override
-    public void invoke(USession session, CM_GmCommand request) {
+    public void invoke(Player player, CM_GmCommand request) {
         String[] split = request.getMethodAndParams().split(" ");
         String methodName = split[0];
 
@@ -32,7 +33,7 @@ public class GmService implements IGmService {
         for (Method method : declaredMethods) {
             if (method.getName().equals(methodName)) {
                 try {
-                    doInvoke(session, method, split);
+                    doInvoke(player, method, split);
                 } catch (Exception e) {
                     logger.error("gm命令调用出错,指令[{}],参数个数[{}]", methodName, split.length);
                     e.printStackTrace();
@@ -42,7 +43,7 @@ public class GmService implements IGmService {
     }
 
     // params 记得从下标1开始走 , 0用来占位方法名
-    private void doInvoke(USession session, Method method, String[] params)
+    private void doInvoke(Player player, Method method, String[] params)
         throws InvocationTargetException, IllegalAccessException {
         GM_Command gmCommand = SpringContext.getGmCommand();
         Class<?>[] parameterTypes = method.getParameterTypes();
@@ -50,20 +51,20 @@ public class GmService implements IGmService {
         // gm命令都用USession占了一个参数位 目前出去session 最大三个参数
         switch (parameterTypes.length - 1) {
             case 0: {
-                method.invoke(gmCommand, session);
+                method.invoke(gmCommand, player);
                 break;
             }
             case 1: {
-                method.invoke(gmCommand, session, JodaUtil.convertFromString(parameterTypes[1], params[1]));
+                method.invoke(gmCommand, player, JodaUtil.convertFromString(parameterTypes[1], params[1]));
                 break;
             }
             case 2: {
-                method.invoke(gmCommand, session, JodaUtil.convertFromString(parameterTypes[1], params[1]),
+                method.invoke(gmCommand, player, JodaUtil.convertFromString(parameterTypes[1], params[1]),
                     JodaUtil.convertFromString(parameterTypes[2], params[2]));
                 break;
             }
             case 3: {
-                method.invoke(gmCommand, session, JodaUtil.convertFromString(parameterTypes[1], params[1]),
+                method.invoke(gmCommand, player, JodaUtil.convertFromString(parameterTypes[1], params[1]),
                     JodaUtil.convertFromString(parameterTypes[2], params[2]),
                     JodaUtil.convertFromString(parameterTypes[3], params[3]));
                 break;

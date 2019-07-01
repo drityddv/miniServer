@@ -6,6 +6,7 @@ import java.util.Map;
 
 import game.user.equip.base.consumer.AbstractConsumeProcessor;
 import game.user.equip.base.consumer.ItemConsumeProcessor;
+import utils.ClassUtil;
 
 /**
  * @author : ddv
@@ -30,24 +31,9 @@ public enum EquipConsumeType {
         return NAME_TO_TYPE.get(typeName);
     }
 
-    public AbstractConsumeProcessor createProcessor(Map<Long, Integer> consumeParams) {
-        Constructor<?>[] constructors = processor.getConstructors();
-        try {
-            for (Constructor<?> constructor : constructors) {
-                if (constructor.getParameterCount() > 0) {
-                    Constructor<? extends AbstractConsumeProcessor> processorConstructor =
-                        processor.getConstructor(Map.class);
+    public AbstractConsumeProcessor createProcessor(Map<Object, Object> consumeParams) {
 
-                    return processorConstructor.newInstance(consumeParams);
-                } else {
-                    return processor.newInstance();
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+        return ClassUtil.createProcessor(processor,consumeParams,1);
     }
 
     private String typeName;
