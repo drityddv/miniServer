@@ -11,7 +11,7 @@ import spring.SpringContext;
 
 public abstract class AbstractItem extends AbstractGameObject implements Comparable<AbstractItem>, Cloneable {
 
-    private long configId;
+    protected long configId;
 
     public int getOverLimit() {
         return getResource().getOverLimit();

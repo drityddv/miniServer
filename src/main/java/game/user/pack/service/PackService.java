@@ -112,6 +112,14 @@ public class PackService implements IPackService {
         sendPackDetails(player, pack);
     }
 
+    @Override
+    public AbstractItem getItemFromPack(Player player, long configId) {
+        Pack pack = player.getPack();
+        AbstractItem item = createItem(configId);
+        return pack.getItem(item);
+
+    }
+
     private Pack getPack(Player player) {
         return packManager.loadOrCreate(player.getPlayerId()).getPack();
     }

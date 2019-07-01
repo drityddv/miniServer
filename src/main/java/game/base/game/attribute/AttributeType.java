@@ -207,12 +207,6 @@ public enum AttributeType {
         return COMPUTERS;
     }
 
-    public static void main(String[] args) {
-        for (AttributeType attributeType : AttributeType.values()) {
-            System.out.print(attributeType.name() + ":");
-        }
-    }
-
     /**
      * 获取对此属性影响的属性
      *

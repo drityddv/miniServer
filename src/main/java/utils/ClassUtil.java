@@ -3,11 +3,14 @@ package utils;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import io.protostuff.Morph;
 import net.utils.ProtoStuffUtil;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author : ddv
@@ -91,21 +94,16 @@ public class ClassUtil {
         return null;
     }
 
-    public static void main(String[] args) {
-        A a = new A();
-        // CreatureAttributeContainer<Player> playerCreatureAttributeContainer = new
-        // PlayerAttributeContainer(Player.valueOf("ddv"));
-        byte[] serialize = ProtoStuffUtil.serialize(a);
-        System.out.println(serialize.length);
-        A target = ProtoStuffUtil.deserialize(serialize, A.class);
+	public static List<Field> getFieldsByAnnotation(Object object, Class<? extends Annotation> annotation) {
+		List<Field> list = new ArrayList<>();
+		Field[] declaredFields = object.getClass().getDeclaredFields();
+		for (Field field : declaredFields) {
+			if (field.isAnnotationPresent(annotation)) {
+				field.setAccessible(true);
+				list.add(field);
+			}
+		}
+		return list;
+	}
 
-        System.out.println(1);
-    }
-
-    static class A {
-        @Morph
-        int a = 10;
-
-        int b = 10;
-    }
 }

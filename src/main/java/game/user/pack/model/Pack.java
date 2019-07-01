@@ -3,6 +3,8 @@ package game.user.pack.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.CollectionUtils;
+
 import game.common.I18N;
 import game.common.exception.RequestException;
 import game.user.item.base.model.AbstractItem;
@@ -79,9 +81,13 @@ public class Pack {
                 RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
             }
 
-            emptySquares.forEach(packSquare -> {
-                packSquare.addUnOverLimitItem(item);
-            });
+            for (PackSquare emptySquare : emptySquares) {
+                emptySquare.addUnOverLimitItem(item);
+                num--;
+                if (num == 0) {
+                    break;
+                }
+            }
 
         } else {
             // 重叠无限制道具
@@ -100,16 +106,13 @@ public class Pack {
     //
     public int countItemNum(AbstractItem item) {
         int resultNum = 0;
-
         long configId = item.getConfigId();
-
         for (PackSquare square : packSquares) {
             AbstractItem squareItem = square.getItem();
             if (squareItem != null && squareItem.getConfigId() == configId) {
                 resultNum += square.getCounts();
             }
         }
-
         return resultNum;
     }
 
@@ -198,8 +201,16 @@ public class Pack {
                 squareList.add(packSquare);
             }
         }
-
         return squareList;
+    }
+
+    public AbstractItem getItem(AbstractItem item) {
+        List<PackSquare> square = getSquare(item);
+        if (CollectionUtils.isEmpty(square)) {
+            return null;
+        } else {
+            return square.get(0).getItem();
+        }
     }
 
     // get and set
@@ -229,7 +240,7 @@ public class Pack {
 
     @Override
     public String toString() {
-        return "Pack{" + "playerId=" + playerId + ", size=" + size + ", packSquares=" + packSquares + '}';
+        return "Pack{" + "playerId=" + playerId + ", size=" + size + ", packSquares=" + '\n' + packSquares + '}';
     }
 
 }

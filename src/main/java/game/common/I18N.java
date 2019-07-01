@@ -48,4 +48,7 @@ public interface I18N {
 
     // 道具数量不足
     int ITEM_NUM_NOT_ENOUGH = 13;
+
+    // 操作容器的下标非法 防止非法发包
+    int INDEX_ERROR = 14;
 }

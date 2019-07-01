@@ -81,7 +81,6 @@ public abstract class AttributeContainer<T> {
         AttributeUpdateRecords records = new AttributeUpdateRecords(id);
         // 这里的record传递给模块各自的计算方法 不需要全部遍历一遍去计算
         if (modelAttributeSet.containsKey(id) || (attrs != null && attrs.size() > 0)) {
-
             putAttributes(id, attrs, records);
             recompute(records, needSync);
         }

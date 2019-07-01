@@ -31,7 +31,7 @@ public class SceneMapManager implements IManager {
     private Map<Long, IMap> sceneMaps = new ConcurrentHashMap<>();
 
     // 对应玩家-存在地图状态表
-    private Map<Long, Long> playerMaps = new ConcurrentHashMap<>();
+    private volatile Map<Long, Long> playerMaps = new ConcurrentHashMap<>();
 
     public IMap getMapByMapId(long mapId) {
         IMap map = sceneMaps.get(mapId);

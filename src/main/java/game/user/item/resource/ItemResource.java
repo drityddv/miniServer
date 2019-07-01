@@ -27,13 +27,16 @@ public class ItemResource {
     private ItemType itemType;
     // 道具效果配置
     private String effectString;
-    private transient Map<String, Long> effectParam;
+    private Map<String, Long> effectParam;
 
     @Init
     private void init() {
-        itemType = ItemType.getTypeByName(typeString);
         analysisEffect();
+        analysisItemType();
+    }
 
+    private void analysisItemType() {
+        itemType = ItemType.getTypeByName(typeString);
     }
 
     private void analysisEffect() {

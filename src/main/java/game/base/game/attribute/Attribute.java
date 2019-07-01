@@ -7,9 +7,9 @@ package game.base.game.attribute;
 
 public class Attribute {
 
-    private AttributeType attributeType;
+    protected AttributeType attributeType;
 
-    private long value;
+	protected long value;
 
     public static Attribute valueOf(AttributeType attributeType, long value) {
         Attribute attribute = new Attribute();

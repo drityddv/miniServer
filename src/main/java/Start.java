@@ -24,30 +24,34 @@ public class Start {
     private static final Logger logger = LoggerFactory.getLogger(Start.class);
 
     public static void main(String[] args) {
-        // 初始化spring
-        SpringController.init();
+		run();
+	}
 
-        // net服务器启动
-        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+	public static void run() {
+		// 初始化spring
+		SpringController.init();
 
-        singleThreadExecutor.submit(() -> {
-            Server server = new Server();
-            server.init();
-            server.run();
-        });
+		// net服务器启动
+		ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
 
-        StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
+		singleThreadExecutor.submit(() -> {
+			Server server = new Server();
+			server.init();
+			server.run();
+		});
 
-        SceneMapManager mapManager = SpringController.getContext().getBean(SceneMapManager.class);
+		StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
 
-        AccountExecutor accountExecutor = SpringController.getContext().getBean(AccountExecutor.class);
+		SceneMapManager mapManager = SpringController.getContext().getBean(SceneMapManager.class);
 
-        MiniExecutorService miniExecutorService = SpringController.getContext().getBean(MiniExecutorService.class);
+		AccountExecutor accountExecutor = SpringController.getContext().getBean(AccountExecutor.class);
 
-        EventBus eventBus = SpringController.getContext().getBean(EventBus.class);
+		MiniExecutorService miniExecutorService = SpringController.getContext().getBean(MiniExecutorService.class);
 
-        IPackService packService = SpringContext.getPackService();
+		EventBus eventBus = SpringController.getContext().getBean(EventBus.class);
 
-        logger.info("服务器启动成功,Start线程关闭...");
-    }
+		IPackService packService = SpringContext.getPackService();
+
+		logger.info("服务器启动成功,Start线程关闭...");
+	}
 }

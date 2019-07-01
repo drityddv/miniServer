@@ -27,6 +27,9 @@ public class GeneralAttributeComputer extends AbstractAttributeComputer {
     @Override
     public long compute(AbstractCreature creature, Map<AttributeType, Attribute> accumulateAttrs,
         Map<AttributeId, AttributeSet> attributes) {
+
+        // init base
+
         // 计算关联的属性
         long baseValue = AttributeUtils.getCalculateAttributeValue(accumulateAttrs, getAttributeType());
 

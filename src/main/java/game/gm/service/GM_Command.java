@@ -9,6 +9,9 @@ import game.base.game.attribute.AttributeContainer;
 import game.base.game.attribute.id.AttributeIdEnum;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.scene.map.service.SceneMapManager;
+import game.user.equip.model.EquipStorage;
+import game.user.equip.packet.SM_EquipStorage;
+import game.user.equip.service.EquipService;
 import game.user.item.base.model.AbstractItem;
 import game.user.login.entity.UserEnt;
 import game.user.pack.model.Pack;
@@ -16,6 +19,7 @@ import game.user.pack.service.PackService;
 import game.user.player.model.Player;
 import game.user.player.service.PlayerService;
 import net.model.USession;
+import net.utils.PacketUtil;
 import spring.SpringContext;
 import utils.SimpleUtil;
 
@@ -38,6 +42,9 @@ public class GM_Command {
 
     @Autowired
     private PlayerService playerService;
+
+    @Autowired
+    private EquipService equipService;
 
     public void logUserEnt(USession session) {
         UserEnt userEnt = SpringContext.getLoginService().getUserEnt(session);
@@ -72,16 +79,32 @@ public class GM_Command {
 
     }
 
-    public void addItemToPack(USession session, Long itemConfigId, int num) {
+    public void addItem(USession session, Long itemConfigId, int num) {
         Player player = SimpleUtil.getPlayerFromSession(session);
         AbstractItem item = packService.createItem(itemConfigId);
-        packService.addItem(player, item, 100);
+        packService.addItem(player, item, num);
     }
 
     public void reduceItem(USession session, Long itemConfigId, int num) {
         Player player = SimpleUtil.getPlayerFromSession(session);
         AbstractItem item = packService.createItem(itemConfigId);
         packService.reduceItem(player, item, num);
+    }
+
+    public void equip(USession session, Long itemConfigId, int position) {
+        Player player = SimpleUtil.getPlayerFromSession(session);
+        equipService.equip(player, itemConfigId, position);
+    }
+
+    public void logEquipStorage(USession session) {
+        Player player = SimpleUtil.getPlayerFromSession(session);
+        EquipStorage equipStorage = equipService.getEquipStorage(player);
+        PacketUtil.send(player, SM_EquipStorage.valueOf(equipStorage));
+    }
+
+    public void enhanceEquipSquare(USession session, int position) {
+        Player player = SimpleUtil.getPlayerFromSession(session);
+        equipService.enhance(player, position);
     }
 
 }

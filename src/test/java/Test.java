@@ -1,15 +1,13 @@
-import java.io.*;
-import java.lang.annotation.Annotation;
-import java.nio.charset.Charset;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import game.user.equip.constant.EquipPosition;
+import game.user.equip.entity.EquipStorageEnt;
+import game.user.equip.model.Equipment;
+import net.utils.ProtoStuffUtil;
+import spring.SpringContext;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-
-import game.base.executor.NameThreadFactory;
-import middleware.anno.MapResource;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author : ddv
@@ -18,24 +16,20 @@ import middleware.anno.MapResource;
 
 public class Test {
 
-    public static void main(String[] args) {
-//        int processors = Runtime.getRuntime().availableProcessors();
-        int processors = 10;
+    @org.junit.Test
+    public void run() {
+//		Start.run();
+		List<Integer> integerList = new ArrayList<>();
+		integerList.add(1);
+		integerList.add(2);
+		integerList.add(3);
+		integerList.add(4);
 
-        ThreadPoolExecutor[] accountExecutor = new ThreadPoolExecutor[processors];
+		integerList.forEach(integer -> {
+			if(integer > 2){
+				throw new UnsupportedOperationException();
+			}
+		});
+	}
 
-        for (int i = 0; i < processors; i++) {
-            ThreadPoolExecutor thread =
-                new ThreadPoolExecutor(1, 1, 0, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1024),
-                    new NameThreadFactory("accountThread", i), new ThreadPoolExecutor.AbortPolicy());
-            accountExecutor[i] = thread;
-        }
-
-        for (int i = 0; i < 100; i++) {
-            final int index = i;
-            accountExecutor[i % processors].submit(() -> {
-                System.out.println(Thread.currentThread().getName() + " " + index);
-            });
-        }
-    }
 }

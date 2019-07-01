@@ -3,7 +3,11 @@ package game.user.item.base.constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.user.item.base.model.*;
+import game.user.equip.model.Equipment;
+import game.user.item.base.model.Elixir;
+import game.user.item.base.model.ExchangeCard;
+import game.user.item.base.model.Medicine;
+import game.user.item.base.model.Stone;
 
 /**
  * 道具类型
@@ -31,7 +35,12 @@ public enum ItemType {
     /**
      * 装备
      */
-    EQUIPMENT(4, Equipment.class);
+    EQUIPMENT(4, Equipment.class),
+
+    /**
+     * 石头
+     */
+    STONE(5, Stone.class),;
 
     private final static Map<String, ItemType> NAME_TO_TYPE = new HashMap<>();
 
@@ -44,9 +53,9 @@ public enum ItemType {
     // 道具类型id
     private int typeId;
     // 道具类
-    private Class<? extends AbstractItem> typeClass;
+    private Class<? extends game.user.item.base.model.AbstractItem> typeClass;
 
-    ItemType(int typeId, Class<? extends AbstractItem> typeClass) {
+    ItemType(int typeId, Class<? extends game.user.item.base.model.AbstractItem> typeClass) {
         this.typeId = typeId;
         this.typeClass = typeClass;
     }
@@ -55,7 +64,7 @@ public enum ItemType {
         return NAME_TO_TYPE.get(name);
     }
 
-    public AbstractItem create() {
+    public game.user.item.base.model.AbstractItem create() {
         try {
             return typeClass.newInstance();
         } catch (Exception e) {

@@ -11,6 +11,8 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import net.utils.ProtoStuffUtil;
@@ -25,8 +27,6 @@ import net.utils.ProtoStuffUtil;
 public class ClazzManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ClazzManager.class);
-    // private static final String MESSAGE_XML = "miniServer/message.xml";
-    private static final String MESSAGE_XML = "src/main/resources/message.xml";
     private static Map<Integer, String> clazzMap;
     private static Map<Class<?>, Integer> idMap;
 
@@ -43,8 +43,9 @@ public class ClazzManager {
         Map<Class<?>, Integer> clazzIdMap = new HashMap<>();
 
         SAXBuilder saxBuilder = new SAXBuilder();
-        Document document;
-        document = saxBuilder.build(MESSAGE_XML);
+
+        Resource resource = new ClassPathResource("message.xml");
+        Document document = saxBuilder.build(resource.getInputStream());
         Element child = document.getRootElement();
 
         List<Element> children = child.getChildren("message");

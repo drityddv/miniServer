@@ -252,20 +252,23 @@ public class SpringController {
     private static void initManagerStorage() {
         beanClasses.forEach(aClass -> {
             Object contextBean = CONTEXT.getBean(aClass);
-            Field resourceField = ClassUtil.getFieldByAnnotation(contextBean, Static.class);
-            if (resourceField != null) {
-                ParameterizedType genericType = (ParameterizedType)resourceField.getGenericType();
-                Type[] actualTypeArguments = genericType.getActualTypeArguments();
-                String valueType = actualTypeArguments[1].getTypeName();
-                Map<Class<?>, Storage<?, ?>> storageMap = SpringContext.getStorageManager().getStorageMap();
+			List<Field> fields = ClassUtil.getFieldsByAnnotation(contextBean, Static.class);
+			fields.forEach(field -> {
+				if (field != null) {
+					ParameterizedType genericType = (ParameterizedType)field.getGenericType();
+					Type[] actualTypeArguments = genericType.getActualTypeArguments();
+					String valueType = actualTypeArguments[1].getTypeName();
+					Map<Class<?>, Storage<?, ?>> storageMap = SpringContext.getStorageManager().getStorageMap();
 
-                try {
-                    Storage<?, ?> storage = storageMap.get(Class.forName(valueType));
-                    resourceField.set(contextBean, storage.getStorageMap());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+					try {
+						Storage<?, ?> storage = storageMap.get(Class.forName(valueType));
+						field.set(contextBean, storage.getStorageMap());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+
         });
 
     }

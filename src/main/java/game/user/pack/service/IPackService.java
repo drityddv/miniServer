@@ -95,11 +95,20 @@ public interface IPackService {
     int getItemNum(Player player, AbstractItem item);
 
     /**
-     * 背包减少道具 不进行消耗
+     * 背包减少道具下发状态
      *
      * @param player
      * @param item
      * @param num
      */
     void reduceItem(Player player, AbstractItem item, int num);
+
+    /**
+     * 获取背包的道具
+     *
+     * @param player
+     * @param configId
+     * @return
+     */
+    AbstractItem getItemFromPack(Player player, long configId);
 }

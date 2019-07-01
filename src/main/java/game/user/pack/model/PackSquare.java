@@ -43,6 +43,9 @@ public class PackSquare {
 
     public void reduceCounts(int count) {
         this.counts -= count;
+        if (this.counts == 0) {
+            this.item = null;
+        }
     }
 
     // get and set
@@ -83,6 +86,6 @@ public class PackSquare {
 
     @Override
     public String toString() {
-        return "PackSquare{" + "index=" + index + ", item=" + item + ", counts=" + counts + '}';
+        return "PackSquare{" + "index=" + index + ", item=" + item + ", counts=" + counts + '}' + '\n';
     }
 }

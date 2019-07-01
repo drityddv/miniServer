@@ -16,7 +16,7 @@ public class Stone extends AbstractUsableItem {
 
     @Override
     public boolean verifyCanUse(Player player, int num) {
-        return false;
+        return true;
     }
 
     @Override

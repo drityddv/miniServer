@@ -2,6 +2,7 @@ package spring;
 
 import javax.annotation.PostConstruct;
 
+import game.user.equip.service.IEquipService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -68,6 +69,9 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private IPackService packService;
 
+    @Autowired
+	private IEquipService equipService;
+
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
     }
@@ -111,6 +115,10 @@ public class SpringContext implements ApplicationContextAware {
     public static EventBus getEventBus() {
         return instance.eventBus;
     }
+
+	public static IEquipService getEquipService() {
+		return instance.equipService;
+	}
 
     @PostConstruct
     private void init() {

@@ -62,10 +62,6 @@ public class LoginService implements ILoginService {
 
         // 重新计算属性
         player.getAttributeContainer().containerRecompute();
-
-        player.getAttributeContainer().putAttributesWithRecompute(AttributeIdEnum.BASE_EQUIPMENT,
-            SpringContext.getPlayerService().getResource(2).getAttributeList(), false);
-
         PacketUtil.send(session, new SM_LoginSuccess());
     }
 

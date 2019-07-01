@@ -124,6 +124,18 @@ public class AttributeUtils {
     }
 
     /**
+     * 将模块属性统计进给定的List中
+     *
+     * @param finalAttrs
+     * @param attributes
+     */
+    public static void accumulateToList(Map<AttributeType, Attribute> finalAttrs, List<Attribute> attributes) {
+        for (Attribute attribute : finalAttrs.values()) {
+            attributes.add(attribute);
+        }
+    }
+
+    /**
      * 将来pvp之类的也会调用这个方法 所以抽出来
      *
      * @param attributeMap
@@ -169,4 +181,5 @@ public class AttributeUtils {
             accumulateToMap(entry.getValue(), result);
         }
     }
+
 }

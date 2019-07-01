@@ -19,6 +19,10 @@
     <message id="91" value="game.user.pack.packet.SM_PackInfo"/>
     <message id="92" value="game.user.pack.packet.CM_PackInfo"/>
 
+    <!--玩家装备栏相关  140 - 160 -->
+    <message id="140" value="game.user.equip.packet.CM_EquipStorage"/>
+    <message id="141" value="game.user.equip.packet.SM_EquipStorage"/>
+
     <!--地图协议根据id走地图线程池-->
     <!--地图基础协议 2001 - 2005-->
     <message id="2001" value="game.scene.map.packet.CM_EnterMap"/>

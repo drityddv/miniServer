@@ -5,3 +5,4 @@ configId,itemName,itemLevel,overLimit,typeString,effectString
 4,等级仙丹,1,99,ELIXIR,LEVEL:1
 5,点券兑换卡,1,1,EXCHANGE_CARD,
 6,铁剑,1,1,EQUIPMENT,
+7,强化宝石,1,0,STONE,

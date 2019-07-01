@@ -34,7 +34,6 @@ public class PlayerService implements IPlayerService {
 
         PlayerAttributeContainer playerAttributeContainer = player.getAttributeContainer();
         playerAttributeContainer.putAttributes(AttributeIdEnum.BASE, attributeList, null);
-        playerAttributeContainer.putAttributes(AttributeIdEnum.BASE_EQUIPMENT, attributeList, null);
     }
 
     @Override

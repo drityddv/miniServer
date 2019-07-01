@@ -45,7 +45,7 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
                 <!--<prop key="hibernate.show_sql">true</prop>-->
                 <!--<prop key="hibernate.formate_sql">true</prop>-->
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.update">update</prop>
             </props>
         </property>
 
@@ -54,6 +54,7 @@
                 <value>game.user.login.entity</value>
                 <value>game.user.player.entity</value>
                 <value>game.user.pack.entity</value>
+                <value>game.user.equip.entity</value>
             </list>
         </property>
 
