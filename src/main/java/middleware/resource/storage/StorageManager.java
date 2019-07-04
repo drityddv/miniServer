@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
 
-import game.base.map.IMap;
 import middleware.anno.Init;
 import middleware.resource.middle.ResourceDefinition;
 import utils.ClassUtil;
@@ -34,9 +33,6 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
     // 普通静态类容器
     private Map<Class<?>, ResourceDefinition> definitionMap = new ConcurrentHashMap<>();
 
-    // 地图静态容器
-    private Map<Class<? extends IMap>, ResourceDefinition> mapResourceDefinitionMap = new ConcurrentHashMap<>();
-
     // 静态资源存储容器
     private Map<Class<?>, Storage<?, ?>> storageMap = new ConcurrentHashMap<>();
 
@@ -52,22 +48,12 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
         logger.error("重复的加载行为,class[{}]", beanClass);
     }
 
-    // 注册地图资源目的地
-    public void registerMapResourceDefinition(Class<? extends IMap> beanClass, ResourceDefinition definition) {
-        if (!mapResourceDefinitionMap.containsKey(beanClass)) {
-            mapResourceDefinitionMap.put(beanClass, definition);
-            return;
-        }
-
-        logger.error("重复的地图加载行为,class[{}]", beanClass);
-    }
-
     public void registerCsvCache(String location, InputStream inputStream) {
         if (!caches.containsKey(location)) {
             caches.put(location, inputStream);
             return;
         }
-        logger.error("重复的加载行为,location[{}]", location);
+        logger.error("重复加载,忽略此次注册,location[{}]", location);
     }
 
     // 初始化静态资源类
@@ -77,30 +63,31 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
             InputStream inputStream = caches.get(resourceLocation);
             List objectList = ResourceUtil.loadObjectFromCsv(aClass, SimpleUtil.getParserFromStream(inputStream));
             storageMap.put(aClass, Storage.valueOf(objectList));
+
+            logger.info("从缓存流生成java对象完毕,生成数量[{}],对象[{}]", objectList.size(), aClass.getSimpleName());
         });
         storageResourceSecondInit();
     }
 
-    public InputStream getCache(Class<?> clazz) {
-        ResourceDefinition resourceDefinition = mapResourceDefinitionMap.get(clazz);
-        String location = resourceDefinition.getLocation();
-        return caches.get(location);
-    }
-
+    // 注入static字段引用
     public void storageResourceSecondInit() {
         storageMap.forEach((aClass, storage) -> {
             storage.getStorageListMap().forEach((o, objects) -> {
                 objects.forEach(o1 -> {
                     Method method = ClassUtil.getMethodByAnnotation(o1, Init.class);
-                    method.setAccessible(true);
-                    ReflectionUtils.invokeMethod(method, o1);
+                    if (method != null) {
+                        method.setAccessible(true);
+                        ReflectionUtils.invokeMethod(method, o1);
+                    }
                 });
             });
 
             storage.getStorageMap().forEach((o, o2) -> {
                 Method method = ClassUtil.getMethodByAnnotation(o2, Init.class);
-                method.setAccessible(true);
-                ReflectionUtils.invokeMethod(method, o2);
+                if (method != null) {
+                    method.setAccessible(true);
+                    ReflectionUtils.invokeMethod(method, o2);
+                }
             });
 
         });
@@ -123,10 +110,6 @@ public class StorageManager implements ApplicationListener<ApplicationEvent> {
 
     public Map<String, InputStream> getCaches() {
         return caches;
-    }
-
-    public Map<Class<? extends IMap>, ResourceDefinition> getMapResourceDefinitionMap() {
-        return mapResourceDefinitionMap;
     }
 
 }

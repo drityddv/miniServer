@@ -25,9 +25,13 @@ public enum EquipWearConditionType {
      */
     GOLD("金币", PlayerGoldConditionProcessor.class),;
 
-    EquipWearConditionType(String conditionType, Class<? extends AbstractConditionProcessor> processorClass) {
-        this.conditionType = conditionType;
-        this.processorClass = processorClass;
+    private static Map<String, EquipWearConditionType> NAME_TO_TYPE =
+        new HashMap<>(EquipWearConditionType.values().length);
+
+    static {
+        for (EquipWearConditionType conditionType : EquipWearConditionType.values()) {
+            NAME_TO_TYPE.put(conditionType.name(), conditionType);
+        }
     }
 
     /**
@@ -43,13 +47,9 @@ public enum EquipWearConditionType {
      */
     private Class<? extends AbstractConditionProcessor> processorClass;
 
-    private static Map<String, EquipWearConditionType> NAME_TO_TYPE =
-        new HashMap<>(EquipWearConditionType.values().length);
-
-    static {
-        for (EquipWearConditionType conditionType : EquipWearConditionType.values()) {
-            NAME_TO_TYPE.put(conditionType.name(), conditionType);
-        }
+    EquipWearConditionType(String conditionType, Class<? extends AbstractConditionProcessor> processorClass) {
+        this.conditionType = conditionType;
+        this.processorClass = processorClass;
     }
 
     public static EquipWearConditionType getByName(String typeName) {

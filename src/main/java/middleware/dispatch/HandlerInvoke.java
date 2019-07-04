@@ -48,6 +48,13 @@ public class HandlerInvoke implements IHandlerInvoke {
 
     @Override
     public Object invoke(Object... args) {
-        return ReflectionUtils.invokeMethod(method, bean, args);
+        Object o = null;
+        try {
+            o = ReflectionUtils.invokeMethod(method, bean, args);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return o;
     }
+
 }

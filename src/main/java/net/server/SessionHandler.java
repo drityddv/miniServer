@@ -26,7 +26,6 @@ public class SessionHandler extends SimpleChannelInboundHandler<PacketProtocol> 
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
-        logger.info("session handler invoke...");
         int id = protocol.getId();
         Object object = ClazzManager.readObjectById(protocol.getData(), id);
 

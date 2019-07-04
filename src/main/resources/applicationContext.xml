@@ -42,10 +42,10 @@
         <!-- Hibernate框架相关配置 -->
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
                 <!--<prop key="hibernate.show_sql">true</prop>-->
                 <!--<prop key="hibernate.formate_sql">true</prop>-->
-                <prop key="hibernate.hbm2ddl.update">update</prop>
+                <prop key="hibernate.hbm2ddl">update</prop>
             </props>
         </property>
 
@@ -55,6 +55,7 @@
                 <value>game.user.player.entity</value>
                 <value>game.user.pack.entity</value>
                 <value>game.user.equip.entity</value>
+                <value>game.user.mapinfo.entity</value>
             </list>
         </property>
 

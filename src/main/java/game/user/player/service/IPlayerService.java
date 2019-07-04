@@ -1,5 +1,6 @@
 package game.user.player.service;
 
+import game.user.player.entity.PlayerEnt;
 import game.user.player.model.Player;
 import game.user.player.resource.PlayerResource;
 
@@ -33,7 +34,7 @@ public interface IPlayerService {
     void addException(Player player, long exception);
 
     /**
-     * 玩家升级
+     * 玩家升级并且重新计算属性与同步
      *
      * @param player
      */
@@ -42,9 +43,9 @@ public interface IPlayerService {
     /**
      * 保存玩家信息
      *
-     * @param player
+     * @param playerEnt
      */
-    void savePlayer(Player player);
+    void savePlayer(PlayerEnt playerEnt);
 
     /**
      * 获取玩家资源文件
@@ -53,4 +54,12 @@ public interface IPlayerService {
      * @return
      */
     PlayerResource getResource(int id);
+
+    /**
+     * 获取玩家信息
+     *
+     * @param player
+     * @return
+     */
+    PlayerEnt getPlayerEnt(Player player);
 }

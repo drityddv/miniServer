@@ -1,6 +1,5 @@
 package net.utils;
 
-import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.protostuff.LinkedBuffer;
-import io.protostuff.Morph;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
@@ -39,20 +37,7 @@ public class ProtoStuffUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> byte[] serialize(T obj) {
-        Class<T> clazz = (Class<T>)obj.getClass();
-        Field[] declaredFields = clazz.getDeclaredFields();
-        for (Field declaredField : declaredFields) {
-            if (declaredField.isAnnotationPresent(Morph.class)) {
-                declaredField.setAccessible(true);
-                try {
-                    declaredField.set(obj, null);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        Schema<T> schema = getSchema(clazz);
+        Schema<T> schema = getSchema((Class<T>)obj.getClass());
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         byte[] data;
         try {

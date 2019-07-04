@@ -1,6 +1,5 @@
 package game.user.equip.constant;
 
-import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,21 +26,21 @@ public enum EquipConsumeType {
         }
     }
 
-    public static EquipConsumeType getConsumer(String typeName) {
-        return NAME_TO_TYPE.get(typeName);
-    }
-
-    public AbstractConsumeProcessor createProcessor(Map<Object, Object> consumeParams) {
-
-        return ClassUtil.createProcessor(processor,consumeParams,1);
-    }
-
     private String typeName;
     private Class<? extends AbstractConsumeProcessor> processor;
 
     EquipConsumeType(String typeName, Class<? extends AbstractConsumeProcessor> processor) {
         this.typeName = typeName;
         this.processor = processor;
+    }
+
+    public static EquipConsumeType getConsumer(String typeName) {
+        return NAME_TO_TYPE.get(typeName);
+    }
+
+    public AbstractConsumeProcessor createProcessor(Map<Object, Object> consumeParams) {
+
+        return ClassUtil.createProcessor(processor, consumeParams, 1);
     }
 
 }

@@ -104,11 +104,11 @@ public class EquipSquareEnhanceResource {
         return attributes;
     }
 
-	public Map<AttributeType, Attribute> getAttributeMap() {
-		return attributeMap;
-	}
+    public Map<AttributeType, Attribute> getAttributeMap() {
+        return attributeMap;
+    }
 
-	public List<AbstractConsumeProcessor> getProcessors() {
+    public List<AbstractConsumeProcessor> getProcessors() {
         return processors;
     }
 

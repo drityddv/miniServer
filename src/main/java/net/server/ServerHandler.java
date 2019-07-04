@@ -41,7 +41,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
         try {
             logger.info("在线玩家数目[{}]", channelGroup.size());
             Object packet = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-            logger.info("server handler receive: [{}]", packet.toString());
             SpringContext.getDispatcher().invoke(SessionManager.getSession(ctx.channel()), packet);
         } catch (Exception e) {
             e.printStackTrace();

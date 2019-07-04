@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.base.game.attribute.id.AttributeIdEnum;
 import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
@@ -58,7 +57,7 @@ public class LoginService implements ILoginService {
         SessionManager.registerPlayerSession(accountId, session);
 
         Player player = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
-        player.getAttributeContainer().clear();
+        // player.getAttributeContainer().clear();
         SpringContext.getEventBus().pushEventSyn(PlayerLoginBeforeEvent.valueOf(player));
 
         // 重新计算属性
@@ -82,8 +81,6 @@ public class LoginService implements ILoginService {
 
         SessionManager.removeSession(session.getChannel());
         SessionManager.removePlayerSession(player.getAccountId());
-
-        SpringContext.getSceneMapService().logOut(player);
 
         session.getChannel().close();
     }

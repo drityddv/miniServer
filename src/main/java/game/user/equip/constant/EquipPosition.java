@@ -29,17 +29,30 @@ public enum EquipPosition {
 
     private static final Map<String, EquipPosition> NAME_TO_POSITION = new HashMap<>(EquipPosition.values().length);
 
-    EquipPosition(int id, String position, int configId) {
-        this.id = id;
-        this.position = position;
-        this.configId = configId;
-    }
-
     static {
         for (EquipPosition equipPosition : EquipPosition.values()) {
             ID_TO_POSITION.put(equipPosition.id, equipPosition);
             NAME_TO_POSITION.put(equipPosition.name(), equipPosition);
         }
+    }
+
+    /**
+     * 装备的位置id
+     */
+    private int id;
+    /**
+     * 装备位置
+     */
+    private String position;
+    /**
+     * 这个对应强化表中初始等级的配置id
+     */
+    private int configId;
+
+    EquipPosition(int id, String position, int configId) {
+        this.id = id;
+        this.position = position;
+        this.configId = configId;
     }
 
     public static EquipPosition getPosition(int id) {
@@ -61,20 +74,6 @@ public enum EquipPosition {
         return equipPosition;
     }
 
-    /**
-     * 装备的位置id
-     */
-    private int id;
-    /**
-     * 装备位置
-     */
-    private String position;
-
-    /**
-     * 这个对应强化表中初始等级的配置id
-     */
-    private int configId;
-
     public int getId() {
         return id;
     }
@@ -83,11 +82,11 @@ public enum EquipPosition {
         return position;
     }
 
-	public int getConfigId() {
-		return configId;
-	}
+    public int getConfigId() {
+        return configId;
+    }
 
-	@Override
+    @Override
     public String toString() {
         return "EquipPosition{" + "id=" + id + ", position='" + position + '\'' + '}';
     }

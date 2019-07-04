@@ -18,21 +18,21 @@ import game.base.game.attribute.util.AttributeUtils;
 public abstract class AttributeContainer<T> {
 
     /**
-     * 属性容器拥有者
+     * FIXME 这个拥有者会被player引用了 不要序列化 所以外界不要调用字段
      */
     protected transient T owner;
     /**
      * 当前属性
      */
-    protected Map<AttributeType, Attribute> finalAttributes = new ConcurrentHashMap<>();
+    protected transient Map<AttributeType, Attribute> finalAttributes = new ConcurrentHashMap<>();
     /**
      * 模块属性[基本属性,传世,雷霆等...]
      */
-    protected Map<AttributeId, AttributeSet> modelAttributeSet = new HashMap<>();
+    protected transient Map<AttributeId, AttributeSet> modelAttributeSet = new HashMap<>();
     /**
      * 计算使用的变量
      */
-    protected Map<AttributeType, Attribute> accumulateAttributes = new HashMap<>();
+    protected transient Map<AttributeType, Attribute> accumulateAttributes = new HashMap<>();
 
     // get and set
     public AttributeContainer() {}
@@ -168,5 +168,5 @@ public abstract class AttributeContainer<T> {
      */
     protected abstract void recompute(AttributeUpdateRecords records, boolean needSyn);
 
-	public abstract void clear();
+    public abstract void clear();
 }

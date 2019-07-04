@@ -41,11 +41,8 @@ public class Equipment extends AbstractItem {
         return equipPosition;
     }
 
-	@Override
-	public String toString() {
-		return "Equipment{" +
-				"equipPosition=" + equipPosition +
-				", configId=" + configId +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Equipment{" + "equipPosition=" + equipPosition + ", configId=" + configId + '}';
+    }
 }

@@ -4,6 +4,7 @@ import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.object.AbstractCreature;
 import game.user.equip.model.EquipStorage;
 import game.user.pack.model.Pack;
+import game.user.player.entity.PlayerEnt;
 import spring.SpringContext;
 import utils.IdUtil;
 
@@ -25,15 +26,23 @@ public class Player extends AbstractCreature<Player> {
      * 黄金
      */
     private int gold;
+    /**
+     * 当前地图id
+     */
+    private int currentMapId;
+
+    private boolean changingMap;
 
     private Player() {}
 
+    // 初始给1000黄金
     public static Player valueOf(String accountId) {
         Player player = new Player();
         player.accountId = accountId;
         player.playerId = IdUtil.getLongId();
         player.level = 1;
         player.gold = 1000;
+        player.changingMap = false;
         player.setAttributeContainer(new PlayerAttributeContainer(player));
         return player;
     }
@@ -44,7 +53,11 @@ public class Player extends AbstractCreature<Player> {
     }
 
     public Pack getPack() {
-        return SpringContext.getPackService().getPlayerPack(this);
+        return SpringContext.getPackService().getPlayerPack(this, false);
+    }
+
+    public PlayerEnt getPlayerEnt() {
+        return SpringContext.getPlayerService().getPlayerEnt(this);
     }
 
     public EquipStorage getEquipStorage() {
@@ -78,6 +91,27 @@ public class Player extends AbstractCreature<Player> {
 
     public int getGold() {
         return gold;
+    }
+
+    public void setGold(int gold) {
+        this.gold = gold;
+    }
+
+    public boolean isChangingMap() {
+
+        return changingMap;
+    }
+
+    public void setChangingMap(boolean changingMap) {
+        this.changingMap = changingMap;
+    }
+
+    public int getCurrentMapId() {
+        return currentMapId;
+    }
+
+    public void setCurrentMapId(int currentMapId) {
+        this.currentMapId = currentMapId;
     }
 
     @Override

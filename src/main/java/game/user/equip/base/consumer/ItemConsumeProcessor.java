@@ -14,6 +14,10 @@ import spring.SpringContext;
 
 public class ItemConsumeProcessor extends AbstractConsumeProcessor {
 
+    public ItemConsumeProcessor(Map<Long, Integer> consumeParams) {
+        super(consumeParams);
+    }
+
     @Override
     public void doConsume(Player player) {
         try {
@@ -24,9 +28,5 @@ public class ItemConsumeProcessor extends AbstractConsumeProcessor {
         } catch (RequestException e) {
             throw e;
         }
-    }
-
-    public ItemConsumeProcessor(Map<Long, Integer> consumeParams) {
-        super(consumeParams);
     }
 }

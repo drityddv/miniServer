@@ -32,9 +32,11 @@ public class PackService implements IPackService {
     private PackManager packManager;
 
     @Override
-    public Pack getPlayerPack(Player player) {
+    public Pack getPlayerPack(Player player, boolean clientRequest) {
         Pack pack = getPack(player);
-        sendPackDetails(player, pack);
+        if (clientRequest) {
+            sendPackDetails(player, pack);
+        }
         return pack;
     }
 

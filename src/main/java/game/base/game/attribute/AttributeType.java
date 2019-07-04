@@ -76,12 +76,12 @@ public enum AttributeType {
     MAGIC_ATTACK_UPPER(5, "法术攻击上限", 1, GeneralAttributeComputer.class) {
         @Override
         public AttributeType[] getCalculateAttrs() {
-            return new AttributeType[] {MAGIC_ATTACK_UPPER};
+            return new AttributeType[] {BASIC_ATTACK, MAGIC_ATTACK_UPPER};
         }
 
         @Override
         public AttributeType[] getCalculateRateAttributes() {
-            return new AttributeType[] {BASIC_ATTACK, MAGIC_ATTACK_RATE};
+            return new AttributeType[] {MAGIC_ATTACK_RATE};
         }
     },
 

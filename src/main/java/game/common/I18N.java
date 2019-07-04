@@ -55,8 +55,8 @@ public interface I18N {
     // 执行器为空
     int ENUM_NULL = 15;
 
-	/**
-	 * 穿戴装备条件不满足
-	 */
-	int EQUIP_WEAR_CONDITION_NOT_QUALIFIED = 16;
+    /**
+     * 穿戴装备条件不满足
+     */
+    int EQUIP_WEAR_CONDITION_NOT_QUALIFIED = 16;
 }

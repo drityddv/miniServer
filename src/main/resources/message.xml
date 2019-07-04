@@ -14,6 +14,8 @@
 
     <!--gm命令 51 - 70-->
     <message id="51" value="game.gm.packet.CM_GmCommand"/>
+    <message id="52" value="game.gm.packet.SM_LogMessage"/>
+
 
     <!--玩家背包相关 91 - 120 -->
     <message id="91" value="game.user.pack.packet.SM_PackInfo"/>
@@ -28,12 +30,13 @@
     <message id="145" value="game.user.equip.packet.SM_EquipmentVo"/>
     <message id="146" value="game.user.equip.packet.CM_Equipment"/>
 
-    <!--地图协议根据id走地图线程池-->
     <!--地图基础协议 2001 - 2005-->
     <message id="2001" value="game.scene.map.packet.CM_EnterMap"/>
     <message id="2002" value="game.scene.map.packet.CM_LeaveMap"/>
     <message id="2003" value="game.scene.map.packet.CM_MoveMap"/>
     <message id="2004" value="game.scene.map.packet.CM_TransferMap"/>
     <message id="2005" value="game.scene.map.packet.CM_ChangeMap"/>
+    <message id="2006" value="game.world.base.packet.CM_LogMap"/>
+
 
 </protocols>

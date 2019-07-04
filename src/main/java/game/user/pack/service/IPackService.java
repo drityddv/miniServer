@@ -20,9 +20,10 @@ public interface IPackService {
      * 获取玩家背包
      *
      * @param player
+     * @param clientRequest
      * @return
      */
-    Pack getPlayerPack(Player player);
+    Pack getPlayerPack(Player player, boolean clientRequest);
 
     /**
      * 添加道具至背包

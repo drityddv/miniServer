@@ -22,10 +22,8 @@ import game.user.player.model.Player;
 
 public class EquipStorage {
 
-    private static Logger logger = LoggerFactory.getLogger(EquipStorage.class);
-
     private static final int MAX_SIZE = EquipPosition.values().length;
-
+    private static Logger logger = LoggerFactory.getLogger(EquipStorage.class);
     /**
      * 1 :头盔 2:铠甲 3:武器
      */
@@ -40,6 +38,10 @@ public class EquipStorage {
             equipStorage.equipSlotMap.put(equipPosition.getId(), square);
         }
         return equipStorage;
+    }
+
+    public static int getMaxSize() {
+        return MAX_SIZE;
     }
 
     public boolean isSquareEmpty(int index) {
@@ -69,10 +71,6 @@ public class EquipStorage {
             attributes.addAll(equipSquare.getCurrentAttribute());
         }
         return attributes;
-    }
-
-    public static int getMaxSize() {
-        return MAX_SIZE;
     }
 
     /**

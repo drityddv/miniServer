@@ -1,5 +1,6 @@
 package game.base.game.attribute.model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,8 +24,20 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
 
     private Map<AttributeType, Attribute> originAttributes = new ConcurrentHashMap<>();
 
+    // FIXME protoStuff如果没有默认构造器的机制不清楚 后面再补
+    // 这个是给protoStuff走的 反序列化走构造函数
+    public PlayerAttributeContainer() {
+        super(null);
+        finalAttributes = new ConcurrentHashMap<>();
+        modelAttributeSet = new HashMap<>();
+        accumulateAttributes = new HashMap<>();
+    }
+
     public PlayerAttributeContainer(Player owner) {
         super(owner);
+        finalAttributes = new ConcurrentHashMap<>();
+        modelAttributeSet = new HashMap<>();
+        accumulateAttributes = new HashMap<>();
     }
 
     @Override
@@ -37,9 +50,8 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
         modelAttributeSet.clear();
         accumulateAttributes.clear();
         finalAttributes.clear();
-
         finalAttrExcludeBuff.clear();
         originAttributes.clear();
-
     }
+
 }

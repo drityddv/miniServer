@@ -1,7 +1,6 @@
 package game.base.executor.service;
 
 import middleware.dispatch.HandlerInvoke;
-import net.model.USession;
 
 /**
  * @author : ddv
@@ -11,12 +10,13 @@ import net.model.USession;
 public interface IMiniExecutorService {
 
     /**
-     * 线程池接口接受任务
+     * 调度账号线程池
      *
      * @param handlerInvoke
-     * @param session
+     * @param param
+     *            [登陆,注册这里给的都是session 其他都是Player]
+     * @param modIndex
      * @param packet
-     * @param id
      */
-    void handle(HandlerInvoke handlerInvoke, USession session, Object packet, int id);
+    void handle(HandlerInvoke handlerInvoke, Object param, int modIndex, Object packet);
 }

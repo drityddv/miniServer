@@ -18,6 +18,7 @@ import utils.JodaUtil;
 public class PlayerResource {
 
     private int level;
+    private int nextLevel;
     private long experience;
     private String attributeString;
     private List<Attribute> attributeList;
@@ -41,24 +42,16 @@ public class PlayerResource {
         return level;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
     public long getExperience() {
         return experience;
-    }
-
-    public void setExperience(long experience) {
-        this.experience = experience;
     }
 
     public String getAttributeString() {
         return attributeString;
     }
 
-    public void setAttributeString(String attributeString) {
-        this.attributeString = attributeString;
+    public int getNextLevel() {
+        return nextLevel;
     }
 
     public List<Attribute> getAttributeList() {

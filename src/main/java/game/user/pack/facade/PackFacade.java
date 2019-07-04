@@ -31,7 +31,7 @@ public class PackFacade {
     @HandlerAnno
     public void getPlayerPack(Player player, CM_PackInfo request) {
         try {
-            SpringContext.getPackService().getPlayerPack(player);
+            SpringContext.getPackService().getPlayerPack(player, true);
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

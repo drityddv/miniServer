@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.user.login.event.PlayerLoginBeforeEvent;
-import game.user.player.event.PlayerLevelUpEvent;
 import game.user.player.service.PlayerService;
 import middleware.anno.EventReceiver;
 
@@ -31,16 +30,6 @@ public class PlayerFacade {
             e.printStackTrace();
         }
 
-    }
-
-    @EventReceiver
-    public void playerLevelUp(PlayerLevelUpEvent event) {
-        try {
-            playerService.playerLevelUp(event.getPlayer());
-        } catch (Exception e) {
-            logger.info("玩家升级事件出错,[{}]", e.getClass());
-            e.printStackTrace();
-        }
     }
 
 }

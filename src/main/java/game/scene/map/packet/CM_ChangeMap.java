@@ -7,28 +7,14 @@ package game.scene.map.packet;
 
 public class CM_ChangeMap {
 
-    private long mapId;
+    private int mapId;
 
-    private long targetMapId;
-
-    public long getMapId() {
+    public int getMapId() {
         return mapId;
-    }
-
-    public void setMapId(long mapId) {
-        this.mapId = mapId;
-    }
-
-    public long getTargetMapId() {
-        return targetMapId;
-    }
-
-    public void setTargetMapId(long targetMapId) {
-        this.targetMapId = targetMapId;
     }
 
     @Override
     public String toString() {
-        return "CM_ChangeMap{" + "mapId=" + mapId + ", targetMapId=" + targetMapId + '}';
+        return "CM_ChangeMap{" + "mapId=" + mapId + '}';
     }
 }

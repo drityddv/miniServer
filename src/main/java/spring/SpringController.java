@@ -5,11 +5,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -17,8 +18,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import game.base.ebus.EventBus;
 import game.base.ebus.IEvent;
-import game.base.map.IMap;
-import game.scene.map.service.SceneMapManager;
 import middleware.anno.EventReceiver;
 import middleware.anno.HandlerAnno;
 import middleware.anno.MiniResource;
@@ -52,10 +51,10 @@ public class SpringController {
         initBeanClasses();
         initHandlerDestinationMap();
         initResourceDefinition();
-        initMapCsvCaches();
+        // initMapCsvCaches();
         initCsvCache();
         initStaticResource();
-        initMapResourceManager();
+        // initMapResourceManager();
         initManagerStorage();
     }
 
@@ -147,33 +146,6 @@ public class SpringController {
         });
 
         logger.info("初始化普通静态资源文件目的地完毕,加载了[{}]条注解数据", storageManager.getDefinitionMap().size());
-
-        // 加载地图静态资源
-        ResourceDefinition definition = new ResourceDefinition(IMap.class, false);
-        storageManager.registerMapResourceDefinition(IMap.class, definition);
-        logger.info("初始化地图静态资源文件目的地完毕,加载了[{}]条注解数据", storageManager.getMapResourceDefinitionMap().size());
-    }
-
-    // 这里地图资源写死用IMap.class做key
-    private static void initMapCsvCaches() {
-        StorageManager storageManager = SpringContext.getStorageManager();
-
-        Map<Class<? extends IMap>, ResourceDefinition> mapResourceDefinitionMap =
-            storageManager.getMapResourceDefinitionMap();
-
-        Map<Class<?>, ResourceDefinition> tempMap = new HashMap<>();
-
-        Iterator<Map.Entry<Class<? extends IMap>, ResourceDefinition>> iterator =
-            mapResourceDefinitionMap.entrySet().iterator();
-
-        while (iterator.hasNext()) {
-            Map.Entry<Class<? extends IMap>, ResourceDefinition> next = iterator.next();
-            ResourceDefinition value = next.getValue();
-            tempMap.put(IMap.class, value);
-            break;
-        }
-
-        registerCsvCaches(storageManager, tempMap);
     }
 
     // 普通静态资源csv加载
@@ -188,53 +160,6 @@ public class SpringController {
         SpringContext.getStorageManager().initSimpleResource();
     }
 
-    private static void initMapResourceManager() {
-        StorageManager storageManager = SpringContext.getStorageManager();
-
-        InputStream cache = storageManager.getCache(IMap.class);
-        SceneMapManager sceneMapManager = CONTEXT.getBean(SceneMapManager.class);
-
-        CSVParser parser = SimpleUtil.getParserFromStream(cache);
-        List<String> fieldNames = null;
-        List<String> fieldType = null;
-        List<CSVRecord> records = null;
-        try {
-            records = parser.getRecords();
-            fieldNames = SimpleUtil.toListFromIterator(records.get(0).iterator());
-            fieldType = SimpleUtil.toListFromIterator(records.get(1).iterator());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        records.stream().skip(2).forEach(record -> {
-            String clazzName = record.get(1);
-            List<String> fieldTypes = SimpleUtil.toListFromIterator(record.iterator());
-            Class aClass = null;
-            Object newInstance = null;
-            try {
-                aClass = Class.forName(clazzName);
-                newInstance = aClass.newInstance();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            Field[] fields = aClass.getSuperclass().getDeclaredFields();
-            List<Field> collectFields = Arrays.asList(fields).stream()
-                .filter(field -> SimpleUtil.isSimpleClazz(field.getType())).collect(Collectors.toList());
-
-            List<String> collectValues = Arrays.asList(record.get(0), record.get(3), record.get(4));
-
-            ClassUtil.insertFields(newInstance, collectFields, collectValues);
-
-            IMap instance = (IMap)newInstance;
-
-            instance.init(SimpleUtil.toListFromIterator(record.iterator()));
-            instance.initMapCreature();
-            sceneMapManager.addMap(instance.getCurrentMapId(), instance);
-        });
-
-    }
-
     private static void registerCsvCaches(StorageManager storageManager,
         Map<Class<?>, ResourceDefinition> resourceDefinitionMap) {
         resourceDefinitionMap.forEach((aClass, resourceDefinition) -> {
@@ -243,8 +168,8 @@ public class SpringController {
             InputStream inputStream = SimpleUtil.getInputStreamFromFile(location);
             storageManager.registerCsvCache(location, inputStream);
 
-            logger.info("初始化csv文件流结束,csv文件个数[{}],最终加载了[{}]条数据", resourceDefinitionMap.size(),
-                storageManager.getCaches().size());
+            logger.info("初始化csv文件流结束,csv文件个数[{}],[{}]", resourceDefinitionMap.size(),
+                resourceDefinition.getClz().getSimpleName());
         });
     }
 
@@ -252,22 +177,22 @@ public class SpringController {
     private static void initManagerStorage() {
         beanClasses.forEach(aClass -> {
             Object contextBean = CONTEXT.getBean(aClass);
-			List<Field> fields = ClassUtil.getFieldsByAnnotation(contextBean, Static.class);
-			fields.forEach(field -> {
-				if (field != null) {
-					ParameterizedType genericType = (ParameterizedType)field.getGenericType();
-					Type[] actualTypeArguments = genericType.getActualTypeArguments();
-					String valueType = actualTypeArguments[1].getTypeName();
-					Map<Class<?>, Storage<?, ?>> storageMap = SpringContext.getStorageManager().getStorageMap();
+            List<Field> fields = ClassUtil.getFieldsByAnnotation(contextBean, Static.class);
+            fields.forEach(field -> {
+                if (field != null) {
+                    ParameterizedType genericType = (ParameterizedType)field.getGenericType();
+                    Type[] actualTypeArguments = genericType.getActualTypeArguments();
+                    String valueType = actualTypeArguments[1].getTypeName();
+                    Map<Class<?>, Storage<?, ?>> storageMap = SpringContext.getStorageManager().getStorageMap();
 
-					try {
-						Storage<?, ?> storage = storageMap.get(Class.forName(valueType));
-						field.set(contextBean, storage.getStorageMap());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
+                    try {
+                        Storage<?, ?> storage = storageMap.get(Class.forName(valueType));
+                        field.set(contextBean, storage.getStorageMap());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
         });
 

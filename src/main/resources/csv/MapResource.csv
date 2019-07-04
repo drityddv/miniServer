@@ -1,4 +1,0 @@
-mapId,mapClass,mapName,x,y,mapData
-Long,className,String,Integer,Integer,arrays
-1,game.scene.map.resource.NoviceVillage,新手村,5,5,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"
-2,game.scene.map.resource.StormWind,暴风城,5,5,"1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"

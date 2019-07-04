@@ -42,6 +42,7 @@ public class PlayerEnt extends AbstractEntity<String> {
     public void doDeserialize() {
         if (this.playerData != null) {
             this.player = ProtoStuffUtil.deserialize(this.playerData, Player.class);
+            this.player.getAttributeContainer().setOwner(this.player);
         }
     }
 
@@ -57,14 +58,6 @@ public class PlayerEnt extends AbstractEntity<String> {
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    public byte[] getPlayerData() {
-        return playerData;
-    }
-
-    public void setPlayerData(byte[] playerData) {
-        this.playerData = playerData;
     }
 
     public String getAccountId() {

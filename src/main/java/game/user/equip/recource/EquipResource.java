@@ -92,7 +92,7 @@ public class EquipResource {
         return equipPosition;
     }
 
-	public List<AbstractConditionProcessor> getConditionProcessors() {
-		return conditionProcessors;
-	}
+    public List<AbstractConditionProcessor> getConditionProcessors() {
+        return conditionProcessors;
+    }
 }

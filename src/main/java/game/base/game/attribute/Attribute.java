@@ -9,7 +9,7 @@ public class Attribute {
 
     protected AttributeType attributeType;
 
-	protected long value;
+    protected long value;
 
     public static Attribute valueOf(AttributeType attributeType, long value) {
         Attribute attribute = new Attribute();
@@ -39,11 +39,8 @@ public class Attribute {
         this.value = value;
     }
 
-	@Override
-	public String toString() {
-		return "Attribute{" +
-				"attributeType=" + attributeType +
-				", value=" + value +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Attribute{" + "attributeType=" + attributeType + ", value=" + value + '}';
+    }
 }

@@ -1,8 +1,8 @@
 package game.user.equip.base.condition;
 
-import game.user.player.model.Player;
-
 import java.util.Map;
+
+import game.user.player.model.Player;
 
 /**
  * 金币到达某个数目
@@ -13,11 +13,11 @@ import java.util.Map;
 
 public class PlayerGoldConditionProcessor extends AbstractConditionProcessor {
 
-	public PlayerGoldConditionProcessor(Map<Object, Integer> conditionParams) {
-		super(conditionParams);
-	}
+    public PlayerGoldConditionProcessor(Map<Object, Integer> conditionParams) {
+        super(conditionParams);
+    }
 
-	@Override
+    @Override
     public boolean doVerify(Player player) {
         int gold = conditionParams.get("GOLD");
         return player.getGold() >= gold;

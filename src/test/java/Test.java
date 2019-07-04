@@ -1,35 +1,44 @@
-import game.user.equip.constant.EquipPosition;
-import game.user.equip.entity.EquipStorageEnt;
-import game.user.equip.model.Equipment;
-import net.utils.ProtoStuffUtil;
-import spring.SpringContext;
+import utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * @author : ddv
  * @since : 2019/4/30 下午2:28
  */
+class B {
+    transient Map map = new HashMap();
+}
+
+class A {
+    int age;
+
+    @Override
+    public int hashCode() {
+        return age;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof A)) {
+            return false;
+        }
+
+        A o = (A)obj;
+        return this.age == o.age;
+    }
+}
 
 public class Test {
 
     @org.junit.Test
     public void run() {
-//		Start.run();
-		List<Integer> integerList = new ArrayList<>();
-		integerList.add(1);
-		integerList.add(2);
-		integerList.add(3);
-		integerList.add(4);
-
-		integerList.forEach(integer -> {
-			if(integer > 2){
-				throw new UnsupportedOperationException();
-			}
-		});
+		String accountId = StringUtil.wipePlaceholder("打印地图[{}],玩家正在切入[{}],[{}]", 1, "accountId", 2L);
+		System.out.println(accountId);
 	}
 
 }

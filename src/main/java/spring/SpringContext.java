@@ -2,7 +2,6 @@ package spring;
 
 import javax.annotation.PostConstruct;
 
-import game.user.equip.service.IEquipService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -10,13 +9,17 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import game.base.ebus.EventBus;
+import game.base.executor.scene.ISceneExecutorService;
 import game.base.executor.service.IMiniExecutorService;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
-import game.scene.map.service.ISceneMapService;
+import game.user.equip.service.IEquipService;
 import game.user.login.service.ILoginService;
+import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
 import game.user.player.service.IPlayerService;
+import game.world.base.service.IWorldService;
+import game.world.neutralMap.service.INeutralMapService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
 import middleware.resource.storage.StorageManager;
@@ -49,13 +52,22 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private EventBus eventBus;
 
-    // 业务service区
+    @Autowired
+    private ISceneExecutorService sceneExecutorService;
 
+    // 地图专专用
+    @Autowired
+    private IWorldService worldService;
+
+    @Autowired
+    private IMapInfoService mapInfoService;
+
+    @Autowired
+    private INeutralMapService neutralMapService;
+
+    // 业务service区
     @Autowired
     private ILoginService loginService;
-
-    @Autowired
-    private ISceneMapService sceneMapService;
 
     @Autowired
     private IGmService gmService;
@@ -70,7 +82,7 @@ public class SpringContext implements ApplicationContextAware {
     private IPackService packService;
 
     @Autowired
-	private IEquipService equipService;
+    private IEquipService equipService;
 
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
@@ -82,10 +94,6 @@ public class SpringContext implements ApplicationContextAware {
 
     public static ILoginService getLoginService() {
         return instance.loginService;
-    }
-
-    public static ISceneMapService getSceneMapService() {
-        return instance.sceneMapService;
     }
 
     public static IGmService getGmService() {
@@ -116,9 +124,25 @@ public class SpringContext implements ApplicationContextAware {
         return instance.eventBus;
     }
 
-	public static IEquipService getEquipService() {
-		return instance.equipService;
-	}
+    public static IEquipService getEquipService() {
+        return instance.equipService;
+    }
+
+    public static ISceneExecutorService getSceneExecutorService() {
+        return instance.sceneExecutorService;
+    }
+
+    public static IWorldService getWorldService() {
+        return instance.worldService;
+    }
+
+    public static IMapInfoService getMapInfoService() {
+        return instance.mapInfoService;
+    }
+
+    public static INeutralMapService getNeutralMapService() {
+        return instance.neutralMapService;
+    }
 
     @PostConstruct
     private void init() {

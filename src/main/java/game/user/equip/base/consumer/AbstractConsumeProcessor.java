@@ -14,6 +14,10 @@ public abstract class AbstractConsumeProcessor {
 
     protected Map<Long, Integer> consumeParams;
 
+    public AbstractConsumeProcessor(Map<Long, Integer> consumeParams) {
+        this.consumeParams = consumeParams;
+    }
+
     /**
      * 消耗逻辑 消耗失败不会返还已经消耗的道具
      *
@@ -27,10 +31,6 @@ public abstract class AbstractConsumeProcessor {
     }
 
     public void setConsumeParams(Map<Long, Integer> consumeParams) {
-        this.consumeParams = consumeParams;
-    }
-
-    public AbstractConsumeProcessor(Map<Long, Integer> consumeParams) {
         this.consumeParams = consumeParams;
     }
 }

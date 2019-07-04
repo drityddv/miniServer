@@ -8,10 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.executor.account.IAccountExecutorService;
 import game.base.executor.service.IMiniExecutorService;
 import game.user.login.packet.CM_UserLogin;
-import middleware.manager.ClazzManager;
+import game.user.login.packet.CM_UserRegister;
 import net.model.USession;
+import utils.ClassUtil;
+import utils.SimpleUtil;
 
 /**
  * 应用层请求派发器
@@ -27,6 +30,8 @@ public class Dispatcher {
 
     @Autowired
     private IMiniExecutorService miniExecutorService;
+    @Autowired
+    private IAccountExecutorService accountExecutorService;
 
     /**
      * 方法invoke对应表
@@ -47,7 +52,7 @@ public class Dispatcher {
     }
 
     public void invoke(USession session, Object packet) {
-        logger.info("invoke [{}]", packet.getClass());
+        logger.info("新的请求类型[{}]", packet.getClass().getSimpleName());
 
         HandlerInvoke handlerInvoke = handlerDestinationMap.get(packet.getClass());
 
@@ -56,13 +61,16 @@ public class Dispatcher {
             return;
         }
 
-        // 登陆走net线程
-        if (packet.getClass() == CM_UserLogin.class) {
-            handlerInvoke.invoke(session, packet);
+        if (packet.getClass() == CM_UserLogin.class || packet.getClass() == CM_UserRegister.class) {
+            String accountId = ClassUtil.getFieldByName(packet, "accountId", String.class);
+            int modIndex = accountExecutorService.modIndex(accountId);
+            miniExecutorService.handle(handlerInvoke, session, modIndex, packet);
             return;
         }
 
-        miniExecutorService.handle(handlerInvoke, session, packet, ClazzManager.getIdByClazz(packet.getClass()));
+        String accountId = SimpleUtil.getAccountIdFromSession(session);
+        int modIndex = accountExecutorService.modIndex(accountId);
+        miniExecutorService.handle(handlerInvoke, SimpleUtil.getPlayerFromSession(session), modIndex, packet);
 
     }
 }

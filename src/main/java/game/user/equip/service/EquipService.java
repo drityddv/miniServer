@@ -34,10 +34,9 @@ import spring.SpringContext;
 @Component
 public class EquipService implements IEquipService {
 
+    private static final Logger logger = LoggerFactory.getLogger(EquipService.class);
     @Autowired
     private EquipManager equipManager;
-
-    private static final Logger logger = LoggerFactory.getLogger(EquipService.class);
 
     @Override
     public void enhance(Player player, int position) {

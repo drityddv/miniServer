@@ -1,9 +1,9 @@
 package utils;
 
+import java.time.Instant;
+
 import io.protostuff.Morph;
 import net.utils.ProtoStuffUtil;
-
-import java.time.Instant;
 
 /**
  * @author : ddv
@@ -21,20 +21,19 @@ public class TimeUtil {
         return Instant.now().toEpochMilli();
     }
 
-    static class A{
-    	int a;
-    	@Morph
-    	String b;
-	}
+    public static void main(String[] args) {
+        A a = new A();
+        a.a = 10;
+        a.b = "b";
+        byte[] serialize = ProtoStuffUtil.serialize(a);
 
-    public static void main(String[] args){
-		A a = new A();
-		a.a = 10;
-		a.b="b";
-		byte[] serialize = ProtoStuffUtil.serialize(a);
+        a = ProtoStuffUtil.deserialize(serialize, A.class);
 
-		a = ProtoStuffUtil.deserialize(serialize,A.class);
+    }
 
-
-	}
+    static class A {
+        int a;
+        @Morph
+        String b;
+    }
 }

@@ -13,6 +13,10 @@ public abstract class AbstractConditionProcessor {
 
     protected Map<Object, Integer> conditionParams;
 
+    public AbstractConditionProcessor(Map<Object, Integer> conditionParams) {
+        this.conditionParams = conditionParams;
+    }
+
     /**
      * 检查逻辑
      *
@@ -21,15 +25,11 @@ public abstract class AbstractConditionProcessor {
      */
     public abstract boolean doVerify(Player player);
 
-	public Map<Object, Integer> getConditionParams() {
-		return conditionParams;
-	}
+    public Map<Object, Integer> getConditionParams() {
+        return conditionParams;
+    }
 
-	public void setConditionParams(Map<Object, Integer> conditionParams) {
-		this.conditionParams = conditionParams;
-	}
-
-	public AbstractConditionProcessor(Map<Object, Integer> conditionParams) {
-		this.conditionParams = conditionParams;
-	}
+    public void setConditionParams(Map<Object, Integer> conditionParams) {
+        this.conditionParams = conditionParams;
+    }
 }

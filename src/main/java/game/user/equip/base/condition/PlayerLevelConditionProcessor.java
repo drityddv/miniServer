@@ -1,8 +1,8 @@
 package game.user.equip.base.condition;
 
-import game.user.player.model.Player;
-
 import java.util.Map;
+
+import game.user.player.model.Player;
 
 /**
  * 等级到达
@@ -13,11 +13,11 @@ import java.util.Map;
 
 public class PlayerLevelConditionProcessor extends AbstractConditionProcessor {
 
-	public PlayerLevelConditionProcessor(Map<Object, Integer> conditionParams) {
-		super(conditionParams);
-	}
+    public PlayerLevelConditionProcessor(Map<Object, Integer> conditionParams) {
+        super(conditionParams);
+    }
 
-	@Override
+    @Override
     public boolean doVerify(Player player) {
         int level = conditionParams.get("LEVEL");
         return player.getLevel() >= level;

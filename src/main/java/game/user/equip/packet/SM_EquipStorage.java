@@ -21,6 +21,6 @@ public class SM_EquipStorage {
 
     @Override
     public String toString() {
-        return "SM_EquipStorage{" + "equipStorage="  + equipStorage + '}';
+        return "SM_EquipStorage{" + "equipStorage=" + equipStorage + '}';
     }
 }
