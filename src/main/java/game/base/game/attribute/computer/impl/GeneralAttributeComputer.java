@@ -2,6 +2,7 @@ package game.base.game.attribute.computer.impl;
 
 import java.util.Map;
 
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.AttributeType;
@@ -28,8 +29,6 @@ public class GeneralAttributeComputer extends AbstractAttributeComputer {
     public long compute(AbstractCreature creature, Map<AttributeType, Attribute> accumulateAttrs,
         Map<AttributeId, AttributeSet> attributes) {
 
-        // init base
-
         // 计算关联的属性
         long baseValue = AttributeUtils.getCalculateAttributeValue(accumulateAttrs, getAttributeType());
 
@@ -45,4 +44,14 @@ public class GeneralAttributeComputer extends AbstractAttributeComputer {
         return (long)Math.max(0, (baseValue * (1 + GlobalConst.getRatio(baseRate))));
     }
 
+    // 这里先把pvp和player的计算方式设为一样
+    @Override
+    public long computeForPVP(BaseCreatureUnit creatureUnit, Map<AttributeType, Attribute> accumulateAttrs,
+        Map<AttributeId, AttributeSet> attributes) {
+        // 计算关联的属性
+        long baseValue = AttributeUtils.getCalculateAttributeValue(accumulateAttrs, getAttributeType());
+
+        long baseRate = AttributeUtils.getCalculateAttributeRate(accumulateAttrs, getAttributeType());
+        return (long)Math.max(0, (baseValue * (1 + GlobalConst.getRatio(baseRate))));
+    }
 }

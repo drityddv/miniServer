@@ -168,5 +168,4 @@ public abstract class AttributeContainer<T> {
      */
     protected abstract void recompute(AttributeUpdateRecords records, boolean needSyn);
 
-    public abstract void clear();
 }

@@ -34,18 +34,24 @@ public class EnterMapCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
-        // 具体切图逻辑
-        MiniMapResource mapResource = WorldManager.getInstance().getMapResource(mapId);
-        AbstractMapHandler handler = AbstractMapHandler.getHandler(mapResource.getGroupId());
+        try {
+            // 具体切图逻辑
+            MiniMapResource mapResource = WorldManager.getInstance().getMapResource(mapId);
+            AbstractMapHandler handler = AbstractMapHandler.getHandler(mapResource.getGroupId());
 
-        // 检查进入条件
-        handler.canEnterMapThrow(player, mapId, false);
-        // 修改玩家地图数据
-        handler.enterMapPre(player, mapId);
-
-        // FIXME 内网真正进入地图是等客户端加载资源后再次发包 项目这里就直接进入了
-        // 真正进入地图
-        handler.realEnterMap(player);
+            // 检查进入条件
+            handler.canEnterMapThrow(player, mapId, false);
+            // 进入地图前的一些工作 检查,上锁等
+            handler.enterMapPre(player, mapId);
+            // FIXME 内网真正进入地图是等客户端加载资源后再次发包 项目这里就直接进入了
+            // 真正进入地图
+            handler.realEnterMap(player, mapId);
+            // 进入地图后的一些工作
+            handler.enterMapAfter(player, mapId);
+        } catch (Exception e) {
+            player.setChangingMap(false);
+            e.printStackTrace();
+        }
     }
 
     @Override

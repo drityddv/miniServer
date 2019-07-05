@@ -29,7 +29,8 @@ public abstract class AbstractVisibleMapInfo {
         this.currentY = currentY;
         this.targetX = currentX;
         this.targetY = currentY;
-        this.move = true;
+        this.move = false;
+        this.isInMap = true;
         this.lastMoveAt = TimeUtil.now();
     }
 
@@ -43,6 +44,8 @@ public abstract class AbstractVisibleMapInfo {
     public void doMove() {
         this.currentX = targetX;
         this.currentY = targetY;
+        this.move = false;
+        this.lastMoveAt = TimeUtil.now();
     }
 
     public abstract long getId();

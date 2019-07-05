@@ -3,9 +3,9 @@ package game.user.mapinfo.entity;
 import javax.persistence.*;
 
 import db.middleware.AbstractEntity;
+import game.miniMap.base.AbstractMapInfo;
 import game.miniMap.handler.MapGroupType;
 import game.user.mapinfo.model.PlayerMapInfo;
-import game.world.AbstractMapInfo;
 import net.utils.ProtoStuffUtil;
 
 /**
@@ -25,6 +25,9 @@ public class MapInfoEnt extends AbstractEntity<String> {
     @Lob
     @Column(columnDefinition = "blob comment '玩家地图数据' ")
     private byte[] mapData;
+
+    @Column(columnDefinition = "int default 0 comment '玩家当前所在地图'", nullable = true)
+    private volatile int currentMapId;
 
     public static MapInfoEnt valueOf(String accountId) {
         MapInfoEnt ent = new MapInfoEnt();
@@ -49,6 +52,14 @@ public class MapInfoEnt extends AbstractEntity<String> {
         if (mapData != null) {
             playerMapInfo = ProtoStuffUtil.deserialize(mapData, PlayerMapInfo.class);
         }
+    }
+
+    public int getCurrentMapId() {
+        return currentMapId;
+    }
+
+    public void setCurrentMapId(int currentMapId) {
+        this.currentMapId = currentMapId;
     }
 
     @Override

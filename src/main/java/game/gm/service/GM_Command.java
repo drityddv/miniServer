@@ -12,6 +12,8 @@ import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.id.AttributeId;
 import game.base.game.attribute.model.PlayerAttributeContainer;
+import game.base.game.attribute.util.AttributeUtils;
+import game.gm.event.HotFixEvent;
 import game.gm.packet.SM_LogMessage;
 import game.user.equip.constant.EquipPosition;
 import game.user.equip.model.EquipStorage;
@@ -24,6 +26,7 @@ import game.user.pack.service.IPackService;
 import game.user.player.model.Player;
 import game.user.player.service.IPlayerService;
 import net.utils.PacketUtil;
+import spring.SpringContext;
 import utils.StringUtil;
 
 /**
@@ -65,19 +68,20 @@ public class GM_Command {
         Map<AttributeType, Attribute> finalAttributes = attributeContainer.getFinalAttributes();
         sb.append(StringUtil.wipePlaceholder("打印玩家[{}]属性", player.getAccountId()));
         sb.append(StringUtil.wipePlaceholder("玩家共有[{}]个属性模块", modelAttributeSet.size()));
-        modelAttributeSet.forEach((attributeId, attributeSet) -> {
-            sb.append(StringUtil.wipePlaceholder("模块名[{}]", attributeId.getName()));
-            Map<AttributeType, Attribute> attributeMap = attributeSet.getAttributeMap();
-            attributeMap.forEach((type, attribute) -> {
-                sb.append(
-                    "   " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
-            });
-        });
-
-        sb.append(StringUtil.wipePlaceholder("[玩家最终属性]") + '\n');
-        finalAttributes.forEach((type, attribute) -> {
-            sb.append("   " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
-        });
+        AttributeUtils.logAttrs(attributeContainer, sb);
+        // modelAttributeSet.forEach((attributeId, attributeSet) -> {
+        // sb.append(StringUtil.wipePlaceholder("模块名[{}]", attributeId.getName()));
+        // Map<AttributeType, Attribute> attributeMap = attributeSet.getAttributeMap();
+        // attributeMap.forEach((type, attribute) -> {
+        // sb.append(
+        // " " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
+        // });
+        // });
+        //
+        // sb.append(StringUtil.wipePlaceholder("[玩家最终属性]") + '\n');
+        // finalAttributes.forEach((type, attribute) -> {
+        // sb.append(" " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
+        // });
         String message = sb.toString();
         logger.info('\n' + message);
 
@@ -122,4 +126,12 @@ public class GM_Command {
         packService.addItem(player, packService.createItem(configId), num);
     }
 
+    public void pushHotFix(Player player, String resourceName) {
+        SpringContext.getEventBus().pushEventSyn(HotFixEvent.valueOf(player, resourceName));
+    }
+
+    public void run(Player player) {
+        SpringContext.getNeutralMapService().pkPre(player);
+
+    }
 }

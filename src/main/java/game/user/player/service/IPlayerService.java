@@ -62,4 +62,12 @@ public interface IPlayerService {
      * @return
      */
     PlayerEnt getPlayerEnt(Player player);
+
+    /**
+     * 热更资源属性修正
+     *
+     * @param player
+     * @param resourceName
+     */
+    void hotFixCorrect(Player player, String resourceName);
 }

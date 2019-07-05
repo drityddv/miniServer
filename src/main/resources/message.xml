@@ -31,11 +31,9 @@
     <message id="146" value="game.user.equip.packet.CM_Equipment"/>
 
     <!--地图基础协议 2001 - 2005-->
-    <message id="2001" value="game.scene.map.packet.CM_EnterMap"/>
-    <message id="2002" value="game.scene.map.packet.CM_LeaveMap"/>
-    <message id="2003" value="game.scene.map.packet.CM_MoveMap"/>
-    <message id="2004" value="game.scene.map.packet.CM_TransferMap"/>
-    <message id="2005" value="game.scene.map.packet.CM_ChangeMap"/>
+    <message id="2002" value="game.world.base.packet.CM_LeaveMap"/>
+    <message id="2003" value="game.world.base.packet.CM_MoveMap"/>
+    <message id="2005" value="game.world.base.packet.CM_ChangeMap"/>
     <message id="2006" value="game.world.base.packet.CM_LogMap"/>
 
 

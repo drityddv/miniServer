@@ -20,10 +20,15 @@ import net.model.PacketProtocol;
 public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
-
+    public String username;
     private Scanner scanner = new Scanner(System.in);
-
     private ClientDispatch dispatch = new ClientDispatch();
+
+    public static ClientHandler valueOf(String username) {
+        ClientHandler clientHandler = new ClientHandler();
+        clientHandler.username = username;
+        return clientHandler;
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
@@ -33,11 +38,9 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        logger.info("客户端与服务端通讯成功!");
-        logger.info("示例输入如下：\nsend 1 ddv ddv");
         CM_UserLogin cm = new CM_UserLogin();
-        cm.setAccountId("ddv");
-        cm.setPassword("ddv");
+        cm.setAccountId(username);
+        cm.setPassword(username);
         ctx.writeAndFlush(PacketProtocol.valueOf(cm));
         Executors.newSingleThreadExecutor().submit(() -> {
             while (true) {

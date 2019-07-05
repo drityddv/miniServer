@@ -7,8 +7,9 @@ import org.slf4j.LoggerFactory;
 import game.base.ebus.EventBus;
 import game.base.executor.account.AccountExecutor;
 import game.base.executor.service.MiniExecutorService;
+import game.scene.npc.service.NpcManager;
 import game.user.pack.service.IPackService;
-import game.world.neutralMap.service.INeutralMapService;
+import game.world.neutral.neutralMap.service.INeutralMapService;
 import middleware.resource.storage.StorageManager;
 import net.server.Server;
 import spring.SpringContext;
@@ -54,6 +55,8 @@ public class Start {
         IPackService packService = SpringContext.getPackService();
 
         INeutralMapService neutralMapService = SpringContext.getNeutralMapService();
+
+        NpcManager npcManager = SpringContext.getNpcManager();
 
         logger.info("服务器启动成功...");
     }

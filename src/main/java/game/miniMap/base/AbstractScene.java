@@ -2,9 +2,8 @@ package game.miniMap.base;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
-import game.base.fight.pvpunit.FighterAccount;
+import game.base.fight.model.pvpunit.FighterAccount;
 
 /**
  * @author : ddv
@@ -12,7 +11,6 @@ import game.base.fight.pvpunit.FighterAccount;
  */
 
 public abstract class AbstractScene {
-    protected static final AtomicInteger GLOBAL_SCENE_ID = new AtomicInteger(Integer.MAX_VALUE - 1);
 
     /**
      * 地图id
@@ -40,6 +38,7 @@ public abstract class AbstractScene {
         fighterAccountMap.clear();
     }
 
+    // get and set
     public void fighterEnter(FighterAccount fighterAccount) {
         fighterAccountMap.put(fighterAccount.getAccountId(), fighterAccount);
     }
@@ -48,7 +47,6 @@ public abstract class AbstractScene {
         fighterAccountMap.remove(accountId);
     }
 
-    // get and set
     public int getMapId() {
         return mapId;
     }

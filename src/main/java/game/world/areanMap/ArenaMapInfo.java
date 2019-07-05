@@ -3,7 +3,7 @@ package game.world.areanMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.world.AbstractMapInfo;
+import game.miniMap.base.AbstractMapInfo;
 
 /**
  * 普通地图

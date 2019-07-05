@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.gm.event.HotFixEvent;
 import game.user.login.event.PlayerLoginBeforeEvent;
 import game.user.player.service.PlayerService;
 import middleware.anno.EventReceiver;
@@ -30,6 +31,21 @@ public class PlayerFacade {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * 热更资源事件
+     *
+     * @param event
+     */
+    @EventReceiver
+    public void hotFixPlayerAttribute(HotFixEvent event) {
+        try {
+            playerService.hotFixCorrect(event.getPlayer(), event.getResourceName());
+        } catch (Exception e) {
+            logger.info("玩家hotfix事件出错,[{}]", e.getClass());
+            e.printStackTrace();
+        }
     }
 
 }

@@ -13,7 +13,7 @@ import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
 
 /**
- * pojo反序列化工具 这个只能序列化传递的class 父类字段不会序列化,成员的父类会进行序列化
+ * pojo反序列化工具 这个只能序列化传递的class 如果class提供构造方法会走构造方法 如果没有提供构造方法 走反射赋值,但是被transient的字段会跳过
  *
  * @author : ddv
  * @since : 2019/4/26 下午5:45

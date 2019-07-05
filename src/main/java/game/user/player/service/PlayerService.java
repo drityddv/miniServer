@@ -78,4 +78,14 @@ public class PlayerService implements IPlayerService {
         return playerManager.loadOrCreate(player.getAccountId());
     }
 
+    @Override
+    public void hotFixCorrect(Player player, String resourceName) {
+        if (!resourceName.equals("playerResource")) {
+            return;
+        }
+        loadPlayerAttribute(player);
+        player.getAttributeContainer().containerRecompute();
+
+    }
+
 }

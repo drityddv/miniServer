@@ -3,9 +3,9 @@ package game.miniMap.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.world.AbstractMapInfo;
+import game.miniMap.base.AbstractMapInfo;
 import game.world.areanMap.ArenaMapInfo;
-import game.world.neutralMap.model.NeutralMapInfo;
+import game.world.neutral.neutralMap.model.NeutralMapInfo;
 
 /**
  * 地图分类

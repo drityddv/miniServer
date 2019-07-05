@@ -1,8 +1,8 @@
 package game.miniMap.handler;
 
+import game.miniMap.base.AbstractMapInfo;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.player.model.Player;
-import game.world.AbstractMapInfo;
 
 /**
  * @author : ddv
@@ -29,20 +29,11 @@ public interface IMapHandler {
     MapGroupType getGroupType();
 
     /**
-     * 进入地图 不做检查 调用前后自行检查canEnterMap()
-     *
-     * @param player
-     * @param mapId
-     */
-    void doEnterMap(Player player, int mapId);
-
-    /**
      * 离开地图
      *
      * @param player
-     * @param newMapId
      */
-    void leaveMap(Player player, int newMapId);
+    void leaveMap(Player player);
 
     /**
      * 玩家下线之后 地图处理
@@ -55,7 +46,16 @@ public interface IMapHandler {
      * 真正进入地图
      *
      * @param player
+     * @param mapId
      */
-    void realEnterMap(Player player);
+    void realEnterMap(Player player, int mapId);
+
+    /**
+     * 为地图内的玩家生成战斗对象
+     *
+     * @param player
+     * @param mapId
+     */
+    void initFighterAccount(Player player, int mapId);
 
 }

@@ -2,6 +2,7 @@ package game.base.game.attribute.computer;
 
 import java.util.Map;
 
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.AttributeType;
@@ -49,5 +50,29 @@ public interface IAttributeComputer {
     default long computeDefault(AbstractCreature creature, Map<AttributeType, Attribute> accumulateAttrs,
         Map<AttributeId, AttributeSet> attributes) {
         return compute(creature, accumulateAttrs, attributes);
+    }
+
+    /**
+     * pvp
+     *
+     * @param creatureUnit
+     * @param accumulateAttrs
+     * @param attributes
+     * @return
+     */
+    long computeForPVP(BaseCreatureUnit creatureUnit, Map<AttributeType, Attribute> accumulateAttrs,
+        Map<AttributeId, AttributeSet> attributes);
+
+    /**
+     * pvp
+     *
+     * @param creatureUnit
+     * @param accumulateAttrs
+     * @param attributes
+     * @return
+     */
+    default long computeFinalForPVP(BaseCreatureUnit creatureUnit, Map<AttributeType, Attribute> accumulateAttrs,
+        Map<AttributeId, AttributeSet> attributes) {
+        return computeForPVP(creatureUnit, accumulateAttrs, attributes);
     }
 }

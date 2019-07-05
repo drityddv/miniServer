@@ -3,7 +3,7 @@
 // import java.util.HashMap;
 // import java.util.Map;
 //
-// import game.base.fight.pvpunit.FighterAccount;
+// import game.base.fight.model.pvpunit.FighterAccount;
 //
 /// **
 // * 抽象地图

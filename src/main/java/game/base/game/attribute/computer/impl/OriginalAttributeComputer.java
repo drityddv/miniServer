@@ -2,6 +2,7 @@ package game.base.game.attribute.computer.impl;
 
 import java.util.Map;
 
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.AttributeType;
@@ -23,6 +24,12 @@ public class OriginalAttributeComputer extends AbstractAttributeComputer {
 
     @Override
     public long compute(AbstractCreature creature, Map<AttributeType, Attribute> accumulateAttrs,
+        Map<AttributeId, AttributeSet> attributes) {
+        return AttributeUtils.getRealAttributeValue(accumulateAttrs, getAttributeType());
+    }
+
+    @Override
+    public long computeForPVP(BaseCreatureUnit creatureUnit, Map<AttributeType, Attribute> accumulateAttrs,
         Map<AttributeId, AttributeSet> attributes) {
         return AttributeUtils.getRealAttributeValue(accumulateAttrs, getAttributeType());
     }

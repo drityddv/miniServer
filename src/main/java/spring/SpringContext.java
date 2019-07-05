@@ -13,13 +13,15 @@ import game.base.executor.scene.ISceneExecutorService;
 import game.base.executor.service.IMiniExecutorService;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
+import game.scene.fight.service.IFightService;
+import game.scene.npc.service.NpcManager;
 import game.user.equip.service.IEquipService;
 import game.user.login.service.ILoginService;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
 import game.user.player.service.IPlayerService;
 import game.world.base.service.IWorldService;
-import game.world.neutralMap.service.INeutralMapService;
+import game.world.neutral.neutralMap.service.INeutralMapService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
 import middleware.resource.storage.StorageManager;
@@ -84,6 +86,12 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private IEquipService equipService;
 
+    @Autowired
+    private NpcManager npcManager;
+
+    @Autowired
+    private IFightService fightService;
+
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
     }
@@ -136,12 +144,20 @@ public class SpringContext implements ApplicationContextAware {
         return instance.worldService;
     }
 
+    public static NpcManager getNpcManager() {
+        return instance.npcManager;
+    }
+
     public static IMapInfoService getMapInfoService() {
         return instance.mapInfoService;
     }
 
     public static INeutralMapService getNeutralMapService() {
         return instance.neutralMapService;
+    }
+
+    public static IFightService getFightService() {
+        return instance.fightService;
     }
 
     @PostConstruct

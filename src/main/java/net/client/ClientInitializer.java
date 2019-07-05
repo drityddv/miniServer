@@ -12,12 +12,22 @@ import net.middleware.PacketEncoder;
  */
 
 public class ClientInitializer extends ChannelInitializer<SocketChannel> {
+
+    private String username;
+
+    public static ClientInitializer valueOf(String username) {
+        ClientInitializer clientInitializer = new ClientInitializer();
+        clientInitializer.username = username;
+        return clientInitializer;
+    }
+
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
         ChannelPipeline pipeline = ch.pipeline();
 
         pipeline.addLast(new PacketDecoder());
         pipeline.addLast(new PacketEncoder());
-        pipeline.addLast(new ClientHandler());
+        pipeline.addLast(ClientHandler.valueOf(username));
     }
+
 }

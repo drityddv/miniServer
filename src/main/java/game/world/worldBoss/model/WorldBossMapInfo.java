@@ -3,7 +3,7 @@ package game.world.worldBoss.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.world.AbstractMapInfo;
+import game.miniMap.base.AbstractMapInfo;
 
 /**
  * @author : ddv

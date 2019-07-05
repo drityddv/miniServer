@@ -17,7 +17,8 @@ public class Client {
         Bootstrap bootstrap = new Bootstrap();
 
         try {
-            bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).handler(new ClientInitializer());
+            bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
+                .handler(ClientInitializer.valueOf(args.length <= 0 ? "ddv" : args[0]));
             ChannelFuture future = bootstrap.connect("localhost", 8000).sync();
             future.channel().closeFuture().sync();
         } catch (Exception e) {

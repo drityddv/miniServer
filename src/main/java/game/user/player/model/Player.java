@@ -3,6 +3,7 @@ package game.user.player.model;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.object.AbstractCreature;
 import game.user.equip.model.EquipStorage;
+import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.pack.model.Pack;
 import game.user.player.entity.PlayerEnt;
 import spring.SpringContext;
@@ -26,12 +27,15 @@ public class Player extends AbstractCreature<Player> {
      * 黄金
      */
     private int gold;
-    /**
-     * 当前地图id
-     */
-    private int currentMapId;
 
-    private boolean changingMap;
+    /**
+     * 上次修改切图的操作类型0:无 1:离开地图 2:进入地图
+     */
+    // private volatile int lastChangeType;
+
+    private volatile boolean changingMap;
+
+    // private Lock lock = new ReentrantLock();
 
     private Player() {}
 
@@ -77,8 +81,9 @@ public class Player extends AbstractCreature<Player> {
         return level;
     }
 
-    public void setLevel(int level) {
+    public int setLevel(int level) {
         this.level = level;
+        return this.level;
     }
 
     public long getPlayerId() {
@@ -98,7 +103,6 @@ public class Player extends AbstractCreature<Player> {
     }
 
     public boolean isChangingMap() {
-
         return changingMap;
     }
 
@@ -107,16 +111,14 @@ public class Player extends AbstractCreature<Player> {
     }
 
     public int getCurrentMapId() {
-        return currentMapId;
+        return SpringContext.getMapInfoService().getMapInfoEnt(this).getCurrentMapId();
     }
 
-    public void setCurrentMapId(int currentMapId) {
-        this.currentMapId = currentMapId;
-    }
-
-    @Override
-    public String toString() {
-        return "Player{" + "accountId='" + accountId + '\'' + ", playerId=" + playerId + ", level=" + level + '}';
+    // FIXME 这里有可能离开地图会覆盖掉进入地图的操作 要修
+    public void setCurrentMapId(int mapId) {
+        MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
+        mapInfoEnt.setCurrentMapId(mapId);
+        SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
     }
 
 }

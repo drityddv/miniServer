@@ -1,7 +1,13 @@
-import utils.StringUtil;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import game.user.player.model.Player;
+import utils.StringUtil;
 
 /**
  * @author : ddv
@@ -35,10 +41,21 @@ class A {
 
 public class Test {
 
+    private static final Logger logger = LoggerFactory.getLogger(Test.class);
+
     @org.junit.Test
     public void run() {
-		String accountId = StringUtil.wipePlaceholder("打印地图[{}],玩家正在切入[{}],[{}]", 1, "accountId", 2L);
-		System.out.println(accountId);
-	}
+        Player player = Player.valueOf("ddv");
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        for (int i = 0; i < 100; i++) {
+            executorService.submit(() -> {
+                int level = player.getLevel();
+                System.out.println(StringUtil.wipePlaceholder("当前等级[{}] hashcode[{}] 设置后的等级[{}]", level,
+                    player.hashCode(), player.setLevel(level + 1)));
+            });
+        }
+
+        System.out.println(player.getLevel());
+    }
 
 }

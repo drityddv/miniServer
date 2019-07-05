@@ -14,8 +14,7 @@ public interface IMovableMapHandler {
      * 移动
      *
      * @param player
-     * @param currentGrid
      * @param targetGrid
      */
-    void move(Player player, Grid currentGrid, Grid targetGrid);
+    void move(Player player, Grid targetGrid);
 }

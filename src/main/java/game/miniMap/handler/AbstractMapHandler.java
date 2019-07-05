@@ -5,12 +5,12 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import game.miniMap.base.AbstractMapInfo;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.player.model.Player;
-import game.world.AbstractMapInfo;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
-import game.world.neutralMap.model.NeutralMapInfo;
+import game.world.neutral.neutralMap.model.NeutralMapInfo;
 import spring.SpringContext;
 
 /**
@@ -48,7 +48,6 @@ public abstract class AbstractMapHandler implements IMapHandler {
      */
     public static <T extends AbstractMapHandler> T getAbstractMapHandler(int mapId) {
         MiniMapResource miniMapResource = WorldManager.getInstance().getMapResource(mapId);
-
         return AbstractMapHandler.getHandler(miniMapResource.getGroupId());
     }
 
@@ -77,11 +76,25 @@ public abstract class AbstractMapHandler implements IMapHandler {
      * @param mapId
      */
     public final void enterMapPre(Player player, int mapId) {
+        player.setChangingMap(true);
+    }
+
+    public final void enterMapAfter(Player player, int currentMapId) {
         MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(player);
         NeutralMapInfo mapInfo = getMapInfo(player, mapInfoEnt);
-        mapInfo.setMapId(mapId);
+        mapInfo.setMapId(currentMapId);
         SpringContext.getMapInfoService().saveMapInfoEnt(player, mapInfoEnt);
-        player.setCurrentMapId(mapId);
+        player.setCurrentMapId(currentMapId);
+        player.setChangingMap(false);
+    }
+
+    public final void leaveMapPre(Player player) {
+        player.setChangingMap(true);
+    }
+
+    public final void leaveMapAfter(Player player) {
+        player.setCurrentMapId(0);
+        player.setChangingMap(false);
     }
 
     public final void logMap(Player player, int mapId) {
@@ -99,4 +112,5 @@ public abstract class AbstractMapHandler implements IMapHandler {
      * @param mapId
      */
     public abstract void doLogMap(Player player, int mapId);
+
 }

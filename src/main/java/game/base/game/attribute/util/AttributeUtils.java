@@ -1,13 +1,16 @@
 package game.base.game.attribute.util;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import game.base.game.attribute.Attribute;
-import game.base.game.attribute.AttributeSet;
-import game.base.game.attribute.AttributeType;
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.base.game.attribute.*;
+import game.base.game.attribute.computer.IAttributeComputer;
 import game.base.game.attribute.id.AttributeId;
+import game.base.object.AbstractCreature;
+import utils.StringUtil;
 
 /**
  *
@@ -124,6 +127,18 @@ public class AttributeUtils {
     }
 
     /**
+     * 把模块属性统计进list中
+     *
+     * @param attributeSet
+     * @param result
+     */
+    public static void accumulateToMap(AttributeSet attributeSet, List<Attribute> result) {
+        attributeSet.getAttributeMap().forEach((type, attribute) -> {
+            result.add(attribute);
+        });
+    }
+
+    /**
      * 将模块属性统计进给定的List中
      *
      * @param finalAttrs
@@ -180,6 +195,68 @@ public class AttributeUtils {
             }
             accumulateToMap(entry.getValue(), result);
         }
+    }
+
+    public static void compute(Map<AttributeId, AttributeSet> attributes,
+        Map<AttributeType, Attribute> finalAttributeMap, AttributeUpdateRecords records,
+        Map<AttributeType, Attribute> accumulateAttributes, Object owner) {
+
+        for (Attribute attribute : accumulateAttributes.values()) {
+            attribute.setValue(0);
+        }
+
+        // 同类型属性相加至计算变量map中
+        AttributeUtils.accumulateToMapWithExclude(attributes, accumulateAttributes, null);
+
+        List<IAttributeComputer> computers = AttributeType.getComputers();
+
+        // 如果有修改,需要重新获取这些属性type的计算器
+        if (records != null) {
+            computers = new ArrayList<>(records.getTypes().size());
+            for (AttributeType attributeType : records.getTypes()) {
+                IAttributeComputer computer = attributeType.getAttributeComputer();
+                if (computer != null) {
+                    computers.add(computer);
+                }
+            }
+        }
+
+        for (IAttributeComputer computer : computers) {
+            AttributeType type = computer.getAttributeType();
+            long value = 0;
+            if (owner instanceof AbstractCreature) {
+                value = computer.compute((AbstractCreature)owner, accumulateAttributes, attributes);
+            } else if (owner instanceof BaseCreatureUnit) {
+                value = computer.computeFinalForPVP((BaseCreatureUnit)owner, accumulateAttributes, attributes);
+            }
+            Attribute finalAttr = finalAttributeMap.get(type);
+
+            if (finalAttr != null) {
+                finalAttr.setValue(value);
+            } else {
+                finalAttributeMap.put(type, Attribute.valueOf(type, value));
+            }
+
+        }
+    }
+
+    public static void logAttrs(AttributeContainer attributeContainer, StringBuilder sb) {
+        Map<AttributeId, AttributeSet> modelAttributeSet = attributeContainer.getModelAttributeSet();
+        modelAttributeSet.forEach((attributeId, attributeSet) -> {
+            sb.append(StringUtil.wipePlaceholder("模块名[{}]", attributeId.getName()));
+            Map<AttributeType, Attribute> attributeMap = attributeSet.getAttributeMap();
+            attributeMap.forEach((type, attribute) -> {
+                sb.append(
+                    "   " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
+            });
+        });
+
+        Map<AttributeType, Attribute> finalAttributes = attributeContainer.getFinalAttributes();
+
+        sb.append(StringUtil.wipePlaceholder("[最终属性]") + '\n');
+        finalAttributes.forEach((type, attribute) -> {
+            sb.append("   " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
+        });
     }
 
 }

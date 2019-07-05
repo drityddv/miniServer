@@ -39,7 +39,6 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
 
         try {
-            logger.info("在线玩家数目[{}]", channelGroup.size());
             Object packet = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
             SpringContext.getDispatcher().invoke(SessionManager.getSession(ctx.channel()), packet);
         } catch (Exception e) {
@@ -50,7 +49,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     }
 
     @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+    public void handlerAdded(ChannelHandlerContext ctx) {
         channelGroup.add(ctx.channel());
     }
 

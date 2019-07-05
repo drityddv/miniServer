@@ -92,6 +92,7 @@ public class EquipService implements IEquipService {
             for (AbstractConditionProcessor processor : equipResource.getConditionProcessors()) {
                 boolean result = processor.doVerify(player);
                 if (!result) {
+                    logger.warn("玩家[{}]穿戴装备失败,穿戴要求不满足", player.getAccountId());
                     RequestException.throwException(I18N.EQUIP_WEAR_CONDITION_NOT_QUALIFIED);
                 }
             }
