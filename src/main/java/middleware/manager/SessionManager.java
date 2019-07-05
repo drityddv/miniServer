@@ -8,8 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import game.common.I18N;
+import game.common.packet.SM_Message;
 import io.netty.channel.Channel;
 import net.model.USession;
+import net.utils.PacketUtil;
 import utils.SimpleUtil;
 
 /**
@@ -35,15 +38,7 @@ public class SessionManager {
 
     public static void registerSession(USession session) {
         Channel channel = session.getChannel();
-        String accountId = SimpleUtil.getAccountIdFromSession(session);
-
-        if (sessionMap.containsKey(channel)) {
-            logger.error("重复注册的session[{}]", channel.id().asLongText());
-            return;
-        }
-
         sessionMap.put(channel, session);
-
     }
 
     public static void registerPlayerSession(String accountId, USession session) {

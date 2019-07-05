@@ -20,6 +20,7 @@ public abstract class AbstractSceneCommand extends AbstractCommand {
 
     public AbstractSceneCommand(AbstractScene scene, String accountId) {
         this.accountId = accountId;
+        this.scene = scene;
         this.mapId = scene.getMapId();
     }
 

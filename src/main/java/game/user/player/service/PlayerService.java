@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.id.AttributeIdEnum;
 import game.base.game.attribute.model.PlayerAttributeContainer;
+import game.scene.fight.syncStrategy.impl.LevelSynStrategy;
 import game.user.player.entity.PlayerEnt;
 import game.user.player.model.Player;
 import game.user.player.resource.PlayerResource;
@@ -61,6 +62,7 @@ public class PlayerService implements IPlayerService {
         player.getAttributeContainer().containerRecompute();
 
         savePlayer(playerEnt);
+        player.fighterSync(LevelSynStrategy.valueOf(player));
     }
 
     @Override

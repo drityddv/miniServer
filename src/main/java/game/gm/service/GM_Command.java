@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.AttributeType;
@@ -27,6 +28,7 @@ import game.user.player.model.Player;
 import game.user.player.service.IPlayerService;
 import net.utils.PacketUtil;
 import spring.SpringContext;
+import utils.ClassUtil;
 import utils.StringUtil;
 
 /**
@@ -69,19 +71,6 @@ public class GM_Command {
         sb.append(StringUtil.wipePlaceholder("打印玩家[{}]属性", player.getAccountId()));
         sb.append(StringUtil.wipePlaceholder("玩家共有[{}]个属性模块", modelAttributeSet.size()));
         AttributeUtils.logAttrs(attributeContainer, sb);
-        // modelAttributeSet.forEach((attributeId, attributeSet) -> {
-        // sb.append(StringUtil.wipePlaceholder("模块名[{}]", attributeId.getName()));
-        // Map<AttributeType, Attribute> attributeMap = attributeSet.getAttributeMap();
-        // attributeMap.forEach((type, attribute) -> {
-        // sb.append(
-        // " " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
-        // });
-        // });
-        //
-        // sb.append(StringUtil.wipePlaceholder("[玩家最终属性]") + '\n');
-        // finalAttributes.forEach((type, attribute) -> {
-        // sb.append(" " + StringUtil.wipePlaceholder("属性类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
-        // });
         String message = sb.toString();
         logger.info('\n' + message);
 
@@ -130,8 +119,12 @@ public class GM_Command {
         SpringContext.getEventBus().pushEventSyn(HotFixEvent.valueOf(player, resourceName));
     }
 
-    public void run(Player player) {
+    public void addFightAccount(Player player) {
         SpringContext.getNeutralMapService().pkPre(player);
+    }
 
+    public void run(Player player) {
+        FighterAccount fighterAccount = SpringContext.getFightService().initForPlayer(player);
+        FighterAccount bean = ClassUtil.getBean(fighterAccount, FighterAccount.class);
     }
 }

@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.github.dozermapper.core.DozerBeanMapperBuilder;
+import com.github.dozermapper.core.Mapper;
+
 /**
  * @author : ddv
  * @since : 2019/5/17 下午3:29
@@ -122,6 +125,23 @@ public class ClassUtil {
             }
         }
         return null;
+    }
+
+    /**
+     * 基于反射机制实现的Bean对象属性的拷贝
+     */
+    public static <T, S> S getBean(T t, Class<S> s) {
+        S rs = null;
+        try {
+            rs = s.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        Mapper mapper = DozerBeanMapperBuilder.buildDefault();
+        rs = mapper.map(t, s);
+
+        return rs;
     }
 
 }

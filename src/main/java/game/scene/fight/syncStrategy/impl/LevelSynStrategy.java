@@ -29,4 +29,10 @@ public class LevelSynStrategy extends BasePlayerSyncStrategy {
             playerUnit.setLevel(this.level);
         }
     }
+
+    public static LevelSynStrategy valueOf(Player player){
+		LevelSynStrategy synStrategy = new LevelSynStrategy();
+		synStrategy.init(player);
+		return synStrategy;
+	}
 }

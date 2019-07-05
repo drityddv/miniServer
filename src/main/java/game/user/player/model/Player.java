@@ -1,12 +1,20 @@
 package game.user.player.model;
 
+import game.base.executor.util.ExecutorUtils;
+import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.object.AbstractCreature;
+import game.miniMap.base.AbstractScene;
+import game.miniMap.handler.AbstractMapHandler;
+import game.miniMap.handler.ISceneMapHandler;
+import game.scene.fight.syncStrategy.BasePlayerSyncStrategy;
 import game.user.equip.model.EquipStorage;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.pack.model.Pack;
 import game.user.player.entity.PlayerEnt;
+import game.world.base.command.FighterSyncCommand;
 import spring.SpringContext;
+import utils.ClassUtil;
 import utils.IdUtil;
 
 /**
@@ -49,6 +57,25 @@ public class Player extends AbstractCreature<Player> {
         player.changingMap = false;
         player.setAttributeContainer(new PlayerAttributeContainer(player));
         return player;
+    }
+
+    public FighterAccount getFight() {
+        return SpringContext.getFightService().initForPlayer(this);
+    }
+
+    public void fighterSync(BasePlayerSyncStrategy syncStrategy) {
+        syncStrategy.init(this);
+        AbstractScene currentScene = null;
+        try {
+            AbstractMapHandler handler = AbstractMapHandler.getAbstractMapHandler(getCurrentMapId());
+            ISceneMapHandler sceneMapHandler = (ISceneMapHandler)handler;
+            currentScene = sceneMapHandler.getCurrentScene(accountId, getCurrentMapId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        ExecutorUtils.submit(this, FighterSyncCommand.valueOf(this.getAccountId(), syncStrategy, currentScene));
     }
 
     @Override

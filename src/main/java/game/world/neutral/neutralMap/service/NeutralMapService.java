@@ -151,8 +151,8 @@ public class NeutralMapService implements INeutralMapService {
         neutralMapScene.getFighterAccountMap().forEach((accountId, fighterAccount) -> {
             Map<UnitComponentType, IUnitComponent> component =
                 fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
-            sb.append(StringUtil.wipePlaceholder("战斗对象[{}] 对象id[{}] 对象等级", accountId,
-                fighterAccount.getCreatureUnit().getId(), fighterAccount.getCreatureUnit().getName()));
+            sb.append(StringUtil.wipePlaceholder("战斗对象[{}] 对象id[{}] 对象等级[{}]", accountId,
+                fighterAccount.getCreatureUnit().getId(), fighterAccount.getCreatureUnit().getLevel()));
             sb.append(" 打印属性 \n");
             component.forEach((type, iUnitComponent) -> {
                 sb.append(StringUtil.wipePlaceholder("组件种类[{}]", type.name()));

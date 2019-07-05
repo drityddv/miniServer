@@ -59,4 +59,8 @@ public interface I18N {
      * 穿戴装备条件不满足
      */
     int EQUIP_WEAR_CONDITION_NOT_QUALIFIED = 16;
+	/**
+	 * 异地登陆下线
+	 */
+	int OTHER_LOGIN = 17;
 }
