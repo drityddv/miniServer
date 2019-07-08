@@ -23,4 +23,12 @@ public class Stone extends AbstractUsableItem {
     public void useEffect(Player player, int num) {
 
     }
+
+	@Override
+	public String toString() {
+		return "Stone{" +
+				"configId=" + configId +
+				", num=" + num +
+				'}';
+	}
 }

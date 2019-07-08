@@ -52,6 +52,13 @@ public class GM_Command {
     @Autowired
     private EquipService equipService;
 
+    public void shutdown(Player player){
+		SpringContext.getServer().shutdown();
+    	SpringContext.getSceneExecutorService().shutdown();
+    	SpringContext.getAccountExecutorService().shutdown();
+
+	}
+
     public void logPlayer(Player player) {
         StringBuilder sb = new StringBuilder();
         sb.append(StringUtil.wipePlaceholder("打印玩家[{}]属性", player.getAccountId()));
@@ -89,7 +96,7 @@ public class GM_Command {
             AbstractItem item = packSquare.getItem();
             ItemResource resource = item.getResource();
             sb.append(StringUtil.wipePlaceholder("物品[{}] 名称[{}] 数量[{}]", resource.getConfigId(), resource.getItemName(),
-                packSquare.getCounts()));
+                packSquare.getItem()));
         });
         PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
     }

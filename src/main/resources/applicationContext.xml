@@ -14,7 +14,7 @@
     <context:annotation-config/>
 
     <!-- 配置要扫描的包 -->
-    <context:component-scan base-package="game,db,middleware,spring"/>
+    <context:component-scan base-package="game,db,middleware,spring,net"/>
 
     <!-- 配置数据源 -->
     <bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">

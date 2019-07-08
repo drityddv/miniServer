@@ -38,7 +38,7 @@ public class Start {
         SpringContext.getNeutralMapService().init();
 
         // net服务器启动
-        new Server().run();
+		SpringContext.getServer().run();
 
         StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
 

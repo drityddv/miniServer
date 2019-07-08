@@ -13,6 +13,8 @@ public abstract class AbstractItem extends AbstractGameObject implements Compara
 
     protected long configId;
 
+    protected int num;
+
     public int getOverLimit() {
         return getResource().getOverLimit();
     }
@@ -38,4 +40,19 @@ public abstract class AbstractItem extends AbstractGameObject implements Compara
         return configId;
     }
 
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public void reduce(int count) {
+        num -= count;
+    }
+
+    public void add(int count) {
+        this.num += count;
+    }
 }

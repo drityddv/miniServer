@@ -17,35 +17,27 @@ public class PackSquare {
     // 物品
     private AbstractItem item;
 
-    // 数量
-    private int counts;
-
-    public static PackSquare valueOf(int index, AbstractItem item, int counts) {
+    public static PackSquare valueOf(int index, AbstractItem item) {
         PackSquare packSquare = new PackSquare();
         packSquare.index = index;
         packSquare.item = item;
-        packSquare.counts = counts;
         return packSquare;
     }
 
     public void clear() {
         this.item = null;
-        this.counts = 0;
     }
 
     public boolean isEmpty() {
-        return counts == 0 && item == null;
+        return item == null;
     }
 
-    public void addCounts(int count) {
-        this.counts += count;
+    public void add(int num) {
+        item.add(num);
     }
 
-    public void reduceCounts(int count) {
-        this.counts -= count;
-        if (this.counts == 0) {
-            this.item = null;
-        }
+    public void reduce(int num) {
+        item.reduce(num);
     }
 
     // get and set
@@ -65,27 +57,21 @@ public class PackSquare {
         this.item = item;
     }
 
-    public int getCounts() {
-        return counts;
-    }
-
-    public void setCounts(int counts) {
-        this.counts = counts;
-    }
-
     // 添加前调用者确认是否超过重叠上限
     public void addItem(AbstractItem item, int num) {
         this.item = item;
-        this.counts += num;
     }
 
     public void addUnOverLimitItem(AbstractItem item) {
         this.item = item;
-        this.counts = 1;
+    }
+
+    public int getItemNum() {
+        return item == null ? 0 : item.getNum();
     }
 
     @Override
     public String toString() {
-        return "PackSquare{" + "index=" + index + ", item=" + item + ", counts=" + counts + '}' + '\n';
+        return "PackSquare{" + "index=" + index + ", item=" + item + '}'+'\n';
     }
 }

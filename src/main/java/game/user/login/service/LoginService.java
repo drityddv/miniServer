@@ -17,6 +17,7 @@ import game.user.login.packet.CM_UserRegister;
 import game.user.login.packet.SM_LoginSuccess;
 import game.user.player.entity.PlayerEnt;
 import game.user.player.model.Player;
+import io.netty.channel.Channel;
 import middleware.manager.SessionManager;
 import net.model.USession;
 import net.utils.PacketUtil;
@@ -51,6 +52,15 @@ public class LoginService implements ILoginService {
             RequestException.throwException(I18N.PASSWORD_ERROR);
         }
 
+        // 如果有同账号session 挤掉那个session
+        USession oldSession = SessionManager.getSessionByAccountId(accountId);
+        if (oldSession != null) {
+            Channel channel = oldSession.getChannel();
+            SessionManager.removePlayerSession(accountId);
+            SessionManager.removeSession(channel);
+            channel.close();
+        }
+
         // 下发登陆成功状态,注册session
         session.putSessionAttribute("accountId", accountId);
         SessionManager.registerPlayerSession(accountId, session);
@@ -64,6 +74,7 @@ public class LoginService implements ILoginService {
             // 重新计算属性
             player.getAttributeContainer().containerRecompute();
         }
+
         PacketUtil.send(session, new SM_LoginSuccess());
     }
 

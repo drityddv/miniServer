@@ -1,5 +1,7 @@
 package net.server;
 
+import org.springframework.stereotype.Component;
+
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -9,6 +11,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 /**
  * @author ddv
  */
+@Component
 public class Server {
     private ServerBootstrap serverBootstrap;
     private EventLoopGroup boss;
@@ -24,10 +27,9 @@ public class Server {
     }
 
     public void run() {
-		init();
+        init();
         try {
             ChannelFuture future = serverBootstrap.bind(8000).sync();
-            // future.channel().closeFuture();
             future.channel().closeFuture();
         } catch (InterruptedException e) {
             e.printStackTrace();

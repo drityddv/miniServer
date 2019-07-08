@@ -2,6 +2,7 @@ package spring;
 
 import javax.annotation.PostConstruct;
 
+import game.base.executor.account.IAccountExecutorService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -24,6 +25,7 @@ import game.world.neutral.neutralMap.service.INeutralMapService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
 import middleware.resource.StorageManager;
+import net.server.Server;
 
 /**
  * @author : ddv
@@ -39,6 +41,9 @@ public class SpringContext implements ApplicationContextAware {
     private ApplicationContext applicationContext;
 
     @Autowired
+    private Server server;
+
+    @Autowired
     private Dispatcher dispatcher;
 
     @Autowired
@@ -49,6 +54,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private EventBus eventBus;
+
+    @Autowired
+    private IAccountExecutorService accountExecutorService;
 
     @Autowired
     private ISceneExecutorService sceneExecutorService;
@@ -150,6 +158,14 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IFightService getFightService() {
         return instance.fightService;
+    }
+
+    public static IAccountExecutorService getAccountExecutorService() {
+        return instance.accountExecutorService;
+    }
+
+    public static Server getServer() {
+        return instance.server;
     }
 
     public static ApplicationContext getApplicationContext() {

@@ -31,7 +31,7 @@ public class Pack {
 
         // 创建时先初始化每个格子
         for (int i = 0; i < pack.size; i++) {
-            pack.packSquares.add(PackSquare.valueOf(i, null, 0));
+            pack.packSquares.add(PackSquare.valueOf(i, null));
         }
 
         return pack;
@@ -57,7 +57,7 @@ public class Pack {
                 if (remainCount <= 0) {
                     return;
                 }
-                int counts = square.getCounts();
+                int counts = square.getItemNum();
                 // 此次添加的实际数量
                 int addCount = remainCount > (overLimit - counts) ? overLimit - counts : remainCount;
                 square.addItem(item, addCount);
@@ -103,14 +103,14 @@ public class Pack {
         }
     }
 
-    //
+    // 统计物品的数量
     public int countItemNum(AbstractItem item) {
         int resultNum = 0;
         long configId = item.getConfigId();
         for (PackSquare square : packSquares) {
             AbstractItem squareItem = square.getItem();
             if (squareItem != null && squareItem.getConfigId() == configId) {
-                resultNum += square.getCounts();
+                resultNum += squareItem.getNum();
             }
         }
         return resultNum;
@@ -133,7 +133,7 @@ public class Pack {
 
         // 先看此类道具的已有格子容量是否足够
         for (PackSquare packSquare : squareList) {
-            int counts = packSquare.getCounts();
+            int counts = packSquare.getItemNum();
             emptyCount += overLimit - counts;
         }
 
@@ -163,9 +163,9 @@ public class Pack {
                 return;
             }
 
-            int counts = square.getCounts();
+            int counts = square.getItemNum();
             int currentReduce = num - counts > 0 ? counts : num;
-            square.reduceCounts(currentReduce);
+            square.reduce(currentReduce);
             remainCount -= currentReduce;
         }
 
@@ -174,7 +174,7 @@ public class Pack {
     private PackSquare getEmptySquare() {
         // 如果都满了 那就返回null
         for (PackSquare packSquare : packSquares) {
-            if (packSquare.getCounts() == 0) {
+            if (packSquare.isEmpty()) {
                 return packSquare;
             }
         }

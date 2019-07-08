@@ -25,16 +25,6 @@ public class ExecutorUtils {
                 executor.shutdown();
             }
         }
-        for (ThreadPoolExecutor executor : executors) {
-            try {
-                while (!executor.awaitTermination(10L, TimeUnit.SECONDS)) {
-                    BlockingQueue<Runnable> queue = executor.getQueue();
-                    logger.info("[{}]线程池延迟关闭,剩余任务[{}]", serviceName, queue.size());
-                }
-            } catch (Exception e) {
-                logger.warn("[{}]线程池延迟关闭捕捉错误,[{}]", serviceName, e.getMessage());
-            }
-        }
     }
 
     /**
