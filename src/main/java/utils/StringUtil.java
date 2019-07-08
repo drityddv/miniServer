@@ -7,6 +7,10 @@ package utils;
 
 public class StringUtil {
 
+    public static boolean isNotEmpty(String str) {
+        return (str != null && "".equals(str));
+    }
+
     public static String wipePlaceholder(String text, Object... args) {
         String openToken = "{";
         String closeToken = "}";

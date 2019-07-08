@@ -3,6 +3,7 @@ package game.user.player.service;
 import game.user.player.entity.PlayerEnt;
 import game.user.player.model.Player;
 import game.user.player.resource.PlayerResource;
+import net.model.USession;
 
 /**
  * @author : ddv
@@ -64,10 +65,27 @@ public interface IPlayerService {
     PlayerEnt getPlayerEnt(Player player);
 
     /**
+     * 获取角色 不会自动创建
+     *
+     * @param accountId
+     * @return
+     */
+    PlayerEnt getPlayerWithoutCreate(String accountId);
+
+    /**
      * 热更资源属性修正
      *
      * @param player
      * @param resourceName
      */
     void hotFixCorrect(Player player, String resourceName);
+
+    /**
+     * 玩家手动创建角色
+     *
+     * @param session
+     * @param sex
+     */
+    void createPlayer(USession session, int sex);
+
 }

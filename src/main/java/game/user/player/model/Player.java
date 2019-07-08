@@ -14,7 +14,6 @@ import game.user.pack.model.Pack;
 import game.user.player.entity.PlayerEnt;
 import game.world.base.command.FighterSyncCommand;
 import spring.SpringContext;
-import utils.ClassUtil;
 import utils.IdUtil;
 
 /**
@@ -30,20 +29,18 @@ public class Player extends AbstractCreature<Player> {
 
     private long playerId;
 
+    /**
+     * 0为男性 1为女性 2为无相关信息
+     */
+    private int sex;
+
     private int level;
     /**
      * 黄金
      */
     private int gold;
 
-    /**
-     * 上次修改切图的操作类型0:无 1:离开地图 2:进入地图
-     */
-    // private volatile int lastChangeType;
-
     private volatile boolean changingMap;
-
-    // private Lock lock = new ReentrantLock();
 
     private Player() {}
 
@@ -141,11 +138,13 @@ public class Player extends AbstractCreature<Player> {
         return SpringContext.getMapInfoService().getMapInfoEnt(this).getCurrentMapId();
     }
 
-    // FIXME 这里有可能离开地图会覆盖掉进入地图的操作 要修
     public void setCurrentMapId(int mapId) {
         MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
         mapInfoEnt.setCurrentMapId(mapId);
         SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
     }
 
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
 }

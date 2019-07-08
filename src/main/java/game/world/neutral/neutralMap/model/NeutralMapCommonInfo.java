@@ -1,5 +1,6 @@
 package game.world.neutral.neutralMap.model;
 
+import game.world.base.resource.MapBlockResource;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 
@@ -16,14 +17,16 @@ public class NeutralMapCommonInfo {
     // 无分线逻辑 每张地图只会有一张
     private NeutralMapScene neutralMapScene;
 
+    private MiniMapResource miniMapResource;
+
+    private MapBlockResource blockResource;
+
     public static NeutralMapCommonInfo valueOf(MiniMapResource mapResource) {
         NeutralMapCommonInfo info = new NeutralMapCommonInfo();
         info.mapId = mapResource.getMapId();
+        info.miniMapResource = mapResource;
+        info.blockResource = WorldManager.getInstance().getBlockResource(mapResource.getMapDataConfigId());
         return info;
-    }
-
-    public MiniMapResource getMapResource() {
-        return WorldManager.getInstance().getMapResource(mapId);
     }
 
     public int getMapId() {
@@ -40,5 +43,13 @@ public class NeutralMapCommonInfo {
 
     public void setNeutralMapScene(NeutralMapScene neutralMapScene) {
         this.neutralMapScene = neutralMapScene;
+    }
+
+    public MiniMapResource getMiniMapResource() {
+        return miniMapResource;
+    }
+
+    public MapBlockResource getBlockResource() {
+        return blockResource;
     }
 }

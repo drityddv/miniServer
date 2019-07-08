@@ -34,6 +34,7 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
             t = ormTemplate.loadOrCreate(entityType, id, builder);
             entityCache.put(id, t);
         }
+        save(t);
         return t;
     }
 

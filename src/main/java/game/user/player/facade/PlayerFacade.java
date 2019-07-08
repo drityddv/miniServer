@@ -7,8 +7,11 @@ import org.springframework.stereotype.Component;
 
 import game.gm.event.HotFixEvent;
 import game.user.login.event.PlayerLoginBeforeEvent;
+import game.user.player.packet.CM_CreatePlayer;
 import game.user.player.service.PlayerService;
 import middleware.anno.EventReceiver;
+import middleware.anno.HandlerAnno;
+import net.model.USession;
 
 /**
  * @author : ddv
@@ -21,6 +24,22 @@ public class PlayerFacade {
 
     @Autowired
     private PlayerService playerService;
+
+    /**
+     * 创建角色
+     *
+     * @param session
+     * @param request
+     */
+    @HandlerAnno
+    public void createPlayer(USession session, CM_CreatePlayer request) {
+        try {
+            playerService.createPlayer(session, request.getSex());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @EventReceiver
     public void playerLoginBefore(PlayerLoginBeforeEvent event) {

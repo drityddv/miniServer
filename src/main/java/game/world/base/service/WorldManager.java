@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
+import game.world.base.resource.MapBlockResource;
 import game.world.base.resource.MiniMapResource;
 import middleware.anno.Static;
 
@@ -22,6 +23,9 @@ public class WorldManager {
     @Static
     private Map<Integer, MiniMapResource> mapResources;
 
+    @Static
+    private Map<Integer, MapBlockResource> blockResources;
+
     public static WorldManager getInstance() {
         return instance;
     }
@@ -33,6 +37,10 @@ public class WorldManager {
 
     public MiniMapResource getMapResource(int mapId) {
         return mapResources.get(mapId);
+    }
+
+    public MapBlockResource getBlockResource(int configId) {
+        return blockResources.get(configId);
     }
 
     public List<MiniMapResource> getMapResourcesByGroup(int groupId) {

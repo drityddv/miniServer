@@ -26,6 +26,7 @@ public class Server {
     public void run() {
         try {
             ChannelFuture future = serverBootstrap.bind(8000).sync();
+            // future.channel().closeFuture();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();

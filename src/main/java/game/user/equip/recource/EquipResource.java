@@ -5,15 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import game.base.condition.AbstractConditionProcessor;
 import game.base.game.attribute.Attribute;
-import game.base.game.attribute.AttributeType;
-import game.base.game.attribute.LockAttribute;
-import game.user.equip.base.condition.AbstractConditionProcessor;
 import game.user.equip.constant.EquipPosition;
 import game.user.equip.constant.EquipWearConditionType;
 import middleware.anno.Init;
 import middleware.anno.MiniResource;
 import utils.JodaUtil;
+import utils.ResourceUtil;
 
 /**
  * @author : ddv
@@ -41,7 +40,7 @@ public class EquipResource {
 
     @Init
     public void init() {
-        analysisAttrs();
+        attributes = ResourceUtil.initAttrs(attributeString);
         analysisPosition();
         analysisCondition();
     }
@@ -60,20 +59,6 @@ public class EquipResource {
 
     private void analysisPosition() {
         equipPosition = EquipPosition.getPosition(equipPositionString);
-    }
-
-    private void analysisAttrs() {
-        attributes = new ArrayList<>();
-        List<Attribute> temp = new ArrayList<>();
-        String[] attrs = attributeString.split(",");
-        for (String attr : attrs) {
-            String[] params = attr.split(":");
-            temp.add(Attribute.valueOf(AttributeType.getByName(params[0]),
-                JodaUtil.convertFromString(Integer.class, params[1])));
-        }
-        for (Attribute attribute : temp) {
-            attributes.add(LockAttribute.wrapper(attribute));
-        }
     }
 
     public int getConfigId() {

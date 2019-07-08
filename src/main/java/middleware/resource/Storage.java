@@ -1,4 +1,4 @@
-package middleware.resource.storage;
+package middleware.resource;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -19,8 +19,6 @@ public class Storage<K, V> {
 
     private Map<K, V> data = new HashMap<>();
 
-    private Map<K, List<V>> dataList = new HashMap<>();
-
     public static <K, V> Storage valueOf(List<V> dataList) {
         Storage storage = new Storage();
         dataList.forEach(value -> {
@@ -38,24 +36,8 @@ public class Storage<K, V> {
         return storage;
     }
 
-    public void addIntoStorageMap(K k, V v) {
-        data.put(k, v);
-    }
-
-    public V getFromStorageMap(K k) {
-        return data.get(k);
-    }
-
     public Map<K, V> getStorageMap() {
         return data;
-    }
-
-    public Map<K, List<V>> getStorageListMap() {
-        return dataList;
-    }
-
-    public List<V> getFromStorageList(K k) {
-        return dataList.get(k);
     }
 
 }

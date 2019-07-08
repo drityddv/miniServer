@@ -1,11 +1,16 @@
 package game.base.executor.account;
 
+import java.lang.reflect.Parameter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.executor.command.impl.account.base.AbstractAccountCommand;
 import game.base.executor.command.impl.account.base.AbstractAccountDelayCommand;
 import game.base.executor.command.impl.account.base.AbstractAccountRateCommand;
+import middleware.dispatch.HandlerInvoke;
+import net.model.USession;
+import utils.SimpleUtil;
 
 /**
  * @author : ddv
@@ -20,6 +25,25 @@ public class AccountExecutorService implements IAccountExecutorService {
     @Override
     public void addTask(int modIndex, String taskName, Runnable task) {
         accountExecutor.addTask(modIndex, taskName, task);
+    }
+
+    @Override
+    public void handle(HandlerInvoke handlerInvoke, Object param, int modIndex, Object packet) {
+        addTask(modIndex, packet.getClass().getSimpleName(), () -> {
+            handlerInvoke.invoke(param, packet);
+        });
+    }
+
+    @Override
+    public Object getParam(HandlerInvoke handlerInvoke, USession session) {
+        Object param = session;
+        Parameter parameter = handlerInvoke.getMethod().getParameters()[0];
+        Class<?> type = parameter.getType();
+        Class<? extends USession> aClass = session.getClass();
+        if ((type != aClass)) {
+            param = SimpleUtil.getPlayerFromSession(session);
+        }
+        return param;
     }
 
     @Override

@@ -8,12 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import game.common.I18N;
-import game.common.packet.SM_Message;
 import io.netty.channel.Channel;
 import net.model.USession;
-import net.utils.PacketUtil;
-import utils.SimpleUtil;
 
 /**
  * 用户session管理
@@ -57,27 +53,15 @@ public class SessionManager {
         playerSession.remove(accountId);
     }
 
-    public static boolean isContainSession(Channel channel) {
-        return sessionMap.containsKey(channel);
-    }
-
     public static USession getSession(Channel channel) {
         return sessionMap.get(channel);
     }
 
-    public static Map<Channel, USession> getSessionMap() {
-        return sessionMap;
-    }
-
     public static USession getSessionByAccountId(String accountId) {
-
         Iterator<Map.Entry<Channel, USession>> iterator = sessionMap.entrySet().iterator();
-
         while (iterator.hasNext()) {
             Map.Entry<Channel, USession> entry = iterator.next();
-
             USession session = entry.getValue();
-
             if (accountId.equals(session.getAttributes().get("accountId"))) {
                 return session;
             }

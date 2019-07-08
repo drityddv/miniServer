@@ -3,11 +3,11 @@ package game.user.equip.constant;
 import java.util.HashMap;
 import java.util.Map;
 
+import game.base.condition.AbstractConditionProcessor;
+import game.base.condition.PlayerGoldConditionProcessor;
+import game.base.condition.PlayerLevelConditionProcessor;
 import game.common.I18N;
 import game.common.exception.RequestException;
-import game.user.equip.base.condition.AbstractConditionProcessor;
-import game.user.equip.base.condition.PlayerGoldConditionProcessor;
-import game.user.equip.base.condition.PlayerLevelConditionProcessor;
 import utils.ClassUtil;
 
 /**

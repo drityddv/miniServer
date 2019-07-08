@@ -27,6 +27,10 @@ public class PlayerManager {
         return entEntityCache.loadOrCreate(PlayerEnt.class, accountId, PlayerEnt::valueOf);
     }
 
+    public PlayerEnt load(String accountId) {
+        return entEntityCache.load(PlayerEnt.class, accountId);
+    }
+
     public void saveEntity(PlayerEnt playerEnt) {
         entEntityCache.save(playerEnt);
     }

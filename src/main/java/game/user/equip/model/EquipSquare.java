@@ -33,6 +33,8 @@ public class EquipSquare {
     // 孔位的单独属性 不要直接使用 请通过service访问资源文件
     private transient Map<AttributeType, Attribute> squareAttrs = new HashMap<>();
 
+    public EquipSquare() {}
+
     public static EquipSquare valueOf(EquipPosition equipPosition) {
         EquipSquareEnhanceResource equipEnhanceResource =
             SpringContext.getEquipService().getEquipEnhanceResource(equipPosition.getConfigId());
@@ -89,6 +91,8 @@ public class EquipSquare {
         reSetAttrs();
     }
 
+    // get and set
+
     public void enhance(EquipSquareEnhanceResource resource) {
         this.configId = resource.getConfigId();
         this.level = resource.getLevel();
@@ -96,8 +100,6 @@ public class EquipSquare {
         AttributeUtils.accumulateToMap(resource.getAttributes(), newSquareAttrs);
         this.squareAttrs = newSquareAttrs;
     }
-
-    // get and set
 
     public Equipment getEquipment() {
         return equipment;

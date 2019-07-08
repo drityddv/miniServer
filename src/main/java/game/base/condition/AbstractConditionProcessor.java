@@ -1,4 +1,4 @@
-package game.user.equip.base.condition;
+package game.base.condition;
 
 import java.util.Map;
 

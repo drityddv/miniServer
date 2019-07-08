@@ -19,11 +19,11 @@ public class LoginManager {
     @Autowired
     private EntityCacheService<String, UserEnt> entityCacheService;
 
-    public UserEnt loadOrCreate(String accountId) {
+    public UserEnt loadOrCreate(String accountId, String password, String username, String name, String idCard) {
         return entityCacheService.loadOrCreate(UserEnt.class, accountId, new EntityBuilder<String, UserEnt>() {
             @Override
             public UserEnt newInstance(String accountId) {
-                return UserEnt.valueOf(accountId);
+                return UserEnt.valueOf(accountId, password, username, name, idCard);
             }
         });
     }
@@ -32,8 +32,8 @@ public class LoginManager {
         return entityCacheService.load(UserEnt.class, accountId);
     }
 
-    public void save(String accountId) {
-        entityCacheService.save(loadOrCreate(accountId));
+    public void save(UserEnt ent) {
+        entityCacheService.save(ent);
     }
 
     public void saveEntity(UserEnt userEnt) {

@@ -77,7 +77,9 @@ public class EquipStorage {
      * 从配置文件中加载属性
      */
     public void load() {
-        equipSlotMap.values().forEach(EquipSquare::reSetAttrs);
+        for (EquipSquare square : equipSlotMap.values()) {
+            square.reSetAttrs();
+        }
     }
 
     // get and set

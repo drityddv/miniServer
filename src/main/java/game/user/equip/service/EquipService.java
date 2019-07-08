@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.condition.AbstractConditionProcessor;
+import game.base.consumer.AbstractConsumeProcessor;
 import game.base.game.attribute.id.AttributeIdEnum;
 import game.common.I18N;
 import game.common.exception.RequestException;
-import game.user.equip.base.condition.AbstractConditionProcessor;
-import game.user.equip.base.consumer.AbstractConsumeProcessor;
 import game.user.equip.constant.EquipPosition;
 import game.user.equip.entity.EquipStorageEnt;
 import game.user.equip.model.EquipSquare;

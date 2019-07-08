@@ -7,6 +7,11 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
+
+import game.base.game.attribute.Attribute;
+import game.base.game.attribute.AttributeType;
+import game.base.game.attribute.LockAttribute;
 
 /**
  * @author : ddv
@@ -45,5 +50,24 @@ public class ResourceUtil {
         }
 
         return targetList;
+    }
+
+    // 实际返回的是LockAttribute
+    public static List<Attribute> initAttrs(String attributeString) {
+        List<Attribute> attributeList = new ArrayList<>();
+        if (StringUtils.isNotEmpty(attributeString)) {
+            attributeList = new ArrayList<>();
+            List<Attribute> temp = new ArrayList<>();
+            String[] attrs = attributeString.split(",");
+            for (String attr : attrs) {
+                String[] params = attr.split(":");
+                temp.add(Attribute.valueOf(AttributeType.getByName(params[0]),
+                    JodaUtil.convertFromString(Integer.class, params[1])));
+            }
+            for (Attribute attribute : temp) {
+                attributeList.add(LockAttribute.wrapper(attribute));
+            }
+        }
+        return attributeList;
     }
 }

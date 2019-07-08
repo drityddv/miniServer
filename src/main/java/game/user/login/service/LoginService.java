@@ -10,11 +10,11 @@ import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.user.login.entity.UserEnt;
 import game.user.login.event.PlayerLoginBeforeEvent;
-import game.user.login.model.Person;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
 import game.user.login.packet.SM_LoginSuccess;
+import game.user.player.entity.PlayerEnt;
 import game.user.player.model.Player;
 import middleware.manager.SessionManager;
 import net.model.USession;
@@ -56,12 +56,15 @@ public class LoginService implements ILoginService {
         session.putSessionAttribute("accountId", accountId);
         SessionManager.registerPlayerSession(accountId, session);
 
-        Player player = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
-        // player.getAttributeContainer().clear();
-        SpringContext.getEventBus().pushEventSyn(PlayerLoginBeforeEvent.valueOf(player));
+        PlayerEnt playerEnt = SpringContext.getPlayerService().getPlayerWithoutCreate(accountId);
 
-        // 重新计算属性
-        player.getAttributeContainer().containerRecompute();
+        // 没有角色就不触发相关机制
+        if (playerEnt != null) {
+            Player player = playerEnt.getPlayer();
+            SpringContext.getEventBus().pushEventSyn(PlayerLoginBeforeEvent.valueOf(player));
+            // 重新计算属性
+            player.getAttributeContainer().containerRecompute();
+        }
         PacketUtil.send(session, new SM_LoginSuccess());
     }
 
@@ -89,22 +92,13 @@ public class LoginService implements ILoginService {
     public void register(USession session, CM_UserRegister request) {
         String accountId = request.getAccountId();
         UserEnt userEnt = loginManager.load(accountId);
-
         if (userEnt != null) {
             RequestException.throwException(I18N.USER_EXIST);
         }
 
-        Person person = Person.valueOf();
-        person.setName(request.getName());
-        person.setIdCard(request.getIdCard());
-
-        userEnt = UserEnt.valueOf(accountId);
-        userEnt.setPassword(request.getPassword());
-        userEnt.setUsername(request.getUsername());
-        userEnt.setPerson(person);
-
+        userEnt = UserEnt.valueOf(request.getAccountId(), request.getPassword(), request.getUsername(),
+            request.getName(), request.getIdCard());
         loginManager.saveEntity(userEnt);
-
         PacketUtil.send(session, SM_Message.valueOf(I18N.OPERATION_SUCCESS));
     }
 

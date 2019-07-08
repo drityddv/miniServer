@@ -1,12 +1,10 @@
 package game.user.login.entity;
 
-import java.util.Arrays;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import db.middleware.AbstractEntity;
-import game.user.login.model.Person;
-import net.utils.ProtoStuffUtil;
 
 /**
  * @author : ddv
@@ -16,12 +14,6 @@ import net.utils.ProtoStuffUtil;
 @Entity(name = "user")
 public class UserEnt extends AbstractEntity<String> {
 
-    @Transient
-    private Person person;
-    @Lob
-    @Column(columnDefinition = "blob comment '个人身份信息' ")
-    private byte[] personData;
-
     @Id
     @Column(columnDefinition = "varchar(255) CHARACTER SET utf8 COLLATE utf8_bin comment '账号Id' ", nullable = false)
     private String accountId;
@@ -29,28 +21,19 @@ public class UserEnt extends AbstractEntity<String> {
     private String username;
     @Column(columnDefinition = "varchar(255) CHARACTER SET utf8 COLLATE utf8_bin comment '账号密码' ", nullable = false)
     private String password;
+    @Column(columnDefinition = "varchar(255) CHARACTER SET utf8 COLLATE utf8_bin comment '身份证号码' ", nullable = false)
+    private String idCard;
+    @Column(columnDefinition = "varchar(255) CHARACTER SET utf8 COLLATE utf8_bin comment '正式姓名' ", nullable = false)
+    private String name;
 
-    public static UserEnt valueOf(String accountId) {
+    public static UserEnt valueOf(String accountId, String password, String username, String name, String idCard) {
         UserEnt userEnt = new UserEnt();
         userEnt.accountId = accountId;
-        userEnt.person = Person.valueOf();
+        userEnt.username = username;
+        userEnt.password = password;
+        userEnt.idCard = idCard;
+        userEnt.name = name;
         return userEnt;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
-    }
-
-    public byte[] getPersonData() {
-        return personData;
-    }
-
-    public void setPersonData(byte[] personData) {
-        this.personData = personData;
     }
 
     public String getAccountId() {
@@ -79,16 +62,12 @@ public class UserEnt extends AbstractEntity<String> {
 
     @Override
     public void doSerialize() {
-        if (this.person != null) {
-            this.personData = ProtoStuffUtil.serialize(this.person);
-        }
+
     }
 
     @Override
     public void doDeserialize() {
-        if (this.personData != null) {
-            this.person = ProtoStuffUtil.deserialize(this.personData, Person.class);
-        }
+
     }
 
     @Override
@@ -98,8 +77,7 @@ public class UserEnt extends AbstractEntity<String> {
 
     @Override
     public String toString() {
-        return "UserEnt{" + "person=" + person + ", personData=" + Arrays.toString(personData) + ", accountId='"
-            + accountId + '\'' + ", username='" + username + '\'' + ", password='" + password + '\'' + '}';
+        return "UserEnt{" + "accountId='" + accountId + '\'' + ", username='" + username + '\'' + ", password='"
+            + password + '\'' + ", idCard=" + idCard + ", name='" + name + '\'' + '}';
     }
-
 }

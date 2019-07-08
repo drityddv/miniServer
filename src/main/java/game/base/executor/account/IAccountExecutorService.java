@@ -1,6 +1,8 @@
 package game.base.executor.account;
 
 import game.base.executor.command.impl.account.base.AbstractAccountCommand;
+import middleware.dispatch.HandlerInvoke;
+import net.model.USession;
 
 /**
  * @author : ddv
@@ -17,6 +19,25 @@ public interface IAccountExecutorService {
      * @param task
      */
     void addTask(int modIndex, final String taskName, final Runnable task);
+
+    /**
+     * 调用facade方法
+     *
+     * @param handlerInvoke
+     * @param param
+     * @param modIndex
+     * @param packet
+     */
+    void handle(HandlerInvoke handlerInvoke, Object param, int modIndex, Object packet);
+
+    /**
+     * 获取facade方法的第一个参数[session还是player]
+     *
+     * @param handlerInvoke
+     * @param session
+     * @return
+     */
+    Object getParam(HandlerInvoke handlerInvoke, USession session);
 
     /**
      * 增加命令

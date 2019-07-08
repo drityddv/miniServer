@@ -12,7 +12,7 @@ import org.springframework.util.ReflectionUtils;
 public class HandlerInvoke implements IHandlerInvoke {
 
     /**
-     * 目标反射方法的所属对象
+     * 目标方法的所属对象 [facade]
      */
     private final Object bean;
     /**
@@ -20,7 +20,7 @@ public class HandlerInvoke implements IHandlerInvoke {
      */
     private final Method method;
     /**
-     * 对应class
+     * 对应的packet
      */
     private final Class<?> clazz;
 

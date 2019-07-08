@@ -10,10 +10,14 @@ import org.springframework.stereotype.Component;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.id.AttributeIdEnum;
 import game.base.game.attribute.model.PlayerAttributeContainer;
+import game.common.I18N;
+import game.common.exception.RequestException;
 import game.scene.fight.syncStrategy.impl.LevelSynStrategy;
 import game.user.player.entity.PlayerEnt;
 import game.user.player.model.Player;
 import game.user.player.resource.PlayerResource;
+import net.model.USession;
+import utils.SessionUtil;
 
 /**
  * @author : ddv
@@ -81,13 +85,29 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
+    public PlayerEnt getPlayerWithoutCreate(String accountId) {
+        return playerManager.load(accountId);
+    }
+
+    @Override
     public void hotFixCorrect(Player player, String resourceName) {
-        if (!resourceName.equals("playerResource")) {
+        if (!resourceName.equals("PlayerResource")) {
             return;
         }
         loadPlayerAttribute(player);
         player.getAttributeContainer().containerRecompute();
 
+    }
+
+    @Override
+    public void createPlayer(USession session, int sex) {
+        if (sex < 0 || sex > 1) {
+            RequestException.throwException(I18N.SEX_ERROR);
+        }
+        String accountId = SessionUtil.getAccountIdFromSession(session);
+        PlayerEnt playerEnt = PlayerEnt.valueOf(accountId);
+        playerEnt.getPlayer().setSex(sex);
+        savePlayer(playerEnt);
     }
 
 }

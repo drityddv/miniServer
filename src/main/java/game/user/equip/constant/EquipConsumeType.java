@@ -3,8 +3,8 @@ package game.user.equip.constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.user.equip.base.consumer.AbstractConsumeProcessor;
-import game.user.equip.base.consumer.ItemConsumeProcessor;
+import game.base.consumer.AbstractConsumeProcessor;
+import game.base.consumer.ItemConsumeProcessor;
 import utils.ClassUtil;
 
 /**

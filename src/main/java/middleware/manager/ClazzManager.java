@@ -106,8 +106,4 @@ public class ClazzManager {
         // 序列号从1开始 0暂时用来异常占位
         return id == null ? 0 : id;
     }
-
-    public static boolean isContain(Class clazz) {
-        return idMap.containsKey(clazz);
-    }
 }

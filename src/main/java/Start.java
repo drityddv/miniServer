@@ -6,11 +6,10 @@ import org.slf4j.LoggerFactory;
 
 import game.base.ebus.EventBus;
 import game.base.executor.account.AccountExecutor;
-import game.base.executor.service.MiniExecutorService;
 import game.scene.npc.service.NpcManager;
 import game.user.pack.service.IPackService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
-import middleware.resource.storage.StorageManager;
+import middleware.resource.StorageManager;
 import net.server.Server;
 import spring.SpringContext;
 import spring.SpringController;
@@ -32,6 +31,12 @@ public class Start {
         // 初始化spring
         SpringController.init();
 
+        // 初始化派发器和eventBus
+        SpringContext.getDispatcher().init();
+
+        // 初始化静态资源组件
+        SpringContext.getStorageManager().init();
+
         // 中立地图初始化
         SpringContext.getNeutralMapService().init();
 
@@ -47,8 +52,6 @@ public class Start {
         StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
 
         AccountExecutor accountExecutor = SpringController.getContext().getBean(AccountExecutor.class);
-
-        MiniExecutorService miniExecutorService = SpringController.getContext().getBean(MiniExecutorService.class);
 
         EventBus eventBus = SpringController.getContext().getBean(EventBus.class);
 

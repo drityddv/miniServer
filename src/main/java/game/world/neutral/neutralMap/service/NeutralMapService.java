@@ -17,6 +17,7 @@ import game.base.game.attribute.util.AttributeUtils;
 import game.gm.packet.SM_LogMessage;
 import game.miniMap.handler.MapGroupType;
 import game.miniMap.model.Grid;
+import game.miniMap.utils.VisibleUtil;
 import game.miniMap.visible.impl.NpcVisibleInfo;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.player.model.Player;
@@ -72,7 +73,7 @@ public class NeutralMapService implements INeutralMapService {
     public void enterMap(Player player, int mapId) {
         NeutralMapCommonInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
         NeutralMapScene neutralMapScene = mapCommonInfo.getNeutralMapScene();
-        MiniMapResource mapResource = mapCommonInfo.getMapResource();
+        MiniMapResource mapResource = mapCommonInfo.getMiniMapResource();
         NeutralMapAccountInfo visibleObject = neutralMapScene.getVisibleObject(player.getAccountId());
 
         if (visibleObject != null) {
@@ -104,11 +105,15 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void doMove(Player player, int mapId, Grid targetGrid) {
-        NeutralMapScene mapScene = neutralMapManager.getCommonInfoMap().get(mapId).getNeutralMapScene();
+        NeutralMapCommonInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
+        NeutralMapScene mapScene = mapCommonInfo.getNeutralMapScene();
         NeutralMapAccountInfo sceneVisibleObject = mapScene.getVisibleObject(player.getAccountId());
-        sceneVisibleObject.setTargetX(targetGrid.getX());
-        sceneVisibleObject.setTargetY(targetGrid.getY());
-        sceneVisibleObject.doMove();
+
+        if (sceneVisibleObject != null) {
+            sceneVisibleObject.setTargetX(targetGrid.getX());
+            sceneVisibleObject.setTargetY(targetGrid.getY());
+            VisibleUtil.doMove(sceneVisibleObject, mapCommonInfo.getBlockResource().getBlockData());
+        }
     }
 
     @Override

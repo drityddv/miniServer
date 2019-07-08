@@ -5,15 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import game.base.consumer.AbstractConsumeProcessor;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
-import game.base.game.attribute.LockAttribute;
-import game.user.equip.base.consumer.AbstractConsumeProcessor;
+import game.base.game.attribute.util.AttributeUtils;
 import game.user.equip.constant.EquipConsumeType;
 import game.user.equip.constant.EquipPosition;
 import middleware.anno.Init;
 import middleware.anno.MiniResource;
 import utils.JodaUtil;
+import utils.ResourceUtil;
 
 /**
  * @author : ddv
@@ -51,23 +52,15 @@ public class EquipSquareEnhanceResource {
     @Init
     public void init() {
         equipPosition = EquipPosition.getPosition(equipPositionString);
+
         analysisAttrs();
         analysisConsumers();
     }
 
     private void analysisAttrs() {
-        String[] attrs = attributeString.split(",");
-        attributes = new ArrayList<>();
+        attributes = ResourceUtil.initAttrs(attributeString);
         attributeMap = new HashMap<>();
-        for (String attr : attrs) {
-            String[] params = attr.split(":");
-            attributes.add(LockAttribute.wrapper(Attribute.valueOf(AttributeType.getByName(params[0]),
-                JodaUtil.convertFromString(Integer.class, params[1]))));
-        }
-
-        for (Attribute attribute : attributes) {
-            attributeMap.put(attribute.getAttributeType(), attribute);
-        }
+        AttributeUtils.accumulateToMap(attributes, attributeMap);
     }
 
     private void analysisConsumers() {

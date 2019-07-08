@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import game.base.ebus.EventBus;
 import game.base.executor.scene.ISceneExecutorService;
-import game.base.executor.service.IMiniExecutorService;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
 import game.scene.fight.service.IFightService;
@@ -24,7 +23,7 @@ import game.world.base.service.IWorldService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
-import middleware.resource.storage.StorageManager;
+import middleware.resource.StorageManager;
 
 /**
  * @author : ddv
@@ -47,9 +46,6 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private StorageManager storageManager;
-
-    @Autowired
-    private IMiniExecutorService miniExecutorService;
 
     @Autowired
     private EventBus eventBus;
@@ -124,10 +120,6 @@ public class SpringContext implements ApplicationContextAware {
         return instance.packService;
     }
 
-    public static IMiniExecutorService getMiniExecutorService() {
-        return instance.miniExecutorService;
-    }
-
     public static EventBus getEventBus() {
         return instance.eventBus;
     }
@@ -160,17 +152,17 @@ public class SpringContext implements ApplicationContextAware {
         return instance.fightService;
     }
 
-    @PostConstruct
-    private void init() {
-        instance = this;
-    }
-
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
+    public static ApplicationContext getApplicationContext() {
+        return instance.applicationContext;
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    @PostConstruct
+    private void init() {
+        instance = this;
     }
 }

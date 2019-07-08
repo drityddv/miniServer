@@ -1,4 +1,4 @@
-package game.user.equip.base.consumer;
+package game.base.consumer;
 
 import java.util.Map;
 
