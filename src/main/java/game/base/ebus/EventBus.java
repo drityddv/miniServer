@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import middleware.dispatch.HandlerInvoke;
 
@@ -45,12 +46,12 @@ public class EventBus {
 
     public void pushEventSyn(IEvent event) {
         Class<? extends IEvent> eventClass = event.getClass();
-
         List<HandlerInvoke> invokeList = receiverList.get(eventClass);
-
-        invokeList.forEach(handlerInvoke -> {
-            handlerInvoke.invoke(event);
-        });
+        if (!CollectionUtils.isEmpty(invokeList)) {
+            invokeList.forEach(handlerInvoke -> {
+                handlerInvoke.invoke(event);
+            });
+        }
 
     }
 }

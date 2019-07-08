@@ -1,5 +1,6 @@
 package net.model;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -16,40 +17,24 @@ import utils.TimeUtil;
 public class USession {
     private static final Logger LOGGER = LoggerFactory.getLogger(USession.class);
 
-    private long createdAt;
-    private Channel channel;
-    private ConcurrentHashMap<String, Object> attributes;
+    private volatile long createdAt;
+    private volatile Channel channel;
+    private volatile Map<String, Object> attributes;
 
     public static USession createSession(Channel channel) {
         USession session = new USession();
-        session.setChannel(channel);
-        session.setCreatedAt(TimeUtil.now());
-        session.setAttributes(new ConcurrentHashMap<>(16));
+        session.channel = channel;
+        session.createdAt = TimeUtil.now();
+        session.attributes = new ConcurrentHashMap<>(16);
         return session;
-    }
-
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Channel getChannel() {
         return channel;
     }
 
-    public void setChannel(Channel channel) {
-        this.channel = channel;
-    }
-
-    public ConcurrentHashMap<String, Object> getAttributes() {
+    public Map<String, Object> getAttributes() {
         return attributes;
-    }
-
-    public void setAttributes(ConcurrentHashMap<String, Object> attributes) {
-        this.attributes = attributes;
     }
 
     public Object getSessionAttribute(String key) {

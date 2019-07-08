@@ -67,4 +67,9 @@ public interface I18N {
      * 创建角色性别错误
      */
     int SEX_ERROR = 18;
+
+    /**
+     * 服务器强制下线
+     */
+    int FORCED_OFFLINE = 19;
 }

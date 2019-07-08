@@ -23,14 +23,14 @@ public class SessionManager {
     private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
 
     /**
-     * channel-session对应 后期需要增加sessionMap的过期清除,session的单点注册功能
+     * channel - session netty连接建立就会注册
      */
-    private static Map<Channel, USession> sessionMap = new ConcurrentHashMap<>();
+    private volatile static Map<Channel, USession> sessionMap = new ConcurrentHashMap<>();
 
     /**
-     * accountId - session
+     * accountId - session 登陆成功才会注册
      */
-    private static Map<String, USession> playerSession = new ConcurrentHashMap<>();
+    private volatile static Map<String, USession> playerSession = new ConcurrentHashMap<>();
 
     public static void registerSession(USession session) {
         Channel channel = session.getChannel();

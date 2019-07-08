@@ -10,6 +10,7 @@ import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.user.login.entity.UserEnt;
 import game.user.login.event.PlayerLoginBeforeEvent;
+import game.user.login.event.PlayerLogoutEvent;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
@@ -50,8 +51,6 @@ public class LoginService implements ILoginService {
             RequestException.throwException(I18N.PASSWORD_ERROR);
         }
 
-        // 暂时单点会把相同accountId的session干掉 后续sessionManager需要做支持
-
         // 下发登陆成功状态,注册session
         session.putSessionAttribute("accountId", accountId);
         SessionManager.registerPlayerSession(accountId, session);
@@ -73,18 +72,23 @@ public class LoginService implements ILoginService {
 
         // 这里要check一下用户是否已经登录,因为心跳也会调用这个接口,用户可能一直没登录
         String accountId = SimpleUtil.getAccountIdFromSession(session);
+
+        // 客户端一直没登录直接把连接关掉
         if (accountId == null) {
             SessionManager.removeSession(session.getChannel());
             session.getChannel().close();
             return;
         }
 
-        Player player = SimpleUtil.getPlayerFromSession(session);
-        PacketUtil.send(session, SM_Message.valueOf(I18N.OPERATION_SUCCESS));
+        // 如果没创建角色就不用抛事件了 因为做业务都是基于player
+        PlayerEnt playerEnt = SpringContext.getPlayerService().getPlayerWithoutCreate(accountId);
+        if (playerEnt != null) {
+            SpringContext.getEventBus().pushEventSyn(PlayerLogoutEvent.valueOf(playerEnt.getPlayer()));
+        }
 
+        PacketUtil.send(session, SM_Message.valueOf(I18N.FORCED_OFFLINE));
         SessionManager.removeSession(session.getChannel());
-        SessionManager.removePlayerSession(player.getAccountId());
-
+        SessionManager.removePlayerSession(accountId);
         session.getChannel().close();
     }
 

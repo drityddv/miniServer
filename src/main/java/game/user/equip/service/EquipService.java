@@ -28,6 +28,8 @@ import net.utils.PacketUtil;
 import spring.SpringContext;
 
 /**
+ * 普通装备栏
+ *
  * @author : ddv
  * @since : 2019/6/28 下午2:20
  */
@@ -35,15 +37,16 @@ import spring.SpringContext;
 public class EquipService implements IEquipService {
 
     private static final Logger logger = LoggerFactory.getLogger(EquipService.class);
+
     @Autowired
     private EquipManager equipManager;
 
     @Override
     public void enhance(Player player, int position) {
+		EquipPosition.getPosition(position);
         EquipStorageEnt ent = getEquipStorageEnt(player);
         EquipStorage equipStorage = ent.getEquipStorage();
 
-        EquipPosition.getPosition(position);
         EquipSquare equipSquare = equipStorage.getEquipSquare(position);
         EquipSquareEnhanceResource resource = equipManager.getEquipEnhanceResource(equipSquare.getConfigId());
 
@@ -73,6 +76,7 @@ public class EquipService implements IEquipService {
     // 穿装备
     @Override
     public void equip(Player player, long itemConfigId, int position) {
+        EquipPosition equipPosition = EquipPosition.getPosition(position);
         IPackService packService = SpringContext.getPackService();
         AbstractItem item = packService.getItemFromPack(player, itemConfigId);
         if (item == null) {
@@ -85,7 +89,6 @@ public class EquipService implements IEquipService {
             Equipment equipment = (Equipment)item;
             EquipStorageEnt ent = getEquipStorageEnt(player);
             EquipStorage equipStorage = ent.getEquipStorage();
-            EquipPosition equipPosition = EquipPosition.getPosition(position);
 
             // 穿戴条件检查
             EquipResource equipResource = equipManager.getEquipResource(equipment.getConfigId());
@@ -122,6 +125,7 @@ public class EquipService implements IEquipService {
 
     @Override
     public void unDress(Player player, int position) {
+        EquipPosition.getPosition(position);
         EquipStorageEnt ent = getEquipStorageEnt(player);
         EquipStorage equipStorage = ent.getEquipStorage();
         EquipSquare equipSquare = equipStorage.getEquipSquare(position);

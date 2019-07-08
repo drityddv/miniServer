@@ -91,8 +91,6 @@ public class EquipSquare {
         reSetAttrs();
     }
 
-    // get and set
-
     public void enhance(EquipSquareEnhanceResource resource) {
         this.configId = resource.getConfigId();
         this.level = resource.getLevel();
@@ -101,6 +99,7 @@ public class EquipSquare {
         this.squareAttrs = newSquareAttrs;
     }
 
+    // get and set
     public Equipment getEquipment() {
         return equipment;
     }
