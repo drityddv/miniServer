@@ -1,7 +1,7 @@
 package game.scene.fight.service;
 
 import game.base.fight.model.pvpunit.FighterAccount;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * 战斗服务

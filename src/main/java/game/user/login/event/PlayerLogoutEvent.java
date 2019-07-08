@@ -1,7 +1,7 @@
 package game.user.login.event;
 
 import game.base.ebus.IEvent;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * 用户登出事件

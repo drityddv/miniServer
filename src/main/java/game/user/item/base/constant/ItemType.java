@@ -3,7 +3,7 @@ package game.user.item.base.constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.user.equip.model.Equipment;
+import game.role.equip.model.Equipment;
 import game.user.item.base.model.Elixir;
 import game.user.item.base.model.ExchangeCard;
 import game.user.item.base.model.Medicine;

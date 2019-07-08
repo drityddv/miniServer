@@ -7,7 +7,6 @@ import game.scene.npc.service.NpcManager;
 import game.user.pack.service.IPackService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
 import middleware.resource.StorageManager;
-import net.server.Server;
 import spring.SpringContext;
 import spring.SpringController;
 
@@ -38,7 +37,7 @@ public class Start {
         SpringContext.getNeutralMapService().init();
 
         // net服务器启动
-		SpringContext.getServer().run();
+        SpringContext.getServer().run();
 
         StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
 

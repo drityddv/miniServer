@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import game.base.fight.model.pvpunit.FighterAccount;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

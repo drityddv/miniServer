@@ -16,16 +16,16 @@ import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.game.attribute.util.AttributeUtils;
 import game.gm.event.HotFixEvent;
 import game.gm.packet.SM_LogMessage;
-import game.user.equip.constant.EquipPosition;
-import game.user.equip.model.EquipStorage;
-import game.user.equip.model.Equipment;
-import game.user.equip.service.EquipService;
+import game.role.equip.constant.EquipPosition;
+import game.role.equip.model.EquipStorage;
+import game.role.equip.model.Equipment;
+import game.role.equip.service.EquipService;
+import game.role.player.model.Player;
+import game.role.player.service.IPlayerService;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
-import game.user.player.model.Player;
-import game.user.player.service.IPlayerService;
 import net.utils.PacketUtil;
 import spring.SpringContext;
 import utils.ClassUtil;
@@ -52,12 +52,12 @@ public class GM_Command {
     @Autowired
     private EquipService equipService;
 
-    public void shutdown(Player player){
-		SpringContext.getServer().shutdown();
-    	SpringContext.getSceneExecutorService().shutdown();
-    	SpringContext.getAccountExecutorService().shutdown();
+    public void shutdown(Player player) {
+        SpringContext.getServer().shutdown();
+        SpringContext.getSceneExecutorService().shutdown();
+        SpringContext.getAccountExecutorService().shutdown();
 
-	}
+    }
 
     public void logPlayer(Player player) {
         StringBuilder sb = new StringBuilder();
@@ -95,7 +95,7 @@ public class GM_Command {
         pack.getPackSquares().stream().filter(packSquare -> !packSquare.isEmpty()).forEach(packSquare -> {
             AbstractItem item = packSquare.getItem();
             ItemResource resource = item.getResource();
-            sb.append(StringUtil.wipePlaceholder("物品[{}] 名称[{}] 数量[{}]", resource.getConfigId(), resource.getItemName(),
+            sb.append(StringUtil.wipePlaceholder("物品[{}] 名称[{}] 详情[{}]", resource.getConfigId(), resource.getItemName(),
                 packSquare.getItem()));
         });
         PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
@@ -119,7 +119,7 @@ public class GM_Command {
     }
 
     public void addItem(Player player, long configId, int num) {
-        packService.addItem(player, packService.createItem(configId), num);
+        packService.addItem(player, SpringContext.getCommonService().createItem(configId, num));
     }
 
     public void pushHotFix(Player player, String resourceName) {

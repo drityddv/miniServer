@@ -3,8 +3,8 @@ package game.user.mapinfo.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
-import game.user.player.model.Player;
 
 /**
  * @author : ddv

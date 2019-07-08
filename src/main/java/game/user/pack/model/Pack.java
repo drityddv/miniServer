@@ -9,6 +9,7 @@ import game.common.I18N;
 import game.common.exception.RequestException;
 import game.user.item.base.model.AbstractItem;
 import game.user.pack.constant.PackConstant;
+import spring.SpringContext;
 
 /**
  * 背包
@@ -37,19 +38,21 @@ public class Pack {
         return pack;
     }
 
-    public void addItems(AbstractItem item, int num) {
+    public void addItems(AbstractItem item) {
+        int num = item.getNum();
         int overLimit = item.getOverLimit();
         int remainCount = num;
         List<PackSquare> squareList = getSquare(item);
         List<PackSquare> emptySquares = getEmptySquares();
 
+        // 可堆叠有数量限制
         if (overLimit > 1) {
             // 背包无此类装备且无空格栏
             if (!isInPack(item) && !isExistEmptySquare()) {
                 RequestException.throwException(I18N.PACK_FULL);
             }
 
-            if (!isEnoughSize(item, num)) {
+            if (!isEnoughSize(item)) {
                 RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
             }
 
@@ -82,7 +85,7 @@ public class Pack {
             }
 
             for (PackSquare emptySquare : emptySquares) {
-                emptySquare.addUnOverLimitItem(item);
+                emptySquare.addUnOverLimitItem(SpringContext.getCommonService().createItem(item.getConfigId(), 1));
                 num--;
                 if (num == 0) {
                     break;
@@ -91,7 +94,7 @@ public class Pack {
 
         } else {
             // 重叠无限制道具
-            if (!isEnoughSize(item, num)) {
+            if (!isEnoughSize(item)) {
                 RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
             }
             if (squareList.size() != 0) {
@@ -117,10 +120,11 @@ public class Pack {
     }
 
     // 这里的item都是可堆叠的
-    public boolean isEnoughSize(AbstractItem item, int count) {
+    public boolean isEnoughSize(AbstractItem item) {
         List<PackSquare> squareList = getSquare(item);
         List<PackSquare> emptySquares = getEmptySquares();
         int overLimit = item.getOverLimit();
+        int count = item.getNum();
         int emptyCount = 0;
 
         // 先看是不是无限堆叠的

@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import utils.StringUtil;
 
 /**

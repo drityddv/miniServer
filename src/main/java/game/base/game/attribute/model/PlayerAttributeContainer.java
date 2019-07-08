@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import game.base.game.attribute.AttributeUpdateRecords;
 import game.base.game.attribute.CreatureAttributeContainer;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

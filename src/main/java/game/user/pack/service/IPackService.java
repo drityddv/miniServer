@@ -1,11 +1,9 @@
 package game.user.pack.service;
 
-import java.util.List;
-
+import game.role.player.model.Player;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
 import game.user.pack.model.Pack;
-import game.user.player.model.Player;
 
 /**
  * 玩家背包service
@@ -30,9 +28,8 @@ public interface IPackService {
      *
      * @param player
      * @param item
-     * @param num
      */
-    void addItem(Player player, AbstractItem item, int num);
+    void addItem(Player player, AbstractItem item);
 
     /**
      * 使用道具
@@ -52,23 +49,6 @@ public interface IPackService {
     ItemResource getResource(Long configId);
 
     /**
-     * 根据道具表id创建道具
-     *
-     * @param configId
-     * @return
-     */
-    AbstractItem createItem(Long configId);
-
-    /**
-     * 批量创建道具
-     *
-     * @param configId
-     * @param num
-     * @return
-     */
-    List<AbstractItem> createItems(Long configId, int num);
-
-    /**
      * 背包是否已满 如果需要指定item检查容量请调用isEnoughSize
      *
      * @param player
@@ -81,10 +61,9 @@ public interface IPackService {
      *
      * @param player
      * @param item
-     * @param num
      * @return
      */
-    boolean isEnoughSize(Player player, AbstractItem item, int num);
+    boolean isEnoughSize(Player player, AbstractItem item);
 
     /**
      * 获取背包中指定道具的数量
@@ -96,7 +75,7 @@ public interface IPackService {
     int getItemNum(Player player, AbstractItem item);
 
     /**
-     * 背包减少道具下发状态
+     * 背包减少道具并且下发状态
      *
      * @param player
      * @param item

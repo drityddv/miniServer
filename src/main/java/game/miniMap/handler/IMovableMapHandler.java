@@ -1,7 +1,7 @@
 package game.miniMap.handler;
 
 import game.miniMap.model.Grid;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

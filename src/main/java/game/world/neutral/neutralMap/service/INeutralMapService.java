@@ -1,7 +1,7 @@
 package game.world.neutral.neutralMap.service;
 
 import game.miniMap.model.Grid;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 
 /**

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.miniMap.model.Grid;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import game.world.base.constant.MAP_CONSTANT;
 import game.world.base.packet.CM_ChangeMap;
 import game.world.base.packet.CM_LeaveMap;

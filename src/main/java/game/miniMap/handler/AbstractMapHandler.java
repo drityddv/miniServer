@@ -7,8 +7,8 @@ import javax.annotation.PostConstruct;
 
 import game.miniMap.base.AbstractMapInfo;
 import game.miniMap.constant.MapGroupType;
+import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
-import game.user.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 import game.world.neutral.neutralMap.model.NeutralMapInfo;

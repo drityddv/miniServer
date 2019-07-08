@@ -3,7 +3,7 @@ package game.scene.fight.syncStrategy;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.fight.model.pvpunit.PlayerUnit;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

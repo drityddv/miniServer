@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * 额外的属性拓展

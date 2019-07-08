@@ -1,7 +1,7 @@
 package game.user.item.base.model;
 
 import game.common.exception.RequestException;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv
@@ -24,11 +24,8 @@ public class Stone extends AbstractUsableItem {
 
     }
 
-	@Override
-	public String toString() {
-		return "Stone{" +
-				"configId=" + configId +
-				", num=" + num +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Stone{" + "configId=" + configId + ", num=" + num + '}';
+    }
 }

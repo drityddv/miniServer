@@ -13,7 +13,7 @@ import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import net.model.USession;
 import spring.SpringContext;
 

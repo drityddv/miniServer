@@ -2,8 +2,8 @@ package game.scene.fight.syncStrategy.impl;
 
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.fight.model.pvpunit.PlayerUnit;
+import game.role.player.model.Player;
 import game.scene.fight.syncStrategy.BasePlayerSyncStrategy;
-import game.user.player.model.Player;
 
 /**
  * 等级同步

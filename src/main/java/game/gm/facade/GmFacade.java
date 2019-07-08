@@ -8,7 +8,7 @@ import game.common.I18N;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
 import game.gm.packet.CM_GmCommand;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import middleware.anno.HandlerAnno;
 import net.utils.PacketUtil;
 import spring.SpringContext;

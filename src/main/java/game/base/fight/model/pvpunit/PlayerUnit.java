@@ -15,7 +15,7 @@ import game.base.fight.model.componet.UnitComponentType;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.game.attribute.util.AttributeUtils;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

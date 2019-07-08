@@ -3,8 +3,8 @@ package game.base.consumer;
 import java.util.Map;
 
 import game.common.exception.RequestException;
+import game.role.player.model.Player;
 import game.user.item.base.model.AbstractItem;
-import game.user.player.model.Player;
 import spring.SpringContext;
 
 /**
@@ -22,7 +22,7 @@ public class ItemConsumeProcessor extends AbstractConsumeProcessor {
     public void doConsume(Player player) {
         try {
             consumeParams.forEach((itemConfigId, num) -> {
-                AbstractItem item = SpringContext.getPackService().createItem(itemConfigId);
+                AbstractItem item = SpringContext.getCommonService().createItem(itemConfigId, num);
                 SpringContext.getPackService().reduceItem(player, item, num);
             });
         } catch (RequestException e) {

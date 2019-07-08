@@ -1,7 +1,7 @@
 package game.user.item.base.model;
 
 import game.common.exception.RequestException;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * 药水

@@ -1,7 +1,7 @@
 package game.gm.event;
 
 import game.base.ebus.IEvent;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

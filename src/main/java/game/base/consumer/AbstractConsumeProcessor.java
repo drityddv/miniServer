@@ -3,7 +3,7 @@ package game.base.consumer;
 import java.util.Map;
 
 import game.common.exception.RequestException;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

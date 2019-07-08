@@ -2,7 +2,7 @@ package game.base.condition;
 
 import java.util.Map;
 
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * 金币到达某个数目

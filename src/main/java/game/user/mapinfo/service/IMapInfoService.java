@@ -1,7 +1,7 @@
 package game.user.mapinfo.service;
 
+import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
-import game.user.player.model.Player;
 
 /**
  * 玩家地图相关信息

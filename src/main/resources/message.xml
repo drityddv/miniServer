@@ -11,7 +11,7 @@
     <message id="2" value="game.user.login.packet.CM_UserLogout"/>
     <message id="3" value="game.user.login.packet.SM_LoginSuccess"/>
     <message id="4" value="game.user.login.packet.CM_UserRegister"/>
-    <message id="5" value="game.user.player.packet.CM_CreatePlayer"/>
+    <message id="5" value="game.role.player.packet.CM_CreatePlayer"/>
 
     <!--gm命令 51 - 70-->
     <message id="51" value="game.gm.packet.CM_GmCommand"/>
@@ -23,13 +23,13 @@
     <message id="92" value="game.user.pack.packet.CM_PackInfo"/>
 
     <!--玩家装备栏相关  140 - 160 -->
-    <message id="140" value="game.user.equip.packet.CM_EquipStorage"/>
-    <message id="141" value="game.user.equip.packet.SM_EquipStorage"/>
-    <message id="142" value="game.user.equip.packet.CM_DressEquip"/>
-    <message id="143" value="game.user.equip.packet.CM_UndressEquip"/>
-    <message id="144" value="game.user.equip.packet.CM_EnhanceEquipSquare"/>
-    <message id="145" value="game.user.equip.packet.SM_EquipmentVo"/>
-    <message id="146" value="game.user.equip.packet.CM_Equipment"/>
+    <message id="140" value="game.role.equip.packet.CM_EquipStorage"/>
+    <message id="141" value="game.role.equip.packet.SM_EquipStorage"/>
+    <message id="142" value="game.role.equip.packet.CM_DressEquip"/>
+    <message id="143" value="game.role.equip.packet.CM_UndressEquip"/>
+    <message id="144" value="game.role.equip.packet.CM_EnhanceEquipSquare"/>
+    <message id="145" value="game.role.equip.packet.SM_EquipmentVo"/>
+    <message id="146" value="game.role.equip.packet.CM_Equipment"/>
 
     <!--地图基础协议 2001 - 2005-->
     <message id="2002" value="game.world.base.packet.CM_LeaveMap"/>

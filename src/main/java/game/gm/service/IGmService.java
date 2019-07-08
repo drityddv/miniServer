@@ -1,7 +1,7 @@
 package game.gm.service;
 
 import game.gm.packet.CM_GmCommand;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * gm命令

@@ -49,7 +49,7 @@ public abstract class AbstractItem extends AbstractGameObject implements Compara
     }
 
     public void reduce(int count) {
-        num -= count;
+        this.num -= count;
     }
 
     public void add(int count) {

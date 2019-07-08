@@ -3,7 +3,7 @@ package game.world.base.command;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.executor.util.ExecutorUtils;
 import game.miniMap.handler.AbstractMapHandler;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 

@@ -12,7 +12,7 @@ import game.base.game.attribute.constant.GlobalConst;
 import game.base.game.attribute.id.AttributeId;
 import game.base.game.attribute.util.AttributeUtils;
 import game.base.object.AbstractCreature;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

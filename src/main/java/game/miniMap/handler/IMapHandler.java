@@ -2,8 +2,8 @@ package game.miniMap.handler;
 
 import game.miniMap.base.AbstractMapInfo;
 import game.miniMap.constant.MapGroupType;
+import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
-import game.user.player.model.Player;
 
 /**
  * @author : ddv

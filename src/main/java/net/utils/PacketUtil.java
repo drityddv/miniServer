@@ -3,7 +3,7 @@ package net.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import middleware.manager.ClazzManager;
 import middleware.manager.SessionManager;
 import net.model.PacketProtocol;

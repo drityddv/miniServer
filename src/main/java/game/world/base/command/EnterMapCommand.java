@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.miniMap.handler.AbstractMapHandler;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 

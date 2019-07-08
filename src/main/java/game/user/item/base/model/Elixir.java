@@ -3,10 +3,10 @@ package game.user.item.base.model;
 import java.util.Map;
 
 import game.common.exception.RequestException;
+import game.role.player.model.Player;
 import game.user.item.base.constant.ItemEffectType;
 import game.user.item.base.effect.IEffectProcessor;
 import game.user.item.resource.ItemResource;
-import game.user.player.model.Player;
 
 /**
  *
@@ -35,5 +35,10 @@ public class Elixir extends AbstractUsableItem {
             IEffectProcessor processor = ItemEffectType.getProcessor(type);
             processor.invokeItemEffect(player, value);
         });
+    }
+
+    @Override
+    public String toString() {
+        return "Elixir{" + "configId=" + configId + ", num=" + num + '}';
     }
 }

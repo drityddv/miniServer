@@ -1,7 +1,7 @@
 package game.world.neutral.neutralMap.model;
 
 import game.miniMap.visible.AbstractVisibleMapInfo;
-import game.user.player.model.Player;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv

@@ -2,7 +2,6 @@ package spring;
 
 import javax.annotation.PostConstruct;
 
-import game.base.executor.account.IAccountExecutorService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -10,16 +9,18 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import game.base.ebus.EventBus;
+import game.base.executor.account.IAccountExecutorService;
 import game.base.executor.scene.ISceneExecutorService;
+import game.common.service.ICommonService;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
+import game.role.equip.service.IEquipService;
+import game.role.player.service.IPlayerService;
 import game.scene.fight.service.IFightService;
 import game.scene.npc.service.NpcManager;
-import game.user.equip.service.IEquipService;
 import game.user.login.service.ILoginService;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
-import game.user.player.service.IPlayerService;
 import game.world.base.service.IWorldService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
 import middleware.dispatch.Dispatcher;
@@ -54,6 +55,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private EventBus eventBus;
+
+    @Autowired
+    private ICommonService commonService;
 
     @Autowired
     private IAccountExecutorService accountExecutorService;
@@ -154,6 +158,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static INeutralMapService getNeutralMapService() {
         return instance.neutralMapService;
+    }
+
+    public static ICommonService getCommonService() {
+        return instance.commonService;
     }
 
     public static IFightService getFightService() {

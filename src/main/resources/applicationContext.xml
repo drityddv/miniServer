@@ -52,9 +52,9 @@
         <property name="packagesToScan">
             <list>
                 <value>game.user.login.entity</value>
-                <value>game.user.player.entity</value>
+                <value>game.role.player.entity</value>
                 <value>game.user.pack.entity</value>
-                <value>game.user.equip.entity</value>
+                <value>game.role.equip.entity</value>
                 <value>game.user.mapinfo.entity</value>
             </list>
         </property>
