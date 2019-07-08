@@ -47,7 +47,7 @@ public class EquipSquare {
     }
 
     // 直接访问资源文件的属性
-    public Map<AttributeType, Attribute> getSquareAttrs() {
+    private Map<AttributeType, Attribute> getSquareAttrs() {
         EquipSquareEnhanceResource resource =
             SpringContext.getEquipService().getEquipEnhanceResource(equipPosition.getConfigId());
         return resource.getAttributeMap();

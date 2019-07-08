@@ -1,4 +1,4 @@
-package game.miniMap.base;
+package game.miniMap.handler;
 
 import game.miniMap.model.Grid;
 import game.user.player.model.Player;

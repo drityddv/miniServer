@@ -13,7 +13,7 @@ import game.user.player.model.Player;
 public interface IGmService {
 
     /**
-     * 反射调用
+     * 调用gmCommand
      *
      * @param player
      * @param request

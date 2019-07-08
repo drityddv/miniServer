@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
-import game.user.player.model.Player;
 import spring.SpringContext;
 
 /**
@@ -41,10 +40,9 @@ public class ExecutorUtils {
     /**
      * 提交命令 这里暂时全部走地图线程
      *
-     * @param player
      * @param command
      */
-    public static void submit(Player player, AbstractSceneCommand command) {
+    public static void submit(AbstractSceneCommand command) {
         SpringContext.getSceneExecutorService().submit(command);
     }
 

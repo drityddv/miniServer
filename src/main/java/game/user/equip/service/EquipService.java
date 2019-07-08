@@ -43,7 +43,7 @@ public class EquipService implements IEquipService {
 
     @Override
     public void enhance(Player player, int position) {
-		EquipPosition.getPosition(position);
+        EquipPosition.getPosition(position);
         EquipStorageEnt ent = getEquipStorageEnt(player);
         EquipStorage equipStorage = ent.getEquipStorage();
 

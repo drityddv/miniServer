@@ -20,15 +20,10 @@ public abstract class AbstractScene {
      * 场景战斗对象容器
      */
     private Map<String, FighterAccount> fighterAccountMap = new HashMap<>();
-
     /**
      * 定时器容器
      */
     private Map<Object, Object> commandMap = new HashMap<>();
-    /**
-     * 场景容器组件
-     */
-    private SceneComponentInfo sceneComponentInfo = new SceneComponentInfo();
 
     public AbstractScene(int mapId) {
         this.mapId = mapId;
@@ -38,7 +33,6 @@ public abstract class AbstractScene {
         fighterAccountMap.clear();
     }
 
-    // get and set
     public void fighterEnter(FighterAccount fighterAccount) {
         fighterAccountMap.put(fighterAccount.getAccountId(), fighterAccount);
     }
@@ -47,6 +41,7 @@ public abstract class AbstractScene {
         fighterAccountMap.remove(accountId);
     }
 
+    // get and set
     public int getMapId() {
         return mapId;
     }
@@ -71,11 +66,4 @@ public abstract class AbstractScene {
         this.commandMap = commandMap;
     }
 
-    public SceneComponentInfo getSceneComponentInfo() {
-        return sceneComponentInfo;
-    }
-
-    public void setSceneComponentInfo(SceneComponentInfo sceneComponentInfo) {
-        this.sceneComponentInfo = sceneComponentInfo;
-    }
 }

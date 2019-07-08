@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import game.miniMap.base.AbstractMapInfo;
-import game.miniMap.handler.MapGroupType;
+import game.miniMap.constant.MapGroupType;
 
 /**
  * @author : ddv

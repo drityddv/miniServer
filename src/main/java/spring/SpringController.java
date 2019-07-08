@@ -34,9 +34,7 @@ public class SpringController {
 
     private static void initBeanClasses() {
         beanClasses = new ArrayList<>();
-        beanNames.forEach(beanName -> {
-            beanClasses.add(CONTEXT.getBean(beanName).getClass());
-        });
+        beanNames.forEach(beanName -> beanClasses.add(CONTEXT.getBean(beanName).getClass()));
     }
 
     public static List<Class<?>> getBeanClasses() {
@@ -52,7 +50,7 @@ public class SpringController {
     }
 
     public static void init() {
-        logger.info("spring初始化完成...");
+        logger.info("Spring模块加载完成...");
     }
 
 }

@@ -19,17 +19,6 @@ import com.github.dozermapper.core.Mapper;
 
 public class ClassUtil {
 
-    /**
-     * 注入对象的普通字段,具体哪些需要注入的字段与字段值,使用者自己传递,并且下标需要对应
-     *
-     * @param object
-     * @param fieldList
-     * @param values
-     */
-    public static void insertFields(Object object, List<Field> fieldList, List<String> values) {
-        insertValue(object, fieldList, values);
-    }
-
     private static void insertValue(Object object, List<Field> fieldList, List<String> values) {
         for (int i = 0; i < fieldList.size(); i++) {
             Field field = fieldList.get(i);

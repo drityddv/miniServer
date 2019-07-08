@@ -1,6 +1,7 @@
 package game.miniMap.handler;
 
 import game.miniMap.base.AbstractMapInfo;
+import game.miniMap.constant.MapGroupType;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.player.model.Player;
 

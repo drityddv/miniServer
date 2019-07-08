@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 import db.middleware.AbstractEntity;
 import game.miniMap.base.AbstractMapInfo;
-import game.miniMap.handler.MapGroupType;
+import game.miniMap.constant.MapGroupType;
 import game.user.mapinfo.model.PlayerMapInfo;
 import net.utils.ProtoStuffUtil;
 

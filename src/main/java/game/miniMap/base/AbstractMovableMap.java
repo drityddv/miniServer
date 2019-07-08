@@ -9,7 +9,7 @@ import game.miniMap.visible.AbstractVisibleMapInfo;
 import game.world.base.command.UpdatePositionCommand;
 
 /**
- * 可移动场景
+ * 可移动的场景
  *
  * @author : ddv
  * @since : 2019/7/3 下午2:33
@@ -19,6 +19,7 @@ public abstract class AbstractMovableMap<T extends AbstractVisibleMapInfo> exten
 
     // 玩家accountId - T
     protected Map<String, T> accountIdToVisible = new HashMap<>();
+
     private UpdatePositionCommand updatePositionCommand;
 
     public AbstractMovableMap(int mapId) {

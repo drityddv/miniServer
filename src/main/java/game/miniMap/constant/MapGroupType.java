@@ -1,4 +1,4 @@
-package game.miniMap.handler;
+package game.miniMap.constant;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import game.world.neutral.neutralMap.model.NeutralMapInfo;
 
 public enum MapGroupType {
     /**
-     * 空副本 changeMap需要使用
+     * 空副本
      */
     EMPTY_GROUP(0, null),
 

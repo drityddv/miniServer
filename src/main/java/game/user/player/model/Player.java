@@ -49,6 +49,7 @@ public class Player extends AbstractCreature<Player> {
         Player player = new Player();
         player.accountId = accountId;
         player.playerId = IdUtil.getLongId();
+        player.sex = 2;
         player.level = 1;
         player.gold = 1000;
         player.changingMap = false;
@@ -72,7 +73,7 @@ public class Player extends AbstractCreature<Player> {
             return;
         }
 
-        ExecutorUtils.submit(this, FighterSyncCommand.valueOf(this.getAccountId(), syncStrategy, currentScene));
+        ExecutorUtils.submit(FighterSyncCommand.valueOf(this.getAccountId(), syncStrategy, currentScene));
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import game.base.executor.util.ExecutorUtils;
 import game.common.exception.RequestException;
 import game.common.packet.SM_Message;
-import game.miniMap.base.IMovableMapHandler;
+import game.miniMap.handler.IMovableMapHandler;
 import game.miniMap.handler.AbstractMapHandler;
 import game.miniMap.model.Grid;
 import game.user.player.model.Player;
@@ -48,7 +48,7 @@ public class WorldService implements IWorldService {
             if (oldMapId != MAP_CONSTANT.EMPTY_MAP) {
                 gatewayLeaveMap(player, mapId, clientRequest);
             } else {
-                ExecutorUtils.submit(player, EnterMapCommand.valueOf(player, mapId));
+                ExecutorUtils.submit(EnterMapCommand.valueOf(player, mapId));
             }
 
         } catch (RequestException e) {
@@ -67,7 +67,7 @@ public class WorldService implements IWorldService {
 
     @Override
     public void gatewayLeaveMap(Player player, int mapId, boolean clientRequest) {
-        ExecutorUtils.submit(player, LeaveMapCommand.valueOf(player, mapId));
+        ExecutorUtils.submit(LeaveMapCommand.valueOf(player, mapId));
     }
 
     @Override
@@ -85,17 +85,16 @@ public class WorldService implements IWorldService {
 
         // 有些地图是不能移动的
         if (handler instanceof IMovableMapHandler) {
-            ExecutorUtils.submit(player, MoveCommand.valueOf(player, targetPosition, handler));
+            ExecutorUtils.submit(MoveCommand.valueOf(player, targetPosition, handler));
         } else {
             logger.warn("玩家[{}]地图[{}]移动失败,该地图不能手动移动", player.getAccountId(), currentMapId);
         }
-
     }
 
     // 测试用 gm和facade都会走这里
     @Override
     public void logMap(Player player, int mapId) {
-        ExecutorUtils.submit(player, LogMapCommand.valueOf(player, mapId));
+        ExecutorUtils.submit(LogMapCommand.valueOf(player, mapId));
     }
 
 }
