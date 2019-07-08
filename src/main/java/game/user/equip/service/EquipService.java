@@ -41,13 +41,14 @@ public class EquipService implements IEquipService {
     @Autowired
     private EquipManager equipManager;
 
+    // 强化装备孔位
     @Override
     public void enhance(Player player, int position) {
-        EquipPosition.getPosition(position);
+        EquipPosition equipPosition = EquipPosition.getPosition(position);
         EquipStorageEnt ent = getEquipStorageEnt(player);
         EquipStorage equipStorage = ent.getEquipStorage();
 
-        EquipSquare equipSquare = equipStorage.getEquipSquare(position);
+        EquipSquare equipSquare = equipStorage.getEquipSquare(equipPosition);
         EquipSquareEnhanceResource resource = equipManager.getEquipEnhanceResource(equipSquare.getConfigId());
 
         if (resource.getNextLevel() == 0) {
@@ -55,6 +56,7 @@ public class EquipService implements IEquipService {
             return;
         }
 
+        // 强化消耗逻辑
         List<AbstractConsumeProcessor> processors = resource.getProcessors();
         for (AbstractConsumeProcessor processor : processors) {
             try {
@@ -64,12 +66,14 @@ public class EquipService implements IEquipService {
                 throw e;
             }
         }
+
+        // 修改孔位信息
         EquipSquareEnhanceResource newEnhanceResource =
             equipManager.getEquipEnhanceResource(resource.getNextLevelConfigId());
         equipSquare.enhance(newEnhanceResource);
-        equipManager.save(ent);
 
-        equipStorage.reCompute(player);
+        equipManager.save(ent);
+        equipStorage.reComputeTargetSquare(player, equipPosition);
         sendStorageInfo(player);
     }
 
@@ -106,14 +110,15 @@ public class EquipService implements IEquipService {
             }
 
             // 装备栏上不允许有装备
-            boolean empty = equipStorage.isSquareEmpty(equipPosition.getId());
+            boolean empty = equipStorage.isSquareEmpty(equipPosition);
             if (!empty) {
                 logger.warn("玩家[{}]穿戴装备失败,装备栏[{}]上存在装备", player.getAccountId(), equipPosition.getId());
                 return;
             }
             packService.reduceItem(player, item, 1);
             equipStorage.addEquip(equipment, equipPosition);
-            equipStorage.reCompute(player);
+            // 计算装备栏属性变动
+            equipStorage.reComputeTargetSquare(player, equipPosition);
 
             // 不要忘记保存了啊啊啊!!
             equipManager.save(ent);
@@ -125,10 +130,10 @@ public class EquipService implements IEquipService {
 
     @Override
     public void unDress(Player player, int position) {
-        EquipPosition.getPosition(position);
+        EquipPosition equipPosition = EquipPosition.getPosition(position);
         EquipStorageEnt ent = getEquipStorageEnt(player);
         EquipStorage equipStorage = ent.getEquipStorage();
-        EquipSquare equipSquare = equipStorage.getEquipSquare(position);
+        EquipSquare equipSquare = equipStorage.getEquipSquare(equipPosition);
 
         if (equipSquare.getEquipment() == null) {
             logger.warn("玩家[{}]脱卸装备失败,装备栏[{}]无装备", player.getAccountId(), position);
@@ -137,7 +142,8 @@ public class EquipService implements IEquipService {
         SpringContext.getPackService().addItem(player, equipSquare.getEquipment(), 1);
         equipSquare.unDressEquip();
         equipManager.save(ent);
-        equipStorage.reCompute(player);
+
+        equipStorage.reComputeTargetSquare(player, equipPosition);
         sendStorageInfo(player);
     }
 
@@ -165,7 +171,7 @@ public class EquipService implements IEquipService {
         EquipStorage equipStorage = getEquipStorage(player);
         equipStorage.load();
         player.getAttributeContainer().putAttributes(AttributeIdEnum.BASE_EQUIPMENT,
-            equipStorage.getCurrentAttribute());
+            equipStorage.reComputeSquareAttrs());
     }
 
     @Override
@@ -175,8 +181,8 @@ public class EquipService implements IEquipService {
 
     @Override
     public void requestEquipment(Player player, int position) {
-        EquipPosition.getPosition(position);
-        EquipSquare equipSquare = getEquipStorage(player).getEquipSquare(position);
+        EquipPosition equipPosition = EquipPosition.getPosition(position);
+        EquipSquare equipSquare = getEquipStorage(player).getEquipSquare(equipPosition);
         Equipment equipment = equipSquare.getEquipment();
         EquipResource equipResource = getEquipResource(equipment.getConfigId());
         PacketUtil.send(player, SM_EquipmentVo.valueOf(equipment, equipResource.getAttributes()));

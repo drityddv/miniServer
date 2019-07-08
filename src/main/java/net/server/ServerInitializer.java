@@ -16,7 +16,7 @@ import net.middleware.PacketEncoder;
 
 public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 
-    private final int MAX_TIME_SECOND = 10;
+    private static final int MAX_TIME_SECOND = 300;
 
     @Override
     protected void initChannel(SocketChannel ch) {

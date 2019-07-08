@@ -14,7 +14,7 @@ public class Server {
     private EventLoopGroup boss;
     private EventLoopGroup worker;
 
-    public void init() {
+    private void init() {
         boss = new NioEventLoopGroup();
         worker = new NioEventLoopGroup();
         serverBootstrap = new ServerBootstrap();
@@ -24,13 +24,13 @@ public class Server {
     }
 
     public void run() {
+		init();
         try {
             ChannelFuture future = serverBootstrap.bind(8000).sync();
             // future.channel().closeFuture();
-            future.channel().closeFuture().sync();
+            future.channel().closeFuture();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally {
             shutdown();
         }
     }

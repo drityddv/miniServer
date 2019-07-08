@@ -98,7 +98,7 @@ public class GM_Command {
         StringBuilder sb = new StringBuilder();
         sb.append("打印玩家装备栏\n");
         EquipStorage equipStorage = player.getEquipStorage();
-        equipStorage.getEquipSlotMap().forEach((integer, equipSquare) -> {
+        equipStorage.getEquipSquareMap().forEach((integer, equipSquare) -> {
             Equipment equipment = equipSquare.getEquipment();
             if (equipment == null) {
                 sb.append(StringUtil.wipePlaceholder("装备栏位置[{}] 装备[{}]", EquipPosition.getPosition(integer), "无"));

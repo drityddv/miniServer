@@ -72,6 +72,16 @@ public class AttributeUtils {
     }
 
     /**
+     * 将属性集合转成List
+     *
+     * @param attributeCollection
+     * @return
+     */
+    public static List<Attribute> wrapperToList(Collection<Attribute> attributeCollection) {
+        return new ArrayList<>(attributeCollection);
+    }
+
+    /**
      * 将属性统计进给定的参数map中
      *
      * @param attributeList
@@ -112,6 +122,17 @@ public class AttributeUtils {
                 result.put(add.getAttributeType(), Attribute.valueOf(add.getAttributeType(), add.getValue()));
             }
         }
+    }
+
+    /**
+     * 将模块属性集合统计进map中
+     *
+     * @param attributeSets
+     * @param finalAttrs
+     */
+    public static void accumulateSetToMap(Collection<AttributeSet> attributeSets,
+        Map<AttributeType, Attribute> finalAttrs) {
+        attributeSets.forEach(attributeSet -> accumulateToMap(attributeSet, finalAttrs));
     }
 
     /**

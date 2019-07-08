@@ -66,7 +66,8 @@ public class EquipSquare {
         return attributes;
     }
 
-    public void reSetAttrs() {
+    // 刷新孔位和装备的所有属性
+    public void refreshAttrs() {
         // 更新孔位属性
         squareAttrs = getSquareAttrs();
 
@@ -76,6 +77,8 @@ public class EquipSquare {
             Map<AttributeType, Attribute> newEquipAttrs = new HashMap<>();
             AttributeUtils.accumulateToMap(equipmentAttrs, newEquipAttrs);
             equipAttrs = newEquipAttrs;
+        } else {
+            equipAttrs.clear();
         }
 
         // 计算合并后的属性
@@ -88,7 +91,7 @@ public class EquipSquare {
     public void unDressEquip() {
         equipment = null;
         equipAttrs.clear();
-        reSetAttrs();
+        refreshAttrs();
     }
 
     public void enhance(EquipSquareEnhanceResource resource) {
@@ -126,6 +129,10 @@ public class EquipSquare {
 
     public long getConfigId() {
         return configId;
+    }
+
+    public EquipPosition getEquipPosition() {
+        return equipPosition;
     }
 
     @Override

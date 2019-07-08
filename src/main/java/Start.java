@@ -1,6 +1,3 @@
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,13 +38,7 @@ public class Start {
         SpringContext.getNeutralMapService().init();
 
         // net服务器启动
-        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
-
-        singleThreadExecutor.submit(() -> {
-            Server server = new Server();
-            server.init();
-            server.run();
-        });
+        new Server().run();
 
         StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
 

@@ -1,6 +1,7 @@
 package game.base.game.attribute;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +16,14 @@ public class AttributeSet {
     private long battleScore;
 
     private Map<AttributeType, Attribute> attributeMap = new HashMap<>();
+
+    public static AttributeSet valueOf(List<Attribute> attributeList) {
+        AttributeSet attributeSet = new AttributeSet();
+        for (Attribute attribute : attributeList) {
+            attributeSet.attributeMap.put(attribute.getAttributeType(), attribute);
+        }
+        return attributeSet;
+    }
 
     /**
      * 获取属性
