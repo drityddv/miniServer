@@ -33,6 +33,9 @@ public class Start {
         // 初始化定时组件
         SpringContext.getQuartzService().init();
 
+        //初始化公共服务
+        SpringContext.getCommonService().initPublicTask();
+
         // net服务器启动
         SpringContext.getServer().run();
 

@@ -156,7 +156,7 @@ public class EquipService implements IEquipService {
         }
 
         if (item instanceof Equipment) {
-            Equipment equipment = (Equipment)item;
+            Equipment equipment = (Equipment)SpringContext.getCommonService().createItem(item.getConfigId(), 1);
             if (equipment.getEquipPosition().getId() != position) {
                 logger.warn("玩家[{}]替换装备失败,背包道具[{}]的装备位置[{}]与即将替换的位置[{}]不匹配", player.getAccountId(), equipConfigId,
                     equipment.getEquipPosition().getId(), position);
@@ -177,7 +177,7 @@ public class EquipService implements IEquipService {
                 equipSquare.setEquipment(null);
             }
 
-            SpringContext.getPackService().reduceItem(player, equipment, equipment.getNum());
+            SpringContext.getPackService().reduceItem(player, item, 1);
             equipSquare.setEquipment(equipment);
 
             equipStorage.reComputeTargetSquare(player, equipPosition);

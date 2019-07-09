@@ -87,7 +87,7 @@ public class Pack {
             for (PackSquare emptySquare : emptySquares) {
                 emptySquare.addUnOverLimitItem(SpringContext.getCommonService().createItem(item.getConfigId(), 1));
                 num--;
-                if (num == 0) {
+                if (num <= 0) {
                     break;
                 }
             }

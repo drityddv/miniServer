@@ -28,7 +28,7 @@ public abstract class AttributeContainer<T> {
     /**
      * 模块属性[基本属性,传世,雷霆等...]
      */
-    protected transient Map<AttributeId, AttributeSet> modelAttributeSet = new HashMap<>();
+    protected transient Map<AttributeId, AttributeSet> modelAttributeSet = new ConcurrentHashMap<>();
     /**
      * 计算使用的变量
      */

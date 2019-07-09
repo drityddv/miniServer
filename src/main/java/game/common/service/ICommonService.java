@@ -35,4 +35,9 @@ public interface ICommonService {
      * 初始化一些公共服务[服务器定时事件等...]
      */
     void initPublicTask();
+
+    /**
+     * 0点事件触发
+     */
+    void zeroClock();
 }

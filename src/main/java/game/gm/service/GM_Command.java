@@ -159,7 +159,10 @@ public class GM_Command {
     }
 
     public void test(Player player, String accountId) {
+        StringBuilder sb = new StringBuilder();
         Player loadPlayer = SpringContext.getPlayerService().loadPlayer(accountId);
+        AttributeUtils.logAttrs(loadPlayer.getAttributeContainer(), sb);
+        PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
     }
 
 }

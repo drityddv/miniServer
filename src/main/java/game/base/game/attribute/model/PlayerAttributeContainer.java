@@ -18,14 +18,14 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
     public PlayerAttributeContainer() {
         super(null);
         finalAttributes = new ConcurrentHashMap<>();
-        modelAttributeSet = new HashMap<>();
+        modelAttributeSet = new ConcurrentHashMap<>();
         accumulateAttributes = new HashMap<>();
     }
 
     public PlayerAttributeContainer(Player owner) {
         super(owner);
         finalAttributes = new ConcurrentHashMap<>();
-        modelAttributeSet = new HashMap<>();
+        modelAttributeSet = new ConcurrentHashMap<>();
         accumulateAttributes = new HashMap<>();
     }
 
