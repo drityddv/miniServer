@@ -11,7 +11,6 @@ import game.common.packet.SM_Message;
 import game.role.player.entity.PlayerEnt;
 import game.role.player.model.Player;
 import game.user.login.entity.UserEnt;
-import game.user.login.event.PlayerLoginBeforeEvent;
 import game.user.login.event.PlayerLogoutEvent;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
@@ -65,17 +64,11 @@ public class LoginService implements ILoginService {
         session.putSessionAttribute("accountId", accountId);
         SessionManager.registerPlayerSession(accountId, session);
 
-        PlayerEnt playerEnt = SpringContext.getPlayerService().getPlayerWithoutCreate(accountId);
-
-        // 没有角色就不触发相关机制
-        if (playerEnt != null) {
-            Player player = playerEnt.getPlayer();
-            SpringContext.getEventBus().pushEventSyn(PlayerLoginBeforeEvent.valueOf(player));
-            // 重新计算属性
+        Player player = SpringContext.getPlayerService().loadPlayer(accountId);
+        if (player != null) {
             player.getAttributeContainer().containerRecompute();
         }
-
-        PacketUtil.send(session, new SM_LoginSuccess());
+        PacketUtil.send(session, SM_LoginSuccess.valueOf());
     }
 
     @Override

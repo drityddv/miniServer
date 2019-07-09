@@ -280,4 +280,10 @@ public class AttributeUtils {
         });
     }
 
+    public static void logAttrs(Map<AttributeType, Attribute> attrs, StringBuilder sb) {
+        attrs.forEach((type, attribute) -> {
+            sb.append("   " + StringUtil.wipePlaceholder("类型[{}],属性值[{}]", type.getTypeName(), attribute.getValue()));
+        });
+    }
+
 }

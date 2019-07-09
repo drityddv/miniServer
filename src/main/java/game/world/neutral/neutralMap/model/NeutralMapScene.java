@@ -27,7 +27,6 @@ public class NeutralMapScene extends AbstractMovableMap<NeutralMapAccountInfo> {
         super(mapId);
     }
 
-    // FIXME 这里内网的npc用的是并发map ??? 可能会在玩家线程直接拉这个map去遍历
     public static NeutralMapScene valueOf(int mapId) {
         NeutralMapScene mapScene = new NeutralMapScene(mapId);
         mapScene.npcMap = new ConcurrentHashMap<>();
@@ -36,7 +35,6 @@ public class NeutralMapScene extends AbstractMovableMap<NeutralMapAccountInfo> {
 
     @Override
     public void enter(String accountId, NeutralMapAccountInfo object) {
-        // FIXME 这边内网地图会用心跳清除掉玩家,逻辑是如果玩家心跳清除之前回来了 继续用旧的
         accountIdToVisible.putIfAbsent(accountId, object);
         logger.info("玩家[{}]进入中立场景[{}],场景内人数[{}]", accountId, mapId, accountIdToVisible.size());
     }

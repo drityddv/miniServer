@@ -1,5 +1,8 @@
 package game.common.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +12,12 @@ import game.common.I18N;
 import game.common.exception.RequestException;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
+import middleware.sehedule.QuartzService;
 import utils.IdUtil;
 
 /**
+ * 公共服务
+ *
  * @author : ddv
  * @since : 2019/7/8 下午9:02
  */
@@ -22,6 +28,9 @@ public class CommonService implements ICommonService {
 
     @Autowired
     private CommonManager commonManager;
+
+    @Autowired
+    private QuartzService quartzService;
 
     @Override
     public AbstractItem createItem(long configId, int num) {
@@ -35,5 +44,20 @@ public class CommonService implements ICommonService {
         abstractItem.init(itemResource);
         abstractItem.setNum(num);
         return abstractItem;
+    }
+
+    @Override
+    public List<AbstractItem> createItems(long configId, int num) {
+        List<AbstractItem> items = new ArrayList<>();
+        while (num > 0) {
+            items.add(createItem(configId, 1));
+            num--;
+        }
+        return items;
+    }
+
+    @Override
+    public void initPublicTask() {
+
     }
 }

@@ -25,6 +25,8 @@ import utils.IdUtil;
 
 public class Player extends AbstractCreature<Player> {
 
+    private transient volatile boolean isLoaded = false;
+
     private String accountId;
 
     private long playerId;
@@ -111,6 +113,14 @@ public class Player extends AbstractCreature<Player> {
         return this.level;
     }
 
+    public int getSex() {
+        return sex;
+    }
+
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     public long getPlayerId() {
         return playerId;
     }
@@ -145,7 +155,11 @@ public class Player extends AbstractCreature<Player> {
         SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
     }
 
-    public void setSex(int sex) {
-        this.sex = sex;
+    public boolean isLoaded() {
+        return isLoaded;
+    }
+
+    public void setLoaded(boolean loaded) {
+        isLoaded = loaded;
     }
 }

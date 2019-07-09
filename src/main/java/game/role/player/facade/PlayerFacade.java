@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import game.gm.event.HotFixEvent;
 import game.role.player.packet.CM_CreatePlayer;
 import game.role.player.service.PlayerService;
-import game.user.login.event.PlayerLoginBeforeEvent;
+import game.user.login.event.PlayerLoadSynEvent;
 import middleware.anno.EventReceiver;
 import middleware.anno.HandlerAnno;
 import net.model.USession;
@@ -42,7 +42,7 @@ public class PlayerFacade {
     }
 
     @EventReceiver
-    public void playerLoginBefore(PlayerLoginBeforeEvent event) {
+    public void playerLoginBefore(PlayerLoadSynEvent event) {
         try {
             playerService.loadPlayerAttribute(event.getPlayer());
         } catch (Exception e) {

@@ -55,4 +55,5 @@ public abstract class AbstractItem extends AbstractGameObject implements Compara
     public void add(int count) {
         this.num += count;
     }
+
 }

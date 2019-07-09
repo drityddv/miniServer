@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class AttributeSet {
     /**
-     * 模块战力
+     * 模块战力 等排行榜用
      */
     private long battleScore;
 

@@ -18,7 +18,6 @@ public class NeutralMapAccountInfo extends AbstractVisibleMapInfo {
 
     public static NeutralMapAccountInfo valueOf(Player player, String accountId, long playerId) {
         NeutralMapAccountInfo accountInfo = new NeutralMapAccountInfo();
-
         accountInfo.accountId = accountId;
         accountInfo.playerId = playerId;
         accountInfo.player = player;

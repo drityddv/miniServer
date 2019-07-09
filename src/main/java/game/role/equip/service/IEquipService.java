@@ -40,6 +40,15 @@ public interface IEquipService {
     void unDress(Player player, int position);
 
     /**
+     * 替换装备 不允许[任何一方为null]
+     *
+     * @param player
+     * @param equipConfigId
+     * @param position
+     */
+    void switchEquip(Player player, int equipConfigId, int position);
+
+    /**
      * 获取装备资源文件
      *
      * @param configId

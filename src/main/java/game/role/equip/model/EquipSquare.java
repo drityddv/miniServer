@@ -47,9 +47,8 @@ public class EquipSquare {
     }
 
     // 直接访问资源文件的属性
-    private Map<AttributeType, Attribute> getSquareAttrs() {
-        EquipSquareEnhanceResource resource =
-            SpringContext.getEquipService().getEquipEnhanceResource(equipPosition.getConfigId());
+    public Map<AttributeType, Attribute> getSquareAttrs() {
+        EquipSquareEnhanceResource resource = SpringContext.getEquipService().getEquipEnhanceResource(configId);
         return resource.getAttributeMap();
     }
 
@@ -64,6 +63,10 @@ public class EquipSquare {
         }
         AttributeUtils.accumulateToList(finalAttrs, attributes);
         return attributes;
+    }
+
+    public Map<AttributeType, Attribute> getLocalSquareAttrs() {
+        return squareAttrs;
     }
 
     // 刷新孔位和装备的所有属性

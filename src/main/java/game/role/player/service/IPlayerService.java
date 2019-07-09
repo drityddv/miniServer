@@ -65,6 +65,14 @@ public interface IPlayerService {
     PlayerEnt getPlayerEnt(Player player);
 
     /**
+     * 加载玩家信息
+     *
+     * @param accountId
+     * @return
+     */
+    Player loadPlayer(String accountId);
+
+    /**
      * 获取角色 不会自动创建
      *
      * @param accountId

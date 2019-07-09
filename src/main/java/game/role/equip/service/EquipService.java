@@ -90,18 +90,12 @@ public class EquipService implements IEquipService {
 
         // 是否是装备类型的道具
         if (item instanceof Equipment) {
-            Equipment equipment = (Equipment)item;
+            Equipment equipment = (Equipment)SpringContext.getCommonService().createItem(item.getConfigId(), 1);
             EquipStorageEnt ent = getEquipStorageEnt(player);
             EquipStorage equipStorage = ent.getEquipStorage();
 
-            // 穿戴条件检查
-            EquipResource equipResource = equipManager.getEquipResource(equipment.getConfigId());
-            for (AbstractConditionProcessor processor : equipResource.getConditionProcessors()) {
-                boolean result = processor.doVerify(player);
-                if (!result) {
-                    logger.warn("玩家[{}]穿戴装备失败,穿戴要求不满足", player.getAccountId());
-                    RequestException.throwException(I18N.EQUIP_WEAR_CONDITION_NOT_QUALIFIED);
-                }
+            if (!verifyEquipWearCondition(player, equipment)) {
+                RequestException.throwException(I18N.EQUIP_WEAR_CONDITION_NOT_QUALIFIED);
             }
 
             if (equipment.getEquipPosition() != equipPosition) {
@@ -141,13 +135,57 @@ public class EquipService implements IEquipService {
             return;
         }
 
-        equipment.add(1);
         SpringContext.getPackService().addItem(player, equipment);
         equipSquare.unDressEquip();
         equipManager.save(ent);
 
         equipStorage.reComputeTargetSquare(player, equipPosition);
         sendStorageInfo(player);
+    }
+
+    @Override
+    public void switchEquip(Player player, int equipConfigId, int position) {
+        EquipPosition equipPosition = EquipPosition.getPosition(position);
+        EquipStorageEnt ent = getEquipStorageEnt(player);
+        EquipStorage equipStorage = ent.getEquipStorage();
+        AbstractItem item = SpringContext.getPackService().getItemFromPack(player, equipConfigId);
+
+        if (item == null) {
+            logger.warn("玩家[{}]替换装备失败,背包道具[{}]不存在", player.getAccountId(), equipConfigId);
+            return;
+        }
+
+        if (item instanceof Equipment) {
+            Equipment equipment = (Equipment)item;
+            if (equipment.getEquipPosition().getId() != position) {
+                logger.warn("玩家[{}]替换装备失败,背包道具[{}]的装备位置[{}]与即将替换的位置[{}]不匹配", player.getAccountId(), equipConfigId,
+                    equipment.getEquipPosition().getId(), position);
+                return;
+            }
+
+            if (!verifyEquipWearCondition(player, equipment)) {
+                RequestException.throwException(I18N.EQUIP_WEAR_CONDITION_NOT_QUALIFIED);
+            }
+
+            EquipSquare equipSquare = equipStorage.getEquipSquare(equipPosition);
+            Equipment oldEquipment = equipSquare.getEquipment();
+
+            // 装备栏上对应位置无装备也允许替换
+            if (oldEquipment != null) {
+                // 先脱再穿
+                SpringContext.getPackService().addItem(player, oldEquipment);
+                equipSquare.setEquipment(null);
+            }
+
+            SpringContext.getPackService().reduceItem(player, equipment, equipment.getNum());
+            equipSquare.setEquipment(equipment);
+
+            equipStorage.reComputeTargetSquare(player, equipPosition);
+            sendStorageInfo(player);
+        } else {
+            logger.warn("玩家[{}]替换装备失败,道具[{}]不是装备类型", player.getAccountId(), item.getConfigId());
+        }
+
     }
 
     @Override
@@ -187,6 +225,10 @@ public class EquipService implements IEquipService {
         EquipPosition equipPosition = EquipPosition.getPosition(position);
         EquipSquare equipSquare = getEquipStorage(player).getEquipSquare(equipPosition);
         Equipment equipment = equipSquare.getEquipment();
+        if (equipment == null) {
+            logger.warn("位置[{}]不存在装备", position);
+            return;
+        }
         EquipResource equipResource = getEquipResource(equipment.getConfigId());
         PacketUtil.send(player, SM_EquipmentVo.valueOf(equipment, equipResource.getAttributes()));
     }
@@ -194,5 +236,16 @@ public class EquipService implements IEquipService {
     private void sendStorageInfo(Player player) {
         EquipStorage equipStorage = getEquipStorage(player);
         PacketUtil.send(player, SM_EquipStorage.valueOf(equipStorage));
+    }
+
+    private boolean verifyEquipWearCondition(Player player, Equipment equipment) {
+        EquipResource equipResource = equipManager.getEquipResource(equipment.getConfigId());
+        for (AbstractConditionProcessor processor : equipResource.getConditionProcessors()) {
+            boolean result = processor.doVerify(player);
+            if (!result) {
+                return false;
+            }
+        }
+        return true;
     }
 }

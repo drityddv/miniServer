@@ -14,7 +14,6 @@ import game.role.player.model.Player;
 
 public class PlayerAttributeContainer extends CreatureAttributeContainer<Player> {
 
-    // FIXME protoStuff如果没有默认构造器的机制不清楚 后面再补
     // 这个是给protoStuff走的 反序列化走构造函数
     public PlayerAttributeContainer() {
         super(null);

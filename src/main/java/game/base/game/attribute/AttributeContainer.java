@@ -18,7 +18,7 @@ import game.base.game.attribute.util.AttributeUtils;
 public abstract class AttributeContainer<T> {
 
     /**
-     * FIXME 这个拥有者会被player引用了 不要序列化 所以外界不要调用字段
+     * 拥有者
      */
     protected transient T owner;
     /**
@@ -34,7 +34,6 @@ public abstract class AttributeContainer<T> {
      */
     protected transient Map<AttributeType, Attribute> accumulateAttributes = new HashMap<>();
 
-    // get and set
     public AttributeContainer() {}
 
     public AttributeContainer(T owner) {
@@ -114,6 +113,7 @@ public abstract class AttributeContainer<T> {
             }
         }
 
+        // 塞进来attr空的则把这个模块干掉
         if (attrs.size() == 0) {
             modelAttributeSet.remove(id);
         } else {
@@ -126,6 +126,7 @@ public abstract class AttributeContainer<T> {
         recompute(null, false);
     }
 
+    // get and set
     public T getOwner() {
         return owner;
     }

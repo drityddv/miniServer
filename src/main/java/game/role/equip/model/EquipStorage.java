@@ -72,6 +72,7 @@ public class EquipStorage {
     public void reComputeTargetSquare(Player player, EquipPosition equipPosition) {
         EquipSquare equipSquare = equipSquareMap.get(equipPosition.getId());
         equipSquare.refreshAttrs();
+
         squareAttributes.put(equipSquare.getEquipPosition().getId(),
             AttributeSet.valueOf(equipSquare.getCurrentAttribute()));
 
@@ -112,7 +113,6 @@ public class EquipStorage {
     }
 
     // get and set
-
     public Map<Integer, EquipSquare> getEquipSquareMap() {
         return equipSquareMap;
     }

@@ -5,9 +5,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -35,18 +35,18 @@ import utils.SimpleUtil;
  */
 @Component
 public class StorageManager {
-
     private static final Logger logger = LoggerFactory.getLogger(StorageManager.class);
+
     @Autowired
     private ApplicationContext context;
     // 静态类加载容器
-    private Map<Class<?>, ResourceDefinition> definitionMap = new ConcurrentHashMap<>();
+    private Map<Class<?>, ResourceDefinition> definitionMap = new HashMap<>();
 
     // 静态资源存放容器
-    private Map<Class<?>, Storage<?, ?>> storageMap = new ConcurrentHashMap<>();
+    private Map<Class<?>, Storage<?, ?>> storageMap = new HashMap<>();
 
     // csv读取的缓存流容器
-    private Map<String, InputStream> caches = new ConcurrentHashMap<>();
+    private Map<String, InputStream> caches = new HashMap<>();
 
     // 静态资源目的地加载
     private static void initResourceDefinition() {

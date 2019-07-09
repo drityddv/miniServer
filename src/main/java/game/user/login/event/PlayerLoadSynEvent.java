@@ -8,12 +8,12 @@ import game.role.player.model.Player;
  * @since : 2019/6/22 下午10:14
  */
 
-public class PlayerLoginBeforeEvent implements IEvent {
+public class PlayerLoadSynEvent implements IEvent {
 
     private Player player;
 
-    public static PlayerLoginBeforeEvent valueOf(Player player) {
-        PlayerLoginBeforeEvent event = new PlayerLoginBeforeEvent();
+    public static PlayerLoadSynEvent valueOf(Player player) {
+        PlayerLoadSynEvent event = new PlayerLoadSynEvent();
         event.player = player;
         return event;
     }
@@ -28,6 +28,6 @@ public class PlayerLoginBeforeEvent implements IEvent {
 
     @Override
     public String toString() {
-        return "PlayerLoginBeforeEvent{" + "player=" + player + '}';
+        return "PlayerLoadSynEvent{" + "player=" + player + '}';
     }
 }

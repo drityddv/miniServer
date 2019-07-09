@@ -11,7 +11,7 @@ import game.common.packet.SM_Message;
 import game.role.equip.packet.*;
 import game.role.equip.service.IEquipService;
 import game.role.player.model.Player;
-import game.user.login.event.PlayerLoginBeforeEvent;
+import game.user.login.event.PlayerLoadSynEvent;
 import middleware.anno.EventReceiver;
 import middleware.anno.HandlerAnno;
 import net.utils.PacketUtil;
@@ -58,6 +58,24 @@ public class EquipFacade {
     public void unDress(Player player, CM_UndressEquip request) {
         try {
             equipService.unDress(player, request.getPosition());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            PacketUtil.send(player, SM_Message.valueOf(I18N.SERVER_ERROR));
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 替换装备
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void switchEquip(Player player, CM_SwitchEquip request) {
+        try {
+            equipService.switchEquip(player, request.getEquipConfigId(), request.getPosition());
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -126,7 +144,7 @@ public class EquipFacade {
      * @param event
      */
     @EventReceiver
-    public void loadEquipStorage(PlayerLoginBeforeEvent event) {
+    public void loadEquipStorage(PlayerLoadSynEvent event) {
         Player player = event.getPlayer();
         try {
             equipService.loadEquipStorage(player);

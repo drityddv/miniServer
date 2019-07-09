@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.base.fight.model.pvpunit.FighterAccount;
-import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeSet;
-import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.id.AttributeId;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.game.attribute.util.AttributeUtils;
@@ -26,9 +23,11 @@ import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
+import middleware.sehedule.job.model.JobEntity;
+import middleware.sehedule.job.player.PlayerQuartzJob;
 import net.utils.PacketUtil;
 import spring.SpringContext;
-import utils.ClassUtil;
+import utils.QuartzUtil;
 import utils.StringUtil;
 
 /**
@@ -56,7 +55,7 @@ public class GM_Command {
         SpringContext.getServer().shutdown();
         SpringContext.getSceneExecutorService().shutdown();
         SpringContext.getAccountExecutorService().shutdown();
-
+        SpringContext.getQuartzService().shutdown();
     }
 
     public void logPlayer(Player player) {
@@ -64,6 +63,7 @@ public class GM_Command {
         sb.append(StringUtil.wipePlaceholder("打印玩家[{}]属性", player.getAccountId()));
         sb.append(StringUtil.wipePlaceholder("账号id[{}]", player.getAccountId()));
         sb.append(StringUtil.wipePlaceholder("playerId[{}]", player.getPlayerId()));
+        sb.append(StringUtil.wipePlaceholder("性别[{}]", player.getSex()));
         sb.append(StringUtil.wipePlaceholder("等级[{}]", player.getLevel()));
         sb.append(StringUtil.wipePlaceholder("黄金[{}]", player.getGold()));
 
@@ -74,7 +74,6 @@ public class GM_Command {
         StringBuilder sb = new StringBuilder();
         PlayerAttributeContainer attributeContainer = player.getAttributeContainer();
         Map<AttributeId, AttributeSet> modelAttributeSet = attributeContainer.getModelAttributeSet();
-        Map<AttributeType, Attribute> finalAttributes = attributeContainer.getFinalAttributes();
         sb.append(StringUtil.wipePlaceholder("打印玩家[{}]属性", player.getAccountId()));
         sb.append(StringUtil.wipePlaceholder("玩家共有[{}]个属性模块", modelAttributeSet.size()));
         AttributeUtils.logAttrs(attributeContainer, sb);
@@ -118,6 +117,30 @@ public class GM_Command {
         PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
     }
 
+    /**
+     * 打印装备栏的属性数据
+     *
+     * @param player
+     */
+    public void logEquipStorageAttrs(Player player) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("打印玩家装备栏属性数据\n");
+        EquipStorage equipStorage = player.getEquipStorage();
+        equipStorage.getEquipSquareMap().forEach((integer, equipSquare) -> {
+            sb.append(StringUtil.wipePlaceholder("位置[{}]", integer));
+            sb.append(StringUtil.wipePlaceholder("孔位属性\n"));
+            AttributeUtils.logAttrs(equipSquare.getLocalSquareAttrs(), sb);
+            sb.append(StringUtil.wipePlaceholder("装备属性\n"));
+            AttributeUtils.logAttrs(equipSquare.getEquipAttrs(), sb);
+            sb.append(StringUtil.wipePlaceholder("最终内部属性\n"));
+            AttributeUtils.logAttrs(equipSquare.getFinalAttrs(), sb);
+        });
+        sb.append(StringUtil.wipePlaceholder("装备栏最终属性\n"));
+        AttributeUtils.logAttrs(equipStorage.getStorageAttributes(), sb);
+        String message = sb.toString();
+        PacketUtil.send(player, SM_LogMessage.valueOf(message));
+    }
+
     public void addItem(Player player, long configId, int num) {
         packService.addItem(player, SpringContext.getCommonService().createItem(configId, num));
     }
@@ -131,7 +154,12 @@ public class GM_Command {
     }
 
     public void run(Player player) {
-        FighterAccount fighterAccount = SpringContext.getFightService().initForPlayer(player);
-        FighterAccount bean = ClassUtil.getBean(fighterAccount, FighterAccount.class);
+        JobEntity jobEntity = QuartzUtil.build(PlayerQuartzJob.class, "jobName", "groupName", null, 1000, 10);
+        SpringContext.getQuartzService().addJob(jobEntity.getJobDetail(), jobEntity.getTrigger());
     }
+
+    public void test(Player player, String accountId) {
+        Player loadPlayer = SpringContext.getPlayerService().loadPlayer(accountId);
+    }
+
 }

@@ -12,6 +12,8 @@ import game.base.game.attribute.util.AttributeUtils;
 import game.base.object.AbstractCreature;
 
 /**
+ * 留白 现在战斗的容器还在用玩家普通的计算方式
+ *
  * @author : ddv
  * @since : 2019/6/27 上午10:51
  */

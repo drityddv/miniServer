@@ -84,7 +84,7 @@ public interface IPackService {
     void reduceItem(Player player, AbstractItem item, int num);
 
     /**
-     * 获取背包的道具
+     * 获取背包的道具 返回背包内道具的引用
      *
      * @param player
      * @param configId

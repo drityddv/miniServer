@@ -16,7 +16,9 @@ import game.role.player.entity.PlayerEnt;
 import game.role.player.model.Player;
 import game.role.player.resource.PlayerResource;
 import game.scene.fight.syncStrategy.impl.LevelSynStrategy;
+import game.user.login.event.PlayerLoadSynEvent;
 import net.model.USession;
+import spring.SpringContext;
 import utils.SessionUtil;
 
 /**
@@ -82,6 +84,30 @@ public class PlayerService implements IPlayerService {
     @Override
     public PlayerEnt getPlayerEnt(Player player) {
         return playerManager.loadOrCreate(player.getAccountId());
+    }
+
+    @Override
+    public Player loadPlayer(String accountId) {
+        PlayerEnt playerEnt = getPlayerWithoutCreate(accountId);
+        if (playerEnt == null) {
+            return null;
+        }
+        Player player = playerEnt.getPlayer();
+        if (!player.isLoaded()) {
+            synchronized (playerEnt) {
+                if (!player.isLoaded()) {
+                    player.setLoaded(true);
+                    loadPlayer(player);
+                }
+            }
+        }
+
+        return player;
+    }
+
+    private void loadPlayer(Player player) {
+        SpringContext.getEventBus().pushEventSyn(PlayerLoadSynEvent.valueOf(player));
+        player.getAttributeContainer().containerRecompute();
     }
 
     @Override

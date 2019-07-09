@@ -1,12 +1,6 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.base.ebus.EventBus;
-import game.base.executor.account.AccountExecutor;
-import game.scene.npc.service.NpcManager;
-import game.user.pack.service.IPackService;
-import game.world.neutral.neutralMap.service.INeutralMapService;
-import middleware.resource.StorageManager;
 import spring.SpringContext;
 import spring.SpringController;
 
@@ -36,20 +30,11 @@ public class Start {
         // 中立地图初始化
         SpringContext.getNeutralMapService().init();
 
+        // 初始化定时组件
+        SpringContext.getQuartzService().init();
+
         // net服务器启动
         SpringContext.getServer().run();
-
-        StorageManager storageManager = SpringController.getContext().getBean(StorageManager.class);
-
-        AccountExecutor accountExecutor = SpringController.getContext().getBean(AccountExecutor.class);
-
-        EventBus eventBus = SpringController.getContext().getBean(EventBus.class);
-
-        IPackService packService = SpringContext.getPackService();
-
-        INeutralMapService neutralMapService = SpringContext.getNeutralMapService();
-
-        NpcManager npcManager = SpringContext.getNpcManager();
 
         logger.info("服务器启动成功...");
     }

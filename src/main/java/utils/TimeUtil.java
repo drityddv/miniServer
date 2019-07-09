@@ -2,8 +2,8 @@ package utils;
 
 import java.time.Instant;
 
-import io.protostuff.Morph;
-import net.utils.ProtoStuffUtil;
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 
 /**
  * @author : ddv
@@ -22,18 +22,31 @@ public class TimeUtil {
     }
 
     public static void main(String[] args) {
-        A a = new A();
-        a.a = 10;
-        a.b = "b";
-        byte[] serialize = ProtoStuffUtil.serialize(a);
+        // 定义一个JobDetail
+        JobDetail jobDetail = JobBuilder.newJob(MyJob.class)
+            // 定义name和group
+            .withIdentity("job1", "group1")
+            // job需要传递的内容
+            .usingJobData("name", "ddv").build();
+        // 定义一个Trigger
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity("trigger1", "group1")
+            // 加入 scheduler之后立刻执行
+            .startNow()
+            // 定时 ，每个1秒钟执行一次
+            .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(1)
+                // 重复执行
+                .repeatForever())
+            .build();
+        try {
+            // 创建scheduler
+            Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
 
-        a = ProtoStuffUtil.deserialize(serialize, A.class);
+            scheduler.start(); // 运行一段时间后关闭
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    static class A {
-        int a;
-        @Morph
-        String b;
-    }
 }

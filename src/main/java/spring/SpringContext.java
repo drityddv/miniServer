@@ -26,6 +26,7 @@ import game.world.neutral.neutralMap.service.INeutralMapService;
 import middleware.dispatch.Dispatcher;
 import middleware.manager.SessionManager;
 import middleware.resource.StorageManager;
+import middleware.sehedule.QuartzService;
 import net.server.Server;
 
 /**
@@ -55,6 +56,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private EventBus eventBus;
+
+    @Autowired
+    private QuartzService quartzService;
 
     @Autowired
     private ICommonService commonService;
@@ -174,6 +178,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static Server getServer() {
         return instance.server;
+    }
+
+    public static QuartzService getQuartzService() {
+        return instance.quartzService;
     }
 
     public static ApplicationContext getApplicationContext() {

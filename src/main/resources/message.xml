@@ -28,8 +28,12 @@
     <message id="142" value="game.role.equip.packet.CM_DressEquip"/>
     <message id="143" value="game.role.equip.packet.CM_UndressEquip"/>
     <message id="144" value="game.role.equip.packet.CM_EnhanceEquipSquare"/>
-    <message id="145" value="game.role.equip.packet.SM_EquipmentVo"/>
-    <message id="146" value="game.role.equip.packet.CM_Equipment"/>
+    <message id="145" value="game.role.equip.packet.CM_Equipment"/>
+    <message id="146" value="game.role.equip.packet.SM_EquipmentVo"/>
+    <message id="147" value="game.role.equip.packet.CM_SwitchEquip"/>
+
+    <!--基础服务 200 -  250 -->
+    <!--<message id="" value=""/>-->
 
     <!--地图基础协议 2001 - 2005-->
     <message id="2002" value="game.world.base.packet.CM_LeaveMap"/>

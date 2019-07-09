@@ -8,6 +8,7 @@ package game.role.equip.packet;
  */
 
 public class CM_UndressEquip {
+
     private int position;
 
     public int getPosition() {

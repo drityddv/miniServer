@@ -4,10 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.role.equip.model.Equipment;
-import game.user.item.base.model.Elixir;
-import game.user.item.base.model.ExchangeCard;
-import game.user.item.base.model.Medicine;
-import game.user.item.base.model.Stone;
+import game.user.item.base.model.*;
 
 /**
  * 道具类型
@@ -64,7 +61,7 @@ public enum ItemType {
         return NAME_TO_TYPE.get(name);
     }
 
-    public game.user.item.base.model.AbstractItem create() {
+    public AbstractItem create() {
         try {
             return typeClass.newInstance();
         } catch (Exception e) {

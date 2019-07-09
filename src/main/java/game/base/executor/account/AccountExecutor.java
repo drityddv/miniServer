@@ -50,7 +50,7 @@ public class AccountExecutor implements ApplicationListener<ContextRefreshedEven
      */
     public void schedule(AbstractAccountCommand command, long delay) {
         if (command instanceof AbstractAccountDelayCommand) {
-            // command.refreshState();
+            command.refreshState();
             // command.setFuture();
         }
     }
