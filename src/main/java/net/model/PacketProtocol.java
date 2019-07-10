@@ -2,7 +2,7 @@ package net.model;
 
 import java.util.Arrays;
 
-import middleware.manager.ClazzManager;
+import game.base.manager.ClazzManager;
 import net.utils.ProtoStuffUtil;
 
 /**

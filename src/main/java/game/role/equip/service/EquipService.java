@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 import game.base.condition.AbstractConditionProcessor;
 import game.base.consumer.AbstractConsumeProcessor;
 import game.base.game.attribute.id.AttributeIdEnum;
-import game.common.I18N;
-import game.common.exception.RequestException;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import game.role.equip.constant.EquipPosition;
 import game.role.equip.entity.EquipStorageEnt;
 import game.role.equip.model.EquipSquare;
@@ -109,12 +109,20 @@ public class EquipService implements IEquipService {
                 logger.warn("玩家[{}]穿戴装备失败,装备栏[{}]上存在装备", player.getAccountId(), equipPosition.getId());
                 return;
             }
-            packService.reduceItem(player, item, 1);
+
+            try {
+                packService.reduceItemWithThrow(player, equipment);
+            } catch (RequestException e) {
+                logger.warn("玩家[{}]穿戴装备失败,背包扣除道具[{}]失败,原因[{}]", player.getAccountId(), item.getConfigId(),
+                    e.getErrorCode());
+                return;
+            }
+
+            // 扣除逻辑会改变传进去的item数量
+            equipment.setNum(1);
             equipStorage.addEquip(equipment, equipPosition);
             // 计算装备栏属性变动
             equipStorage.reComputeTargetSquare(player, equipPosition);
-
-            // 不要忘记保存了啊啊啊!!
             equipManager.save(ent);
             sendStorageInfo(player);
         } else {
@@ -134,13 +142,19 @@ public class EquipService implements IEquipService {
             logger.warn("玩家[{}]脱卸装备失败,装备栏[{}]无装备", player.getAccountId(), position);
             return;
         }
+        try {
+            SpringContext.getPackService().addItemWithThrow(player, equipment);
+        } catch (RequestException e) {
+            logger.warn("玩家[{}]脱卸装备失败,背包回收道具失败,原因[{}]", player.getAccountId(), e.getErrorCode());
+            return;
+        }
 
-        SpringContext.getPackService().addItem(player, equipment);
+        // 放回背包不会存放这个引用 所以不用改数量
         equipSquare.unDressEquip();
         equipManager.save(ent);
-
         equipStorage.reComputeTargetSquare(player, equipPosition);
         sendStorageInfo(player);
+
     }
 
     @Override
@@ -173,12 +187,26 @@ public class EquipService implements IEquipService {
             // 装备栏上对应位置无装备也允许替换
             if (oldEquipment != null) {
                 // 先脱再穿
-                SpringContext.getPackService().addItem(player, oldEquipment);
-                equipSquare.setEquipment(null);
+                try {
+                    SpringContext.getPackService().addItemWithThrow(player, oldEquipment);
+                    equipSquare.setEquipment(null);
+                } catch (RequestException e) {
+                    logger.warn("玩家[{}]装备替换失败,背包回收旧装备[{}]失败,原因[{}]", player.getAccountId(), oldEquipment.getConfigId(),
+                        e.getErrorCode());
+                    return;
+                }
+
             }
 
-            SpringContext.getPackService().reduceItem(player, item, 1);
-            equipSquare.setEquipment(equipment);
+            try {
+                SpringContext.getPackService().reduceItemWithThrow(player,
+                    SpringContext.getCommonService().createItem(item.getConfigId(), 1));
+                equipSquare.setEquipment(equipment);
+            } catch (RequestException e) {
+                logger.warn("玩家[{}]装备替换失败,背包扣除新装备[{}]失败,原因[{}]", player.getAccountId(), item.getConfigId(),
+                    e.getErrorCode());
+                return;
+            }
 
             equipStorage.reComputeTargetSquare(player, equipPosition);
             sendStorageInfo(player);

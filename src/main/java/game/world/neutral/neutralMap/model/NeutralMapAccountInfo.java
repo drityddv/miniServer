@@ -1,6 +1,6 @@
 package game.world.neutral.neutralMap.model;
 
-import game.miniMap.visible.AbstractVisibleMapInfo;
+import game.map.visible.AbstractVisibleMapInfo;
 import game.role.player.model.Player;
 
 /**

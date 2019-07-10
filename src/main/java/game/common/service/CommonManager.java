@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import game.user.item.resource.ItemResource;
-import middleware.anno.Static;
+import resource.anno.Static;
 
 /**
  * @author : ddv

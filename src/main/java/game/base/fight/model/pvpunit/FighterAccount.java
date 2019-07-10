@@ -1,6 +1,7 @@
 package game.base.fight.model.pvpunit;
 
 import game.role.player.model.Player;
+import game.world.base.resource.CreatureResource;
 
 /**
  * @author : ddv
@@ -8,6 +9,7 @@ import game.role.player.model.Player;
  */
 
 public class FighterAccount {
+
     private String accountId;
 
     private transient boolean isAttack = false;
@@ -26,6 +28,15 @@ public class FighterAccount {
         fighterAccount.setAttack(false);
         fighterAccount.setTargetAccount(null);
         fighterAccount.setCreatureUnit(PlayerUnit.valueOf(player, fighterAccount));
+        return fighterAccount;
+    }
+
+    public static FighterAccount valueOfMonster(CreatureResource creatureResource) {
+        FighterAccount fighterAccount = new FighterAccount();
+        fighterAccount.setAccountId(creatureResource.getObjectName());
+        fighterAccount.setAttack(false);
+        fighterAccount.setTargetAccount(null);
+        fighterAccount.setCreatureUnit(MonsterUnit.valueOf(creatureResource, fighterAccount));
         return fighterAccount;
     }
 

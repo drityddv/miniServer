@@ -4,13 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import game.common.I18N;
-import game.common.exception.RequestException;
-import game.common.packet.SM_Message;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
+import game.base.message.packet.SM_Message;
+import game.dispatch.anno.HandlerAnno;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
-import middleware.anno.HandlerAnno;
 import net.model.USession;
 import net.utils.PacketUtil;
 import spring.SpringContext;

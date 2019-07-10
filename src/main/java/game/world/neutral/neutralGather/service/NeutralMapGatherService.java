@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import game.miniMap.visible.impl.NpcVisibleInfo;
+import game.map.visible.impl.NpcVisibleInfo;
 import game.scene.npc.reource.NpcResource;
 import game.world.neutral.neutralMap.model.NeutralMapCommonInfo;
 import game.world.neutral.neutralMap.model.NeutralMapScene;

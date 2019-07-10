@@ -9,7 +9,7 @@ import db.cache.EntityCacheService;
 import game.role.equip.entity.EquipStorageEnt;
 import game.role.equip.recource.EquipResource;
 import game.role.equip.recource.EquipSquareEnhanceResource;
-import middleware.anno.Static;
+import resource.anno.Static;
 
 /**
  * @author : ddv

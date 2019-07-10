@@ -3,8 +3,8 @@ package game.world.base.resource;
 import java.util.List;
 
 import game.base.game.attribute.Attribute;
-import middleware.anno.Init;
-import middleware.anno.MiniResource;
+import resource.anno.Init;
+import resource.anno.MiniResource;
 import utils.ResourceUtil;
 
 /**

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import game.scene.npc.reource.NpcResource;
-import middleware.anno.Static;
+import resource.anno.Static;
 
 /**
  * @author : ddv

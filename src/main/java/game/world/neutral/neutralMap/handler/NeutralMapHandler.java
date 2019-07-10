@@ -3,11 +3,11 @@ package game.world.neutral.neutralMap.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.miniMap.constant.MapGroupType;
-import game.miniMap.handler.AbstractMapHandler;
-import game.miniMap.handler.IMovableMapHandler;
-import game.miniMap.handler.ISceneMapHandler;
-import game.miniMap.model.Grid;
+import game.map.constant.MapGroupType;
+import game.map.handler.AbstractMapHandler;
+import game.map.handler.IMovableMapHandler;
+import game.map.handler.ISceneMapHandler;
+import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.neutral.neutralMap.service.INeutralMapService;

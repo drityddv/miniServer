@@ -1,15 +1,16 @@
 package game.user.pack.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.util.CollectionUtils;
 
-import game.common.I18N;
-import game.common.exception.RequestException;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import game.user.item.base.model.AbstractItem;
 import game.user.pack.constant.PackConstant;
-import spring.SpringContext;
+import game.user.pack.model.sort.ConfigIdComparator;
 
 /**
  * 背包
@@ -38,72 +39,19 @@ public class Pack {
         return pack;
     }
 
-    public void addItems(AbstractItem item) {
-        int num = item.getNum();
-        int overLimit = item.getOverLimit();
-        int remainCount = num;
-        List<PackSquare> squareList = getSquare(item);
-        List<PackSquare> emptySquares = getEmptySquares();
-
-        // 可堆叠有数量限制
-        if (overLimit > 1) {
-            // 背包无此类装备且无空格栏
-            if (!isInPack(item) && !isExistEmptySquare()) {
-                RequestException.throwException(I18N.PACK_FULL);
-            }
-
-            if (!isEnoughSize(item)) {
-                RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
-            }
-
-            for (PackSquare square : squareList) {
-                if (remainCount <= 0) {
-                    return;
-                }
-                int counts = square.getItemNum();
-                // 此次添加的实际数量
-                int addCount = remainCount > (overLimit - counts) ? overLimit - counts : remainCount;
-                square.addItem(item, addCount);
-                remainCount -= addCount;
-            }
-
-            for (PackSquare square : emptySquares) {
-                if (remainCount <= 0) {
-                    return;
-                }
-
-                int addCount = remainCount > overLimit ? overLimit : remainCount;
-                square.addItem(item, addCount);
-                remainCount -= addCount;
-            }
-
-        } else if (overLimit == 1) {
-            // 不可重叠道具添加
-
-            if (emptySquares.size() < num) {
-                RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
-            }
-
-            for (PackSquare emptySquare : emptySquares) {
-                emptySquare.addUnOverLimitItem(SpringContext.getCommonService().createItem(item.getConfigId(), 1));
-                num--;
-                if (num <= 0) {
-                    break;
-                }
-            }
-
-        } else {
-            // 重叠无限制道具
-            if (!isEnoughSize(item)) {
-                RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
-            }
-            if (squareList.size() != 0) {
-                squareList.get(0).addItem(item, num);
-            } else {
-                emptySquares.get(0).addItem(item, num);
-            }
-
+    public boolean addItem(AbstractItem item) {
+        if (!isEnoughSize(item)) {
+            return false;
         }
+        doAddItem(item);
+        return true;
+    }
+
+    public void addItemWithThrow(AbstractItem item) {
+        if (!isEnoughSize(item)) {
+            RequestException.throwException(I18N.PACK_SIZE_NOT_ENOUGH);
+        }
+        doAddItem(item);
     }
 
     // 统计物品的数量
@@ -119,70 +67,137 @@ public class Pack {
         return resultNum;
     }
 
-    // 这里的item都是可堆叠的
+    // 检查背包是否可以塞得下某个道具
     public boolean isEnoughSize(AbstractItem item) {
-        List<PackSquare> squareList = getSquare(item);
-        List<PackSquare> emptySquares = getEmptySquares();
-        int overLimit = item.getOverLimit();
-        int count = item.getNum();
-        int emptyCount = 0;
-
-        // 先看是不是无限堆叠的
-        if (overLimit == 0) {
-            if (squareList.size() > 0) {
+        // 检查过程背包可以塞得下的数量
+        int availableSize = 0;
+        for (PackSquare packSquare : packSquares) {
+            if (availableSize >= item.getNum()) {
                 return true;
             }
-            return emptySquares.size() != 0;
+            availableSize = countAvailableSize(packSquare, item, availableSize);
         }
 
-        // 先看此类道具的已有格子容量是否足够
-        for (PackSquare packSquare : squareList) {
-            int counts = packSquare.getItemNum();
-            emptyCount += overLimit - counts;
+        return false;
+    }
+
+    public void sortPack() {
+        Collections.sort(packSquares, new ConfigIdComparator());
+        int index = 0;
+        for (PackSquare packSquare : packSquares) {
+            packSquare.setIndex(index++);
         }
+    }
 
-        // 再看空道具栏是否足够
-        if (emptyCount < count) {
-            emptyCount += emptySquares.size() * overLimit;
+    // 直接插入 不做容量检查
+    private void doAddItem(AbstractItem item) {
+        for (PackSquare packSquare : packSquares) {
+            if (item.getNum() == 0) {
+                return;
+            }
+            switch (item.getOverLimit()) {
+                case PackConstant.LIMIT_MAX: {
+                    if (packSquare.isEmpty() || isEqualSquare(packSquare, item)) {
+                        packSquare.addItem(item);
+                    }
+                    break;
+                }
+                case PackConstant.LIMIT_ONE: {
+                    if (packSquare.isEmpty()) {
+                        packSquare.addItem(item);
+                    }
+                    break;
+                }
+                default: {
+                    if (packSquare.isEmpty() || isEqualSquare(packSquare, item)) {
+                        packSquare.addItem(item);
+                    }
+                }
+            }
+
         }
-
-        return emptyCount >= count;
     }
 
-    private boolean isExistEmptySquare() {
-        return getEmptySquare() != null;
+    // 直接消耗 不做容量检查
+    public void doReduceItem(AbstractItem item) {
+        int remainCount = item.getNum();
+        for (PackSquare packSquare : packSquares) {
+            if (remainCount == 0) {
+                return;
+            }
+            if (isEqualSquare(packSquare, item)) {
+                packSquare.reduce(item);
+            }
+        }
     }
 
-    private boolean isInPack(AbstractItem item) {
-        return getSquare(item).size() != 0;
+    // 格子内的道具是否是同一种道具
+    private boolean isEqualSquare(PackSquare packSquare, AbstractItem item) {
+        return !packSquare.isEmpty() && packSquare.getItem().getConfigId() == item.getConfigId();
     }
 
-    // 调用者需要自行check
+    private int countAvailableSize(PackSquare packSquare, AbstractItem item, int availableSize) {
+        switch (item.getOverLimit()) {
+            case 0: {
+                if (packSquare.isEmpty() || packSquare.getItem().getConfigId() == item.getConfigId()) {
+                    return item.getNum();
+                }
+                break;
+            }
+            case 1: {
+                if (packSquare.isEmpty()) {
+                    availableSize++;
+                }
+                break;
+            }
+            default: {
+                if (packSquare.isEmpty() || packSquare.getItem().getConfigId() == item.getConfigId()) {
+                    availableSize += item.getOverLimit() - packSquare.getItemNum();
+                }
+            }
+        }
+        return availableSize;
+    }
+
+    // 获取背包中道具数量
+    public int getItemNum(AbstractItem item) {
+        int totalInPack = 0;
+        for (PackSquare packSquare : packSquares) {
+            if (isEqualSquare(packSquare, item)) {
+                totalInPack += packSquare.getItemNum();
+            }
+
+        }
+        return totalInPack;
+    }
+
+    // 判断背包中道具数量是否满足
+    public boolean isEnoughItem(AbstractItem item) {
+        int totalInPack = 0;
+        for (PackSquare packSquare : packSquares) {
+            if (isEqualSquare(packSquare, item)) {
+                totalInPack += packSquare.getItemNum();
+            }
+            if (totalInPack >= item.getNum()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 调用之前要检查数量是否足够
     public void reduceItem(AbstractItem item, int num) {
         int remainCount = num;
         List<PackSquare> squareList = getSquare(item);
-
         for (PackSquare square : squareList) {
             if (remainCount <= 0) {
                 return;
             }
-
             int counts = square.getItemNum();
             int currentReduce = num - counts > 0 ? counts : num;
             square.reduce(currentReduce);
             remainCount -= currentReduce;
         }
-
-    }
-
-    private PackSquare getEmptySquare() {
-        // 如果都满了 那就返回null
-        for (PackSquare packSquare : packSquares) {
-            if (packSquare.isEmpty()) {
-                return packSquare;
-            }
-        }
-        return null;
     }
 
     public List<PackSquare> getEmptySquares() {
@@ -236,10 +251,6 @@ public class Pack {
 
     public List<PackSquare> getPackSquares() {
         return packSquares;
-    }
-
-    public void setPackSquares(List<PackSquare> packSquares) {
-        this.packSquares = packSquares;
     }
 
     @Override

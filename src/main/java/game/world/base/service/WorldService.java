@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.executor.util.ExecutorUtils;
-import game.common.exception.RequestException;
-import game.common.packet.SM_Message;
-import game.miniMap.handler.AbstractMapHandler;
-import game.miniMap.handler.IMovableMapHandler;
-import game.miniMap.model.Grid;
+import game.base.message.exception.RequestException;
+import game.base.message.packet.SM_Message;
+import game.map.handler.AbstractMapHandler;
+import game.map.handler.IMovableMapHandler;
+import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.base.command.EnterMapCommand;
 import game.world.base.command.LeaveMapCommand;

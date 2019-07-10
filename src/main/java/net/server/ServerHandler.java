@@ -3,6 +3,8 @@ package net.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.manager.ClazzManager;
+import game.base.manager.SessionManager;
 import game.user.login.packet.CM_UserLogout;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -10,8 +12,6 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import middleware.manager.ClazzManager;
-import middleware.manager.SessionManager;
 import net.model.PacketProtocol;
 import net.model.USession;
 import spring.SpringContext;

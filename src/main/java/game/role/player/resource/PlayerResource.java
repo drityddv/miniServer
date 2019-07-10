@@ -5,8 +5,8 @@ import java.util.List;
 
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
-import middleware.anno.Init;
-import middleware.anno.MiniResource;
+import resource.anno.Init;
+import resource.anno.MiniResource;
 import utils.JodaUtil;
 
 /**

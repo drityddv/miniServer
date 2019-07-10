@@ -3,8 +3,8 @@ package game.user.mapinfo.model;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import game.miniMap.base.AbstractMapInfo;
-import game.miniMap.constant.MapGroupType;
+import game.map.base.AbstractMapInfo;
+import game.map.constant.MapGroupType;
 
 /**
  * @author : ddv

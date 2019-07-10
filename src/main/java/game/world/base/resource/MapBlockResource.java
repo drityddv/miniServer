@@ -1,7 +1,7 @@
 package game.world.base.resource;
 
-import middleware.anno.Init;
-import middleware.anno.MiniResource;
+import resource.anno.Init;
+import resource.anno.MiniResource;
 import utils.JodaUtil;
 
 /**

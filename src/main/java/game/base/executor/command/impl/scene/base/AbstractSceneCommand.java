@@ -1,7 +1,7 @@
 package game.base.executor.command.impl.scene.base;
 
 import game.base.executor.command.AbstractCommand;
-import game.miniMap.base.AbstractScene;
+import game.map.base.AbstractScene;
 
 /**
  * @author : ddv

@@ -11,6 +11,7 @@ import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.id.AttributeId;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.game.attribute.util.AttributeUtils;
+import game.common.service.ICommonService;
 import game.gm.event.HotFixEvent;
 import game.gm.packet.SM_LogMessage;
 import game.role.equip.constant.EquipPosition;
@@ -23,9 +24,9 @@ import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
-import middleware.sehedule.job.model.JobEntity;
-import middleware.sehedule.job.player.PlayerQuartzJob;
 import net.utils.PacketUtil;
+import scheduler.job.model.JobEntity;
+import scheduler.job.player.PlayerQuartzJob;
 import spring.SpringContext;
 import utils.QuartzUtil;
 import utils.StringUtil;
@@ -50,6 +51,9 @@ public class GM_Command {
 
     @Autowired
     private EquipService equipService;
+
+    @Autowired
+    private ICommonService commonService;
 
     public void shutdown(Player player) {
         SpringContext.getServer().shutdown();
@@ -145,12 +149,20 @@ public class GM_Command {
         packService.addItem(player, SpringContext.getCommonService().createItem(configId, num));
     }
 
+    public void reduceItem(Player player, long configId, int num) {
+        boolean success = packService.reduceItem(player, commonService.createItem(configId, num));
+    }
+
     public void pushHotFix(Player player, String resourceName) {
         SpringContext.getEventBus().pushEventSyn(HotFixEvent.valueOf(player, resourceName));
     }
 
     public void addFightAccount(Player player) {
         SpringContext.getNeutralMapService().pkPre(player);
+    }
+
+    public void sortPack(Player player) {
+        SpringContext.getPackService().sortPack(player);
     }
 
     public void run(Player player) {

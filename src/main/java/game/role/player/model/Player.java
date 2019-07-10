@@ -4,9 +4,9 @@ import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.object.AbstractCreature;
-import game.miniMap.base.AbstractScene;
-import game.miniMap.handler.AbstractMapHandler;
-import game.miniMap.handler.ISceneMapHandler;
+import game.map.base.AbstractScene;
+import game.map.handler.AbstractMapHandler;
+import game.map.handler.ISceneMapHandler;
 import game.role.equip.model.EquipStorage;
 import game.role.player.entity.PlayerEnt;
 import game.scene.fight.syncStrategy.BasePlayerSyncStrategy;
@@ -14,7 +14,7 @@ import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.pack.model.Pack;
 import game.world.base.command.FighterSyncCommand;
 import spring.SpringContext;
-import utils.IdUtil;
+import utils.snow.IdUtil;
 
 /**
  * 做业务的对象

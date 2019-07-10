@@ -11,8 +11,8 @@ import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.util.AttributeUtils;
 import game.role.equip.constant.EquipConsumeType;
 import game.role.equip.constant.EquipPosition;
-import middleware.anno.Init;
-import middleware.anno.MiniResource;
+import resource.anno.Init;
+import resource.anno.MiniResource;
 import utils.JodaUtil;
 import utils.ResourceUtil;
 

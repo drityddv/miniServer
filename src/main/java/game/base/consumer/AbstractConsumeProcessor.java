@@ -2,7 +2,7 @@ package game.base.consumer;
 
 import java.util.Map;
 
-import game.common.exception.RequestException;
+import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
 
 /**

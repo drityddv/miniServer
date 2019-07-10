@@ -1,9 +1,9 @@
 package game.world.base.command;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
-import game.miniMap.handler.AbstractMapHandler;
-import game.miniMap.handler.IMovableMapHandler;
-import game.miniMap.model.Grid;
+import game.map.handler.AbstractMapHandler;
+import game.map.handler.IMovableMapHandler;
+import game.map.model.Grid;
 import game.role.player.model.Player;
 
 /**

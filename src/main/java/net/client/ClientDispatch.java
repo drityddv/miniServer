@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.manager.ClazzManager;
 import game.gm.packet.CM_GmCommand;
 import io.netty.channel.ChannelHandlerContext;
-import middleware.manager.ClazzManager;
 import net.model.PacketProtocol;
 import utils.ClassUtil;
 
@@ -35,21 +35,13 @@ public class ClientDispatch {
         String operation = list.get(0);
 
         switch (operation) {
-            case "send": {
-                send(ctx, input, list);
-                break;
-            }
-
             case "gm": {
                 sendGmCommand(ctx, input, list);
                 break;
             }
 
-            case "close": {
-                break;
-            }
-
             default:
+                send(ctx, input, list);
                 break;
         }
     }
@@ -68,18 +60,18 @@ public class ClientDispatch {
 
     // 发包
     private void send(ChannelHandlerContext ctx, String input, List<String> list) {
-        String classId = list.get(1);
+        String action = list.get(0);
 
         try {
-            Class<?> aClass = ClazzManager.getClazz(Integer.valueOf(classId));
+            Class<?> aClass = ClazzManager.getClazz(action);
 
             if (aClass == null) {
-                logger.error("发包序列号错误,id[{}]", classId);
+                logger.error("发包动作错误,id[{}]", action);
                 return;
             }
 
             Object newInstance = aClass.newInstance();
-            ClassUtil.insertDefaultFields(newInstance, list.stream().skip(2).collect(Collectors.toList()));
+            ClassUtil.insertDefaultFields(newInstance, list.stream().skip(1).collect(Collectors.toList()));
             ctx.writeAndFlush(PacketProtocol.valueOf(newInstance));
             logger.info("执行命令,[{}]", newInstance.toString());
         } catch (Exception e) {

@@ -3,8 +3,8 @@ package net.client;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
-import net.middleware.PacketDecoder;
-import net.middleware.PacketEncoder;
+import net.codec.PacketDecoder;
+import net.codec.PacketEncoder;
 
 /**
  * @author : ddv

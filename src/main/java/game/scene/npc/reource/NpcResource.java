@@ -1,7 +1,7 @@
 package game.scene.npc.reource;
 
-import middleware.anno.Init;
-import middleware.anno.MiniResource;
+import resource.anno.Init;
+import resource.anno.MiniResource;
 
 /**
  * @author : ddv

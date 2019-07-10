@@ -1,6 +1,6 @@
 package game.user.item.base.model;
 
-import game.common.exception.RequestException;
+import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
 
 /**

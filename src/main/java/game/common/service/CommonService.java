@@ -14,15 +14,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.common.I18N;
-import game.common.exception.RequestException;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
-import middleware.sehedule.QuartzService;
-import middleware.sehedule.constant.JobGroupEnum;
-import middleware.sehedule.job.common.CronConst;
-import middleware.sehedule.job.common.OneHourQuartzJob;
-import utils.IdUtil;
+import scheduler.QuartzService;
+import scheduler.constant.JobGroupEnum;
+import scheduler.job.common.CronConst;
+import scheduler.job.common.OneHourQuartzJob;
+import utils.snow.IdUtil;
 
 /**
  * 公共服务
@@ -81,11 +81,11 @@ public class CommonService implements ICommonService {
             .withSchedule(cronSchedule(CronConst.ONE_HOUR)).forJob(jobDetail.getKey()).build();
 
         quartzService.addJob(jobDetail, trigger);
-        logger.info("初始化整点任务完成...");
+        logger.info("初始化整点任务...");
     }
 
     @Override
-    public void zeroClock() {
-        logger.info("服务器抛出0点事件...");
+    public void oneHourJob() {
+        logger.info("服务器抛出整点事件...");
     }
 }

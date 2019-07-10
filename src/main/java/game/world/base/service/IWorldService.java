@@ -1,6 +1,6 @@
 package game.world.base.service;
 
-import game.miniMap.model.Grid;
+import game.map.model.Grid;
 import game.role.player.model.Player;
 
 /**

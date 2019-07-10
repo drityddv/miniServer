@@ -5,12 +5,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import ebus.anno.EventReceiver;
+import game.dispatch.anno.HandlerAnno;
 import game.gm.event.HotFixEvent;
 import game.role.player.packet.CM_CreatePlayer;
 import game.role.player.service.PlayerService;
 import game.user.login.event.PlayerLoadSynEvent;
-import middleware.anno.EventReceiver;
-import middleware.anno.HandlerAnno;
 import net.model.USession;
 
 /**

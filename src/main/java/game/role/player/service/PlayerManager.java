@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import db.cache.IEntityCacheService;
 import game.role.player.entity.PlayerEnt;
 import game.role.player.resource.PlayerResource;
-import middleware.anno.Static;
+import resource.anno.Static;
 
 /**
  * @author : ddv

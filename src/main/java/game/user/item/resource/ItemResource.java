@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.user.item.base.constant.ItemType;
-import middleware.anno.Init;
-import middleware.anno.MiniResource;
+import resource.anno.Init;
+import resource.anno.MiniResource;
 import utils.JodaUtil;
 
 /**

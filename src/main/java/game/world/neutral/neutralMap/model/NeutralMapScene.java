@@ -6,8 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.miniMap.base.AbstractMovableMap;
-import game.miniMap.visible.impl.NpcVisibleInfo;
+import game.base.fight.model.pvpunit.FighterAccount;
+import game.map.base.AbstractMovableMap;
+import game.map.visible.impl.NpcVisibleInfo;
 
 /**
  * 中立地图
@@ -22,6 +23,9 @@ public class NeutralMapScene extends AbstractMovableMap<NeutralMapAccountInfo> {
 
     // npc
     private Map<Long, NpcVisibleInfo> npcMap;
+
+    // 怪物
+    private Map<Long, FighterAccount> monsterMap;
 
     public NeutralMapScene(int mapId) {
         super(mapId);

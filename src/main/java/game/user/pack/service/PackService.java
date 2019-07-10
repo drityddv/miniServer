@@ -5,8 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.common.I18N;
-import game.common.exception.RequestException;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
@@ -38,11 +38,21 @@ public class PackService implements IPackService {
     }
 
     @Override
-    public void addItem(Player player, AbstractItem item) {
+    public void addItemWithThrow(Player player, AbstractItem item) {
         Pack pack = getPack(player);
-        pack.addItems(item);
+        pack.addItemWithThrow(item);
         packManager.save(player.getPlayerId());
         sendPackDetails(player, pack);
+    }
+
+    @Override
+    public boolean addItem(Player player, AbstractItem item) {
+        Pack pack = getPack(player);
+        boolean success = pack.addItem(item);
+        if (success) {
+            packManager.save(player.getPlayerId());
+        }
+        return success;
     }
 
     @Override
@@ -71,15 +81,24 @@ public class PackService implements IPackService {
     }
 
     @Override
-    public void reduceItem(Player player, AbstractItem item, int num) {
-        Pack pack = player.getPack();
-        int itemNum = pack.countItemNum(item);
-        if (itemNum < num) {
+    public boolean reduceItem(Player player, AbstractItem item) {
+        Pack pack = getPlayerPack(player, false);
+        boolean enoughItem = pack.isEnoughItem(item);
+        if (!enoughItem) {
+            return false;
+        }
+        pack.doReduceItem(item);
+        return true;
+    }
+
+    @Override
+    public void reduceItemWithThrow(Player player, AbstractItem item) {
+        Pack pack = getPlayerPack(player, false);
+        boolean enoughItem = pack.isEnoughItem(item);
+        if (!enoughItem) {
             RequestException.throwException(I18N.ITEM_NUM_NOT_ENOUGH);
         }
-
-        pack.reduceItem(item, num);
-        sendPackDetails(player, pack);
+        pack.doReduceItem(item);
     }
 
     @Override
@@ -88,6 +107,12 @@ public class PackService implements IPackService {
         AbstractItem item = SpringContext.getCommonService().createItem(configId, 1);
         return pack.getItem(item);
 
+    }
+
+    @Override
+    public void sortPack(Player player) {
+        Pack pack = getPlayerPack(player, false);
+        pack.sortPack();
     }
 
     private Pack getPack(Player player) {

@@ -9,8 +9,8 @@ import game.base.condition.AbstractConditionProcessor;
 import game.base.game.attribute.Attribute;
 import game.role.equip.constant.EquipPosition;
 import game.role.equip.constant.EquipWearConditionType;
-import middleware.anno.Init;
-import middleware.anno.MiniResource;
+import resource.anno.Init;
+import resource.anno.MiniResource;
 import utils.JodaUtil;
 import utils.ResourceUtil;
 

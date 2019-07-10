@@ -3,8 +3,8 @@ package game.role.equip.constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.common.I18N;
-import game.common.exception.RequestException;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 
 /**
  * @author : ddv

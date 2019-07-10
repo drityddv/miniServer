@@ -3,15 +3,15 @@ package net.server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.common.I18N;
-import game.common.packet.SM_Message;
+import game.base.manager.ClazzManager;
+import game.base.manager.SessionManager;
+import game.base.message.I18N;
+import game.base.message.packet.SM_Message;
 import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserRegister;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import middleware.manager.ClazzManager;
-import middleware.manager.SessionManager;
 import net.model.PacketProtocol;
 import net.model.USession;
 

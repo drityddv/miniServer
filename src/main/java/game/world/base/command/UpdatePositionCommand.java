@@ -3,8 +3,8 @@ package game.world.base.command;
 import java.util.List;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneRateCommand;
-import game.miniMap.utils.VisibleUtil;
-import game.miniMap.visible.AbstractVisibleMapInfo;
+import game.map.utils.VisibleUtil;
+import game.map.visible.AbstractVisibleMapInfo;
 
 /**
  * 地图移动命令

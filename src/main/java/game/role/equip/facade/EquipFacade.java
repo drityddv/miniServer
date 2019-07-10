@@ -5,15 +5,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.common.I18N;
-import game.common.exception.RequestException;
-import game.common.packet.SM_Message;
+import ebus.anno.EventReceiver;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
+import game.base.message.packet.SM_Message;
+import game.dispatch.anno.HandlerAnno;
 import game.role.equip.packet.*;
 import game.role.equip.service.IEquipService;
 import game.role.player.model.Player;
 import game.user.login.event.PlayerLoadSynEvent;
-import middleware.anno.EventReceiver;
-import middleware.anno.HandlerAnno;
 import net.utils.PacketUtil;
 
 /**

@@ -1,7 +1,7 @@
 package game.base.fight.model.pvpunit;
 
 import game.base.fight.model.componet.UnitComponentContainer;
-import game.miniMap.model.Grid;
+import game.map.model.Grid;
 
 /**
  * pvp对象基础单元

@@ -6,10 +6,10 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.manager.ClazzManager;
 import game.user.login.packet.CM_UserLogin;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import middleware.manager.ClazzManager;
 import net.model.PacketProtocol;
 
 /**

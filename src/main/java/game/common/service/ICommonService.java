@@ -39,5 +39,5 @@ public interface ICommonService {
     /**
      * 0点事件触发
      */
-    void zeroClock();
+    void oneHourJob();
 }

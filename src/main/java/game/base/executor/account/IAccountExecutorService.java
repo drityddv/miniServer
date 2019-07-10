@@ -1,7 +1,7 @@
 package game.base.executor.account;
 
 import game.base.executor.command.impl.account.base.AbstractAccountCommand;
-import middleware.dispatch.HandlerInvoke;
+import game.dispatch.HandlerInvoke;
 import net.model.USession;
 
 /**

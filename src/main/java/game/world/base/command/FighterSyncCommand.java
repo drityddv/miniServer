@@ -2,7 +2,7 @@ package game.world.base.command;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.fight.model.pvpunit.FighterAccount;
-import game.miniMap.base.AbstractScene;
+import game.map.base.AbstractScene;
 import game.scene.fight.syncStrategy.ISyncStrategy;
 
 /**

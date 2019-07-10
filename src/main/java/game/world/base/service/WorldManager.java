@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import game.world.base.resource.MapBlockResource;
 import game.world.base.resource.MiniMapResource;
-import middleware.anno.Static;
+import resource.anno.Static;
 
 /**
  * @author : ddv

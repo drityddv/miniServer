@@ -6,8 +6,8 @@ import java.util.Map;
 import game.base.condition.AbstractConditionProcessor;
 import game.base.condition.PlayerGoldConditionProcessor;
 import game.base.condition.PlayerLevelConditionProcessor;
-import game.common.I18N;
-import game.common.exception.RequestException;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import utils.ClassUtil;
 
 /**

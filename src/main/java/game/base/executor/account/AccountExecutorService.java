@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import game.base.executor.command.impl.account.base.AbstractAccountCommand;
 import game.base.executor.command.impl.account.base.AbstractAccountDelayCommand;
 import game.base.executor.command.impl.account.base.AbstractAccountRateCommand;
-import middleware.dispatch.HandlerInvoke;
+import game.dispatch.HandlerInvoke;
 import net.model.USession;
 import utils.SimpleUtil;
 

@@ -24,12 +24,40 @@ public interface IPackService {
     Pack getPlayerPack(Player player, boolean clientRequest);
 
     /**
-     * 添加道具至背包
+     * 添加道具
      *
      * @param player
      * @param item
      */
-    void addItem(Player player, AbstractItem item);
+    void addItemWithThrow(Player player, AbstractItem item);
+
+    /**
+     * 添加道具
+     *
+     * @param player
+     * @param item
+     * @return
+     */
+    boolean addItem(Player player, AbstractItem item);
+
+    /**
+     * 扣除道具
+     *
+     * @param player
+     * @param item
+     *            注意这个引用的数量会被改变
+     * @return
+     */
+    boolean reduceItem(Player player, AbstractItem item);
+
+    /**
+     * 扣除道具
+     *
+     * @param player
+     * @param item
+     *            注意这个引用的数量会被改变
+     */
+    void reduceItemWithThrow(Player player, AbstractItem item);
 
     /**
      * 使用道具
@@ -49,7 +77,7 @@ public interface IPackService {
     ItemResource getResource(Long configId);
 
     /**
-     * 背包是否已满 如果需要指定item检查容量请调用isEnoughSize
+     * 背包格子是否已满 如果需要指定item检查容量请调用isEnoughSize
      *
      * @param player
      * @return
@@ -75,15 +103,6 @@ public interface IPackService {
     int getItemNum(Player player, AbstractItem item);
 
     /**
-     * 背包减少道具并且下发状态
-     *
-     * @param player
-     * @param item
-     * @param num
-     */
-    void reduceItem(Player player, AbstractItem item, int num);
-
-    /**
      * 获取背包的道具 返回背包内道具的引用
      *
      * @param player
@@ -91,4 +110,11 @@ public interface IPackService {
      * @return
      */
     AbstractItem getItemFromPack(Player player, long configId);
+
+    /**
+     * 背包整理
+     *
+     * @param player
+     */
+    void sortPack(Player player);
 }

@@ -1,6 +1,7 @@
 package game.user.pack.model;
 
 import game.user.item.base.model.AbstractItem;
+import game.user.pack.constant.PackConstant;
 import spring.SpringContext;
 
 /**
@@ -25,21 +26,47 @@ public class PackSquare {
         return packSquare;
     }
 
-    // 添加前调用者确认是否超过重叠上限
-    public void addItem(AbstractItem item, int num) {
+    public void addItem(AbstractItem item) {
         if (this.item == null) {
             this.item = SpringContext.getCommonService().createItem(item.getConfigId(), 0);
         }
-        this.item.setNum(num);
-    }
-
-    // 增加不可堆叠的道具 使用前自行check
-    public void addUnOverLimitItem(AbstractItem item) {
-        this.item = item;
+        switch (item.getOverLimit()) {
+            case PackConstant.LIMIT_MAX: {
+                this.item.add(item.getNum());
+                item.setNum(0);
+                break;
+            }
+            case PackConstant.LIMIT_ONE: {
+                if (getItemNum() == 1) {
+                    return;
+                }
+                this.item.setNum(1);
+                item.reduce(1);
+                break;
+            }
+            default: {
+                // 格子目前有多少数量
+                int originCount = getItemNum();
+                // 格子最大还可以塞多少数量
+                int canAddNum = item.getOverLimit() - originCount;
+                // 实际塞了多少
+                int addCount = canAddNum >= item.getNum() ? item.getNum() : item.getNum() - canAddNum;
+                this.item.add(addCount);
+                item.reduce(addCount);
+            }
+        }
     }
 
     public boolean isEmpty() {
         return item == null;
+    }
+
+    public void reduce(AbstractItem item) {
+        int originNum = this.getItemNum();
+        int reduceNum = originNum >= item.getNum() ? item.getNum() : originNum;
+        this.item.reduce(reduceNum);
+        check();
+        item.reduce(reduceNum);
     }
 
     public void reduce(int num) {
@@ -51,6 +78,10 @@ public class PackSquare {
         if (item.getNum() == 0) {
             item = null;
         }
+    }
+
+    public int getItemNum() {
+        return item == null ? 0 : item.getNum();
     }
 
     // get and set
@@ -70,12 +101,9 @@ public class PackSquare {
         this.item = item;
     }
 
-    public int getItemNum() {
-        return item == null ? 0 : item.getNum();
-    }
-
     @Override
     public String toString() {
         return "PackSquare{" + "index=" + index + ", item=" + item + '}' + '\n';
     }
+
 }

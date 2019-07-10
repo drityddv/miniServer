@@ -1,6 +1,6 @@
 package game.world.neutral.neutralMap.model;
 
-import game.miniMap.base.AbstractMapInfo;
+import game.map.base.AbstractMapInfo;
 
 /**
  * @author : ddv

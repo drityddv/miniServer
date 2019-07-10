@@ -11,4 +11,14 @@ public interface PackConstant {
      * 背包最大容量
      */
     int PACK_MAX_SIZE = 32;
+
+    /**
+     * 不可重叠
+     */
+    int LIMIT_ONE = 1;
+
+    /**
+     * 无限制重叠
+     */
+    int LIMIT_MAX = 0;
 }

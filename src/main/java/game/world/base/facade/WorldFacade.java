@@ -3,9 +3,10 @@ package game.world.base.facade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.common.exception.RequestException;
-import game.common.packet.SM_Message;
-import game.miniMap.model.Grid;
+import game.base.message.exception.RequestException;
+import game.base.message.packet.SM_Message;
+import game.dispatch.anno.HandlerAnno;
+import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.base.constant.MAP_CONSTANT;
 import game.world.base.packet.CM_ChangeMap;
@@ -13,7 +14,6 @@ import game.world.base.packet.CM_LeaveMap;
 import game.world.base.packet.CM_LogMap;
 import game.world.base.packet.CM_MoveMap;
 import game.world.base.service.IWorldService;
-import middleware.anno.HandlerAnno;
 import net.utils.PacketUtil;
 
 /**

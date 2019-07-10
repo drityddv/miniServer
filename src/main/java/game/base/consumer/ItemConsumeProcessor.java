@@ -1,10 +1,13 @@
 package game.base.consumer;
 
+import java.util.Iterator;
 import java.util.Map;
 
-import game.common.exception.RequestException;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
 import game.user.item.base.model.AbstractItem;
+import game.user.pack.service.IPackService;
 import spring.SpringContext;
 
 /**
@@ -20,13 +23,24 @@ public class ItemConsumeProcessor extends AbstractConsumeProcessor {
 
     @Override
     public void doConsume(Player player) {
-        try {
-            consumeParams.forEach((itemConfigId, num) -> {
-                AbstractItem item = SpringContext.getCommonService().createItem(itemConfigId, num);
-                SpringContext.getPackService().reduceItem(player, item, num);
-            });
-        } catch (RequestException e) {
-            throw e;
+
+        Iterator<Map.Entry<Long, Integer>> iterator = consumeParams.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Long, Integer> next = iterator.next();
+            long itemConfigId = next.getKey();
+            int num = next.getValue();
+            IPackService packService = SpringContext.getPackService();
+            AbstractItem item = SpringContext.getCommonService().createItem(itemConfigId, num);
+            boolean enoughSize = packService.isEnoughSize(player, item);
+            if (!enoughSize) {
+                RequestException.throwException(I18N.ITEM_NUM_NOT_ENOUGH);
+            }
         }
+
+        consumeParams.forEach((itemConfigId, num) -> {
+            IPackService packService = SpringContext.getPackService();
+            AbstractItem item = SpringContext.getCommonService().createItem(itemConfigId, num);
+            packService.reduceItem(player, item);
+        });
     }
 }

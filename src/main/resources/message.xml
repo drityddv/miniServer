@@ -4,14 +4,14 @@
     <!--序列号0用来占位,不要使用0作为id !!!-->
 
     <!--公共服务-->
-    <message id="-1" value="game.common.packet.SM_Message"/>
+    <message id="-1" value="game.base.message.packet.SM_Message"/>
 
     <!--用户登录,角色创建相关 1 - 10 -->
-    <message id="1" value="game.user.login.packet.CM_UserLogin"/>
-    <message id="2" value="game.user.login.packet.CM_UserLogout"/>
+    <message id="1" key="login" value="game.user.login.packet.CM_UserLogin"/>
+    <message id="2" key="logout" value="game.user.login.packet.CM_UserLogout"/>
     <message id="3" value="game.user.login.packet.SM_LoginSuccess"/>
-    <message id="4" value="game.user.login.packet.CM_UserRegister"/>
-    <message id="5" value="game.role.player.packet.CM_CreatePlayer"/>
+    <message id="4" key="register" value="game.user.login.packet.CM_UserRegister"/>
+    <message id="5" key="create" value="game.role.player.packet.CM_CreatePlayer"/>
 
     <!--gm命令 51 - 70-->
     <message id="51" value="game.gm.packet.CM_GmCommand"/>
@@ -20,26 +20,26 @@
 
     <!--玩家背包相关 91 - 120 -->
     <message id="91" value="game.user.pack.packet.SM_PackInfo"/>
-    <message id="92" value="game.user.pack.packet.CM_PackInfo"/>
+    <message id="92" key="pack" value="game.user.pack.packet.CM_PackInfo"/>
 
     <!--玩家装备栏相关  140 - 160 -->
-    <message id="140" value="game.role.equip.packet.CM_EquipStorage"/>
+    <message id="140" key="storage" value="game.role.equip.packet.CM_EquipStorage"/>
     <message id="141" value="game.role.equip.packet.SM_EquipStorage"/>
-    <message id="142" value="game.role.equip.packet.CM_DressEquip"/>
-    <message id="143" value="game.role.equip.packet.CM_UndressEquip"/>
-    <message id="144" value="game.role.equip.packet.CM_EnhanceEquipSquare"/>
-    <message id="145" value="game.role.equip.packet.CM_Equipment"/>
+    <message id="142" key="dress" value="game.role.equip.packet.CM_DressEquip"/>
+    <message id="143" key="undress"  value="game.role.equip.packet.CM_UndressEquip"/>
+    <message id="144" key="enhance" value="game.role.equip.packet.CM_EnhanceEquipSquare"/>
+    <message id="145" key="equipment" value="game.role.equip.packet.CM_Equipment"/>
     <message id="146" value="game.role.equip.packet.SM_EquipmentVo"/>
-    <message id="147" value="game.role.equip.packet.CM_SwitchEquip"/>
+    <message id="147" key="switch" value="game.role.equip.packet.CM_SwitchEquip"/>
 
     <!--基础服务 200 -  250 -->
     <!--<message id="" value=""/>-->
 
     <!--地图基础协议 2001 - 2005-->
-    <message id="2002" value="game.world.base.packet.CM_LeaveMap"/>
-    <message id="2003" value="game.world.base.packet.CM_MoveMap"/>
-    <message id="2005" value="game.world.base.packet.CM_ChangeMap"/>
-    <message id="2006" value="game.world.base.packet.CM_LogMap"/>
+    <message id="2002" key="leave" value="game.world.base.packet.CM_LeaveMap"/>
+    <message id="2003" key="move" value="game.world.base.packet.CM_MoveMap"/>
+    <message id="2005" key="changeMap" value="game.world.base.packet.CM_ChangeMap"/>
+    <message id="2006" key="logMap" value="game.world.base.packet.CM_LogMap"/>
 
 
 </protocols>

@@ -2,7 +2,7 @@ package game.user.item.base.model;
 
 import java.util.Map;
 
-import game.common.exception.RequestException;
+import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
 import game.user.item.base.constant.ItemEffectType;
 import game.user.item.base.effect.IEffectProcessor;

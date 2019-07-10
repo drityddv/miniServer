@@ -1,6 +1,6 @@
 package game.gm.event;
 
-import game.base.ebus.IEvent;
+import ebus.model.IEvent;
 import game.role.player.model.Player;
 
 /**

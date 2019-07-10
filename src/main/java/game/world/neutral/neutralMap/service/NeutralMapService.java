@@ -15,10 +15,10 @@ import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.game.attribute.util.AttributeUtils;
 import game.gm.packet.SM_LogMessage;
-import game.miniMap.constant.MapGroupType;
-import game.miniMap.model.Grid;
-import game.miniMap.utils.VisibleUtil;
-import game.miniMap.visible.impl.NpcVisibleInfo;
+import game.map.constant.MapGroupType;
+import game.map.model.Grid;
+import game.map.utils.VisibleUtil;
+import game.map.visible.impl.NpcVisibleInfo;
 import game.role.player.model.Player;
 import game.user.mapinfo.service.IMapInfoService;
 import game.world.base.resource.MiniMapResource;
@@ -182,7 +182,6 @@ public class NeutralMapService implements INeutralMapService {
         }
         FighterAccount fighterAccount = FighterAccount.valueOf(player);
         mapScene.fighterEnter(fighterAccount);
-
     }
 
     @Override
