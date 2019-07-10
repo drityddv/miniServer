@@ -2,11 +2,11 @@ package game.user.mapinfo.entity;
 
 import javax.persistence.*;
 
-import db.middleware.AbstractEntity;
+import db.model.AbstractEntity;
 import game.map.base.AbstractMapInfo;
 import game.map.constant.MapGroupType;
 import game.user.mapinfo.model.PlayerMapInfo;
-import net.utils.ProtoStuffUtil;
+import utils.ProtoStuffUtil;
 
 /**
  * @author : ddv

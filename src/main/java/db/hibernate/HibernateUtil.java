@@ -1,4 +1,4 @@
-package db.middleware;
+package db.hibernate;
 
 import java.io.Serializable;
 
@@ -8,6 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import db.model.EntityBuilder;
+import db.model.IEntity;
+import db.model.IOrmTemplate;
 
 /**
  * @author : ddv

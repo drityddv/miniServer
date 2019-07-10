@@ -1,4 +1,4 @@
-package db.middleware;
+package db.model;
 
 import java.io.Serializable;
 

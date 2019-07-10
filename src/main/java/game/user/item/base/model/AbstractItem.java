@@ -24,7 +24,7 @@ public abstract class AbstractItem extends AbstractGameObject implements Compara
     }
 
     public ItemResource getResource() {
-        return SpringContext.getPackService().getResource(configId);
+        return SpringContext.getPackService().getItemResource(configId);
     }
 
     public void init(ItemResource itemResource) {

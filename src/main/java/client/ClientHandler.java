@@ -1,16 +1,20 @@
-package net.client;
+package client;
 
+import java.lang.reflect.Method;
 import java.util.Scanner;
 import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ReflectionUtils;
 
+import client.anno.Action;
 import game.base.manager.ClazzManager;
 import game.user.login.packet.CM_UserLogin;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import net.model.PacketProtocol;
+import utils.ClassUtil;
 
 /**
  * @author : ddv
@@ -33,7 +37,13 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
         Object object = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-        System.out.println("客户端收到消息 : " + object.toString());
+        Method action = ClassUtil.getMethodByAnnotation(object, Action.class);
+        if (action == null) {
+            System.out.println("客户端收到消息 : " + object.toString());
+        } else {
+            action.setAccessible(true);
+            ReflectionUtils.invokeMethod(action, object);
+        }
     }
 
     @Override

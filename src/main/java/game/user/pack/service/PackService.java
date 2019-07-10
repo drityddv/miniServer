@@ -59,7 +59,7 @@ public class PackService implements IPackService {
     public void useItem(Player player, ItemResource itemResource, int count) {}
 
     @Override
-    public ItemResource getResource(Long configId) {
+    public ItemResource getItemResource(Long configId) {
         return packManager.getResource(configId);
     }
 
@@ -73,6 +73,12 @@ public class PackService implements IPackService {
     public boolean isEnoughSize(Player player, AbstractItem item) {
         Pack pack = getPack(player);
         return pack.isEnoughSize(item);
+    }
+
+    @Override
+    public boolean isEnoughSize(Player player, long itemConfigId, int itemNum) {
+        Pack pack = getPack(player);
+        return pack.isEnoughSize(itemConfigId, itemNum);
     }
 
     @Override
@@ -99,6 +105,26 @@ public class PackService implements IPackService {
             RequestException.throwException(I18N.ITEM_NUM_NOT_ENOUGH);
         }
         pack.doReduceItem(item);
+    }
+
+    @Override
+    public void reduceItemWithThrow(Player player, long itemConfigId, int num) {
+        Pack pack = getPlayerPack(player, false);
+        boolean enoughSize = pack.isEnoughItem(itemConfigId, num);
+        if (!enoughSize) {
+            RequestException.throwException(I18N.ITEM_NUM_NOT_ENOUGH);
+        }
+        pack.doReduceItem(itemConfigId, num);
+    }
+
+    @Override
+    public boolean reduceItem(Player player, long itemConfigId, int num) {
+        Pack pack = getPlayerPack(player, false);
+        if (!pack.isEnoughItem(itemConfigId, num)) {
+            return false;
+        }
+        pack.doReduceItem(itemConfigId, num);
+        return true;
     }
 
     @Override

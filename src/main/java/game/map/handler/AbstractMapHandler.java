@@ -26,7 +26,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     private static final Map<Integer, AbstractMapHandler> HANDLER_MAP = new HashMap<>();
 
     /**
-     * 根据地图组id获得处理器
+     * 根据地图组id获得处理器 如果没有处理器就用保底地图的
      *
      * @param groupId
      * @param <T>
@@ -35,7 +35,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     public static <T extends AbstractMapHandler> T getHandler(int groupId) {
         AbstractMapHandler handler = HANDLER_MAP.get(groupId);
         if (handler == null) {
-            handler = HANDLER_MAP.get(MapGroupType.ARENA_GROUP.getGroupId());
+            handler = HANDLER_MAP.get(MapGroupType.SAFE_MAP.getGroupId());
         }
         return (T)handler;
     }

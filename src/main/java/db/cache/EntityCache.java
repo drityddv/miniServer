@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import db.middleware.IEntity;
+import db.model.IEntity;
 
 /**
  *

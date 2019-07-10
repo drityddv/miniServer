@@ -60,6 +60,25 @@ public interface IPackService {
     void reduceItemWithThrow(Player player, AbstractItem item);
 
     /**
+     * 扣除道具
+     *
+     * @param player
+     * @param itemConfigId
+     * @param num
+     */
+    void reduceItemWithThrow(Player player, long itemConfigId, int num);
+
+    /**
+     * 扣除道具
+     *
+     * @param player
+     * @param itemConfigId
+     * @param num
+     * @return
+     */
+    boolean reduceItem(Player player, long itemConfigId, int num);
+
+    /**
      * 使用道具
      *
      * @param player
@@ -74,7 +93,7 @@ public interface IPackService {
      * @param configId
      * @return
      */
-    ItemResource getResource(Long configId);
+    ItemResource getItemResource(Long configId);
 
     /**
      * 背包格子是否已满 如果需要指定item检查容量请调用isEnoughSize
@@ -92,6 +111,16 @@ public interface IPackService {
      * @return
      */
     boolean isEnoughSize(Player player, AbstractItem item);
+
+    /**
+     * 指定数量物品是否可以塞进背包
+     *
+     * @param player
+     * @param itemConfigId
+     * @param itemNum
+     * @return
+     */
+    boolean isEnoughSize(Player player, long itemConfigId, int itemNum);
 
     /**
      * 获取背包中指定道具的数量

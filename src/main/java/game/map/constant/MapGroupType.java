@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.map.base.AbstractMapInfo;
-import game.world.areanMap.ArenaMapInfo;
+import game.world.mainCity.model.MainCityMapInfo;
 import game.world.neutral.neutralMap.model.NeutralMapInfo;
 
 /**
@@ -21,22 +21,23 @@ public enum MapGroupType {
     EMPTY_GROUP(0, null),
 
     /**
-     * 野外地图
-     */
-    ARENA_GROUP(1, new ArenaMapInfo()) {
-        @Override
-        public boolean needLogPvpResult() {
-            return false;
-        }
-    },
-    /**
      * 中立地图
      */
-    NEUTRAL_MAP(2, new NeutralMapInfo()) {
+    NEUTRAL_MAP(1, new NeutralMapInfo()) {
         @Override
         public boolean isNeedCd() {
             return false;
         }
+    },
+    /**
+     * 保底地图 没有进入限制 用来接盘玩家进图失败的异常情况
+     */
+    SAFE_MAP(2, new MainCityMapInfo()) {
+        @Override
+        public boolean isNeedCd() {
+            return false;
+        }
+
     };
     private static final Map<Class<? extends AbstractMapInfo>, MapGroupType> CLASS_TO_TYPE = new HashMap<>();
     private static final Map<Integer, MapGroupType> GROUP_ID_TO_TYPE = new HashMap<>();
@@ -72,16 +73,6 @@ public enum MapGroupType {
     // 进入野外如果没有cd 玩家发包疯狂发包刷怪
     public boolean isNeedCd() {
         return true;
-    }
-
-    // 是否需要记录战报 打怪之类的副本不需要
-    public boolean needLogPvpResult() {
-        return true;
-    }
-
-    // 是否允许副本地图内切图
-    public boolean isAllowChangeMapInMap() {
-        return false;
     }
 
     public int getGroupId() {

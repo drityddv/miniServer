@@ -19,15 +19,6 @@ public interface IWorldService {
     void gatewayChangeMap(Player player, int mapId, boolean clientRequest);
 
     /**
-     * 切图
-     *
-     * @param player
-     * @param mapId
-     * @param clientRequest
-     */
-    // void changeMap(Player player, int mapId, boolean clientRequest);
-
-    /**
      * 离开地图
      *
      * @param player
@@ -61,12 +52,4 @@ public interface IWorldService {
      */
     void move(Player player, Grid targetPosition);
 
-    // 内部调用方法区
-
-    // /**
-    // * 获取地图场景
-    // * @param mapId
-    // * @return
-    // */
-    // AbstractScene getScene(int mapId);
 }

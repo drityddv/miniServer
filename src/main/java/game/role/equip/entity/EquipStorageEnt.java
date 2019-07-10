@@ -2,9 +2,9 @@ package game.role.equip.entity;
 
 import javax.persistence.*;
 
-import db.middleware.AbstractEntity;
+import db.model.AbstractEntity;
 import game.role.equip.model.EquipStorage;
-import net.utils.ProtoStuffUtil;
+import utils.ProtoStuffUtil;
 
 /**
  * 玩家装备栏

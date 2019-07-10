@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import db.cache.EntityCacheService;
-import db.middleware.EntityBuilder;
+import db.model.EntityBuilder;
 import game.user.login.entity.UserEnt;
 
 /**

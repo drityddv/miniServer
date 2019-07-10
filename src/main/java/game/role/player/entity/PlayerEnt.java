@@ -2,9 +2,9 @@ package game.role.player.entity;
 
 import javax.persistence.*;
 
-import db.middleware.AbstractEntity;
+import db.model.AbstractEntity;
 import game.role.player.model.Player;
-import net.utils.ProtoStuffUtil;
+import utils.ProtoStuffUtil;
 
 /**
  * @author : ddv

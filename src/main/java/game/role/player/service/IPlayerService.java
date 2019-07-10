@@ -96,4 +96,12 @@ public interface IPlayerService {
      */
     void createPlayer(USession session, int sex);
 
+    // /**
+    // * 获取在线玩家
+    // *
+    // * @param player
+    // * @return
+    // */
+    // Player getOnlinePlayer(Player player);
+
 }

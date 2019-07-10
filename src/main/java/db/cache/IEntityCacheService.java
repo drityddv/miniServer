@@ -2,8 +2,8 @@ package db.cache;
 
 import java.io.Serializable;
 
-import db.middleware.EntityBuilder;
-import db.middleware.IEntity;
+import db.model.EntityBuilder;
+import db.model.IEntity;
 
 /**
  * 缓存中间件

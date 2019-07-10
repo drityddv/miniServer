@@ -1,4 +1,4 @@
-package net.utils;
+package utils;
 
 import java.util.Map;
 import java.util.Objects;

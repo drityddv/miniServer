@@ -3,6 +3,10 @@ package game.user.pack.packet;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import client.anno.Action;
 import game.user.pack.model.Pack;
 import game.user.pack.model.PackSquare;
 
@@ -14,6 +18,8 @@ import game.user.pack.model.PackSquare;
  */
 
 public class SM_PackInfo {
+
+    private static final Logger logger = LoggerFactory.getLogger("client");
 
     private int size;
     private List<PackSquare> squareList = new ArrayList<>();
@@ -27,6 +33,15 @@ public class SM_PackInfo {
             }
         }
         return packInfo;
+    }
+
+    @Action
+    private void action() {
+        logger.info("背包大小[{}]", size);
+        squareList.stream().filter(packSquare -> !packSquare.isEmpty()).forEach(packSquare -> {
+            logger.info("格子编号[{}] 道具id[{}] 道具数量[{}],", packSquare.getIndex(), packSquare.getItem().getConfigId(),
+                packSquare.getItemNum());
+        });
     }
 
     @Override

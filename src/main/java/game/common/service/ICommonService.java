@@ -40,4 +40,9 @@ public interface ICommonService {
      * 0点事件触发
      */
     void oneHourJob();
+
+    /**
+     * 关服
+     */
+    void serverClose();
 }

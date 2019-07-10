@@ -26,7 +26,7 @@
     <message id="140" key="storage" value="game.role.equip.packet.CM_EquipStorage"/>
     <message id="141" value="game.role.equip.packet.SM_EquipStorage"/>
     <message id="142" key="dress" value="game.role.equip.packet.CM_DressEquip"/>
-    <message id="143" key="undress"  value="game.role.equip.packet.CM_UndressEquip"/>
+    <message id="143" key="undress" value="game.role.equip.packet.CM_UndressEquip"/>
     <message id="144" key="enhance" value="game.role.equip.packet.CM_EnhanceEquipSquare"/>
     <message id="145" key="equipment" value="game.role.equip.packet.CM_Equipment"/>
     <message id="146" value="game.role.equip.packet.SM_EquipmentVo"/>

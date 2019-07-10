@@ -16,7 +16,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
-import net.utils.ProtoStuffUtil;
+import utils.ProtoStuffUtil;
 
 /**
  * id与Clazz对应关联表

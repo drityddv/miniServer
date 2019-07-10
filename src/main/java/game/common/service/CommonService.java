@@ -22,6 +22,7 @@ import scheduler.QuartzService;
 import scheduler.constant.JobGroupEnum;
 import scheduler.job.common.CronConst;
 import scheduler.job.common.OneHourQuartzJob;
+import spring.SpringContext;
 import utils.snow.IdUtil;
 
 /**
@@ -68,6 +69,16 @@ public class CommonService implements ICommonService {
     @Override
     public void initPublicTask() {
         initOneHourJob();
+        initHook();
+    }
+
+    private void initHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                serverClose();
+            }
+        });
     }
 
     // 整点任务
@@ -87,5 +98,15 @@ public class CommonService implements ICommonService {
     @Override
     public void oneHourJob() {
         logger.info("服务器抛出整点事件...");
+    }
+
+    @Override
+    public void serverClose() {
+        logger.info("服务器开始关服...");
+        SpringContext.getServer().shutdown();
+        SpringContext.getSceneExecutorService().shutdown();
+        SpringContext.getAccountExecutorService().shutdown();
+        SpringContext.getQuartzService().shutdown();
+        logger.info("服务器关闭结束...");
     }
 }

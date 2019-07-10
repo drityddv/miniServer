@@ -25,10 +25,7 @@ import game.user.item.resource.ItemResource;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
 import net.utils.PacketUtil;
-import scheduler.job.model.JobEntity;
-import scheduler.job.player.PlayerQuartzJob;
 import spring.SpringContext;
-import utils.QuartzUtil;
 import utils.StringUtil;
 
 /**
@@ -56,10 +53,7 @@ public class GM_Command {
     private ICommonService commonService;
 
     public void shutdown(Player player) {
-        SpringContext.getServer().shutdown();
-        SpringContext.getSceneExecutorService().shutdown();
-        SpringContext.getAccountExecutorService().shutdown();
-        SpringContext.getQuartzService().shutdown();
+        SpringContext.getCommonService().serverClose();
     }
 
     public void logPlayer(Player player) {
@@ -165,9 +159,8 @@ public class GM_Command {
         SpringContext.getPackService().sortPack(player);
     }
 
-    public void run(Player player) {
-        JobEntity jobEntity = QuartzUtil.build(PlayerQuartzJob.class, "jobName", "groupName", null, 1000, 10);
-        SpringContext.getQuartzService().addJob(jobEntity.getJobDetail(), jobEntity.getTrigger());
+    public void run(Player player, long configId, int num) {
+        boolean enoughSize = packService.isEnoughSize(player, configId, num);
     }
 
     public void test(Player player, String accountId) {

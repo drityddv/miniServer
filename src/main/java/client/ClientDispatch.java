@@ -1,4 +1,4 @@
-package net.client;
+package client;
 
 import java.util.Arrays;
 import java.util.List;
@@ -73,7 +73,7 @@ public class ClientDispatch {
             Object newInstance = aClass.newInstance();
             ClassUtil.insertDefaultFields(newInstance, list.stream().skip(1).collect(Collectors.toList()));
             ctx.writeAndFlush(PacketProtocol.valueOf(newInstance));
-            logger.info("执行命令,[{}]", newInstance.toString());
+            logger.info("执行命令,[{}]", newInstance.getClass().getSimpleName());
         } catch (Exception e) {
             logger.error("派发器执行错误,input[{}]", input);
         }

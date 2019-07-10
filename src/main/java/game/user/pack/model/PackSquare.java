@@ -61,17 +61,15 @@ public class PackSquare {
         return item == null;
     }
 
-    public void reduce(AbstractItem item) {
-        int originNum = this.getItemNum();
-        int reduceNum = originNum >= item.getNum() ? item.getNum() : originNum;
-        this.item.reduce(reduceNum);
-        check();
+    // 返回剩余的待消耗量
+    public int reduce(long configId, int num) {
+        // 格子道具数量
+        int originNum = getItemNum();
+        // 实际减少的数量
+        int reduceNum = originNum >= num ? num : originNum;
         item.reduce(reduceNum);
-    }
-
-    public void reduce(int num) {
-        item.reduce(num);
         check();
+        return num - reduceNum;
     }
 
     private void check() {

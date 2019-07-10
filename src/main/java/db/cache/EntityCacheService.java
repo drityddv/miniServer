@@ -7,9 +7,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import db.middleware.EntityBuilder;
-import db.middleware.IEntity;
-import db.middleware.IOrmTemplate;
+import db.model.EntityBuilder;
+import db.model.IEntity;
+import db.model.IOrmTemplate;
 
 /**
  * @author : ddv

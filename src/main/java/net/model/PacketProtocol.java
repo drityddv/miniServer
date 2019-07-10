@@ -3,7 +3,7 @@ package net.model;
 import java.util.Arrays;
 
 import game.base.manager.ClazzManager;
-import net.utils.ProtoStuffUtil;
+import utils.ProtoStuffUtil;
 
 /**
  * 数据包结构 序列号 + 数据长度 + 数据
