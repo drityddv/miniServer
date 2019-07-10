@@ -22,6 +22,7 @@ import game.role.player.model.Player;
 import game.role.player.service.IPlayerService;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
+import game.user.item.service.IItemService;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
 import net.utils.PacketUtil;
@@ -52,9 +53,8 @@ public class GM_Command {
     @Autowired
     private ICommonService commonService;
 
-    public void shutdown(Player player) {
-        SpringContext.getCommonService().serverClose();
-    }
+    @Autowired
+    private IItemService iItemService;
 
     public void logPlayer(Player player) {
         StringBuilder sb = new StringBuilder();
@@ -140,11 +140,11 @@ public class GM_Command {
     }
 
     public void addItem(Player player, long configId, int num) {
-        packService.addItem(player, SpringContext.getCommonService().createItem(configId, num));
+        packService.addItem(player, iItemService.createItem(configId, num));
     }
 
     public void reduceItem(Player player, long configId, int num) {
-        boolean success = packService.reduceItem(player, commonService.createItem(configId, num));
+        boolean success = packService.reduceItem(player, iItemService.createItem(configId, num));
     }
 
     public void pushHotFix(Player player, String resourceName) {

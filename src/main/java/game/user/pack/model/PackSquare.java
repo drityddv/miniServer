@@ -28,7 +28,7 @@ public class PackSquare {
 
     public void addItem(AbstractItem item) {
         if (this.item == null) {
-            this.item = SpringContext.getCommonService().createItem(item.getConfigId(), 0);
+            this.item = SpringContext.getItemService().createItem(item.getConfigId(), 0);
         }
         switch (item.getOverLimit()) {
             case PackConstant.LIMIT_MAX: {

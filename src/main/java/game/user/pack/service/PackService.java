@@ -59,11 +59,6 @@ public class PackService implements IPackService {
     public void useItem(Player player, ItemResource itemResource, int count) {}
 
     @Override
-    public ItemResource getItemResource(Long configId) {
-        return packManager.getResource(configId);
-    }
-
-    @Override
     public boolean isFull(Player player) {
         Pack pack = getPack(player);
         return pack.getEmptySquares().size() == 0;
@@ -130,7 +125,7 @@ public class PackService implements IPackService {
     @Override
     public AbstractItem getItemFromPack(Player player, long configId) {
         Pack pack = player.getPack();
-        AbstractItem item = SpringContext.getCommonService().createItem(configId, 1);
+        AbstractItem item = SpringContext.getItemService().createItem(configId, 1);
         return pack.getItem(item);
 
     }

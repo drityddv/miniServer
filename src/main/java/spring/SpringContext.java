@@ -20,6 +20,8 @@ import game.role.equip.service.IEquipService;
 import game.role.player.service.IPlayerService;
 import game.scene.fight.service.IFightService;
 import game.scene.npc.service.NpcManager;
+import game.system.ISystemService;
+import game.user.item.service.IItemService;
 import game.user.login.service.ILoginService;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
@@ -62,6 +64,12 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private ICommonService commonService;
+
+    @Autowired
+    private ISystemService systemService;
+
+    @Autowired
+    private IItemService iItemService;
 
     @Autowired
     private IAccountExecutorService accountExecutorService;
@@ -182,6 +190,14 @@ public class SpringContext implements ApplicationContextAware {
 
     public static QuartzService getQuartzService() {
         return instance.quartzService;
+    }
+
+    public static IItemService getItemService() {
+        return instance.iItemService;
+    }
+
+    public static ISystemService getSystemService() {
+        return instance.systemService;
     }
 
     public static ApplicationContext getApplicationContext() {

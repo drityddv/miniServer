@@ -3,7 +3,7 @@ package game.role.equip.packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import client.anno.Action;
+import client.action.IMessageAction;
 import game.role.equip.model.EquipSquare;
 import game.role.equip.model.EquipStorage;
 import game.role.equip.model.Equipment;
@@ -15,7 +15,7 @@ import game.role.equip.model.Equipment;
  * @since : 2019/7/1 上午10:22
  */
 
-public class SM_EquipStorage {
+public class SM_EquipStorage implements IMessageAction {
 
     private static final Logger logger = LoggerFactory.getLogger("client");
 
@@ -27,8 +27,8 @@ public class SM_EquipStorage {
         return sm;
     }
 
-    @Action
-    private void action() {
+    @Override
+    public void action() {
         equipStorage.getEquipSquareMap().forEach((integer, equipSquare) -> {
             logger.info("装备栏位置[{}] 孔位等级[{}] 是否存在装备[{}] 装备id[{}]", integer, equipSquare.getLevel(),
                 !equipSquare.isEmpty(), getEquipmentId(equipSquare));

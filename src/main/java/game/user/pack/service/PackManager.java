@@ -1,14 +1,10 @@
 package game.user.pack.service;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import db.cache.EntityCacheService;
-import game.user.item.resource.ItemResource;
 import game.user.pack.entity.PackEnt;
-import resource.anno.Static;
 
 /**
  * @author : ddv
@@ -21,9 +17,6 @@ public class PackManager {
     @Autowired
     private EntityCacheService<Long, PackEnt> entEntityCacheService;
 
-    @Static
-    private Map<Long, ItemResource> itemStorage;
-
     public PackEnt loadOrCreate(Long playerId) {
         return entEntityCacheService.loadOrCreate(PackEnt.class, playerId, PackEnt::valueOf);
     }
@@ -32,7 +25,4 @@ public class PackManager {
         entEntityCacheService.save(loadOrCreate(PlayerId));
     }
 
-    public ItemResource getResource(Long configId) {
-        return itemStorage.get(configId);
-    }
 }

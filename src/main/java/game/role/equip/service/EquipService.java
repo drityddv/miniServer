@@ -90,7 +90,7 @@ public class EquipService implements IEquipService {
 
         // 是否是装备类型的道具
         if (item instanceof Equipment) {
-            Equipment equipment = (Equipment)SpringContext.getCommonService().createItem(item.getConfigId(), 1);
+            Equipment equipment = (Equipment)SpringContext.getItemService().createItem(item.getConfigId(), 1);
             EquipStorageEnt ent = getEquipStorageEnt(player);
             EquipStorage equipStorage = ent.getEquipStorage();
 
@@ -170,7 +170,7 @@ public class EquipService implements IEquipService {
         }
 
         if (item instanceof Equipment) {
-            Equipment equipment = (Equipment)SpringContext.getCommonService().createItem(item.getConfigId(), 1);
+            Equipment equipment = (Equipment)SpringContext.getItemService().createItem(item.getConfigId(), 1);
             if (equipment.getEquipPosition().getId() != position) {
                 logger.warn("玩家[{}]替换装备失败,背包道具[{}]的装备位置[{}]与即将替换的位置[{}]不匹配", player.getAccountId(), equipConfigId,
                     equipment.getEquipPosition().getId(), position);
@@ -200,7 +200,7 @@ public class EquipService implements IEquipService {
 
             try {
                 SpringContext.getPackService().reduceItemWithThrow(player,
-                    SpringContext.getCommonService().createItem(item.getConfigId(), 1));
+                    SpringContext.getItemService().createItem(item.getConfigId(), 1));
                 equipSquare.setEquipment(equipment);
             } catch (RequestException e) {
                 logger.warn("玩家[{}]装备替换失败,背包扣除新装备[{}]失败,原因[{}]", player.getAccountId(), item.getConfigId(),

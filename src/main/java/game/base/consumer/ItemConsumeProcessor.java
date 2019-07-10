@@ -30,7 +30,7 @@ public class ItemConsumeProcessor extends AbstractConsumeProcessor {
             long itemConfigId = next.getKey();
             int num = next.getValue();
             IPackService packService = SpringContext.getPackService();
-            AbstractItem item = SpringContext.getCommonService().createItem(itemConfigId, num);
+            AbstractItem item = SpringContext.getItemService().createItem(itemConfigId, num);
             boolean enoughSize = packService.isEnoughSize(player, item);
             if (!enoughSize) {
                 RequestException.throwException(I18N.ITEM_NUM_NOT_ENOUGH);
@@ -39,7 +39,7 @@ public class ItemConsumeProcessor extends AbstractConsumeProcessor {
 
         consumeParams.forEach((itemConfigId, num) -> {
             IPackService packService = SpringContext.getPackService();
-            AbstractItem item = SpringContext.getCommonService().createItem(itemConfigId, num);
+            AbstractItem item = SpringContext.getItemService().createItem(itemConfigId, num);
             packService.reduceItem(player, item);
         });
     }

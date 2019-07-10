@@ -88,14 +88,6 @@ public interface IPackService {
     void useItem(Player player, ItemResource itemResource, int count);
 
     /**
-     * 获取资源
-     *
-     * @param configId
-     * @return
-     */
-    ItemResource getItemResource(Long configId);
-
-    /**
      * 背包格子是否已满 如果需要指定item检查容量请调用isEnoughSize
      *
      * @param player

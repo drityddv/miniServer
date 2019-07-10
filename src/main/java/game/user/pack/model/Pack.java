@@ -1,7 +1,6 @@
 package game.user.pack.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.util.CollectionUtils;
@@ -23,13 +22,11 @@ import spring.SpringContext;
 
 public class Pack {
 
-    private long playerId;
     private int size;
     private List<PackSquare> packSquares;
 
-    public static Pack valueOf(long playerId) {
+    public static Pack valueOf() {
         Pack pack = new Pack();
-        pack.playerId = playerId;
         pack.size = PackConstant.PACK_MAX_SIZE;
         pack.packSquares = new ArrayList<>(PackConstant.PACK_MAX_SIZE);
         for (int i = 0; i < pack.size; i++) {
@@ -92,7 +89,7 @@ public class Pack {
     }
 
     public void sortPack() {
-        Collections.sort(packSquares, new ConfigIdComparator());
+        packSquares.sort(new ConfigIdComparator());
         int index = 0;
         for (PackSquare packSquare : packSquares) {
             packSquare.setIndex(index++);
@@ -204,7 +201,7 @@ public class Pack {
 
     // 统计格子能塞下参数道具的个数
     private int countAvailableSize(PackSquare packSquare, long itemConfigId, int itemNum, int availableSize) {
-        ItemResource itemResource = SpringContext.getPackService().getItemResource(itemConfigId);
+        ItemResource itemResource = SpringContext.getItemService().getItemResource(itemConfigId);
         switch (itemResource.getOverLimit()) {
             case 0: {
                 if (isSquareEmptyOrItemEqual(packSquare, itemConfigId)) {
@@ -248,11 +245,6 @@ public class Pack {
             }
         }
         return squareList;
-    }
-
-    // get and set
-    public long getPlayerId() {
-        return playerId;
     }
 
     public int getSize() {

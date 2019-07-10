@@ -19,12 +19,8 @@ public abstract class AbstractItem extends AbstractGameObject implements Compara
         return getResource().getOverLimit();
     }
 
-    public boolean canOverLimit() {
-        return getOverLimit() != 1;
-    }
-
     public ItemResource getResource() {
-        return SpringContext.getPackService().getItemResource(configId);
+        return SpringContext.getItemService().getItemResource(configId);
     }
 
     public void init(ItemResource itemResource) {

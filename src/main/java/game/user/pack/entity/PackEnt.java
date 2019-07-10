@@ -26,7 +26,7 @@ public class PackEnt extends AbstractEntity<Long> {
     public static PackEnt valueOf(long playerId) {
         PackEnt ent = new PackEnt();
         ent.setPlayerId(playerId);
-        ent.setPack(Pack.valueOf(playerId));
+        ent.setPack(Pack.valueOf());
         return ent;
     }
 
@@ -55,14 +55,6 @@ public class PackEnt extends AbstractEntity<Long> {
 
     public void setPack(Pack pack) {
         this.pack = pack;
-    }
-
-    public byte[] getPackData() {
-        return packData;
-    }
-
-    public void setPackData(byte[] packData) {
-        this.packData = packData;
     }
 
     public long getPlayerId() {

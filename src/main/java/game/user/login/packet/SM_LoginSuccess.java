@@ -3,7 +3,7 @@ package game.user.login.packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import client.anno.Action;
+import client.action.IMessageAction;
 
 /**
  *
@@ -11,7 +11,7 @@ import client.anno.Action;
  * @since : 2019/4/29 下午3:28
  */
 
-public class SM_LoginSuccess {
+public class SM_LoginSuccess implements IMessageAction {
 
     private static final Logger logger = LoggerFactory.getLogger("client");
 
@@ -19,8 +19,8 @@ public class SM_LoginSuccess {
         return new SM_LoginSuccess();
     }
 
-    @Action
-    private void action() {
+    @Override
+    public void action() {
         logger.info("登陆成功!");
     }
 }
