@@ -22,10 +22,10 @@ public class NeutralMapScene extends AbstractMovableMap<NeutralMapAccountInfo> {
     private static final Logger logger = LoggerFactory.getLogger(NeutralMapScene.class);
 
     // npc
-    private Map<Long, NpcVisibleInfo> npcMap;
+    private Map<Long, NpcVisibleInfo> npcMap = new ConcurrentHashMap<>();;
 
     // 怪物
-    private Map<Long, FighterAccount> monsterMap;
+    private Map<Long, FighterAccount> monsterMap = new ConcurrentHashMap<>();;
 
     public NeutralMapScene(int mapId) {
         super(mapId);
@@ -33,7 +33,6 @@ public class NeutralMapScene extends AbstractMovableMap<NeutralMapAccountInfo> {
 
     public static NeutralMapScene valueOf(int mapId) {
         NeutralMapScene mapScene = new NeutralMapScene(mapId);
-        mapScene.npcMap = new ConcurrentHashMap<>();
         return mapScene;
     }
 
@@ -51,5 +50,10 @@ public class NeutralMapScene extends AbstractMovableMap<NeutralMapAccountInfo> {
 
     public Map<Long, NpcVisibleInfo> getNpcMap() {
         return npcMap;
+    }
+
+    @Override
+    public NeutralMapAccountInfo getPlayerFighter(String accountId) {
+        return accountIdToVisible.get(accountId);
     }
 }

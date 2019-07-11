@@ -1,6 +1,6 @@
 package game.world.neutral.neutralGather.service;
 
-import game.world.neutral.neutralMap.model.NeutralMapCommonInfo;
+import game.world.neutral.neutralMap.model.NeutralMapInfo;
 
 /**
  * @author : ddv
@@ -14,6 +14,6 @@ public interface INeutralMapGatherService {
      *
      * @param mapCommonInfo
      */
-    void initNpcResource(NeutralMapCommonInfo mapCommonInfo);
+    void initNpcResource(NeutralMapInfo mapCommonInfo);
 
 }

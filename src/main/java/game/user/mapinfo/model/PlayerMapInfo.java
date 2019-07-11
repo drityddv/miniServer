@@ -3,7 +3,7 @@ package game.user.mapinfo.model;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import game.map.base.AbstractMapInfo;
+import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 
 /**
@@ -15,20 +15,20 @@ public class PlayerMapInfo {
     /**
      * 地图组id-玩家地图数据
      */
-    private Map<Integer, AbstractMapInfo> infoMap = new ConcurrentHashMap<>();
+    private Map<Integer, AbstractPlayerMapInfo> infoMap = new ConcurrentHashMap<>();
 
     public static PlayerMapInfo valueOf() {
         PlayerMapInfo mapInfo = new PlayerMapInfo();
         return mapInfo;
     }
 
-    public Map<Integer, AbstractMapInfo> getInfoMap() {
+    public Map<Integer, AbstractPlayerMapInfo> getInfoMap() {
         return infoMap;
     }
 
-    public AbstractMapInfo getOrCreateMapInfo(MapGroupType type) {
+    public AbstractPlayerMapInfo getOrCreateMapInfo(MapGroupType type) {
         int groupId = type.getGroupId();
-        AbstractMapInfo mapInfo = infoMap.get(groupId);
+        AbstractPlayerMapInfo mapInfo = infoMap.get(groupId);
         if (mapInfo == null) {
             mapInfo = type.initAndCreateMapInfo();
             infoMap.put(groupId, mapInfo);

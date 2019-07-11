@@ -8,6 +8,7 @@ import game.map.visible.AbstractVisibleMapInfo;
  */
 
 public class MainCityMapAccountInfo extends AbstractVisibleMapInfo {
+
     @Override
     public long getId() {
         return 0;

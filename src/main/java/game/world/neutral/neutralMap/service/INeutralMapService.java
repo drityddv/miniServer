@@ -69,22 +69,12 @@ public interface INeutralMapService {
     void doMove(Player player, int mapId, Grid targetGrid);
 
     /**
-     * 获取可以进入的场景
-     *
-     * @param accountId
-     * @param mapId
-     * @return
-     */
-    NeutralMapScene getEnterScene(String accountId, int mapId);
-
-    /**
      * 获取玩家当前所处场景
      *
-     * @param accountId
-     * @param mapId
+     * @param player
      * @return
      */
-    NeutralMapScene getCurrentScene(String accountId, int mapId);
+    NeutralMapScene getCurrentScene(Player player);
 
     /**
      * 打印地图
@@ -94,18 +84,4 @@ public interface INeutralMapService {
      */
     void logMap(Player player, int mapId);
 
-    /**
-     * 初始化玩家战斗对象
-     *
-     * @param player
-     * @param mapId
-     */
-    void initFighterAccount(Player player, int mapId);
-
-    /**
-     * 场景内生成玩家战斗对象
-     *
-     * @param player
-     */
-    void pkPre(Player player);
 }

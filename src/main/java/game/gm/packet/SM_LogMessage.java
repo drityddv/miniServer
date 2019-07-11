@@ -6,7 +6,6 @@ package game.gm.packet;
  * @author : ddv
  * @since : 2019/7/4 下午4:19
  */
-
 public class SM_LogMessage {
     String message;
 

@@ -6,7 +6,8 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import client.action.IMessageAction;
+import client.handler.IHandler;
+import client.handler.model.HandlerEnum;
 import game.base.manager.ClazzManager;
 import game.user.login.packet.CM_UserLogin;
 import io.netty.channel.ChannelHandlerContext;
@@ -34,11 +35,8 @@ public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
         Object object = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-        if (object instanceof IMessageAction) {
-            ((IMessageAction)object).action();
-            return;
-        }
-        System.out.println("客户端收到消息 : " + object.toString());
+        IHandler handler = HandlerEnum.getHandler(protocol.getId());
+        handler.handler(object);
     }
 
     @Override

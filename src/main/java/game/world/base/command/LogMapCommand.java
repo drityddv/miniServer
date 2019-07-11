@@ -38,7 +38,7 @@ public class LogMapCommand extends AbstractSceneCommand {
             return;
         }
         AbstractMapHandler handler = AbstractMapHandler.getHandler(mapResource.getGroupId());
-        handler.logMap(player, mapId);
+        handler.doLogMap(player, mapId);
     }
 
 }

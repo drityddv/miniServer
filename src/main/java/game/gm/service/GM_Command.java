@@ -151,10 +151,6 @@ public class GM_Command {
         SpringContext.getEventBus().pushEventSyn(HotFixEvent.valueOf(player, resourceName));
     }
 
-    public void addFightAccount(Player player) {
-        SpringContext.getNeutralMapService().pkPre(player);
-    }
-
     public void sortPack(Player player) {
         SpringContext.getPackService().sortPack(player);
     }

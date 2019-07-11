@@ -1,6 +1,7 @@
 package game.map.handler;
 
 import game.map.base.AbstractScene;
+import game.role.player.model.Player;
 
 /**
  * @author : ddv
@@ -9,21 +10,11 @@ import game.map.base.AbstractScene;
 
 public interface ISceneMapHandler<T extends AbstractScene> extends IMapHandler {
 
-    /**
-     * 选择场景
-     *
-     * @param accountId
-     * @param mapId
-     * @return
-     */
-    T getEnterScene(String accountId, int mapId);
-
-    /**
+	/**
      * 获得玩家当前所存在的场景
      *
-     * @param accountId
-     * @param mapId
+     * @param player
      * @return
      */
-    T getCurrentScene(String accountId, int mapId);
+    T getCurrentScene(Player player);
 }

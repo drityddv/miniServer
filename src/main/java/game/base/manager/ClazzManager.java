@@ -31,6 +31,7 @@ public class ClazzManager {
     private static Map<Integer, String> clazzMap;
     private static Map<Class<?>, Integer> idMap;
     private static Map<String, Class<?>> actionMap;
+    private static Map<Integer, Class<?>> clientHandlerMap;
 
     static {
         try {
@@ -44,6 +45,7 @@ public class ClazzManager {
         clazzMap = new HashMap<>();
         idMap = new HashMap<>();
         actionMap = new HashMap<>();
+        clientHandlerMap = new HashMap<>();
 
         SAXBuilder saxBuilder = new SAXBuilder();
 
@@ -84,6 +86,7 @@ public class ClazzManager {
 
             clazzMap.put(id, value);
             idMap.put(clazz, id);
+            clientHandlerMap.put(id, clazz);
         }
 
         logger.info("协议资源文件加载完成，总共加载了[{}]条数据", children.size());

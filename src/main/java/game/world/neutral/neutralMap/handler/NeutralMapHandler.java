@@ -33,12 +33,7 @@ public class NeutralMapHandler extends AbstractMapHandler
         neutralMapService.leaveMap(player);
     }
 
-    @Override
-    public void logout(Player player) {
-
-    }
-
-    @Override
+	@Override
     public void move(Player player, Grid targetGrid) {
         neutralMapService.doMove(player, player.getCurrentMapId(), targetGrid);
     }
@@ -49,18 +44,8 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public void initFighterAccount(Player player, int mapId) {
-        neutralMapService.initFighterAccount(player, mapId);
-    }
-
-    @Override
-    public NeutralMapScene getEnterScene(String accountId, int mapId) {
-        return neutralMapService.getEnterScene(accountId, mapId);
-    }
-
-    @Override
-    public NeutralMapScene getCurrentScene(String accountId, int mapId) {
-        return neutralMapService.getCurrentScene(accountId, mapId);
+    public NeutralMapScene getCurrentScene(Player player) {
+        return neutralMapService.getCurrentScene(player);
     }
 
     @Override

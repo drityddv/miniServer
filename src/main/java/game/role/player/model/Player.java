@@ -42,7 +42,7 @@ public class Player extends AbstractCreature<Player> {
      */
     private int gold;
 
-    private volatile boolean changingMap;
+	private volatile boolean changingMap;
 
     private Player() {}
 
@@ -69,7 +69,7 @@ public class Player extends AbstractCreature<Player> {
         try {
             AbstractMapHandler handler = AbstractMapHandler.getAbstractMapHandler(getCurrentMapId());
             ISceneMapHandler sceneMapHandler = (ISceneMapHandler)handler;
-            currentScene = sceneMapHandler.getCurrentScene(accountId, getCurrentMapId());
+            currentScene = sceneMapHandler.getCurrentScene(this);
         } catch (Exception e) {
             e.printStackTrace();
             return;
@@ -137,7 +137,7 @@ public class Player extends AbstractCreature<Player> {
         this.gold = gold;
     }
 
-    public boolean isChangingMap() {
+	public boolean isChangingMap() {
         return changingMap;
     }
 
@@ -155,7 +155,14 @@ public class Player extends AbstractCreature<Player> {
         SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
     }
 
-    public boolean isLoaded() {
+	public void setLastMapId(int lastMapId) {
+		MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
+		mapInfoEnt.setLastMapId(lastMapId);
+		SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
+	}
+
+
+	public boolean isLoaded() {
         return isLoaded;
     }
 

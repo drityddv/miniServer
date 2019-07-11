@@ -1,35 +1,24 @@
 package game.world.neutral.neutralMap.service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
+import game.world.neutral.neutralMap.model.NeutralMapInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
-import game.base.fight.model.componet.IUnitComponent;
-import game.base.fight.model.componet.UnitComponentType;
-import game.base.fight.model.pvpunit.FighterAccount;
-import game.base.game.attribute.util.AttributeUtils;
-import game.gm.packet.SM_LogMessage;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.utils.VisibleUtil;
-import game.map.visible.impl.NpcVisibleInfo;
 import game.role.player.model.Player;
 import game.user.mapinfo.service.IMapInfoService;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 import game.world.neutral.neutralGather.service.INeutralMapGatherService;
 import game.world.neutral.neutralMap.model.NeutralMapAccountInfo;
-import game.world.neutral.neutralMap.model.NeutralMapCommonInfo;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
-import net.utils.PacketUtil;
 import spring.SpringContext;
-import utils.StringUtil;
 
 /**
  * @author : ddv
@@ -71,8 +60,8 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void enterMap(Player player, int mapId) {
-        NeutralMapCommonInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
-        NeutralMapScene neutralMapScene = mapCommonInfo.getNeutralMapScene();
+        NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
+        NeutralMapScene neutralMapScene = mapCommonInfo.getMapScene();
         MiniMapResource mapResource = mapCommonInfo.getMiniMapResource();
         NeutralMapAccountInfo visibleObject = neutralMapScene.getVisibleObject(player.getAccountId());
 
@@ -89,8 +78,8 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void leaveMap(Player player) {
-        NeutralMapCommonInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(player.getCurrentMapId());
-        NeutralMapScene neutralMapScene = mapCommonInfo.getNeutralMapScene();
+        NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(player.getCurrentMapId());
+        NeutralMapScene neutralMapScene = mapCommonInfo.getMapScene();
         neutralMapScene.leave(player.getAccountId());
     }
 
@@ -105,8 +94,8 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void doMove(Player player, int mapId, Grid targetGrid) {
-        NeutralMapCommonInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
-        NeutralMapScene mapScene = mapCommonInfo.getNeutralMapScene();
+        NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
+        NeutralMapScene mapScene = mapCommonInfo.getMapScene();
         NeutralMapAccountInfo sceneVisibleObject = mapScene.getVisibleObject(player.getAccountId());
 
         if (sceneVisibleObject != null) {
@@ -116,16 +105,11 @@ public class NeutralMapService implements INeutralMapService {
         }
     }
 
-    @Override
-    public NeutralMapScene getEnterScene(String accountId, int mapId) {
-        return neutralMapManager.getCommonInfoMap().get(mapId).getNeutralMapScene();
-    }
-
     // 因为没有分线概念 这里和上面的区别只是会再检查场景里有没有玩家单位存在
     @Override
-    public NeutralMapScene getCurrentScene(String accountId, int mapId) {
-        NeutralMapScene mapScene = neutralMapManager.getCommonInfoMap().get(mapId).getNeutralMapScene();
-        if (mapScene.isContainPlayer(accountId)) {
+    public NeutralMapScene getCurrentScene(Player player) {
+        NeutralMapScene mapScene = neutralMapManager.getCommonInfoMap().get(player.getCurrentMapId()).getMapScene();
+        if (mapScene.isContainPlayer(player.getAccountId())) {
             return mapScene;
         } else {
             return null;
@@ -134,70 +118,52 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void logMap(Player player, int mapId) {
-        StringBuilder sb = new StringBuilder();
-        NeutralMapCommonInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
-        NeutralMapScene neutralMapScene = mapCommonInfo.getNeutralMapScene();
-        List<NeutralMapAccountInfo> visibleObjects = neutralMapScene.getVisibleObjects();
-        Collection<NpcVisibleInfo> npcList = neutralMapScene.getNpcMap().values();
-
-        sb.append(StringUtil.wipePlaceholder("当前地图所处线程[{}]", Thread.currentThread().getName()));
-        sb.append(StringUtil.wipePlaceholder("当前打印地图[{}]", mapId));
-        sb.append(StringUtil.wipePlaceholder("地图内玩家数量[{}]", visibleObjects.size()));
-        visibleObjects.forEach(info -> {
-            sb.append(StringUtil.wipePlaceholder("玩家[{}],坐标[{},{}] 上次移动时间戳[{}]", info.getAccountId(),
-                info.getCurrentX(), info.getCurrentY(), info.getLastMoveAt()));
-        });
-        sb.append(StringUtil.wipePlaceholder("地图内npc数量[{}]", neutralMapScene.getNpcMap().size()));
-        npcList.forEach(npcVisibleInfo -> {
-            sb.append(StringUtil.wipePlaceholder("NPC id[{}],名称[{}] 坐标[{},{}]", npcVisibleInfo.getId(),
-                npcVisibleInfo.getName(), npcVisibleInfo.getCurrentX(), npcVisibleInfo.getCurrentY()));
-        });
-        sb.append(StringUtil.wipePlaceholder("地图内战斗对象数量[{}]", neutralMapScene.getFighterAccountMap().size()));
-        neutralMapScene.getFighterAccountMap().forEach((accountId, fighterAccount) -> {
-            Map<UnitComponentType, IUnitComponent> component =
-                fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
-            sb.append(StringUtil.wipePlaceholder("战斗对象[{}] 对象id[{}] 对象等级[{}]", accountId,
-                fighterAccount.getCreatureUnit().getId(), fighterAccount.getCreatureUnit().getLevel()));
-            sb.append(" 打印属性 \n");
-            component.forEach((type, iUnitComponent) -> {
-                sb.append(StringUtil.wipePlaceholder("组件种类[{}]", type.name()));
-                if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
-                    PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
-                    AttributeUtils.logAttrs(attributeComponent, sb);
-                }
-            });
-        });
-        sb.append(StringUtil.wipePlaceholder("地图内定时器数量[{}]", neutralMapScene.getCommandMap().size()));
-        String logFile = sb.toString();
-        logger.info(logFile);
-        PacketUtil.send(player, SM_LogMessage.valueOf(logFile));
-    }
-
-    @Override
-    public void initFighterAccount(Player player, int mapId) {
-        NeutralMapScene mapScene = getMapScene(mapId);
-        if (!mapScene.isContainPlayer(player.getAccountId())) {
-            logger.warn("为玩家[{}]生成战斗对象失败,玩家已经离开地图", player.getAccountId());
-            return;
-        }
-        FighterAccount fighterAccount = FighterAccount.valueOf(player);
-        mapScene.fighterEnter(fighterAccount);
-    }
-
-    @Override
-    public void pkPre(Player player) {
-        FighterAccount fighterAccount = SpringContext.getFightService().initForPlayer(player);
-        NeutralMapScene mapScene = getMapScene(player.getCurrentMapId());
-        mapScene.getFighterAccountMap().putIfAbsent(player.getAccountId(), fighterAccount);
+        // StringBuilder sb = new StringBuilder();
+        // NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
+        // NeutralMapScene mapScene = mapCommonInfo.getNeutralMapScene();
+        // List<NeutralMapAccountInfo> visibleObjects = mapScene.getVisibleObjects();
+        // Collection<NpcVisibleInfo> npcList = mapScene.getNpcMap().values();
+        //
+        // sb.append(StringUtil.wipePlaceholder("当前地图所处线程[{}]", Thread.currentThread().getName()));
+        // sb.append(StringUtil.wipePlaceholder("当前打印地图[{}]", mapId));
+        // sb.append(StringUtil.wipePlaceholder("地图内玩家数量[{}]", visibleObjects.size()));
+        // visibleObjects.forEach(info -> {
+        // sb.append(StringUtil.wipePlaceholder("玩家[{}],坐标[{},{}] 上次移动时间戳[{}]", info.getAccountId(),
+        // info.getCurrentX(), info.getCurrentY(), info.getLastMoveAt()));
+        // });
+        // sb.append(StringUtil.wipePlaceholder("地图内npc数量[{}]", mapScene.getNpcMap().size()));
+        // npcList.forEach(npcVisibleInfo -> {
+        // sb.append(StringUtil.wipePlaceholder("NPC id[{}],名称[{}] 坐标[{},{}]", npcVisibleInfo.getId(),
+        // npcVisibleInfo.getName(), npcVisibleInfo.getCurrentX(), npcVisibleInfo.getCurrentY()));
+        // });
+        // sb.append(StringUtil.wipePlaceholder("地图内战斗对象数量[{}]", mapScene.getFighterAccountMap().size()));
+        // mapScene.getFighterAccountMap().forEach((accountId, fighterAccount) -> {
+        // Map<UnitComponentType, IUnitComponent> component =
+        // fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
+        // sb.append(StringUtil.wipePlaceholder("战斗对象[{}] 对象id[{}] 对象等级[{}]", accountId,
+        // fighterAccount.getCreatureUnit().getId(), fighterAccount.getCreatureUnit().getLevel()));
+        // sb.append(" 打印属性 \n");
+        // component.forEach((type, iUnitComponent) -> {
+        // sb.append(StringUtil.wipePlaceholder("组件种类[{}]", type.name()));
+        // if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
+        // PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
+        // AttributeUtils.logAttrs(attributeComponent, sb);
+        // }
+        // });
+        // });
+        // sb.append(StringUtil.wipePlaceholder("地图内定时器数量[{}]", mapScene.getCommandMap().size()));
+        // String logFile = sb.toString();
+        // logger.info(logFile);
+        // PacketUtil.send(player, SM_LogMessage.valueOf(logFile));
     }
 
     private NeutralMapScene getMapScene(int mapId) {
-        return neutralMapManager.getCommonInfoMap().get(mapId).getNeutralMapScene();
+        return (NeutralMapScene)neutralMapManager.getCommonInfoMap().get(mapId).getMapScene();
     }
 
     private void initNeutralMapInfo(MiniMapResource mapResource) {
-        NeutralMapCommonInfo commonInfo = NeutralMapCommonInfo.valueOf(mapResource);
-        commonInfo.setNeutralMapScene(createNeutralMapScene(mapResource));
+        NeutralMapInfo commonInfo = NeutralMapInfo.valueOf(mapResource);
+        commonInfo.init(mapResource);
         neutralMapManager.addNeutralMapCommonInfo(commonInfo);
         neutralMapGatherService.initNpcResource(commonInfo);
     }

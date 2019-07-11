@@ -26,7 +26,7 @@ public class FighterSyncCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
-        FighterAccount fighterAccount = scene.getFighterAccountMap().get(accountId);
+        FighterAccount fighterAccount = scene.getPlayerFighter(accountId).getFighterAccount();
         if (fighterAccount != null) {
             iSyncStrategy.syncInfo(fighterAccount);
         }

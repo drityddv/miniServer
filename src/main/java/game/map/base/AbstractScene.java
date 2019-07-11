@@ -3,7 +3,7 @@ package game.map.base;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.base.fight.model.pvpunit.FighterAccount;
+import game.map.visible.AbstractVisibleMapInfo;
 
 /**
  * @author : ddv
@@ -17,10 +17,6 @@ public abstract class AbstractScene {
      */
     protected int mapId;
     /**
-     * 场景战斗对象容器
-     */
-    private Map<String, FighterAccount> fighterAccountMap = new HashMap<>();
-    /**
      * 定时器容器
      */
     private Map<Object, Object> commandMap = new HashMap<>();
@@ -29,41 +25,20 @@ public abstract class AbstractScene {
         this.mapId = mapId;
     }
 
-    public void clearFighterAccounts() {
-        fighterAccountMap.clear();
-    }
-
-    public void fighterEnter(FighterAccount fighterAccount) {
-        fighterAccountMap.put(fighterAccount.getAccountId(), fighterAccount);
-    }
-
-    public void fighterLeave(String accountId) {
-        fighterAccountMap.remove(accountId);
-    }
+    /**
+     * 获取场景内玩家的同步对象
+     *
+     * @return
+     */
+    public abstract AbstractVisibleMapInfo getPlayerFighter(String accountId);
 
     // get and set
     public int getMapId() {
         return mapId;
     }
 
-    public void setMapId(int mapId) {
-        this.mapId = mapId;
-    }
-
-    public Map<String, FighterAccount> getFighterAccountMap() {
-        return fighterAccountMap;
-    }
-
-    public void setFighterAccountMap(Map<String, FighterAccount> fighterAccountMap) {
-        this.fighterAccountMap = fighterAccountMap;
-    }
-
     public Map<Object, Object> getCommandMap() {
         return commandMap;
-    }
-
-    public void setCommandMap(Map<Object, Object> commandMap) {
-        this.commandMap = commandMap;
     }
 
 }

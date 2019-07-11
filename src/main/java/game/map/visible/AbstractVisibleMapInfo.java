@@ -1,8 +1,6 @@
 package game.map.visible;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import game.base.fight.model.pvpunit.FighterAccount;
 import utils.TimeUtil;
 
 /**
@@ -12,6 +10,8 @@ import utils.TimeUtil;
 
 public abstract class AbstractVisibleMapInfo {
 
+	protected FighterAccount fighterAccount;
+
     protected boolean move = true;
     protected int currentX = 0;
     protected int currentY = 0;
@@ -19,9 +19,6 @@ public abstract class AbstractVisibleMapInfo {
     protected int targetY = 0;
     // 上次移动时间 防外挂
     protected long lastMoveAt;
-    protected boolean isInMap;
-    // 模块可视信息
-    private Map<Integer, Object> modelVisibleInfo = new HashMap<>();
 
     // clear 字段内网视野有个范围内可见玩家的list 防止后续要用到
     public void init(int currentX, int currentY, boolean clear) {
@@ -30,12 +27,7 @@ public abstract class AbstractVisibleMapInfo {
         this.targetX = currentX;
         this.targetY = currentY;
         this.move = false;
-        this.isInMap = true;
         this.lastMoveAt = TimeUtil.now();
-    }
-
-    public boolean isExistInMap() {
-        return isInMap;
     }
 
     /**
@@ -53,14 +45,6 @@ public abstract class AbstractVisibleMapInfo {
     public abstract String getAccountId();
 
     // get and set
-
-    public Map<Integer, Object> getModelVisibleInfo() {
-        return modelVisibleInfo;
-    }
-
-    public void setModelVisibleInfo(Map<Integer, Object> modelVisibleInfo) {
-        this.modelVisibleInfo = modelVisibleInfo;
-    }
 
     public boolean isMove() {
         return move;
@@ -110,11 +94,12 @@ public abstract class AbstractVisibleMapInfo {
         this.lastMoveAt = lastMoveAt;
     }
 
-    public boolean isInMap() {
-        return isInMap;
-    }
 
-    public void setInMap(boolean inMap) {
-        isInMap = inMap;
-    }
+	public FighterAccount getFighterAccount() {
+		return fighterAccount;
+	}
+
+	public void setFighterAccount(FighterAccount fighterAccount) {
+		this.fighterAccount = fighterAccount;
+	}
 }

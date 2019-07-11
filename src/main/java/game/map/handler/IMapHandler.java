@@ -1,6 +1,6 @@
 package game.map.handler;
 
-import game.map.base.AbstractMapInfo;
+import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
@@ -13,14 +13,14 @@ import game.user.mapinfo.entity.MapInfoEnt;
 public interface IMapHandler {
 
     /**
-     * 获取玩家地图信息
+     * 获取玩家的地图记录信息
      *
      * @param player
      * @param ent
      * @param <T>
      * @return
      */
-    <T extends AbstractMapInfo> T getMapInfo(Player player, MapInfoEnt ent);
+    <T extends AbstractPlayerMapInfo> T getMapInfo(Player player, MapInfoEnt ent);
 
     /**
      * 获得地图类型
@@ -36,27 +36,12 @@ public interface IMapHandler {
      */
     void leaveMap(Player player);
 
-    /**
-     * 玩家下线之后 地图处理
-     *
-     * @param player
-     */
-    void logout(Player player);
-
-    /**
+	/**
      * 真正进入地图
      *
      * @param player
      * @param mapId
      */
     void realEnterMap(Player player, int mapId);
-
-    /**
-     * 为地图内的玩家生成战斗对象
-     *
-     * @param player
-     * @param mapId
-     */
-    void initFighterAccount(Player player, int mapId);
 
 }

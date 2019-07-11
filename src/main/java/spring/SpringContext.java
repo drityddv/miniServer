@@ -26,6 +26,7 @@ import game.user.login.service.ILoginService;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
 import game.world.base.service.IWorldService;
+import game.world.mainCity.service.IMainCityService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
 import net.server.Server;
 import resource.service.StorageManager;
@@ -86,6 +87,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private INeutralMapService neutralMapService;
+
+    @Autowired
+    private IMainCityService mainCityService;
 
     // 业务service区
     @Autowired
@@ -198,6 +202,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static ISystemService getSystemService() {
         return instance.systemService;
+    }
+
+    public static IMainCityService getMainCityService() {
+        return instance.mainCityService;
     }
 
     public static ApplicationContext getApplicationContext() {

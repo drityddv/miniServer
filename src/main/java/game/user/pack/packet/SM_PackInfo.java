@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import client.action.IMessageAction;
 import game.user.pack.model.Pack;
 import game.user.pack.model.PackSquare;
 
@@ -16,8 +15,7 @@ import game.user.pack.model.PackSquare;
  * @author : ddv
  * @since : 2019/6/6 下午11:45
  */
-
-public class SM_PackInfo implements IMessageAction {
+public class SM_PackInfo {
 
     private static final Logger logger = LoggerFactory.getLogger("client");
 
@@ -35,17 +33,12 @@ public class SM_PackInfo implements IMessageAction {
         return packInfo;
     }
 
-    @Override
-    public void action() {
-        logger.info("背包大小[{}]", size);
-        squareList.stream().filter(packSquare -> !packSquare.isEmpty()).forEach(packSquare -> {
-            logger.info("格子编号[{}] 道具id[{}] 道具数量[{}],", packSquare.getIndex(), packSquare.getItem().getConfigId(),
-                packSquare.getItemNum());
-        });
+    public int getSize() {
+        return size;
     }
 
-    @Override
-    public String toString() {
-        return "SM_PackInfo{" + "size=" + size + ", squareList=" + squareList + '}';
+    public List<PackSquare> getSquareList() {
+        return squareList;
     }
+
 }

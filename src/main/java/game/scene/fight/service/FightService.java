@@ -8,6 +8,8 @@ import game.base.fight.model.pvpunit.FighterAccount;
 import game.role.player.model.Player;
 
 /**
+ * 战斗对象的信息处理
+ *
  * @author : ddv
  * @since : 2019/7/5 下午9:28
  */

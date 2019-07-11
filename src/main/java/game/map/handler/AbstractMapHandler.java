@@ -5,14 +5,12 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import game.map.base.AbstractMapInfo;
+import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
-import game.world.neutral.neutralMap.model.NeutralMapInfo;
-import spring.SpringContext;
 
 /**
  * 地图处理器
@@ -35,7 +33,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     public static <T extends AbstractMapHandler> T getHandler(int groupId) {
         AbstractMapHandler handler = HANDLER_MAP.get(groupId);
         if (handler == null) {
-            handler = HANDLER_MAP.get(MapGroupType.SAFE_MAP.getGroupId());
+            handler = HANDLER_MAP.get(MapGroupType.MAIN_CITY.getGroupId());
         }
         return (T)handler;
     }
@@ -58,7 +56,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     }
 
     @Override
-    public <T extends AbstractMapInfo> T getMapInfo(Player player, MapInfoEnt ent) {
+    public <T extends AbstractPlayerMapInfo> T getMapInfo(Player player, MapInfoEnt ent) {
         return (T)ent.getPlayerMapInfo().getOrCreateMapInfo(getGroupType());
     }
 
@@ -71,39 +69,43 @@ public abstract class AbstractMapHandler implements IMapHandler {
     }
 
     /**
-     * 进图的前置工作 修改mapInfo
+     * 进图前置工作[修改玩家信息:玩家切图状态,玩家上一张地图id]
      *
      * @param player
-     * @param mapId
      */
-    public final void enterMapPre(Player player, int mapId) {
+    public final void enterMapPre(Player player) {
         player.setChangingMap(true);
     }
 
+    /**
+     * 进入地图后置[修改玩家信息:玩家切图状态,玩家当前地图id]
+     *
+     * @param player
+     * @param currentMapId
+     */
     public final void enterMapAfter(Player player, int currentMapId) {
-        MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(player);
-        NeutralMapInfo mapInfo = getMapInfo(player, mapInfoEnt);
-        mapInfo.setMapId(currentMapId);
-        SpringContext.getMapInfoService().saveMapInfoEnt(player, mapInfoEnt);
         player.setCurrentMapId(currentMapId);
         player.setChangingMap(false);
     }
 
+    /**
+     * 退图前置[修改玩家信息:玩家切图状态]
+     *
+     * @param player
+     */
     public final void leaveMapPre(Player player) {
         player.setChangingMap(true);
     }
 
+    /**
+     * 退图后置[修改玩家信息:玩家切图状态,玩家当前地图id,玩家上一张地图id]
+     *
+     * @param player
+     */
     public final void leaveMapAfter(Player player) {
+        player.setLastMapId(player.getCurrentMapId());
         player.setCurrentMapId(0);
         player.setChangingMap(false);
-    }
-
-    public final void logMap(Player player, int mapId) {
-        MiniMapResource mapResource = WorldManager.getInstance().getMapResource(mapId);
-        if (mapResource == null) {
-            return;
-        }
-        doLogMap(player, mapId);
     }
 
     /**

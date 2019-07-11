@@ -19,9 +19,9 @@ public class SystemService implements ISystemService {
     public void serverClose() {
         logger.info("服务器开始关服...");
         SpringContext.getServer().shutdown();
+        SpringContext.getQuartzService().shutdown();
         SpringContext.getSceneExecutorService().shutdown();
         SpringContext.getAccountExecutorService().shutdown();
-        SpringContext.getQuartzService().shutdown();
         logger.info("服务器关闭结束...");
     }
 

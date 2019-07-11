@@ -3,9 +3,9 @@ package game.map.constant;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.map.base.AbstractMapInfo;
-import game.world.mainCity.model.MainCityMapInfo;
-import game.world.neutral.neutralMap.model.NeutralMapInfo;
+import game.map.base.AbstractPlayerMapInfo;
+import game.world.mainCity.model.MainCityPlayerMapInfo;
+import game.world.neutral.neutralMap.model.NeutralPlayerMapInfo;
 
 /**
  * 地图分类
@@ -23,23 +23,23 @@ public enum MapGroupType {
     /**
      * 中立地图
      */
-    NEUTRAL_MAP(1, new NeutralMapInfo()) {
+    NEUTRAL_MAP(1, new NeutralPlayerMapInfo()) {
         @Override
         public boolean isNeedCd() {
             return false;
         }
     },
     /**
-     * 保底地图 没有进入限制 用来接盘玩家进图失败的异常情况
+     * 主城 保底地图 没有进入限制 用来接盘玩家进图失败的异常情况
      */
-    SAFE_MAP(2, new MainCityMapInfo()) {
+    MAIN_CITY(2, new MainCityPlayerMapInfo()) {
         @Override
         public boolean isNeedCd() {
             return false;
         }
 
     };
-    private static final Map<Class<? extends AbstractMapInfo>, MapGroupType> CLASS_TO_TYPE = new HashMap<>();
+    private static final Map<Class<? extends AbstractPlayerMapInfo>, MapGroupType> CLASS_TO_TYPE = new HashMap<>();
     private static final Map<Integer, MapGroupType> GROUP_ID_TO_TYPE = new HashMap<>();
 
     static {
@@ -55,14 +55,14 @@ public enum MapGroupType {
      * 地图所属组id
      */
     private int groupId;
-    private AbstractMapInfo mapInfo;
+    private AbstractPlayerMapInfo mapInfo;
 
-    MapGroupType(int groupId, AbstractMapInfo mapInfo) {
+    MapGroupType(int groupId, AbstractPlayerMapInfo mapInfo) {
         this.groupId = groupId;
         this.mapInfo = mapInfo;
     }
 
-    public static MapGroupType getTypeByMapInfo(AbstractMapInfo mapInfo) {
+    public static MapGroupType getTypeByMapInfo(AbstractPlayerMapInfo mapInfo) {
         return CLASS_TO_TYPE.get(mapInfo);
     }
 
@@ -79,11 +79,11 @@ public enum MapGroupType {
         return groupId;
     }
 
-    public AbstractMapInfo getMapInfo() {
+    public AbstractPlayerMapInfo getMapInfo() {
         return mapInfo;
     }
 
-    public AbstractMapInfo initAndCreateMapInfo() {
+    public AbstractPlayerMapInfo initAndCreateMapInfo() {
         return mapInfo.valueOf();
     }
 }

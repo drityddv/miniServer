@@ -56,4 +56,8 @@ public abstract class AbstractMovableMap<T extends AbstractVisibleMapInfo> exten
         this.updatePositionCommand = updatePositionCommand;
     }
 
+    @Override
+    public AbstractVisibleMapInfo getPlayerFighter(String accountId) {
+        return accountIdToVisible.get(accountId);
+    }
 }
