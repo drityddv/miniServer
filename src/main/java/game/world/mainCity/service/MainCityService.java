@@ -82,7 +82,7 @@ public class MainCityService implements IMainCityService {
         List<PlayerVisibleMapInfo> visibleObjects = mapScene.getVisibleObjects();
         Collection<NpcVisibleInfo> npcList = mapScene.getNpcMap().values();
 
-        MapUtil.log(player, mapScene, visibleObjects, npcList);
+        MapUtil.log(player, mapScene, visibleObjects, npcList, null);
     }
 
     private void initMapInfo() {
@@ -90,7 +90,7 @@ public class MainCityService implements IMainCityService {
             worldManager.getMapResourcesByGroup(MapGroupType.MAIN_CITY.getGroupId());
         mainCityMapResource.forEach(mapResource -> {
             MainCityMapInfo mapInfo = MainCityMapInfo.valueOf(mapResource);
-            mapInfo.getMapScene().initNpc(SpringContext.getNpcManager().getNpcByMapId(mapInfo.getMapId()));
+            mapInfo.getMapScene().initNpc(SpringContext.getCreatureManager().getNpcByMapId(mapInfo.getMapId()));
             mainCityManager.addMainCityMapInfo(mapInfo);
         });
     }

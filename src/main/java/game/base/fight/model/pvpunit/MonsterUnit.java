@@ -10,6 +10,7 @@ import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
+import game.base.game.attribute.id.AttributeIdEnum;
 import game.world.base.resource.CreatureResource;
 
 /**
@@ -25,7 +26,7 @@ public class MonsterUnit extends BaseCreatureUnit {
     static {
         Map<UnitComponentType, Class<? extends IUnitComponent>> map = new HashMap<>();
         map.put(UnitComponentType.ATTRIBUTE, PVPCreatureAttributeComponent.class);
-        UnitComponentContainer.registerComponentClazz(PlayerUnit.class, map);
+        UnitComponentContainer.registerComponentClazz(MonsterUnit.class, map);
     }
 
     // 怪物配置表
@@ -37,6 +38,21 @@ public class MonsterUnit extends BaseCreatureUnit {
         monsterUnit.fighterAccount = fighterAccount;
         monsterUnit.setLevel(creatureResource.getLevel());
         monsterUnit.initComponent();
+
+        PVPCreatureAttributeComponent unitAttributeComponent = monsterUnit.getAttributeComponent();
+        unitAttributeComponent.putAttributes(AttributeIdEnum.BASE, creatureResource.getAttributeList());
+        unitAttributeComponent.setOwner(monsterUnit);
+        unitAttributeComponent.containerRecompute();
+        ;
+
         return monsterUnit;
+    }
+
+    private PVPCreatureAttributeComponent getAttributeComponent() {
+        return componentContainer.getComponent(UnitComponentType.ATTRIBUTE);
+    }
+
+    public CreatureResource getCreatureResource() {
+        return creatureResource;
     }
 }

@@ -19,7 +19,7 @@ import game.gm.service.IGmService;
 import game.role.equip.service.IEquipService;
 import game.role.player.service.IPlayerService;
 import game.scene.fight.service.IFightService;
-import game.scene.npc.service.NpcManager;
+import game.scene.npc.service.CreatureManager;
 import game.system.ISystemService;
 import game.user.item.service.IItemService;
 import game.user.login.service.ILoginService;
@@ -111,7 +111,7 @@ public class SpringContext implements ApplicationContextAware {
     private IEquipService equipService;
 
     @Autowired
-    private NpcManager npcManager;
+    private CreatureManager creatureManager;
 
     @Autowired
     private IFightService fightService;
@@ -164,8 +164,8 @@ public class SpringContext implements ApplicationContextAware {
         return instance.worldService;
     }
 
-    public static NpcManager getNpcManager() {
-        return instance.npcManager;
+    public static CreatureManager getCreatureManager() {
+        return instance.creatureManager;
     }
 
     public static IMapInfoService getMapInfoService() {

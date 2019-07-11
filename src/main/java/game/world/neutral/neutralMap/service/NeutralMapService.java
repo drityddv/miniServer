@@ -12,6 +12,7 @@ import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.utils.VisibleUtil;
 import game.map.visible.PlayerVisibleMapInfo;
+import game.map.visible.impl.MonsterVisibleMapInfo;
 import game.map.visible.impl.NpcVisibleInfo;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
@@ -109,13 +110,16 @@ public class NeutralMapService implements INeutralMapService {
         NeutralMapScene mapScene = mapCommonInfo.getMapScene();
         List<PlayerVisibleMapInfo> visibleObjects = mapScene.getVisibleObjects();
         Collection<NpcVisibleInfo> npcList = mapScene.getNpcMap().values();
-        MapUtil.log(player, mapScene, visibleObjects, npcList);
+        Collection<MonsterVisibleMapInfo> monsterList = mapScene.getMonsterMap().values();
+        MapUtil.log(player, mapScene, visibleObjects, npcList, monsterList);
     }
 
     private void initNeutralMapInfo(MiniMapResource mapResource) {
         NeutralMapInfo commonInfo = NeutralMapInfo.valueOf(mapResource);
         commonInfo.init(mapResource);
-        commonInfo.getMapScene().initNpc(SpringContext.getNpcManager().getNpcByMapId(commonInfo.getMapId()));
+        commonInfo.getMapScene().initNpc(SpringContext.getCreatureManager().getNpcByMapId(commonInfo.getMapId()));
+        commonInfo.getMapScene()
+            .initMonster(SpringContext.getCreatureManager().getCreatureResourceByMapId(commonInfo.getMapId()));
         neutralMapManager.addNeutralMapCommonInfo(commonInfo);
     }
 

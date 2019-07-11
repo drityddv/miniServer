@@ -1,14 +1,16 @@
 package game.world.neutral.neutralMap.model;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.base.fight.model.pvpunit.FighterAccount;
 import game.map.base.AbstractMovableMap;
 import game.map.visible.PlayerVisibleMapInfo;
+import game.map.visible.impl.MonsterVisibleMapInfo;
+import game.world.base.resource.CreatureResource;
 
 /**
  * 中立地图
@@ -22,7 +24,7 @@ public class NeutralMapScene extends AbstractMovableMap<PlayerVisibleMapInfo> {
     private static final Logger logger = LoggerFactory.getLogger(NeutralMapScene.class);
 
     // 怪物
-    private Map<Long, FighterAccount> monsterMap = new ConcurrentHashMap<>();
+    private Map<Long, MonsterVisibleMapInfo> monsterMap = new ConcurrentHashMap<>();
 
     public NeutralMapScene(int mapId) {
         super(mapId);
@@ -33,8 +35,14 @@ public class NeutralMapScene extends AbstractMovableMap<PlayerVisibleMapInfo> {
         return mapScene;
     }
 
-    public Map<Long, FighterAccount> getMonsterMap() {
+    public Map<Long, MonsterVisibleMapInfo> getMonsterMap() {
         return monsterMap;
     }
 
+    public void initMonster(List<CreatureResource> creatureResources) {
+        for (CreatureResource creatureResource : creatureResources) {
+            MonsterVisibleMapInfo monster = MonsterVisibleMapInfo.valueOf(creatureResource);
+            monsterMap.put(monster.getId(), monster);
+        }
+    }
 }

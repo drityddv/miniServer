@@ -25,6 +25,9 @@ public class CreatureResource {
      * 名称
      */
     private String objectName;
+    private int mapId;
+    private int bornX;
+    private int bornY;
     /**
      * 等级
      */
@@ -65,4 +68,15 @@ public class CreatureResource {
         return attributeList;
     }
 
+	public int getMapId() {
+		return mapId;
+	}
+
+	public int getBornX() {
+		return bornX;
+	}
+
+	public int getBornY() {
+		return bornY;
+	}
 }

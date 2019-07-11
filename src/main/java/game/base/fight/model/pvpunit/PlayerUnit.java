@@ -24,8 +24,6 @@ import game.role.player.model.Player;
 
 public class PlayerUnit extends BaseCreatureUnit {
 
-    private static Logger logger = LoggerFactory.getLogger(PlayerUnit.class);
-
     static {
         Map<UnitComponentType, Class<? extends IUnitComponent>> map = new HashMap<>();
         map.put(UnitComponentType.ATTRIBUTE, PVPCreatureAttributeComponent.class);
@@ -59,7 +57,7 @@ public class PlayerUnit extends BaseCreatureUnit {
         return playerUnit;
     }
 
-    public PVPCreatureAttributeComponent getAttributeComponent() {
+    private PVPCreatureAttributeComponent getAttributeComponent() {
         return componentContainer.getComponent(UnitComponentType.ATTRIBUTE);
     }
 

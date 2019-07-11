@@ -17,10 +17,8 @@ public abstract class AbstractVisibleMapInfo {
     protected int currentY = 0;
     protected int targetX = 0;
     protected int targetY = 0;
-    // 上次移动时间 防外挂
     protected long lastMoveAt;
 
-    // clear 字段内网视野有个范围内可见玩家的list 防止后续要用到
     public void init(int currentX, int currentY) {
         this.currentX = currentX;
         this.currentY = currentY;
