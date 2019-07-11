@@ -27,11 +27,18 @@ public abstract class BaseMapInfo<T extends AbstractScene> {
      * @param mapResource
      * @return
      */
-    public  void init(MiniMapResource mapResource){
-		mapId = mapResource.getMapId();
-		miniMapResource = mapResource;
-		blockResource = WorldManager.getInstance().getBlockResource(mapResource.getMapDataConfigId());
-	}
+    public void init(MiniMapResource mapResource) {
+        mapId = mapResource.getMapId();
+        miniMapResource = mapResource;
+        blockResource = WorldManager.getInstance().getBlockResource(mapResource.getMapDataConfigId());
+        initScene();
+    }
+
+    /**
+     * 初始化场景容器
+     *
+     */
+    protected abstract void initScene();
 
     public int getMapId() {
         return mapId;

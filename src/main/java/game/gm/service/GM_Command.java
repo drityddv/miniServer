@@ -139,6 +139,13 @@ public class GM_Command {
         PacketUtil.send(player, SM_LogMessage.valueOf(message));
     }
 
+    public void setLevel(Player player, int level) {
+        while (level > player.getLevel()) {
+            playerService.playerLevelUp(player);
+        }
+
+    }
+
     public void addItem(Player player, long configId, int num) {
         packService.addItem(player, iItemService.createItem(configId, num));
     }

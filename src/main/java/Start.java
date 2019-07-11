@@ -1,6 +1,7 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.world.mainCity.service.IMainCityService;
 import spring.SpringContext;
 import spring.SpringController;
 
@@ -27,6 +28,9 @@ public class Start {
         // 初始化静态资源组件
         SpringContext.getStorageManager().init();
 
+        // 主城地图初始化
+        SpringContext.getMainCityService().init();
+
         // 中立地图初始化
         SpringContext.getNeutralMapService().init();
 
@@ -38,6 +42,8 @@ public class Start {
 
         // net服务器启动
         SpringContext.getServer().run();
+
+        IMainCityService mainCityService = SpringContext.getMainCityService();
 
         logger.info("服务器启动成功...");
     }

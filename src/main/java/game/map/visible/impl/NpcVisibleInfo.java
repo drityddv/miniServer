@@ -26,7 +26,7 @@ public class NpcVisibleInfo extends AbstractVisibleMapInfo {
         NpcVisibleInfo npcVisibleInfo = new NpcVisibleInfo();
         npcVisibleInfo.id = IdUtil.getLongId();
         npcVisibleInfo.name = resource.getNpcName();
-        npcVisibleInfo.init(resource.getX(), resource.getY(), false);
+        npcVisibleInfo.init(resource.getX(), resource.getY());
         return npcVisibleInfo;
     }
 

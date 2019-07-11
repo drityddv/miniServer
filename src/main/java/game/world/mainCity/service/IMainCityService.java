@@ -34,11 +34,10 @@ public interface IMainCityService {
      * 移动
      *
      * @param player
-     * @param mapId
      *
      * @param targetGrid
      */
-    void doMove(Player player, int mapId, Grid targetGrid);
+    void doMove(Player player, Grid targetGrid);
 
     /**
      * 获取玩家当前所处场景

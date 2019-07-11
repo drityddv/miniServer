@@ -5,6 +5,8 @@ import java.util.Map;
 import game.role.player.model.Player;
 
 /**
+ * 条件满足检查器
+ *
  * @author : ddv
  * @since : 2019/7/1 下午8:39
  */

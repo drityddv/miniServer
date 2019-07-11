@@ -19,6 +19,11 @@ public class MainCityMapInfo extends BaseMapInfo<MainCityMapScene> {
     }
 
     @Override
+    protected void initScene() {
+        mapScene = MainCityMapScene.valueOf(mapId);
+    }
+
+    @Override
     public MainCityMapScene getMapScene() {
         return mapScene;
     }

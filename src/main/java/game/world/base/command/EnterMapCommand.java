@@ -4,10 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
+import game.base.message.exception.RequestException;
+import game.base.message.packet.SM_Message;
 import game.map.handler.AbstractMapHandler;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
+import net.utils.PacketUtil;
 
 /**
  * @author : ddv
@@ -34,13 +37,14 @@ public class EnterMapCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
+        AbstractMapHandler handler = null;
         try {
             // 具体切图逻辑
             MiniMapResource mapResource = WorldManager.getInstance().getMapResource(mapId);
-            AbstractMapHandler handler = AbstractMapHandler.getHandler(mapResource.getGroupId());
+            handler = AbstractMapHandler.getHandler(mapResource.getGroupId());
 
             // 检查进入条件
-            handler.canEnterMapThrow(player, mapId, false);
+            handler.canEnterMapThrow(player, mapId);
             // 进入地图前的一些工作 检查,上锁等
             handler.enterMapPre(player);
             // FIXME 内网真正进入地图是等客户端加载资源后再次发包 项目这里就直接进入了
@@ -48,9 +52,14 @@ public class EnterMapCommand extends AbstractSceneCommand {
             handler.realEnterMap(player, mapId);
             // 进入地图后的一些工作
             handler.enterMapAfter(player, mapId);
+        } catch (RequestException e) {
+            logger.info("玩家[{}]进图失败,自动回到主城", player.getAccountId());
+            handler.handEnterMapFailed(player);
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
-            player.setChangingMap(false);
             e.printStackTrace();
+        } finally {
+            player.setChangingMap(false);
         }
     }
 

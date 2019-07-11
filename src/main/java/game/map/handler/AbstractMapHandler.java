@@ -5,10 +5,14 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import game.base.executor.util.ExecutorUtils;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
+import game.world.base.command.EnterMapCommand;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 
@@ -60,12 +64,14 @@ public abstract class AbstractMapHandler implements IMapHandler {
         return (T)ent.getPlayerMapInfo().getOrCreateMapInfo(getGroupType());
     }
 
-    public boolean canEnterMap(Player player, int mapId, boolean clientRequest) {
+    public boolean canEnterMap(Player player, int mapId) {
         return true;
     }
 
-    public void canEnterMapThrow(Player player, int mapId, boolean clientRequest) {
-
+    public void canEnterMapThrow(Player player, int mapId) {
+        if (!canEnterMap(player, mapId)) {
+            RequestException.throwException(I18N.MAP_ENTER_CONDITION_NOT_SATISFY);
+        }
     }
 
     /**
@@ -86,6 +92,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     public final void enterMapAfter(Player player, int currentMapId) {
         player.setCurrentMapId(currentMapId);
         player.setChangingMap(false);
+        doLogMap(player, currentMapId);
     }
 
     /**
@@ -116,4 +123,8 @@ public abstract class AbstractMapHandler implements IMapHandler {
      */
     public abstract void doLogMap(Player player, int mapId);
 
+    // 进图失败 自动回到主城
+    public void handEnterMapFailed(Player player) {
+        ExecutorUtils.submit(EnterMapCommand.valueOf(player, 4));
+    }
 }

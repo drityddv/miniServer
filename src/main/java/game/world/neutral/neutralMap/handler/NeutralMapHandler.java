@@ -33,9 +33,9 @@ public class NeutralMapHandler extends AbstractMapHandler
         neutralMapService.leaveMap(player);
     }
 
-	@Override
+    @Override
     public void move(Player player, Grid targetGrid) {
-        neutralMapService.doMove(player, player.getCurrentMapId(), targetGrid);
+        neutralMapService.doMove(player, targetGrid);
     }
 
     @Override
@@ -52,4 +52,10 @@ public class NeutralMapHandler extends AbstractMapHandler
     public void doLogMap(Player player, int mapId) {
         neutralMapService.logMap(player, mapId);
     }
+
+    @Override
+    public boolean canEnterMap(Player player, int mapId) {
+        return neutralMapService.canEnterMap(player, mapId);
+    }
+
 }

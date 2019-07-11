@@ -27,15 +27,6 @@ public interface INeutralMapService {
     boolean canEnterMap(Player player, int mapId);
 
     /**
-     * 是否可以进入地图
-     *
-     * @param player
-     * @param mapId
-     * @param clientRequest
-     */
-    void canEnterMapThrow(Player player, int mapId, boolean clientRequest);
-
-    /**
      * 进入地图
      *
      * @param player
@@ -51,22 +42,13 @@ public interface INeutralMapService {
     void leaveMap(Player player);
 
     /**
-     * 离开地图 并且进入新的地图
-     *
-     * @param player
-     * @param newMapId
-     */
-    void leaveMap(Player player, int newMapId);
-
-    /**
      * 移动
      *
      * @param player
-     * @param mapId
      *
      * @param targetGrid
      */
-    void doMove(Player player, int mapId, Grid targetGrid);
+    void doMove(Player player, Grid targetGrid);
 
     /**
      * 获取玩家当前所处场景

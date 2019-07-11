@@ -10,7 +10,7 @@ import utils.TimeUtil;
 
 public abstract class AbstractVisibleMapInfo {
 
-	protected FighterAccount fighterAccount;
+    protected FighterAccount fighterAccount;
 
     protected boolean move = true;
     protected int currentX = 0;
@@ -21,7 +21,7 @@ public abstract class AbstractVisibleMapInfo {
     protected long lastMoveAt;
 
     // clear 字段内网视野有个范围内可见玩家的list 防止后续要用到
-    public void init(int currentX, int currentY, boolean clear) {
+    public void init(int currentX, int currentY) {
         this.currentX = currentX;
         this.currentY = currentY;
         this.targetX = currentX;
@@ -94,12 +94,11 @@ public abstract class AbstractVisibleMapInfo {
         this.lastMoveAt = lastMoveAt;
     }
 
+    public FighterAccount getFighterAccount() {
+        return fighterAccount;
+    }
 
-	public FighterAccount getFighterAccount() {
-		return fighterAccount;
-	}
-
-	public void setFighterAccount(FighterAccount fighterAccount) {
-		this.fighterAccount = fighterAccount;
-	}
+    public void setFighterAccount(FighterAccount fighterAccount) {
+        this.fighterAccount = fighterAccount;
+    }
 }

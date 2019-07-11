@@ -10,7 +10,7 @@ import game.role.player.model.Player;
 
 public interface ISceneMapHandler<T extends AbstractScene> extends IMapHandler {
 
-	/**
+    /**
      * 获得玩家当前所存在的场景
      *
      * @param player

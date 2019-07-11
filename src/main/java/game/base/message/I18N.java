@@ -72,4 +72,8 @@ public interface I18N {
      * 服务器强制下线
      */
     int FORCED_OFFLINE = 19;
+    /**
+     * 进图要求不合格
+     */
+    int MAP_ENTER_CONDITION_NOT_SATISFY = 20;
 }

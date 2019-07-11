@@ -3,8 +3,9 @@ package game.world.neutral.neutralMap.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.world.neutral.neutralMap.model.NeutralMapInfo;
 import org.springframework.stereotype.Component;
+
+import game.world.neutral.neutralMap.model.NeutralMapInfo;
 
 /**
  * @author : ddv

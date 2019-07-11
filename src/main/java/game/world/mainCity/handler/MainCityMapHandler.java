@@ -32,7 +32,7 @@ public class MainCityMapHandler extends AbstractMapHandler
 
     @Override
     public void move(Player player, Grid targetGrid) {
-        mainCityService.doMove(player, player.getCurrentMapId(), targetGrid);
+        mainCityService.doMove(player, targetGrid);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class MainCityMapHandler extends AbstractMapHandler
         mainCityService.leaveMap(player);
     }
 
-	@Override
+    @Override
     public void realEnterMap(Player player, int mapId) {
         mainCityService.enterMap(player, mapId);
     }
