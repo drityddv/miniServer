@@ -67,7 +67,7 @@ public class PlayerService implements IPlayerService {
         player.getAttributeContainer().containerRecompute();
 
         savePlayer(playerEnt);
-        // player.fighterSync(LevelSynStrategy.valueOf(player));
+        // player.fighterSync(LevelSynStrategy.success(player));
     }
 
     @Override

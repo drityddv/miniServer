@@ -38,6 +38,10 @@ public class Player extends AbstractCreature<Player> {
 
     private int level;
     /**
+     * 技能点 升级技能用 升级+1
+     */
+    private int skillPoint;
+    /**
      * 黄金
      */
     private int gold;
@@ -53,6 +57,7 @@ public class Player extends AbstractCreature<Player> {
         player.playerId = IdUtil.getLongId();
         player.sex = 2;
         player.level = 1;
+        player.skillPoint = 1;
         player.gold = 1000;
         player.changingMap = false;
         player.setAttributeContainer(new PlayerAttributeContainer(player));
@@ -149,6 +154,14 @@ public class Player extends AbstractCreature<Player> {
 
     public int getCurrentMapId() {
         return SpringContext.getMapInfoService().getMapInfoEnt(this).getCurrentMapId();
+    }
+
+    public int getSkillPoint() {
+        return skillPoint;
+    }
+
+    public void setSkillPoint(int skillPoint) {
+        this.skillPoint = skillPoint;
     }
 
     public void setCurrentMapId(int mapId) {

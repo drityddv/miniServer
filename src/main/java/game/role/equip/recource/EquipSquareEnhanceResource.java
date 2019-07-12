@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import game.base.consume.AssetsConsume;
+import game.base.consume.IConsume;
 import game.base.consumer.AbstractConsumeProcessor;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
@@ -49,12 +51,29 @@ public class EquipSquareEnhanceResource {
     private List<AbstractConsumeProcessor> processors;
     private String consumeString;
 
+    /**
+     * 新版消耗配置
+     */
+    private List<IConsume> consumeList;
+    private String newConsumeString;
+
     @Init
     public void init() {
         equipPosition = EquipPosition.getPosition(equipPositionString);
 
         analysisAttrs();
         analysisConsumers();
+        analysisNewConsumers();
+    }
+
+    private void analysisNewConsumers() {
+        consumeList = new ArrayList<>();
+        String[] split = newConsumeString.split(",");
+        for (String value : split) {
+            AssetsConsume consume = new AssetsConsume();
+            consume.doParse(value);
+            consumeList.add(consume);
+        }
     }
 
     private void analysisAttrs() {
@@ -107,5 +126,9 @@ public class EquipSquareEnhanceResource {
 
     public int getNextLevelConfigId() {
         return nextLevelConfigId;
+    }
+
+    public List<IConsume> getConsumeList() {
+        return consumeList;
     }
 }

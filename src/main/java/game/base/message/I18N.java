@@ -76,4 +76,8 @@ public interface I18N {
      * 进图要求不合格
      */
     int MAP_ENTER_CONDITION_NOT_SATISFY = 20;
+    /**
+     * 技能点不足
+     */
+    int SKILL_POINT_NOT_ENOUGH = 21;
 }
