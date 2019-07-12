@@ -156,18 +156,18 @@ public class Player extends AbstractCreature<Player> {
         return SpringContext.getMapInfoService().getMapInfoEnt(this).getCurrentMapId();
     }
 
+    public void setCurrentMapId(int mapId) {
+        MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
+        mapInfoEnt.setCurrentMapId(mapId);
+        SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
+    }
+
     public int getSkillPoint() {
         return skillPoint;
     }
 
     public void setSkillPoint(int skillPoint) {
         this.skillPoint = skillPoint;
-    }
-
-    public void setCurrentMapId(int mapId) {
-        MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
-        mapInfoEnt.setCurrentMapId(mapId);
-        SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
     }
 
     public void setLastMapId(int lastMapId) {

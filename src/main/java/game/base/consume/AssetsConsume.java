@@ -13,6 +13,12 @@ public class AssetsConsume extends BaseConsume {
     private long configId;
     private int value;
 
+    public static AssetsConsume valueOf(String value) {
+        AssetsConsume consume = new AssetsConsume();
+        consume.doParse(value);
+        return consume;
+    }
+
     @Override
     public void doParse(String value) {
         String[] split = value.split(":");
@@ -31,12 +37,12 @@ public class AssetsConsume extends BaseConsume {
 
     @Override
     public void doVerify(Player player, VerifyResult result) {
-        result = type.verify(player, ConsumeParam.valueOf(configId, value));
+        type.verify(player, ConsumeParam.valueOf(configId, value), result);
     }
 
     @Override
     public void doConsume(Player player) {
-		type.consume(player,ConsumeParam.valueOf(configId, value));
+        type.consume(player, ConsumeParam.valueOf(configId, value));
     }
 
     @Override

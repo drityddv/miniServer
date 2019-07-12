@@ -1,0 +1,6 @@
+miniServer:
+  net:
+    boss:
+      threadNum: 1
+    worker:
+      threadNum: 5

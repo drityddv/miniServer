@@ -18,6 +18,7 @@ import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
 import game.role.equip.service.IEquipService;
 import game.role.player.service.IPlayerService;
+import game.role.skill.service.ISkillService;
 import game.scene.fight.service.IFightService;
 import game.scene.npc.service.CreatureManager;
 import game.system.ISystemService;
@@ -111,6 +112,9 @@ public class SpringContext implements ApplicationContextAware {
     private IEquipService equipService;
 
     @Autowired
+    private ISkillService skillService;
+
+    @Autowired
     private CreatureManager creatureManager;
 
     @Autowired
@@ -154,6 +158,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IEquipService getEquipService() {
         return instance.equipService;
+    }
+
+    public static ISkillService getSkillService() {
+        return instance.skillService;
     }
 
     public static ISceneExecutorService getSceneExecutorService() {

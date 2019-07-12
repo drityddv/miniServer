@@ -116,9 +116,6 @@ public class ClassUtil {
         return null;
     }
 
-    /**
-     * 基于反射机制实现的Bean对象属性的拷贝
-     */
     public static <T, S> S getBean(T t, Class<S> s) {
         S rs = null;
         try {
@@ -129,7 +126,6 @@ public class ClassUtil {
         }
         Mapper mapper = DozerBeanMapperBuilder.buildDefault();
         rs = mapper.map(t, s);
-
         return rs;
     }
 

@@ -42,8 +42,7 @@ public class MonsterUnit extends BaseCreatureUnit {
         PVPCreatureAttributeComponent unitAttributeComponent = monsterUnit.getAttributeComponent();
         unitAttributeComponent.putAttributes(AttributeIdEnum.BASE, creatureResource.getAttributeList());
         unitAttributeComponent.setOwner(monsterUnit);
-        unitAttributeComponent.containerRecompute();
-        ;
+        unitAttributeComponent.containerRecompute();;
 
         return monsterUnit;
     }

@@ -20,6 +20,7 @@ import game.role.equip.model.Equipment;
 import game.role.equip.service.EquipService;
 import game.role.player.model.Player;
 import game.role.player.service.IPlayerService;
+import game.role.skill.service.SkillManager;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
 import game.user.item.service.IItemService;
@@ -55,6 +56,9 @@ public class GM_Command {
 
     @Autowired
     private IItemService iItemService;
+
+    @Autowired
+    private SkillManager skillManager;
 
     public void logPlayer(Player player) {
         StringBuilder sb = new StringBuilder();
@@ -166,11 +170,8 @@ public class GM_Command {
         boolean enoughSize = packService.isEnoughSize(player, configId, num);
     }
 
-    public void test(Player player, String accountId) {
-        StringBuilder sb = new StringBuilder();
-        Player loadPlayer = SpringContext.getPlayerService().loadPlayer(accountId);
-        AttributeUtils.logAttrs(loadPlayer.getAttributeContainer(), sb);
-        PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
+    public void test(Player player) {
+
     }
 
 }

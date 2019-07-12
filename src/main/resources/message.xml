@@ -35,6 +35,13 @@
     <!--基础服务 200 -  250 -->
     <!--<message id="" value=""/>-->
 
+    <!--玩家技能  300 - 350 -->
+    <message id="300" value="game.role.skill.packet.SM_SkillListVo"/>
+    <message id="301" key="skillList" value="game.role.skill.packet.CM_SkillList"/>
+    <message id="302" key="learnSkill" value="game.role.skill.packet.CM_LearnSkill"/>
+    <message id="303" key="levelUpSkill" value="game.role.skill.packet.CM_LevelUpSkill"/>
+
+
     <!--地图基础协议 2001 - 2005-->
     <message id="2002" key="leave" value="game.world.base.packet.CM_LeaveMap"/>
     <message id="2003" key="move" value="game.world.base.packet.CM_MoveMap"/>

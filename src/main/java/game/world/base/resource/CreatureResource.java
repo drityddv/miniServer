@@ -68,15 +68,15 @@ public class CreatureResource {
         return attributeList;
     }
 
-	public int getMapId() {
-		return mapId;
-	}
+    public int getMapId() {
+        return mapId;
+    }
 
-	public int getBornX() {
-		return bornX;
-	}
+    public int getBornX() {
+        return bornX;
+    }
 
-	public int getBornY() {
-		return bornY;
-	}
+    public int getBornY() {
+        return bornY;
+    }
 }

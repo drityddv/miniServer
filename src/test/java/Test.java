@@ -1,6 +1,9 @@
-import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ReflectionUtils;
+import utils.ResourceUtil;
+
+import java.util.Map;
 
 /**
  * @author : ddv
@@ -10,10 +13,8 @@ import org.slf4j.LoggerFactory;
 public class Test {
 
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
-
-    @org.junit.Test
-    public void run() throws SchedulerException {
-		System.out.println(Integer.MAX_VALUE);
-    }
-
+	@org.junit.Test
+    public void run(){
+		Map<String, Object> ymlRoot = ResourceUtil.getYmlRoot("server-dev");
+	}
 }

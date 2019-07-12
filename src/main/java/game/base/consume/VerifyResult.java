@@ -9,17 +9,19 @@ public class VerifyResult {
     private boolean success;
     private int code;
 
+    public VerifyResult() {
+        success = true;
+    }
+
     public static VerifyResult success() {
         VerifyResult result = new VerifyResult();
         result.success = true;
         return result;
     }
 
-    public static VerifyResult failed(int code) {
-        VerifyResult result = new VerifyResult();
-        result.success = false;
-        result.code = code;
-        return result;
+    public void failed(int code) {
+        this.success = false;
+        this.code = code;
     }
 
     public boolean isSuccess() {

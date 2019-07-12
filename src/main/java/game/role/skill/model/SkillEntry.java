@@ -1,21 +1,30 @@
 package game.role.skill.model;
 
 /**
+ * 技能实体
+ *
  * @author : ddv
  * @since : 2019/7/11 6:09 PM
  */
 
 public class SkillEntry {
 
-    private int configId;
+    private long skillId;
     private int level;
 
-    public int getConfigId() {
-        return configId;
+    public static SkillEntry valueOf(long skillId, int level) {
+        SkillEntry entry = new SkillEntry();
+        entry.skillId = skillId;
+        entry.level = level;
+        return entry;
     }
 
-    public void setConfigId(int configId) {
-        this.configId = configId;
+    public long getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(int skillId) {
+        this.skillId = skillId;
     }
 
     public int getLevel() {

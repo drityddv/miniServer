@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import game.base.manager.ClazzManager;
 import game.base.manager.SessionManager;
+import game.base.message.packet.SM_Message;
 import game.role.player.model.Player;
 import net.model.PacketProtocol;
 import net.model.USession;
@@ -37,13 +38,15 @@ public class PacketUtil {
         session.getChannel().writeAndFlush(protocol);
     }
 
+    public static void send(Player player, int i18N) {
+        send(player, SM_Message.valueOf(i18N));
+    }
+
     public static void send(Player player, Object object) {
         USession session = SessionManager.getSessionByAccountId(player.getAccountId());
-
         if (session == null) {
             return;
         }
-
         send(session, object);
     }
 

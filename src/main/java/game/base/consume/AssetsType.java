@@ -18,11 +18,11 @@ public enum AssetsType {
      */
     ITEM(1) {
         @Override
-        public VerifyResult verify(Player player, ConsumeParam param) {
+        public void verify(Player player, ConsumeParam param, VerifyResult result) {
             if (!player.getPack().isEnoughItem(param.getConfigId(), param.getValue())) {
-                return VerifyResult.failed(I18N.ITEM_NUM_NOT_ENOUGH);
+                result.failed(I18N.ITEM_NUM_NOT_ENOUGH);
             }
-            return VerifyResult.success();
+
         }
 
         @Override
@@ -35,11 +35,10 @@ public enum AssetsType {
      */
     SKILL_POINT(2) {
         @Override
-        public VerifyResult verify(Player player, ConsumeParam param) {
-            if (player.getSkillPoint() <= param.getValue()) {
-                return VerifyResult.failed(I18N.SKILL_POINT_NOT_ENOUGH);
+        public void verify(Player player, ConsumeParam param, VerifyResult result) {
+            if (player.getSkillPoint() < param.getValue()) {
+                result.failed(I18N.SKILL_POINT_NOT_ENOUGH);
             }
-            return VerifyResult.success();
         }
 
         @Override
@@ -48,10 +47,6 @@ public enum AssetsType {
             player.setSkillPoint(skillPoint - consumeParam.getValue());
         }
     },;
-
-    AssetsType(int id) {
-        this.id = id;
-    }
 
     public static Map<String, AssetsType> NAME_TO_TYPE = new HashMap<>(AssetsType.values().length);
     public static Map<Long, AssetsType> ID_TO_TYPE = new HashMap<>(AssetsType.values().length);
@@ -63,6 +58,12 @@ public enum AssetsType {
         }
     }
 
+    private long id;
+
+    AssetsType(int id) {
+        this.id = id;
+    }
+
     public static AssetsType getByName(String name) {
         return NAME_TO_TYPE.get(name);
     }
@@ -71,15 +72,11 @@ public enum AssetsType {
         return ID_TO_TYPE.get(id);
     }
 
-    private long id;
-
     public long getId() {
         return id;
     }
 
-    public VerifyResult verify(Player player, ConsumeParam param) {
-        return VerifyResult.success();
-    }
+    public void verify(Player player, ConsumeParam param, VerifyResult result) {}
 
     public void consume(Player player, ConsumeParam consumeParam) {}
 }

@@ -16,7 +16,9 @@ public enum HandlerEnum {
     // 背包信息
     PACK_INFO(91, PackHandler.class),
     // 装备栏信息
-    STORAGE(141, StorageHandler.class),;
+    STORAGE(141, StorageHandler.class),
+    // 技能
+    SKILL(300, SkillHandler.class),;
 
     public static Map<Integer, IHandler> handlerMap = new HashMap<>();
 

@@ -1,5 +1,6 @@
 package game.role.skill.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,8 +11,23 @@ import java.util.Map;
  */
 
 public class SkillSquare {
-	//技能栏序号
+    // 技能栏序号
     private int squareIndex;
     // 技能栏技能信息
-    private Map<Integer, SkillEntry> skillList;
+    private Map<Long, SkillEntry> squareSkills;
+
+    public static SkillSquare valueOf(int index) {
+        SkillSquare square = new SkillSquare();
+        square.squareIndex = index;
+        square.squareSkills = new HashMap<>();
+        return square;
+    }
+
+    public int getSquareIndex() {
+        return squareIndex;
+    }
+
+    public Map<Long, SkillEntry> getSquareSkills() {
+        return squareSkills;
+    }
 }

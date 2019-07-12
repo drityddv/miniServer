@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
 
-import client.anno.action;
+import client.anno.Action;
 import client.handler.IHandler;
 import utils.ClassUtil;
 
@@ -22,7 +22,7 @@ public class DefaultHandler implements IHandler {
 
     @Override
     public void handler(Object object) {
-        Method method = ClassUtil.getMethodByAnnotation(object, action.class);
+        Method method = ClassUtil.getMethodByAnnotation(object, Action.class);
         if (method != null) {
             ReflectionUtils.invokeMethod(method, object);
             return;
