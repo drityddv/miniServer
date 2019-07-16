@@ -9,7 +9,15 @@ public enum UnitComponentType {
     /**
      * 属性
      */
-    ATTRIBUTE,;
+    ATTRIBUTE,
+    /**
+     * BUFF
+     */
+    BUFF,
+    /**
+     * 技能
+     */
+    SKILL,;
 
     UnitComponentType() {}
 }

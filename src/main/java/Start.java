@@ -28,14 +28,14 @@ public class Start {
         // 初始化静态资源组件
         SpringContext.getStorageManager().init();
 
+        // 初始化定时组件
+        SpringContext.getQuartzService().init();
+
         // 主城地图初始化
         SpringContext.getMainCityService().init();
 
         // 中立地图初始化
         SpringContext.getNeutralMapService().init();
-
-        // 初始化定时组件
-        SpringContext.getQuartzService().init();
 
         // 初始化公共服务
         SpringContext.getSystemService().init();

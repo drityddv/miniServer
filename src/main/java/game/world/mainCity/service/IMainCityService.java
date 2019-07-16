@@ -1,5 +1,6 @@
 package game.world.mainCity.service;
 
+import game.map.base.AbstractScene;
 import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.mainCity.model.MainCityMapScene;
@@ -55,4 +56,11 @@ public interface IMainCityService {
      */
     void doLogMap(Player player, int mapId);
 
+    /**
+     * 获取场景
+     *
+     * @param mapId
+     * @return
+     */
+    AbstractScene getMapScene(int mapId);
 }

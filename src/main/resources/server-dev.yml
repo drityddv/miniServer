@@ -4,3 +4,4 @@ miniServer:
       threadNum: 1
     worker:
       threadNum: 5
+    maxIdleMinute : 30

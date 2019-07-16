@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
+import game.base.fight.model.buff.PVPBuffEffectComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
@@ -20,6 +21,7 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     static {
         Map<UnitComponentType, Class<? extends IUnitComponent>> map = new HashMap<>();
         map.put(UnitComponentType.ATTRIBUTE, PVPCreatureAttributeComponent.class);
+        map.put(UnitComponentType.BUFF, PVPBuffEffectComponent.class);
         UnitComponentContainer.registerComponentClazz(BaseCreatureUnit.class, map);
     }
 
@@ -28,13 +30,10 @@ public abstract class BaseCreatureUnit extends BaseUnit {
      * 名称
      */
     private String name;
-
-    protected BaseCreatureUnit() {
-        super(0L);
-    }
-
-    protected BaseCreatureUnit(long id) {
+    protected BaseCreatureUnit(long id, FighterAccount fighterAccount, String name) {
         super(id);
+        this.fighterAccount = fighterAccount;
+        this.name = name;
     }
 
     public String getName() {
@@ -51,5 +50,9 @@ public abstract class BaseCreatureUnit extends BaseUnit {
 
     public void setFighterAccount(FighterAccount fighterAccount) {
         this.fighterAccount = fighterAccount;
+    }
+
+    private PVPBuffEffectComponent getBuffComponent() {
+        return componentContainer.getComponent(UnitComponentType.BUFF);
     }
 }

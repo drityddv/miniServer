@@ -18,14 +18,18 @@ import game.role.equip.constant.EquipPosition;
 import game.role.equip.model.EquipStorage;
 import game.role.equip.model.Equipment;
 import game.role.equip.service.EquipService;
+import game.role.player.entity.PlayerEnt;
 import game.role.player.model.Player;
 import game.role.player.service.IPlayerService;
+import game.role.skill.model.SkillEntry;
+import game.role.skill.model.SkillList;
 import game.role.skill.service.SkillManager;
 import game.user.item.base.model.AbstractItem;
 import game.user.item.resource.ItemResource;
 import game.user.item.service.IItemService;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
+import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
 import spring.SpringContext;
 import utils.StringUtil;
@@ -68,6 +72,7 @@ public class GM_Command {
         sb.append(StringUtil.wipePlaceholder("性别[{}]", player.getSex()));
         sb.append(StringUtil.wipePlaceholder("等级[{}]", player.getLevel()));
         sb.append(StringUtil.wipePlaceholder("黄金[{}]", player.getGold()));
+        sb.append(StringUtil.wipePlaceholder("技能点[{}]", player.getSkillPoint()));
 
         PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
     }
@@ -83,6 +88,30 @@ public class GM_Command {
         logger.info('\n' + message);
 
         PacketUtil.send(player, SM_LogMessage.valueOf(message));
+    }
+
+    public void logSkill(Player player) {
+        StringBuffer sb = new StringBuffer();
+        MapUtil.logPlayerSkill(player.getSkillList(), sb);
+        logger.info("\n", sb.toString());
+        PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
+    }
+
+    private void logSkills(Player player, StringBuffer sb) {
+        SkillList skillList = player.getSkillList();
+        sb.append(StringUtil.wipePlaceholder("默认技能栏[{}]", skillList.getDefaultSquareIndex()));
+        skillList.getSkills().forEach((skillId, skillEntry) -> {
+            sb.append(StringUtil.wipePlaceholder("技能id[{}] 技能等级[{}] hashcode[{}]", skillId, skillEntry.getLevel(),
+                skillEntry.hashCode()));
+        });
+
+        skillList.getSkillSquareMap().forEach((index, skillSquare) -> {
+            sb.append(StringUtil.wipePlaceholder("技能栏[{}]", index));
+            for (SkillEntry skillEntry : skillSquare.getSquareSkills().values()) {
+                sb.append(StringUtil.wipePlaceholder("	技能id[{}] 技能等级[{}] hashcode[{}]", skillEntry.getSkillId(),
+                    skillEntry.getLevel(), skillEntry.hashCode()));
+            }
+        });
     }
 
     public void levelUp(Player player) {
@@ -170,8 +199,14 @@ public class GM_Command {
         boolean enoughSize = packService.isEnoughSize(player, configId, num);
     }
 
-    public void test(Player player) {
+    public void test(Player player, String accountId) {
+        boolean online = SpringContext.getPlayerService().isPlayerOnline(accountId);
+    }
 
+    public void setSkillPoint(Player player, int skillPoint) {
+        PlayerEnt playerEnt = SpringContext.getPlayerService().getPlayerEnt(player);
+        player.setSkillPoint(skillPoint);
+        playerService.savePlayer(playerEnt);
     }
 
 }

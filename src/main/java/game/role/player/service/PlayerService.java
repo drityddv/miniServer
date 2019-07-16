@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.id.AttributeIdEnum;
 import game.base.game.attribute.model.PlayerAttributeContainer;
+import game.base.manager.SessionManager;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
 import game.role.player.entity.PlayerEnt;
@@ -133,6 +134,12 @@ public class PlayerService implements IPlayerService {
         PlayerEnt playerEnt = PlayerEnt.valueOf(accountId);
         playerEnt.getPlayer().setSex(sex);
         savePlayer(playerEnt);
+    }
+
+    @Override
+    public boolean isPlayerOnline(String accountId) {
+        return SessionManager.isPlayerOnline(accountId);
+
     }
 
 }

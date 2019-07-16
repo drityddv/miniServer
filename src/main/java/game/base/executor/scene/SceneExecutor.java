@@ -60,6 +60,8 @@ public class SceneExecutor implements ApplicationListener<ContextRefreshedEvent>
      * @param delay
      */
     public final void schedule(AbstractCommand command, long delay) {
+        command.refreshState();
+        // command.setFuture(SpringContext.getSceneScheduleService());
 
     }
 

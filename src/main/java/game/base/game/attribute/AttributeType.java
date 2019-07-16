@@ -158,7 +158,6 @@ public enum AttributeType {
 
     ;
 
-    // FIXME
     private final static Map<String, AttributeType> NAME_TO_TYPE = new HashMap<>(values().length);
     private final static Map<Integer, AttributeType> ID_TO_TYPE = new HashMap<>(values().length);
     private final static List<IAttributeComputer> COMPUTERS = new ArrayList<>(values().length);

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.utils.VisibleUtil;
@@ -50,12 +51,12 @@ public class MainCityService implements IMainCityService {
         PlayerVisibleMapInfo visibleMapInfo = PlayerVisibleMapInfo.valueOf(player);
         visibleMapInfo.init(miniMapResource.getBornX(), miniMapResource.getBornY());
 
-        scene.enter(player.getAccountId(), visibleMapInfo);
+        scene.enter(player.getPlayerId(), visibleMapInfo);
     }
 
     @Override
     public void leaveMap(Player player) {
-        getScene(player.getCurrentMapId()).leave(player.getAccountId());
+        getScene(player.getCurrentMapId()).leave(player.getPlayerId());
     }
 
     @Override
@@ -83,6 +84,11 @@ public class MainCityService implements IMainCityService {
         Collection<NpcVisibleInfo> npcList = mapScene.getNpcMap().values();
 
         MapUtil.log(player, mapScene, visibleObjects, npcList, null);
+    }
+
+    @Override
+    public AbstractScene getMapScene(int mapId) {
+        return getScene(mapId);
     }
 
     private void initMapInfo() {

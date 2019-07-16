@@ -1,6 +1,11 @@
 package game.world.neutral.neutralMap.service;
 
+import java.util.Map;
+
+import game.map.base.AbstractScene;
 import game.map.model.Grid;
+import game.map.visible.PlayerVisibleMapInfo;
+import game.map.visible.impl.MonsterVisibleMapInfo;
 import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 
@@ -66,4 +71,34 @@ public interface INeutralMapService {
      */
     void logMap(Player player, int mapId);
 
+    /**
+     * 地图心跳
+     *
+     * @param mapId
+     */
+    void heartBeat(int mapId);
+
+    /**
+     * 地图内玩家单位
+     *
+     * @param mapId
+     * @return
+     */
+    Map<Long, PlayerVisibleMapInfo> getVisibleObjects(int mapId);
+
+    /**
+     * 怪物单位
+     *
+     * @param mapId
+     * @return
+     */
+    Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId);
+
+    /**
+     * 获得场景
+     *
+     * @param mapId
+     * @return
+     */
+    AbstractScene getMapScene(int mapId);
 }

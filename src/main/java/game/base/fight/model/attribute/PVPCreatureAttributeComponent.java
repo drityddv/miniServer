@@ -5,6 +5,7 @@ import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.game.attribute.AttributeContainer;
+import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.AttributeUpdateRecords;
 import game.base.game.attribute.util.AttributeUtils;
 
@@ -42,6 +43,10 @@ public class PVPCreatureAttributeComponent extends AttributeContainer<BaseCreatu
     @Override
     protected void recompute(AttributeUpdateRecords records, boolean needSyn) {
         AttributeUtils.compute(modelAttributeSet, finalAttributes, records, accumulateAttributes, getOwner());
+        finalAttributes.values().stream().filter(attribute -> attribute.getAttributeType() == AttributeType.MAX_MP
+            || attribute.getAttributeType() == AttributeType.MAX_HP).forEach(attribute -> {
+                attribute.alter(attribute.getValue() * 9);
+            });
     }
 
 }

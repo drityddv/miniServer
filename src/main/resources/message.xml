@@ -40,6 +40,8 @@
     <message id="301" key="skillList" value="game.role.skill.packet.CM_SkillList"/>
     <message id="302" key="learnSkill" value="game.role.skill.packet.CM_LearnSkill"/>
     <message id="303" key="levelUpSkill" value="game.role.skill.packet.CM_LevelUpSkill"/>
+    <message id="304" key="setDefaultIndex" value="game.role.skill.packet.CM_SetDefaultSquare"/>
+    <message id="305" key="addSkillToSquare" value="game.role.skill.packet.CM_AddSkillToSquare"/>
 
 
     <!--地图基础协议 2001 - 2005-->
@@ -48,5 +50,7 @@
     <message id="2005" key="changeMap" value="game.world.base.packet.CM_ChangeMap"/>
     <message id="2006" key="logMap" value="game.world.base.packet.CM_LogMap"/>
 
+    <!--地图内战斗  2100 - 2200 -->
+    <message id="2100" key="useSinglePointSkill" value="game.world.fight.packet.CM_UseSinglePointSkill"/>
 
 </protocols>

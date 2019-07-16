@@ -5,8 +5,6 @@ import org.springframework.stereotype.Component;
 
 import game.base.executor.command.AbstractCommand;
 import game.base.executor.command.ICommand;
-import game.base.executor.command.impl.scene.base.AbstractSceneDelayCommand;
-import game.base.executor.command.impl.scene.base.AbstractSceneRateCommand;
 
 /**
  * @author : ddv
@@ -20,15 +18,15 @@ public class SceneExecutorService implements ISceneExecutorService {
 
     @Override
     public void submit(ICommand command) {
-        if (command instanceof AbstractSceneRateCommand) {
-            AbstractSceneRateCommand sceneRateCommand = (AbstractSceneRateCommand)command;
-            sceneExecutor.schedule(sceneRateCommand, sceneRateCommand.getDelay(), sceneRateCommand.getPeriod());
-        } else if (command instanceof AbstractSceneDelayCommand) {
-            AbstractSceneDelayCommand sceneDelayCommand = (AbstractSceneDelayCommand)command;
-            sceneExecutor.schedule(sceneDelayCommand, sceneDelayCommand.getDelay());
-        } else {
-            sceneExecutor.addTask(command);
-        }
+        // if (command instanceof AbstractSceneRateCommand) {
+        // AbstractSceneRateCommand sceneRateCommand = (AbstractSceneRateCommand)command;
+        // sceneExecutor.schedule(sceneRateCommand, sceneRateCommand.getDelay(), sceneRateCommand.getPeriod());
+        // } else if (command instanceof AbstractSceneDelayCommand) {
+        // AbstractSceneDelayCommand sceneDelayCommand = (AbstractSceneDelayCommand)command;
+        // sceneExecutor.schedule(sceneDelayCommand, sceneDelayCommand.getDelay());
+        // } else {
+        sceneExecutor.addTask(command);
+        // }
 
     }
 

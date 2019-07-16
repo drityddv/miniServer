@@ -3,8 +3,8 @@ package game.map.visible.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.map.npc.reource.NpcResource;
 import game.map.visible.AbstractVisibleMapInfo;
-import game.scene.npc.reource.NpcResource;
 import utils.snow.IdUtil;
 
 /**

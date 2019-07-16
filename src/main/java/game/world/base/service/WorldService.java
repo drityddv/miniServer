@@ -34,7 +34,6 @@ public class WorldService implements IWorldService {
     @Autowired
     private WorldManager worldManager;
 
-    // FIXME 服务器切图 这里账号,地图线程都会调用 但是如果需要执行离开地图的逻辑肯定会在这条线程执行[本项目所有地图都在地图线程池]
     @Override
     public void gatewayChangeMap(Player player, int mapId, boolean clientRequest) {
         int oldMapId = player.getCurrentMapId();

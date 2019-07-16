@@ -6,8 +6,10 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import game.base.executor.util.ExecutorUtils;
+import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
+import game.base.skill.constant.SkillType;
 import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 import game.role.player.model.Player;
@@ -27,6 +29,8 @@ public abstract class AbstractMapHandler implements IMapHandler {
 
     private static final Map<Integer, AbstractMapHandler> HANDLER_MAP = new HashMap<>();
 
+    private static Map<SkillType, BaseActionHandler> actionHandlerMap;
+
     /**
      * 根据地图组id获得处理器 如果没有处理器就用保底地图的
      *
@@ -39,6 +43,18 @@ public abstract class AbstractMapHandler implements IMapHandler {
         if (handler == null) {
             handler = HANDLER_MAP.get(MapGroupType.MAIN_CITY.getGroupId());
         }
+        return (T)handler;
+    }
+
+    /**
+     * 获取技能行为处理器
+     *
+     * @param type
+     * @param <T>
+     * @return
+     */
+    public static <T extends BaseActionHandler> T getActionHandler(SkillType type) {
+        BaseActionHandler handler = actionHandlerMap.get(type);
         return (T)handler;
     }
 
@@ -57,6 +73,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     @PostConstruct
     private void init() {
         HANDLER_MAP.put(getGroupType().getGroupId(), this);
+        actionHandlerMap = SkillType.TYPE_TO_HANDLER;
     }
 
     @Override
@@ -127,4 +144,10 @@ public abstract class AbstractMapHandler implements IMapHandler {
     public void handEnterMapFailed(Player player) {
         ExecutorUtils.submit(EnterMapCommand.valueOf(player, 4));
     }
+
+    @Override
+    public void heartBeat(int mapId) {
+        // du nothing
+    }
+
 }

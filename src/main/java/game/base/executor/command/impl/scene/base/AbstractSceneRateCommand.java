@@ -10,7 +10,7 @@ import game.map.base.AbstractScene;
 public abstract class AbstractSceneRateCommand extends AbstractSceneDelayCommand {
 
     /**
-     * 周期
+     * 周期 0 则为无限循环
      */
     private long period;
 

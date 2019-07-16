@@ -17,6 +17,7 @@ import resource.anno.Init;
 import resource.anno.MiniResource;
 import utils.JodaUtil;
 import utils.ResourceUtil;
+import utils.StringUtil;
 
 /**
  * @author : ddv
@@ -68,11 +69,13 @@ public class EquipSquareEnhanceResource {
 
     private void analysisNewConsumers() {
         consumeList = new ArrayList<>();
-        String[] split = newConsumeString.split(",");
-        for (String value : split) {
-            AssetsConsume consume = new AssetsConsume();
-            consume.doParse(value);
-            consumeList.add(consume);
+        if (StringUtil.isNotEmpty(newConsumeString)) {
+            String[] split = newConsumeString.split(",");
+            for (String value : split) {
+                AssetsConsume consume = new AssetsConsume();
+                consume.doParse(value);
+                consumeList.add(consume);
+            }
         }
     }
 

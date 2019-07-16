@@ -45,6 +45,11 @@ public class SessionManager {
         playerSession.put(accountId, session);
     }
 
+    // 玩家是否在线
+    public static boolean isPlayerOnline(String accountId) {
+        return playerSession.containsKey(accountId);
+    }
+
     public static void removeSession(Channel channel) {
         sessionMap.remove(channel);
     }

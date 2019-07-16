@@ -37,4 +37,21 @@ public interface ISkillService {
      */
     void levelUpSkill(Player player, long skillId);
 
+    /**
+     * 添加技能到技能栏
+     *
+     * @param player
+     * @param skillId
+     * @param squareIndex
+     */
+    void addSkillToSquare(Player player, long skillId, int squareIndex);
+
+    /**
+     * 设置默认技能栏
+     *
+     * @param player
+     * @param squareIndex
+     */
+    void setDefaultSquare(Player player, int squareIndex);
+
 }

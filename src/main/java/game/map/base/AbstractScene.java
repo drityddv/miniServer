@@ -28,9 +28,10 @@ public abstract class AbstractScene {
     /**
      * 获取场景内玩家的同步对象
      *
+     * @param playerId
      * @return
      */
-    public abstract AbstractVisibleMapInfo getPlayerFighter(String accountId);
+    public abstract AbstractVisibleMapInfo getPlayerFighter(long playerId);
 
     // get and set
     public int getMapId() {

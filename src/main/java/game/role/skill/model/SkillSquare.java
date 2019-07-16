@@ -23,11 +23,37 @@ public class SkillSquare {
         return square;
     }
 
+    public static SkillSquare valueOf(SkillSquare square) {
+        SkillSquare skillSquare = new SkillSquare();
+        skillSquare.squareIndex = square.squareIndex;
+        skillSquare.squareSkills = new HashMap<>();
+
+        square.getSquareSkills().forEach((skillId, skillEntry) -> {
+            skillSquare.squareSkills.put(skillId, SkillEntry.valueOf(skillEntry.getSkillId(), skillEntry.getLevel()));
+        });
+
+        return square;
+    }
+
+    public void init(Map<Long, SkillEntry> skillEntryMap) {
+        squareSkills.keySet().forEach(skillId -> {
+            squareSkills.put(skillId, skillEntryMap.get(skillId));
+        });
+    }
+
+    public void addSkillEntry(SkillEntry skillEntry) {
+        squareSkills.put(skillEntry.getSkillId(), skillEntry);
+    }
+
     public int getSquareIndex() {
         return squareIndex;
     }
 
     public Map<Long, SkillEntry> getSquareSkills() {
         return squareSkills;
+    }
+
+    public boolean containSkill(long skillId) {
+        return squareSkills.containsKey(skillId);
     }
 }

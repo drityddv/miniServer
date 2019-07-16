@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import ebus.service.EventBus;
+import game.base.effect.service.IEffectService;
 import game.base.executor.account.IAccountExecutorService;
 import game.base.executor.scene.ISceneExecutorService;
 import game.base.manager.SessionManager;
@@ -16,17 +17,17 @@ import game.common.service.ICommonService;
 import game.dispatch.Dispatcher;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
+import game.map.npc.service.CreatureManager;
 import game.role.equip.service.IEquipService;
 import game.role.player.service.IPlayerService;
 import game.role.skill.service.ISkillService;
-import game.scene.fight.service.IFightService;
-import game.scene.npc.service.CreatureManager;
 import game.system.ISystemService;
 import game.user.item.service.IItemService;
 import game.user.login.service.ILoginService;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
 import game.world.base.service.IWorldService;
+import game.world.fight.service.IFightService;
 import game.world.mainCity.service.IMainCityService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
 import net.server.Server;
@@ -74,6 +75,12 @@ public class SpringContext implements ApplicationContextAware {
     private IItemService iItemService;
 
     @Autowired
+    private IEffectService effectService;
+
+    @Autowired
+    private IFightService fightService;
+
+    @Autowired
     private IAccountExecutorService accountExecutorService;
 
     @Autowired
@@ -116,9 +123,6 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private CreatureManager creatureManager;
-
-    @Autowired
-    private IFightService fightService;
 
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
@@ -214,6 +218,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IMainCityService getMainCityService() {
         return instance.mainCityService;
+    }
+
+    public static IEffectService getEffectService() {
+        return instance.effectService;
     }
 
     public static ApplicationContext getApplicationContext() {

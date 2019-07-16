@@ -1,5 +1,6 @@
 package game.world.neutral.neutralMap.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +34,10 @@ public class NeutralMapScene extends AbstractMovableMap<PlayerVisibleMapInfo> {
     public static NeutralMapScene valueOf(int mapId) {
         NeutralMapScene mapScene = new NeutralMapScene(mapId);
         return mapScene;
+    }
+
+    public List<MonsterVisibleMapInfo> getMonsters() {
+        return new ArrayList<>(monsterMap.values());
     }
 
     public Map<Long, MonsterVisibleMapInfo> getMonsterMap() {

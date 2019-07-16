@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import scheduler.constant.JobGroupEnum;
 import scheduler.job.common.CronConst;
-import scheduler.job.common.OneHourQuartzJob;
+import scheduler.job.common.server.OneHourQuartzJob;
 import utils.snow.IdUtil;
 
 /**

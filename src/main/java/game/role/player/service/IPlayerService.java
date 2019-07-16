@@ -104,4 +104,12 @@ public interface IPlayerService {
     // */
     // Player getOnlinePlayer(Player player);
 
+    /**
+     * 玩家是否在线
+     *
+     * @param accountId
+     * @return
+     */
+    boolean isPlayerOnline(String accountId);
+
 }

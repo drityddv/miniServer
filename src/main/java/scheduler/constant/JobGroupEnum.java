@@ -14,7 +14,12 @@ public enum JobGroupEnum {
     /**
      * 公共服务
      */
-    PUBLIC_COMMON(),;
+    PUBLIC_COMMON(),
+
+    /**
+     * 地图定时调度[地图心跳]
+     */
+    SCENE_COMMON_RATE(),;
 
     public static Map<String, JobGroupEnum> NAME_TO_GROUP = new HashMap<>();
 

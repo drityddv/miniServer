@@ -14,11 +14,12 @@ import game.role.player.model.Player;
 import game.role.skill.entity.SkillEnt;
 import game.role.skill.model.SkillEntry;
 import game.role.skill.model.SkillList;
+import game.role.skill.model.SkillSquare;
 import game.role.skill.packet.SM_SkillListVo;
 import net.utils.PacketUtil;
 
 /**
- * 玩家技能接口
+ * 玩家技能接口 FIXME 技能栏的技能要在反序列化手动从技能复制
  *
  * @author : ddv
  * @since : 2019/7/12 12:11 PM
@@ -35,7 +36,7 @@ public class SkillService implements ISkillService {
     public SkillList getPlayerSkillList(Player player, boolean client) {
         SkillList skillList = getSkillList(player);
         if (client) {
-            sendSkillInfo(player, skillList);
+            sendSkillInfo(player);
         }
         return skillList;
     }
@@ -73,12 +74,13 @@ public class SkillService implements ISkillService {
     public void levelUpSkill(Player player, long skillId) {
         SkillEnt ent = getPlayerSkillEnt(player);
         SkillList skillList = ent.getSkillList();
-        if (!skillList.isLearnedSkill(skillId)) {
+        SkillEntry skillEntry = skillList.getSkillEntry(skillId);
+        if (skillEntry == null) {
             logger.warn("玩家[{}]未掌握该技能[{}]", player.getAccountId(), skillId);
             return;
         }
 
-        SkillLevelResource levelResource = skillManager.getSkillLevelResource(skillId);
+        SkillLevelResource levelResource = skillManager.getSkillLevelResource(skillId, skillEntry.getLevel());
         if (levelResource.getNextLevelConfigId() == 0) {
             logger.warn("技能[{}]满级,无法在升级了", skillId);
             return;
@@ -97,7 +99,36 @@ public class SkillService implements ISkillService {
 
         skillList.levelUp(skillId, nextLevelResource.getLevel());
         saveSkillEnt(ent);
-        sendSkillInfo(player, skillList);
+        sendSkillInfo(player);
+    }
+
+    @Override
+    public void addSkillToSquare(Player player, long skillId, int squareIndex) {
+        SkillEnt ent = getPlayerSkillEnt(player);
+        SkillList skillList = ent.getSkillList();
+
+        SkillEntry skillEntry = skillList.getSkillEntry(skillId);
+        if (skillEntry == null) {
+            logger.warn("玩家[{}]未掌握该技能[{}]", player.getAccountId(), skillId);
+            return;
+        }
+
+        SkillSquare square = skillList.getSquare(squareIndex);
+        if (square.containSkill(skillId)) {
+            return;
+        }
+        square.addSkillEntry(skillEntry);
+        saveSkillEnt(ent);
+        sendSkillInfo(player);
+    }
+
+    @Override
+    public void setDefaultSquare(Player player, int squareIndex) {
+        SkillEnt ent = getPlayerSkillEnt(player);
+        SkillList skillList = ent.getSkillList();
+        skillList.getSquare(squareIndex);
+        skillList.setDefaultSquareIndex(squareIndex);
+        saveSkillEnt(ent);
     }
 
     private SkillEnt getPlayerSkillEnt(Player player) {
@@ -112,7 +143,7 @@ public class SkillService implements ISkillService {
         skillManager.save(ent);
     }
 
-    private void sendSkillInfo(Player player, SkillList skillList) {
-        PacketUtil.send(player, SM_SkillListVo.valueOf(skillList));
+    private void sendSkillInfo(Player player) {
+        PacketUtil.send(player, SM_SkillListVo.valueOf(player.getSkillList()));
     }
 }

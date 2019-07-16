@@ -1,7 +1,7 @@
 package game.role.skill.model;
 
 /**
- * 技能实体
+ * 玩家技能存储实体
  *
  * @author : ddv
  * @since : 2019/7/11 6:09 PM

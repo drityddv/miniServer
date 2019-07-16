@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import game.map.npc.reource.NpcResource;
 import game.map.visible.impl.NpcVisibleInfo;
-import game.scene.npc.reource.NpcResource;
 
 /**
  * @author : ddv

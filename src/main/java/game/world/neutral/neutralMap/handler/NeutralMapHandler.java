@@ -1,13 +1,18 @@
 package game.world.neutral.neutralMap.handler;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
 import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.map.model.Grid;
+import game.map.visible.PlayerVisibleMapInfo;
+import game.map.visible.impl.MonsterVisibleMapInfo;
 import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.neutral.neutralMap.service.INeutralMapService;
@@ -58,4 +63,23 @@ public class NeutralMapHandler extends AbstractMapHandler
         return neutralMapService.canEnterMap(player, mapId);
     }
 
+    @Override
+    public void heartBeat(int mapId) {
+        neutralMapService.heartBeat(mapId);
+    }
+
+    @Override
+    public Map<Long, PlayerVisibleMapInfo> getPlayerObjects(int mapId) {
+        return neutralMapService.getVisibleObjects(mapId);
+    }
+
+    @Override
+    public Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId) {
+        return neutralMapService.getMonsterObjects(mapId);
+    }
+
+    @Override
+    public AbstractScene getMapScene(int mapId) {
+        return neutralMapService.getMapScene(mapId);
+    }
 }

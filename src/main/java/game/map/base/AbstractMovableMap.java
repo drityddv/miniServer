@@ -23,7 +23,7 @@ public abstract class AbstractMovableMap<T extends AbstractVisibleMapInfo> exten
     private static final Logger logger = LoggerFactory.getLogger(AbstractMovableMap.class);
 
     // 玩家accountId - T
-    protected Map<String, T> accountIdToVisible = new HashMap<>();
+    protected Map<Long, T> playerMap = new HashMap<>();
 
     private UpdatePositionCommand updatePositionCommand;
 
@@ -32,26 +32,26 @@ public abstract class AbstractMovableMap<T extends AbstractVisibleMapInfo> exten
     }
 
     public T getVisibleObject(String accountId) {
-        return accountIdToVisible.get(accountId);
+        return playerMap.get(accountId);
     }
 
     public List<T> getVisibleObjects() {
-        return new ArrayList<>(accountIdToVisible.values());
+        return new ArrayList<>(playerMap.values());
     }
 
-    public void enter(String accountId, T object) {
-        accountIdToVisible.putIfAbsent(accountId, object);
-        logger.info("玩家[{}]进入中立场景[{}],场景内人数[{}]", accountId, mapId, accountIdToVisible.size());
+    public void enter(long playerId, T object) {
+        playerMap.putIfAbsent(playerId, object);
+        logger.info("玩家[{}]进入中立场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
     }
 
-    public void leave(String accountId) {
-        accountIdToVisible.remove(accountId);
-        logger.info("玩家[{}]离开中立场景[{}],场景内人数[{}]", accountId, mapId, accountIdToVisible.size());
+    public void leave(long playerId) {
+        playerMap.remove(playerId);
+        logger.info("玩家[{}]离开中立场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
     }
 
     // 玩家是否存在于场景中
-    public boolean isContainPlayer(String accountId) {
-        return accountIdToVisible.containsKey(accountId);
+    public boolean isContainPlayer(long playerId) {
+        return playerMap.containsKey(playerId);
     }
 
     // get and set
@@ -63,8 +63,12 @@ public abstract class AbstractMovableMap<T extends AbstractVisibleMapInfo> exten
         this.updatePositionCommand = updatePositionCommand;
     }
 
+    public Map<Long, T> getPlayerMap() {
+        return playerMap;
+    }
+
     @Override
-    public AbstractVisibleMapInfo getPlayerFighter(String accountId) {
-        return accountIdToVisible.get(accountId);
+    public AbstractVisibleMapInfo getPlayerFighter(long playerId) {
+        return playerMap.get(playerId);
     }
 }

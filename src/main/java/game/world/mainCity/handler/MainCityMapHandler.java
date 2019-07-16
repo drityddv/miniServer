@@ -3,6 +3,7 @@ package game.world.mainCity.handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
 import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;
@@ -53,6 +54,16 @@ public class MainCityMapHandler extends AbstractMapHandler
     @Override
     public void realEnterMap(Player player, int mapId) {
         mainCityService.enterMap(player, mapId);
+    }
+
+    @Override
+    public void heartBeat(int mapId) {
+        // do nothing
+    }
+
+    @Override
+    public AbstractScene getMapScene(int mapId) {
+        return mainCityService.getMapScene(mapId);
     }
 
 }

@@ -92,7 +92,10 @@ public class SimpleUtil {
             for (int i = 0; i < csvNames.size(); i++) {
                 if (name.equals(csvNames.get(i))) {
                     try {
-                        field.set(object, JodaUtil.convertFromString(field.getType(), values.get(i)));
+                        if (StringUtil.isNotEmpty(values.get(i))) {
+                            field.set(object, JodaUtil.convertFromString(field.getType(), values.get(i)));
+                        }
+
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }

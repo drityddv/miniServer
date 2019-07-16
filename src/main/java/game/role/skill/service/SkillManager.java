@@ -2,6 +2,8 @@ package game.role.skill.service;
 
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +21,8 @@ import resource.anno.Static;
 @Component
 public class SkillManager {
 
+    private static SkillManager instance;
+
     @Autowired
     private EntityCacheService<Long, SkillEnt> entityCacheService;
 
@@ -27,6 +31,15 @@ public class SkillManager {
 
     @Static
     private Map<Long, SkillLevelResource> skillLevelResources;
+
+    public static SkillManager getInstance() {
+        return instance;
+    }
+
+    @PostConstruct
+    private void init() {
+        instance = this;
+    }
 
     public SkillEnt loadOrCreate(Player player) {
         return entityCacheService.loadOrCreate(SkillEnt.class, player.getPlayerId(), SkillEnt::valueOf);
@@ -42,5 +55,11 @@ public class SkillManager {
 
     public SkillLevelResource getSkillLevelResource(long configId) {
         return skillLevelResources.get(configId);
+    }
+
+    public SkillLevelResource getSkillLevelResource(long skillId, int level) {
+        return skillLevelResources.values().stream().filter(
+            skillLevelResource -> skillLevelResource.getSkillId() == skillId && skillLevelResource.getLevel() == level)
+            .findAny().get();
     }
 }

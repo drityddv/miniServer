@@ -9,10 +9,11 @@ import game.map.handler.AbstractMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.role.equip.model.EquipStorage;
 import game.role.player.entity.PlayerEnt;
-import game.scene.fight.syncStrategy.BasePlayerSyncStrategy;
+import game.role.skill.model.SkillList;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.pack.model.Pack;
 import game.world.base.command.FighterSyncCommand;
+import game.world.fight.syncStrategy.BasePlayerSyncStrategy;
 import spring.SpringContext;
 import utils.snow.IdUtil;
 
@@ -80,7 +81,8 @@ public class Player extends AbstractCreature<Player> {
             return;
         }
 
-        ExecutorUtils.submit(FighterSyncCommand.valueOf(this.getAccountId(), syncStrategy, currentScene));
+        ExecutorUtils
+            .submit(FighterSyncCommand.valueOf(this.getPlayerId(), this.getAccountId(), syncStrategy, currentScene));
     }
 
     @Override
@@ -174,6 +176,10 @@ public class Player extends AbstractCreature<Player> {
         MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
         mapInfoEnt.setLastMapId(lastMapId);
         SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
+    }
+
+    public SkillList getSkillList() {
+        return SpringContext.getSkillService().getPlayerSkillList(this, false);
     }
 
     public boolean isLoaded() {

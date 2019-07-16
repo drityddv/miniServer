@@ -2,12 +2,17 @@ package game.world.neutral.neutralMap.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
+import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.utils.VisibleUtil;
@@ -21,7 +26,10 @@ import game.world.neutral.neutralGather.service.INpcService;
 import game.world.neutral.neutralMap.model.NeutralMapInfo;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.utils.MapUtil;
+import scheduler.constant.JobGroupEnum;
+import scheduler.job.common.scene.SceneHeartBeatJob;
 import spring.SpringContext;
+import utils.snow.IdUtil;
 
 /**
  * @author : ddv
@@ -43,6 +51,11 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void init() {
+        initMapInfo();
+        initHeartBeat();
+    }
+
+    private void initMapInfo() {
         List<MiniMapResource> mapResources = worldManager.getMapResourcesByGroup(MapGroupType.NEUTRAL_MAP.getGroupId());
         mapResources.forEach(this::initNeutralMapInfo);
         logger.info("中立地图资源与场景初始化完毕,数量[{}]", neutralMapManager.getCommonInfoMap().size());
@@ -70,14 +83,14 @@ public class NeutralMapService implements INeutralMapService {
             visibleObject = PlayerVisibleMapInfo.valueOf(player);
             visibleObject.init(mapResource.getBornX(), mapResource.getBornY());
         }
-        neutralMapScene.enter(player.getAccountId(), visibleObject);
+        neutralMapScene.enter(player.getPlayerId(), visibleObject);
     }
 
     @Override
     public void leaveMap(Player player) {
         NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(player.getCurrentMapId());
         NeutralMapScene neutralMapScene = mapCommonInfo.getMapScene();
-        neutralMapScene.leave(player.getAccountId());
+        neutralMapScene.leave(player.getPlayerId());
     }
 
     @Override
@@ -97,7 +110,7 @@ public class NeutralMapService implements INeutralMapService {
     @Override
     public NeutralMapScene getCurrentScene(Player player) {
         NeutralMapScene mapScene = neutralMapManager.getCommonInfoMap().get(player.getCurrentMapId()).getMapScene();
-        if (mapScene.isContainPlayer(player.getAccountId())) {
+        if (mapScene.isContainPlayer(player.getPlayerId())) {
             return mapScene;
         } else {
             return null;
@@ -114,6 +127,33 @@ public class NeutralMapService implements INeutralMapService {
         MapUtil.log(player, mapScene, visibleObjects, npcList, monsterList);
     }
 
+    @Override
+    public void heartBeat(int mapId) {
+        NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
+        NeutralMapScene mapScene = mapCommonInfo.getMapScene();
+        List<PlayerVisibleMapInfo> visibleObjects = mapScene.getVisibleObjects();
+        for (PlayerVisibleMapInfo visibleObject : visibleObjects) {
+            if (!SpringContext.getPlayerService().isPlayerOnline(visibleObject.getAccountId())) {
+                mapScene.leave(visibleObject.getId());
+            }
+        }
+    }
+
+    @Override
+    public Map<Long, PlayerVisibleMapInfo> getVisibleObjects(int mapId) {
+        return getMapInfo(mapId).getMapScene().getPlayerMap();
+    }
+
+    @Override
+    public Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId) {
+        return getMapInfo(mapId).getMapScene().getMonsterMap();
+    }
+
+    @Override
+    public AbstractScene getMapScene(int mapId) {
+        return getMapInfo(mapId).getMapScene();
+    }
+
     private void initNeutralMapInfo(MiniMapResource mapResource) {
         NeutralMapInfo commonInfo = NeutralMapInfo.valueOf(mapResource);
         commonInfo.init(mapResource);
@@ -125,6 +165,28 @@ public class NeutralMapService implements INeutralMapService {
 
     private NeutralMapInfo getMapInfo(int mapId) {
         return neutralMapManager.getNeutralMapCommonInfo(mapId);
+    }
+
+    private void initHeartBeat() {
+        Set<Integer> mapIdSet = neutralMapManager.getCommonInfoMap().keySet();
+        for (Integer mapId : mapIdSet) {
+            String groupName = JobGroupEnum.SCENE_COMMON_RATE.name();
+            String jobName = IdUtil.getLongId() + "";
+            String triggerName = IdUtil.getLongId() + "";
+
+            SceneHeartBeatCommand command = SceneHeartBeatCommand.valueOf(mapId, 1000 * 60 * 2, 0);
+
+            JobDetail jobDetail = JobBuilder.newJob(SceneHeartBeatJob.class).withIdentity(jobName, groupName).build();
+            Trigger trigger =
+                TriggerBuilder
+                    .newTrigger().withIdentity(triggerName, groupName).withSchedule(SimpleScheduleBuilder
+                        .simpleSchedule().withIntervalInMilliseconds(command.getDelay()).repeatForever())
+                    .forJob(jobDetail.getKey()).build();
+
+            jobDetail.getJobDataMap().put("command", command);
+            SpringContext.getQuartzService().addJob(jobDetail, trigger);
+        }
+
     }
 
 }
