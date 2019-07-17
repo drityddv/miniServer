@@ -1,42 +1,53 @@
 package game.base.effect.model.constant;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import game.base.effect.model.BaseBuffEffect;
 import game.base.effect.model.analysis.IBuffAnalysis;
 import game.base.effect.model.impl.DizzyBuffEffect;
+import game.base.effect.model.impl.PoisonBuffEffect;
 
 /**
+ * 效果枚举
+ *
  * @author : ddv
  * @since : 2019/7/15 11:15 AM
  */
 
-public enum EffectType {
+public enum EffectTypeEnum {
     /**
      * 眩晕
      */
-    DIZZY(DizzyBuffEffect.class),;
+    Dizzy(1, DizzyBuffEffect.class),
+    /**
+     * 毒素
+     */
+    Poison(2, PoisonBuffEffect.class);
 
+    private static Map<Integer, EffectTypeEnum> ID_TO_TYPE = new HashMap<>();
+    private static Map<String, EffectTypeEnum> NAME_TO_TYPE = new HashMap<>();
+
+    static {
+        for (EffectTypeEnum type : EffectTypeEnum.values()) {
+            ID_TO_TYPE.put(type.typeId, type);
+            NAME_TO_TYPE.put(type.name(), type);
+        }
+    }
+
+    private int typeId;
     private Class<? extends BaseBuffEffect> buffClazz;
-
     private Class<? extends IBuffAnalysis> buffBeanClazz;
-
     private Set<RestrictStatusEnum> restrictStatus;
 
-    EffectType(Class<? extends BaseBuffEffect> buffClazz) {
+    EffectTypeEnum(int typeId, Class<? extends BaseBuffEffect> buffEffectClass) {
+        this.typeId = typeId;
         this.buffClazz = buffClazz;
     }
 
-    EffectType(Class<? extends BaseBuffEffect> buffClazz, Class<? extends IBuffAnalysis> buffBeanClazz) {
-        this.buffClazz = buffClazz;
-        this.buffBeanClazz = buffBeanClazz;
-    }
-
-    EffectType(Class<? extends BaseBuffEffect> buffClazz, Class<? extends IBuffAnalysis> buffBeanClazz,
-        Set<RestrictStatusEnum> restrictStatus) {
-        this.buffClazz = buffClazz;
-        this.buffBeanClazz = buffBeanClazz;
-        this.restrictStatus = restrictStatus;
+    public static EffectTypeEnum getById(int typeId) {
+        return ID_TO_TYPE.get(typeId);
     }
 
     public BaseBuffEffect create() {

@@ -1,19 +1,24 @@
 package game.base.fight.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-import game.base.fight.base.model.attack.impl.NormalAttack;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.BaseUnit;
+import game.base.fight.model.pvpunit.PlayerUnit;
+import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.model.skill.model.PVPSkillComponent;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.skill.model.BaseSkill;
 import game.map.handler.AbstractMapHandler;
 import game.map.visible.AbstractVisibleMapInfo;
+import game.map.visible.PlayerVisibleMapInfo;
+import game.world.fight.model.BattleParam;
 import utils.TimeUtil;
 
 /**
@@ -33,7 +38,7 @@ public class BattleUtil {
         return TimeUtil.now() < (baseSkill.getSkillCd() + baseSkill.getLastUsedAt());
     }
 
-    // 获取战斗单元技能
+    // 获取战斗单元技能 可能为null
     public static BaseSkill getUnitSkill(BaseUnit unit, long skillId) {
         PVPSkillComponent component = unit.getComponentContainer().getComponent(UnitComponentType.SKILL);
         return component.getSkillMap().get(skillId);
@@ -41,17 +46,6 @@ public class BattleUtil {
 
     public static PVPCreatureAttributeComponent getUnitAttrComponent(BaseUnit baseUnit) {
         return baseUnit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
-    }
-
-    // 计算伤害并修改单元数值
-    public static void doAttack(BaseCreatureUnit caster, BaseCreatureUnit defender, long skillId) {
-        BaseSkill unitSkill = getUnitSkill(caster, skillId);
-        long damage = unitSkill.getSkillLevelResource().getValue();
-        long damage1 = calculateSkillValue1(damage, unitSkill.getSkillLevelResource().getAttributeTypes(),
-            getUnitAttrComponent(caster).getFinalAttributes());
-        NormalAttack attack = NormalAttack.valueOf(defender, damage1);
-        attack.doAttack(caster, defender, damage1);
-
     }
 
     // 计算技能一级数值 [收到属性增益之后的数值]
@@ -79,4 +73,63 @@ public class BattleUtil {
         unit = mapObject.getFighterAccount().getCreatureUnit();
         return unit;
     }
+
+    // 可能返回空集合
+    public static List<BaseCreatureUnit> findTargetUnits(AbstractMapHandler mapHandler, List<Long> targetIds,
+        int mapId) {
+        List<BaseCreatureUnit> units = new ArrayList<>();
+        targetIds.forEach(targetId -> {
+            BaseCreatureUnit unit = findTargetUnit(mapHandler, targetId, mapId);
+            if (unit != null) {
+                units.add(unit);
+            }
+        });
+        return units;
+    }
+
+    /**
+     * 战场工具 找寻目标对象unit
+     *
+     * @param mapId
+     * @param skillId
+     */
+    public static BattleParam initBattleParam(int mapId, long skillId, long playerId, long targetId,
+        List<Long> targetIds) {
+        BattleParam battleParam = new BattleParam();
+
+        AbstractMapHandler mapHandler = AbstractMapHandler.getAbstractMapHandler(mapId);
+        BaseActionHandler actionHandler;
+
+        Map<Long, PlayerVisibleMapInfo> playerObjects = mapHandler.getPlayerObjects(mapId);
+        PlayerUnit caster = (PlayerUnit)playerObjects.get(playerId).getFighterAccount().getCreatureUnit();
+
+        BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
+        actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
+        if (targetId != 0) {
+            BaseCreatureUnit targetUnit = BattleUtil.findTargetUnit(mapHandler, targetId, mapId);
+            battleParam.setTargetUnit(targetUnit);
+
+        }
+        if (targetIds != null) {
+            List<BaseCreatureUnit> targetUnits = BattleUtil.findTargetUnits(mapHandler, targetIds, mapId);
+            battleParam.setTargetUnits(targetUnits);
+        }
+
+        battleParam.setMapHandler(mapHandler);
+        battleParam.setActionHandler(actionHandler);
+        battleParam.setCaster(caster);
+        return battleParam;
+    }
+
+    public static long getLongRandom(long left, long right) {
+        return left + (((long)(new Random().nextDouble() * (right - left + 1))));
+    }
+
+    // 自行检查空指针
+    public static long getUnitAttributeValue(BaseUnit unit, AttributeType type) {
+        PVPCreatureAttributeComponent component =
+            unit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
+        return component.getFinalAttributes().get(type).getValue();
+    }
+
 }

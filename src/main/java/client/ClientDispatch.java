@@ -1,5 +1,6 @@
 package client;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import game.base.manager.ClazzManager;
 import game.gm.packet.CM_GmCommand;
+import game.world.fight.packet.CM_UseGroupPointSkill;
 import io.netty.channel.ChannelHandlerContext;
 import net.model.PacketProtocol;
 import utils.ClassUtil;
@@ -64,6 +66,18 @@ public class ClientDispatch {
 
         try {
             Class<?> aClass = ClazzManager.getClazz(action);
+
+            if (aClass == CM_UseGroupPointSkill.class) {
+                CM_UseGroupPointSkill cm = (CM_UseGroupPointSkill)aClass.newInstance();
+                cm.setSkillId(Long.parseLong(list.get(1)));
+                List<Long> targetIdList = new ArrayList<>();
+                list.stream().skip(2).forEach(s -> {
+                    targetIdList.add(Long.parseLong(s));
+                });
+                cm.setTargetIdList(targetIdList);
+                ctx.writeAndFlush(PacketProtocol.valueOf(cm));
+                return;
+            }
 
             if (aClass == null) {
                 logger.error("发包动作错误,id[{}]", action);

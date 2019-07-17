@@ -1,7 +1,5 @@
 package game.base.executor.command.impl.scene.base;
 
-import game.map.base.AbstractScene;
-
 /**
  * @author : ddv
  * @since : 2019/7/2 下午12:15
@@ -14,13 +12,8 @@ public abstract class AbstractSceneRateCommand extends AbstractSceneDelayCommand
      */
     private long period;
 
-    public AbstractSceneRateCommand(String accountId, int mapId, long delay, long period) {
-        super(accountId, mapId, delay);
-        this.period = period;
-    }
-
-    public AbstractSceneRateCommand(AbstractScene scene, String accountId, long delay, long period) {
-        super(scene, accountId, delay);
+    public AbstractSceneRateCommand(int mapId, long delay, long period) {
+        super(mapId, delay);
         this.period = period;
     }
 

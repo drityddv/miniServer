@@ -22,7 +22,7 @@ public class EnterSceneCommand extends AbstractSceneCommand {
     private int oldMapId;
 
     public EnterSceneCommand(int mapId, String accountId) {
-        super(accountId, mapId);
+        super(mapId);
     }
 
     @Override

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.effect.model.BaseBuffEffect;
 import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
 import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
@@ -147,6 +148,11 @@ public class NeutralMapService implements INeutralMapService {
     @Override
     public Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId) {
         return getMapInfo(mapId).getMapScene().getMonsterMap();
+    }
+
+    @Override
+    public Map<Long, BaseBuffEffect> getBuffEffects(int mapId) {
+        return getMapScene(mapId).getBuffEffectMap();
     }
 
     @Override

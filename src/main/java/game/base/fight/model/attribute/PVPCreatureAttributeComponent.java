@@ -17,9 +17,8 @@ import game.base.game.attribute.util.AttributeUtils;
 public class PVPCreatureAttributeComponent extends AttributeContainer<BaseCreatureUnit>
     implements IUnitComponent<BaseCreatureUnit> {
 
-    public PVPCreatureAttributeComponent() {
-
-    }
+    // 这里要被反射调用的
+    public PVPCreatureAttributeComponent() {}
 
     public PVPCreatureAttributeComponent(BaseCreatureUnit creatureUnit) {
         super(creatureUnit);

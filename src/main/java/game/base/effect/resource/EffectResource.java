@@ -3,6 +3,7 @@ package game.base.effect.resource;
 import java.util.HashMap;
 import java.util.Map;
 
+import game.base.effect.model.constant.EffectTypeEnum;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 
@@ -24,12 +25,13 @@ public class EffectResource {
     private String buffName;
     // 持续时间
     private long duration;
-    // 生效周期
-    private long periodTime;
+    // 生效次数
+    private int period;
     // 最大合并次数 [-1 无限合并,0 不能合并]
     private int maxMergeCount;
 
-    // private EffectType effectType;
+    private EffectTypeEnum effectType;
+    private int effectTypeId;
 
     private Map<String, Object> valueParam;
     private String valueString;
@@ -37,8 +39,12 @@ public class EffectResource {
     @Init
     private void init() {
         duration *= 1000;
-        periodTime *= 1000;
         analysisValue();
+        analysisEffectType();
+    }
+
+    private void analysisEffectType() {
+        effectType = EffectTypeEnum.getById(effectTypeId);
     }
 
     private void analysisValue() {
@@ -66,17 +72,17 @@ public class EffectResource {
         return duration;
     }
 
-    public long getPeriodTime() {
-        return periodTime;
+    public int getPeriodTime() {
+        return period;
     }
 
     public int getMaxMergeCount() {
         return maxMergeCount;
     }
 
-    // public EffectType getEffectType() {
-    // return effectType;
-    // }
+    public EffectTypeEnum getEffectType() {
+        return effectType;
+    }
 
     public int getGroupId() {
         return groupId;

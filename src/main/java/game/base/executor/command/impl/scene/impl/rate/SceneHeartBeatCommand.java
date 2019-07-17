@@ -10,12 +10,12 @@ import game.map.handler.AbstractMapHandler;
 
 public class SceneHeartBeatCommand extends AbstractSceneRateCommand {
 
-    public SceneHeartBeatCommand(String accountId, int mapId, long delay, long period) {
-        super(accountId, mapId, delay, period);
+    public SceneHeartBeatCommand(int mapId, long delay, long period) {
+        super(mapId, delay, period);
     }
 
     public static SceneHeartBeatCommand valueOf(int mapId, long delay, long period) {
-        SceneHeartBeatCommand command = new SceneHeartBeatCommand(null, mapId, delay, period);
+        SceneHeartBeatCommand command = new SceneHeartBeatCommand(mapId, delay, period);
         return command;
     }
 

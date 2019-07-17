@@ -1,8 +1,6 @@
 package game.base.effect.model.impl;
 
 import game.base.effect.model.BaseBuffEffect;
-import game.base.effect.model.constant.EffectOperationType;
-import game.base.fight.model.pvpunit.BaseCreatureUnit;
 
 /**
  * @author : ddv
@@ -27,8 +25,8 @@ public class PoisonBuffEffect extends BaseBuffEffect {
     }
 
     @Override
-    protected void active(BaseCreatureUnit unit, EffectOperationType type) {
-        // 扣血待做
-        super.active(unit, type);
+    public void active() {
+
     }
+
 }

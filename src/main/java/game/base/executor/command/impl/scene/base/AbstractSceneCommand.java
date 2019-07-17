@@ -1,7 +1,6 @@
 package game.base.executor.command.impl.scene.base;
 
 import game.base.executor.command.AbstractCommand;
-import game.map.base.AbstractScene;
 
 /**
  * @author : ddv
@@ -9,19 +8,10 @@ import game.map.base.AbstractScene;
  */
 
 public abstract class AbstractSceneCommand extends AbstractCommand {
-    protected String accountId;
     protected int mapId;
-    protected AbstractScene scene;
 
-    public AbstractSceneCommand(String accountId, int mapId) {
-        this.accountId = accountId;
+    public AbstractSceneCommand(int mapId) {
         this.mapId = mapId;
-    }
-
-    public AbstractSceneCommand(AbstractScene scene, String accountId) {
-        this.accountId = accountId;
-        this.scene = scene;
-        this.mapId = scene.getMapId();
     }
 
     @Override
@@ -39,28 +29,12 @@ public abstract class AbstractSceneCommand extends AbstractCommand {
         return Math.abs(getKey() % poolSize);
     }
 
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
     public int getMapId() {
         return mapId;
     }
 
     public void setMapId(int mapId) {
         this.mapId = mapId;
-    }
-
-    public AbstractScene getScene() {
-        return scene;
-    }
-
-    public void setScene(AbstractScene scene) {
-        this.scene = scene;
     }
 
     /**

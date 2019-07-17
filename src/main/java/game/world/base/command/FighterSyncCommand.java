@@ -3,6 +3,7 @@ package game.world.base.command;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.map.base.AbstractScene;
+import game.map.handler.AbstractMapHandler;
 import game.world.fight.syncStrategy.ISyncStrategy;
 
 /**
@@ -16,21 +17,21 @@ public class FighterSyncCommand extends AbstractSceneCommand {
 
     private ISyncStrategy iSyncStrategy;
 
-    public FighterSyncCommand(String accountId, AbstractScene scene) {
-        super(scene, accountId);
+    public FighterSyncCommand(int mapId, long playerId, ISyncStrategy iSyncStrategy) {
+        super(mapId);
+        this.playerId = playerId;
+        this.iSyncStrategy = iSyncStrategy;
     }
 
-    public static FighterSyncCommand valueOf(long playerId, String accountId, ISyncStrategy syncStrategy,
-        AbstractScene scene) {
-        FighterSyncCommand command = new FighterSyncCommand(accountId, scene);
-        command.playerId = playerId;
-        command.iSyncStrategy = syncStrategy;
+    public static FighterSyncCommand valueOf(long playerId, ISyncStrategy syncStrategy, int mapId) {
+        FighterSyncCommand command = new FighterSyncCommand(mapId, playerId, syncStrategy);
         return command;
     }
 
     @Override
     public void action() {
-        FighterAccount fighterAccount = scene.getPlayerFighter(playerId).getFighterAccount();
+        AbstractScene mapScene = AbstractMapHandler.getHandler(mapId).getMapScene(mapId);
+        FighterAccount fighterAccount = mapScene.getPlayerFighter(playerId).getFighterAccount();
         if (fighterAccount != null) {
             iSyncStrategy.syncInfo(fighterAccount);
         }

@@ -52,5 +52,6 @@
 
     <!--地图内战斗  2100 - 2200 -->
     <message id="2100" key="useSinglePointSkill" value="game.world.fight.packet.CM_UseSinglePointSkill"/>
+    <message id="2101" key="useGroupPointSkill" value="game.world.fight.packet.CM_UseGroupPointSkill"/>
 
 </protocols>

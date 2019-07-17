@@ -1,6 +1,9 @@
 package game.base.fight.model.skill.action.handler;
 
+import java.util.List;
+
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.base.skill.model.BaseSkill;
 
 /**
  * 技能动作处理
@@ -12,11 +15,20 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 public interface IActionHandler {
 
     /**
-     *
+     * 单体指向性技能
      *
      * @param caster
      * @param defender
-     * @param skillId
+     * @param baseSkill
      */
-    void action(BaseCreatureUnit caster, BaseCreatureUnit defender, long skillId);
+    void action(BaseCreatureUnit caster, BaseCreatureUnit defender, BaseSkill baseSkill);
+
+    /**
+     * 群体指向性技能
+     *
+     * @param caster
+     * @param target
+     * @param baseSkill
+     */
+    void action(BaseCreatureUnit caster, List<BaseCreatureUnit> target, BaseSkill baseSkill);
 }

@@ -21,7 +21,7 @@ public class LogMapCommand extends AbstractSceneCommand {
     private Player player;
 
     public LogMapCommand(Player player, int mapId) {
-        super(player.getAccountId(), mapId);
+        super(mapId);
     }
 
     public static LogMapCommand valueOf(Player player, int mapId) {

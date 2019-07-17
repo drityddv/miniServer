@@ -2,6 +2,7 @@ package game.base.effect.model;
 
 import game.base.effect.model.constant.EffectMergeConstant;
 import game.base.effect.resource.EffectResource;
+import utils.TimeUtil;
 
 /**
  * 基础效果[支持合并,过期]
@@ -11,7 +12,9 @@ import game.base.effect.resource.EffectResource;
  */
 
 public abstract class BaseEffect<T> {
-
+    // 作业id
+    protected long jobId;
+    // buff作用者
     protected T owner;
     // 开始时间
     protected long startAt;
@@ -24,9 +27,12 @@ public abstract class BaseEffect<T> {
 
     protected EffectResource effectResource;
 
-    public void init(EffectResource resource) {
-        this.effectResource = resource;
-        this.duration = resource.getDuration();
+    public void init(T owner, EffectResource effectResource) {
+        this.owner = owner;
+        this.effectResource = effectResource;
+        this.startAt = TimeUtil.now();
+        this.duration = effectResource.getDuration();
+        this.endAt = startAt + duration;
     }
 
     /**
@@ -91,6 +97,14 @@ public abstract class BaseEffect<T> {
 
     public int getLevel() {
         return effectResource.getLevel();
+    }
+
+    public long getJobId() {
+        return jobId;
+    }
+
+    public void setJobId(long jobId) {
+        this.jobId = jobId;
     }
 
     public boolean canMerge() {

@@ -8,7 +8,7 @@ import java.util.Set;
 import game.base.consume.AssetsConsume;
 import game.base.consume.IConsume;
 import game.base.game.attribute.AttributeType;
-import game.base.skill.constant.SkillType;
+import game.base.skill.constant.SkillEnum;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 import utils.StringUtil;
@@ -51,8 +51,8 @@ public class SkillLevelResource {
     /**
      * 技能type
      */
-    private SkillType skillType;
-    private String skillTypeId;
+    private SkillEnum skillEnum;
+    private String skillEnumId;
 
     /**
      * 计算技能伤害时关联的属性
@@ -79,8 +79,8 @@ public class SkillLevelResource {
     }
 
     private void analysisSkillType() {
-        if (StringUtil.isNotEmpty(skillTypeId)) {
-            skillType = SkillType.getById(Integer.parseInt(skillTypeId));
+        if (StringUtil.isNotEmpty(skillEnumId)) {
+            skillEnum = SkillEnum.getById(Integer.parseInt(skillEnumId));
         }
     }
 
@@ -140,8 +140,8 @@ public class SkillLevelResource {
         return cd;
     }
 
-    public SkillType getSkillType() {
-        return skillType;
+    public SkillEnum getSkillEnum() {
+        return skillEnum;
     }
 
     public int getMpConsume() {

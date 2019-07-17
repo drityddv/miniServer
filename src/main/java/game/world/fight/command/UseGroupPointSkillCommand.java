@@ -1,5 +1,7 @@
 package game.world.fight.command;
 
+import java.util.List;
+
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
@@ -14,42 +16,37 @@ import game.world.fight.model.BattleParam;
  * @since : 2019/7/16 12:30 PM
  */
 
-public class UseSinglePointSkillCommand extends AbstractSceneCommand {
+public class UseGroupPointSkillCommand extends AbstractSceneCommand {
     private Player player;
     private long skillId;
-    private long targetId;
+    private List<Long> targetIds;
 
-    public UseSinglePointSkillCommand(String accountId, int mapId) {
+    public UseGroupPointSkillCommand(String accountId, int mapId) {
         super(mapId);
     }
 
-    public static UseSinglePointSkillCommand valueOf(Player player, long skillId, long targetId) {
-        UseSinglePointSkillCommand command =
-            new UseSinglePointSkillCommand(player.getAccountId(), player.getCurrentMapId());
+    public static UseGroupPointSkillCommand valueOf(Player player, long skillId, List<Long> targetIds) {
+        UseGroupPointSkillCommand command =
+            new UseGroupPointSkillCommand(player.getAccountId(), player.getCurrentMapId());
         command.player = player;
         command.skillId = skillId;
-        command.targetId = targetId;
+        command.targetIds = targetIds;
         return command;
     }
 
     @Override
     public void action() {
         try {
-
-            BattleParam battleParam = BattleUtil.initBattleParam(mapId, skillId, player.getPlayerId(), targetId, null);
+            BattleParam battleParam = BattleUtil.initBattleParam(mapId, skillId, player.getPlayerId(), 0, targetIds);
             BaseActionHandler actionHandler = battleParam.getActionHandler();
 
             PlayerUnit caster = battleParam.getCaster();
-
             BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
+            List<BaseCreatureUnit> targetUnits = battleParam.getTargetUnits();
 
-            BaseCreatureUnit defender = battleParam.getTargetUnit();
-            if (defender == null) {
-                return;
-            }
-            actionHandler.init(caster, null, defender, BattleUtil.getUnitSkill(caster, skillId));
-            actionHandler.action(caster, defender, baseSkill);
-
+            actionHandler.init(caster, targetUnits, null, baseSkill);
+            actionHandler.action(caster, targetUnits, baseSkill);
+            battleParam.getMapHandler().doLogMap(player, mapId);
         } catch (Exception e) {
             e.printStackTrace();
         }

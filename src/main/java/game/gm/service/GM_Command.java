@@ -31,6 +31,8 @@ import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
+import scheduler.job.common.TestJob;
+import scheduler.job.model.JobEntry;
 import spring.SpringContext;
 import utils.StringUtil;
 
@@ -195,10 +197,6 @@ public class GM_Command {
         SpringContext.getPackService().sortPack(player);
     }
 
-    public void run(Player player, long configId, int num) {
-        boolean enoughSize = packService.isEnoughSize(player, configId, num);
-    }
-
     public void test(Player player, String accountId) {
         boolean online = SpringContext.getPlayerService().isPlayerOnline(accountId);
     }
@@ -207,6 +205,11 @@ public class GM_Command {
         PlayerEnt playerEnt = SpringContext.getPlayerService().getPlayerEnt(player);
         player.setSkillPoint(skillPoint);
         playerService.savePlayer(playerEnt);
+    }
+
+    public void run(Player player) {
+        JobEntry entry = JobEntry.newDelayJob(TestJob.class, 5000, 500L, 500L);
+        SpringContext.getQuartzService().addJob(entry.getJobDetail(), entry.getTrigger());
     }
 
 }

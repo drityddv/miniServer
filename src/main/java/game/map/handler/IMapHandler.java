@@ -3,6 +3,7 @@ package game.map.handler;
 import java.util.Collections;
 import java.util.Map;
 
+import game.base.effect.model.BaseBuffEffect;
 import game.map.base.AbstractPlayerMapInfo;
 import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
@@ -74,6 +75,16 @@ public interface IMapHandler {
      * @return
      */
     default Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId) {
+        return Collections.emptyMap();
+    }
+
+    /**
+     * 获得地图内注册的buff[周期与一次性的都会在这里注册]
+     *
+     * @param mapId
+     * @return
+     */
+    default Map<Long, BaseBuffEffect> getBuffEffects(int mapId) {
         return Collections.emptyMap();
     }
 

@@ -81,8 +81,7 @@ public class Player extends AbstractCreature<Player> {
             return;
         }
 
-        ExecutorUtils
-            .submit(FighterSyncCommand.valueOf(this.getPlayerId(), this.getAccountId(), syncStrategy, currentScene));
+        ExecutorUtils.submit(FighterSyncCommand.valueOf(this.getPlayerId(), syncStrategy, getCurrentMapId()));
     }
 
     @Override

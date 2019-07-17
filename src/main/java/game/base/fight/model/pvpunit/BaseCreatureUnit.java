@@ -30,6 +30,7 @@ public abstract class BaseCreatureUnit extends BaseUnit {
      * 名称
      */
     private String name;
+
     protected BaseCreatureUnit(long id, FighterAccount fighterAccount, String name) {
         super(id);
         this.fighterAccount = fighterAccount;

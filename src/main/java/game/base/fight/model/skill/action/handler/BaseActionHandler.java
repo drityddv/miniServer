@@ -1,13 +1,15 @@
 package game.base.fight.model.skill.action.handler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.fight.model.skill.model.PVPSkillComponent;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
+import utils.TimeUtil;
 
 /**
  * @author : ddv
@@ -17,22 +19,27 @@ import game.base.skill.model.BaseSkill;
 public abstract class BaseActionHandler implements IActionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseActionHandler.class);
+    protected BaseCreatureUnit caster;
+    protected BaseSkill baseSkill;
+    protected BaseCreatureUnit defender;
+    protected List<BaseCreatureUnit> defenders = new ArrayList<>();
 
     @Override
-    public void action(BaseCreatureUnit caster, BaseCreatureUnit defender, long skillId) {
-        if (!useSkillPre(caster, skillId)) {
-            return;
-        }
-        doAction(caster, defender, skillId);
+    public void action(BaseCreatureUnit caster, BaseCreatureUnit defender, BaseSkill skill) {
+        doAction();
     }
 
-    // 使用技能前的通用检查 子类按需重写
-    protected boolean useSkillPre(BaseCreatureUnit caster, long skillId) {
-        PVPSkillComponent skillComponent = caster.getComponentContainer().getComponent(UnitComponentType.SKILL);
-        BaseSkill baseSkill = skillComponent.getSkillMap().get(skillId);
+    @Override
+    public void action(BaseCreatureUnit caster, List<BaseCreatureUnit> target, BaseSkill skill) {
+        doAction();
+    }
+
+    // 使用技能前的通用逻辑[检查技能合法性,记录cd等...] 子类按需重写
+    protected boolean canUseSkill(BaseCreatureUnit caster, BaseSkill baseSkill) {
 
         if (baseSkill == null) {
-            logger.warn("玩家[{}] 使用技能失败,玩家未学习该技能[{}]", caster.getFighterAccount().getAccountId(), skillId);
+            logger.warn("玩家[{}] 使用技能失败,玩家未学习该技能[{}]", caster.getFighterAccount().getAccountId(),
+                baseSkill.getSkillId());
             return false;
         }
 
@@ -46,15 +53,32 @@ public abstract class BaseActionHandler implements IActionHandler {
             logger.warn("玩家[{}] 使用技能失败,技能cd中", caster.getFighterAccount().getAccountId());
             return false;
         }
+
+        // 记录cd
+        baseSkill.setLastUsedAt(TimeUtil.now());
         return true;
     }
 
-    /**
-     * 使用
-     *
-     * @param caster
-     * @param defender
-     * @param skillId
-     */
-    public abstract void doAction(BaseCreatureUnit caster, BaseCreatureUnit defender, long skillId);
+    public void init(BaseCreatureUnit caster, List<BaseCreatureUnit> defenders, BaseCreatureUnit defender,
+        BaseSkill baseSkill) {
+        this.caster = caster;
+        this.defender = defender;
+        this.defenders = defenders;
+        this.baseSkill = baseSkill;
+    }
+
+    protected void doAction() {}
+
+    // 使用前
+    protected boolean actionPre() {
+        return canUseSkill(caster, baseSkill);
+    }
+
+    // 使用后
+    protected void actionAfter() {}
+
+    // 技能效果值
+    public long getSkillValue() {
+        return baseSkill.getSkillLevelResource().getValue();
+    }
 }

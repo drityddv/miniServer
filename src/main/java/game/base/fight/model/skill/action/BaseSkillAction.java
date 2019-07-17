@@ -1,6 +1,6 @@
 package game.base.fight.model.skill.action;
 
-import game.base.skill.constant.SkillType;
+import game.base.skill.constant.SkillEnum;
 import game.base.skill.model.BaseSkill;
 
 /**
@@ -10,11 +10,11 @@ import game.base.skill.model.BaseSkill;
 
 public class BaseSkillAction {
 
-    protected SkillType skillType;
+    protected SkillEnum skillEnum;
     protected BaseSkill baseSkill;
 
-    public BaseSkillAction(SkillType skillType, BaseSkill baseSkill) {
-        this.skillType = skillType;
+    public BaseSkillAction(SkillEnum skillEnum, BaseSkill baseSkill) {
+        this.skillEnum = skillEnum;
         this.baseSkill = baseSkill;
     }
 }

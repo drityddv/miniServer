@@ -25,7 +25,7 @@ public class EnterMapCommand extends AbstractSceneCommand {
     private int mapId;
 
     public EnterMapCommand(String accountId, int mapId) {
-        super(accountId, mapId);
+        super(mapId);
     }
 
     public static EnterMapCommand valueOf(Player player, int mapId) {

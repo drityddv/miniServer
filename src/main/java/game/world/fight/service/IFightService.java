@@ -1,5 +1,7 @@
 package game.world.fight.service;
 
+import java.util.List;
+
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.role.player.model.Player;
 
@@ -28,4 +30,13 @@ public interface IFightService {
      * @param targetId
      */
     void useSinglePointSkill(Player player, long skillId, long targetId);
+
+    /**
+     * 使用群体指向性技能
+     *
+     * @param player
+     * @param skillId
+     * @param targetIdList
+     */
+    void useGroupPointSkill(Player player, long skillId, List<Long> targetIdList);
 }

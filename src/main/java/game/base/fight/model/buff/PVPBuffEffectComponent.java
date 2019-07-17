@@ -24,7 +24,7 @@ public class PVPBuffEffectComponent extends BaseUnitComponent<BaseCreatureUnit> 
 
     private Map<Integer, BaseBuffEffect> groupBuffMap = new HashMap<>();
 
-    // private Map<EffectType, List<BaseBuffEffect>> typeBuffMap = new HashMap<>();
+    // private Map<EffectTypeEnum, List<BaseBuffEffect>> typeBuffMap = new HashMap<>();
 
     /**
      * 添加buff 在这里进行合并等操作 相同groupId 相同id合并,不同id按照优先级覆盖

@@ -1,5 +1,9 @@
 package game.base.fight.model.pvpunit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import game.base.fight.base.model.attack.BaseActionEntry;
 import game.base.fight.model.componet.UnitComponentContainer;
 
 /**
@@ -10,6 +14,8 @@ import game.base.fight.model.componet.UnitComponentContainer;
  */
 
 public abstract class BaseUnit {
+
+    private static final Logger logger = LoggerFactory.getLogger("战报");
     protected UnitComponentContainer componentContainer = new UnitComponentContainer();
     protected long id;
     protected int level;
@@ -28,12 +34,16 @@ public abstract class BaseUnit {
         componentContainer.initialize(this);
     }
 
-    // 防御
-    public void defend(long damage) {
-        currentHp = currentHp > damage ? currentHp - damage : 0;
+    // 防御 自己扩展 可以走buff走生物自己的机制
+    public void defend(BaseActionEntry attackEntry) {
+        long damage = attackEntry.getValue();
+        long realDamage = 0;
+        realDamage = currentHp >= damage ? damage : currentHp;
+        currentHp -= realDamage;
         if (currentHp == 0) {
             dead = true;
         }
+        logger.info("id[{}] 受到伤害[{}] 剩余生命值[{}] 死亡状态[{}]", id, realDamage, currentHp, dead);
     }
 
     // get and set

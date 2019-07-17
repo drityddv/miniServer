@@ -1,5 +1,7 @@
 package game.world.fight.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Component;
 import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.role.player.model.Player;
+import game.world.fight.command.UseGroupPointSkillCommand;
 import game.world.fight.command.UseSinglePointSkillCommand;
 
 /**
@@ -29,5 +32,10 @@ public class FightService implements IFightService {
     @Override
     public void useSinglePointSkill(Player player, long skillId, long targetId) {
         ExecutorUtils.submit(UseSinglePointSkillCommand.valueOf(player, skillId, targetId));
+    }
+
+    @Override
+    public void useGroupPointSkill(Player player, long skillId, List<Long> targetIdList) {
+        ExecutorUtils.submit(UseGroupPointSkillCommand.valueOf(player, skillId, targetIdList));
     }
 }

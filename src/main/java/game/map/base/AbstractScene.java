@@ -3,6 +3,7 @@ package game.map.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import game.base.effect.model.BaseBuffEffect;
 import game.map.visible.AbstractVisibleMapInfo;
 
 /**
@@ -17,9 +18,9 @@ public abstract class AbstractScene {
      */
     protected int mapId;
     /**
-     * 定时器容器
+     * buff定时job注册点 key和调度service注册点要保持一致
      */
-    private Map<Object, Object> commandMap = new HashMap<>();
+    private Map<Long, BaseBuffEffect> buffEffectMap = new HashMap<>();
 
     public AbstractScene(int mapId) {
         this.mapId = mapId;
@@ -38,8 +39,7 @@ public abstract class AbstractScene {
         return mapId;
     }
 
-    public Map<Object, Object> getCommandMap() {
-        return commandMap;
+    public Map<Long, BaseBuffEffect> getBuffEffectMap() {
+        return buffEffectMap;
     }
-
 }

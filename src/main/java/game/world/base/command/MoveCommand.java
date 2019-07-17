@@ -18,7 +18,7 @@ public class MoveCommand extends AbstractSceneCommand {
     private AbstractMapHandler handler;
 
     public MoveCommand(Player player, int currentMapId) {
-        super(player.getAccountId(), currentMapId);
+        super(currentMapId);
         this.player = player;
     }
 

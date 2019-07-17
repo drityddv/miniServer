@@ -9,7 +9,7 @@ import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
-import game.base.skill.constant.SkillType;
+import game.base.skill.constant.SkillEnum;
 import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 import game.role.player.model.Player;
@@ -29,7 +29,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
 
     private static final Map<Integer, AbstractMapHandler> HANDLER_MAP = new HashMap<>();
 
-    private static Map<SkillType, BaseActionHandler> actionHandlerMap;
+    private static Map<SkillEnum, BaseActionHandler> actionHandlerMap;
 
     /**
      * 根据地图组id获得处理器 如果没有处理器就用保底地图的
@@ -53,7 +53,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
      * @param <T>
      * @return
      */
-    public static <T extends BaseActionHandler> T getActionHandler(SkillType type) {
+    public static <T extends BaseActionHandler> T getActionHandler(SkillEnum type) {
         BaseActionHandler handler = actionHandlerMap.get(type);
         return (T)handler;
     }
@@ -73,7 +73,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     @PostConstruct
     private void init() {
         HANDLER_MAP.put(getGroupType().getGroupId(), this);
-        actionHandlerMap = SkillType.TYPE_TO_HANDLER;
+        actionHandlerMap = SkillEnum.TYPE_TO_HANDLER;
     }
 
     @Override

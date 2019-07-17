@@ -19,7 +19,7 @@ public class LeaveMapCommand extends AbstractSceneCommand {
     private int newMapId;
 
     public LeaveMapCommand(Player player) {
-        super(player.getAccountId(), player.getCurrentMapId());
+        super(player.getCurrentMapId());
     }
 
     public static LeaveMapCommand valueOf(Player player, int newMapId) {

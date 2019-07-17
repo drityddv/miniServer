@@ -5,24 +5,27 @@ import java.util.Map;
 
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.model.skill.action.handler.IActionHandler;
-import game.base.fight.model.skill.action.handler.impl.DefaultAttackHandler;
+import game.base.fight.model.skill.action.handler.impl.FrostBolt;
+import game.base.fight.model.skill.action.handler.impl.HighNoonShoot;
 
 /**
  * @author : ddv
  * @since : 2019/7/15 8:35 PM
  */
 
-public enum SkillType {
+public enum SkillEnum {
     /**
-     * 普通攻击[立即生效 无其他效果]
+     * 寒冰箭
      */
-    DEFAULT_ATTACK(1, DefaultAttackHandler.class),;
+    Frost_Bolt(1, FrostBolt.class),
 
-    public static Map<SkillType, BaseActionHandler> TYPE_TO_HANDLER = new HashMap<>(SkillType.values().length);
-    public static Map<Integer, SkillType> ID_TO_TYPE = new HashMap<>(SkillType.values().length);
+    HighNoon_Shoot(2, HighNoonShoot.class),;
+
+    public static Map<SkillEnum, BaseActionHandler> TYPE_TO_HANDLER = new HashMap<>(SkillEnum.values().length);
+    public static Map<Integer, SkillEnum> ID_TO_TYPE = new HashMap<>(SkillEnum.values().length);
 
     static {
-        for (SkillType type : SkillType.values()) {
+        for (SkillEnum type : SkillEnum.values()) {
             TYPE_TO_HANDLER.put(type, type.getActionHandler());
             ID_TO_TYPE.put(type.id, type);
         }
@@ -33,12 +36,12 @@ public enum SkillType {
     private Class<? extends BaseActionHandler> actionHandlerClazz;
     private BaseActionHandler actionHandler;
 
-    SkillType(int id, Class<? extends BaseActionHandler> actionHandlerClazz) {
+    SkillEnum(int id, Class<? extends BaseActionHandler> actionHandlerClazz) {
         this.id = id;
         this.actionHandlerClazz = actionHandlerClazz;
     }
 
-    public static SkillType getById(int id) {
+    public static SkillEnum getById(int id) {
         return ID_TO_TYPE.get(id);
     }
 

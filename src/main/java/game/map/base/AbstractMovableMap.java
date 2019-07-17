@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.map.visible.AbstractVisibleMapInfo;
-import game.world.base.command.UpdatePositionCommand;
 
 /**
  * 可移动的场景
@@ -24,8 +23,6 @@ public abstract class AbstractMovableMap<T extends AbstractVisibleMapInfo> exten
 
     // 玩家accountId - T
     protected Map<Long, T> playerMap = new HashMap<>();
-
-    private UpdatePositionCommand updatePositionCommand;
 
     public AbstractMovableMap(int mapId) {
         super(mapId);
@@ -52,15 +49,6 @@ public abstract class AbstractMovableMap<T extends AbstractVisibleMapInfo> exten
     // 玩家是否存在于场景中
     public boolean isContainPlayer(long playerId) {
         return playerMap.containsKey(playerId);
-    }
-
-    // get and set
-    public UpdatePositionCommand getUpdatePositionCommand() {
-        return updatePositionCommand;
-    }
-
-    public void setUpdatePositionCommand(UpdatePositionCommand updatePositionCommand) {
-        this.updatePositionCommand = updatePositionCommand;
     }
 
     public Map<Long, T> getPlayerMap() {

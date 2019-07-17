@@ -2,13 +2,8 @@ package game.world.utils;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
-import game.base.fight.model.componet.IUnitComponent;
-import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.fight.model.pvpunit.FighterAccount;
-import game.base.fight.model.skill.model.PVPSkillComponent;
 import game.gm.packet.SM_LogMessage;
 import game.map.base.AbstractScene;
 import game.map.visible.PlayerVisibleMapInfo;
@@ -17,7 +12,6 @@ import game.map.visible.impl.NpcVisibleInfo;
 import game.role.player.model.Player;
 import game.role.skill.model.SkillEntry;
 import game.role.skill.model.SkillList;
-import game.role.skill.model.SkillSquare;
 import net.utils.PacketUtil;
 import utils.StringUtil;
 
@@ -41,25 +35,25 @@ public class MapUtil {
             sb.append(StringUtil.wipePlaceholder("玩家[{}], 生命值[{}] 法力值[{}] 坐标[{},{}] 上次移动时间戳[{}]", info.getAccountId(),
                 unit.getCurrentHp(), unit.getCurrentMp(), info.getCurrentX(), info.getCurrentY(),
                 info.getLastMoveAt()));
-            FighterAccount fighterAccount = info.getFighterAccount();
-            Map<UnitComponentType, IUnitComponent> component =
-                fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
-            component.forEach((type, iUnitComponent) -> {
-                sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
-                // if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
-                // PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
-                // AttributeUtils.logAttrs(attributeComponent, sb);
-                // }
-
-                if (iUnitComponent instanceof PVPSkillComponent) {
-                    PVPSkillComponent skillComponent = (PVPSkillComponent)iUnitComponent;
-                    SkillSquare skillSquare = skillComponent.getSkillSquare();
-                    sb.append(StringUtil.wipePlaceholder("技能栏下标[{}]", skillSquare.getSquareIndex()));
-                    skillSquare.getSquareSkills().forEach((skillId, skillEntry) -> {
-                        sb.append(StringUtil.wipePlaceholder("技能id[{}] 技能等级[{}]", skillId, skillEntry.getLevel()));
-                    });
-                }
-            });
+            // FighterAccount fighterAccount = info.getFighterAccount();
+            // Map<UnitComponentType, IUnitComponent> component =
+            // fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
+            // component.forEach((type, iUnitComponent) -> {
+            // sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
+            // // if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
+            // // PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
+            // // AttributeUtils.logAttrs(attributeComponent, sb);
+            // // }
+            //
+            // if (iUnitComponent instanceof PVPSkillComponent) {
+            // PVPSkillComponent skillComponent = (PVPSkillComponent)iUnitComponent;
+            // SkillSquare skillSquare = skillComponent.getSkillSquare();
+            // sb.append(StringUtil.wipePlaceholder("技能栏下标[{}]", skillSquare.getSquareIndex()));
+            // skillSquare.getSquareSkills().forEach((skillId, skillEntry) -> {
+            // sb.append(StringUtil.wipePlaceholder("技能id[{}] 技能等级[{}]", skillId, skillEntry.getLevel()));
+            // });
+            // }
+            // });
         });
 
         sb.append(StringUtil.wipePlaceholder("地图内npc数量[{}]", npcList.size()));
@@ -72,8 +66,9 @@ public class MapUtil {
             sb.append(StringUtil.wipePlaceholder("地图内怪物数量[{}]", monsters.size()));
             for (MonsterVisibleMapInfo monster : monsters) {
                 BaseCreatureUnit unit = monster.getFighterAccount().getCreatureUnit();
-                sb.append(StringUtil.wipePlaceholder("怪物id[{}] 名称[{}] 生命值[{}] 法力值[{}]", monster.getId(),
-                    monster.getMonsterName(), unit.getCurrentHp(), unit.getCurrentMp()));
+                sb.append(StringUtil.wipePlaceholder("怪物id[{}] 名称[{}] 生命值[{}] 法力值[{}] 坐标[{},{}]", monster.getId(),
+                    monster.getMonsterName(), unit.getCurrentHp(), unit.getCurrentMp(), monster.getCurrentX(),
+                    monster.getCurrentY()));
             }
         }
 

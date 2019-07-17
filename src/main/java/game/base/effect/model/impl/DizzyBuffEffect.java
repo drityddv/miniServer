@@ -4,9 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import game.base.effect.model.BaseBuffEffect;
-import game.base.effect.model.constant.EffectOperationType;
 import game.base.effect.model.constant.RestrictStatusEnum;
-import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.state.IRestrictObject;
 
 /**
@@ -28,8 +26,8 @@ public class DizzyBuffEffect extends BaseBuffEffect implements IRestrictObject {
     }
 
     @Override
-    protected void active(BaseCreatureUnit unit, EffectOperationType type) {
-        unit.setCanMove(false);
+    public void active() {
+        owner.setCanMove(false);
     }
 
     @Override

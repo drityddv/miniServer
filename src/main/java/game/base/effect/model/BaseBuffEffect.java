@@ -1,6 +1,7 @@
 package game.base.effect.model;
 
-import game.base.effect.model.constant.EffectOperationType;
+import game.base.effect.model.analysis.IBuffAnalysis;
+import game.base.effect.resource.EffectResource;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 
 /**
@@ -10,34 +11,37 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
  * @since : 2019/7/15 12:01 PM
  */
 
-public abstract class BaseBuffEffect extends BaseEffect<BaseCreatureUnit> {
+public abstract class BaseBuffEffect extends BaseEffect<BaseCreatureUnit> implements IBuffAnalysis {
     // 周期时间
-    protected long periodTime;
-    // buff获得时间
-    protected long gainTime;
+    protected long period;
     // buff释放者
     protected BaseCreatureUnit caster;
+    // FIXME 要验证quartz 会不会序列化 jobData
+    protected volatile boolean cancel = false;
 
-    // 效果激活
-    protected void active(BaseCreatureUnit unit, EffectOperationType type) {
+    public void init(BaseCreatureUnit caster, BaseCreatureUnit owner, EffectResource effectResource) {
+        super.init(owner, effectResource);
+        this.period = effectResource.getPeriodTime();
+        this.caster = caster;
+    }
+
+    @Override
+    public void doParse(EffectResource effectResource) {
+
+    }
+
+    // buff效果 默认啥都不做
+    public void active() {
 
     }
 
     // get and set
-    public long getPeriodTime() {
-        return periodTime;
+    public long getPeriod() {
+        return period;
     }
 
-    public void setPeriodTime(long periodTime) {
-        this.periodTime = periodTime;
-    }
-
-    public long getGainTime() {
-        return gainTime;
-    }
-
-    public void setGainTime(long gainTime) {
-        this.gainTime = gainTime;
+    public void setPeriod(long period) {
+        this.period = period;
     }
 
     public BaseCreatureUnit getCaster() {
