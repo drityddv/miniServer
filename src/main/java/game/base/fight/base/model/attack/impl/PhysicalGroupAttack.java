@@ -2,6 +2,7 @@ package game.base.fight.base.model.attack.impl;
 
 import java.util.List;
 
+import game.base.fight.base.model.attack.ActionTypeEnum;
 import game.base.fight.base.model.attack.BaseActionEntry;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.skill.model.BaseSkill;
@@ -17,7 +18,7 @@ public class PhysicalGroupAttack extends BaseActionEntry {
 
     public PhysicalGroupAttack(BaseCreatureUnit attacker, List<BaseCreatureUnit> defenders, BaseSkill skill,
         long value) {
-        super(attacker, defenders, skill, value);
+        super(attacker, defenders, skill, value, ActionTypeEnum.Physical_Attack);
     }
 
     public static PhysicalGroupAttack valueOf(BaseCreatureUnit attacker, List<BaseCreatureUnit> defenders,

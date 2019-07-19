@@ -53,52 +53,29 @@ public class SimpleUtil {
         return parser;
     }
 
-    // 用的时候再加 [int,long,string]
-    public static boolean isSimpleClazz(Class<?> clazz) {
-        if (clazz == int.class || clazz == Integer.class) {
-            return true;
-        }
-
-        if (clazz == long.class || clazz == Long.class) {
-            return true;
-        }
-
-        if (clazz == String.class) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean isSimpleClazzByName(String clazzName) {
-        Class<?> aClass = null;
-        try {
-            aClass = Class.forName(clazzName);
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-
-        return isSimpleClazz(aClass);
-
-    }
-
     public static void insertField(Object object, List<Field> simpleFields, List<String> csvNames,
         List<String> values) {
 
         simpleFields.forEach(field -> {
             String name = field.getName();
             field.setAccessible(true);
-
+            end:
             for (int i = 0; i < csvNames.size(); i++) {
-                if (name.equals(csvNames.get(i))) {
-                    try {
-                        if (StringUtil.isNotEmpty(values.get(i))) {
-                            field.set(object, JodaUtil.convertFromString(field.getType(), values.get(i)));
-                        }
+                if (name.equals(csvNames.get(i).replaceAll(" ", ""))) {
+                    String value = values.get(i);
+                    if (value != null) {
+                        value = value.replaceAll(" ", "");
+                        try {
+                            if (StringUtil.isNotEmpty(value)) {
+                                field.set(object, JodaUtil.convertFromString(field.getType(), value));
+                                break end;
+                            }
 
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
                     }
+
                 }
             }
 
@@ -115,5 +92,9 @@ public class SimpleUtil {
         List<String> list = new ArrayList<>();
         iterable.forEachRemaining(list::add);
         return list;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("ITEM:7:1,ITEM:7:1".replaceAll(" ", ""));
     }
 }

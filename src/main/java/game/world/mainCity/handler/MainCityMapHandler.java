@@ -1,5 +1,6 @@
 package game.world.mainCity.handler;
 
+import game.map.base.AbstractMovableScene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import game.map.handler.IMovableMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.mainCity.model.MainCityMapScene;
+import game.world.mainCity.model.MainCitySceneScene;
 import game.world.mainCity.service.IMainCityService;
 
 /**
@@ -21,7 +22,7 @@ import game.world.mainCity.service.IMainCityService;
  */
 @Component
 public class MainCityMapHandler extends AbstractMapHandler
-    implements IMovableMapHandler, ISceneMapHandler<MainCityMapScene> {
+    implements IMovableMapHandler, ISceneMapHandler<MainCitySceneScene> {
 
     @Autowired
     private IMainCityService mainCityService;
@@ -37,7 +38,7 @@ public class MainCityMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public MainCityMapScene getCurrentScene(Player player) {
+    public MainCitySceneScene getCurrentScene(Player player) {
         return mainCityService.getCurrentScene(player);
     }
 
@@ -62,7 +63,7 @@ public class MainCityMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public AbstractScene getMapScene(int mapId) {
+    public AbstractMovableScene getMapScene(int mapId) {
         return mainCityService.getMapScene(mapId);
     }
 

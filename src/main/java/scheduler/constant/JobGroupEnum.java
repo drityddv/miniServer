@@ -19,7 +19,15 @@ public enum JobGroupEnum {
     /**
      * 地图定时调度[地图心跳]
      */
-    SCENE_COMMON_RATE(),;
+    SCENE_COMMON_RATE(),
+    /**
+     * buff定时服务
+     */
+    BUFF(),
+    /**
+     * 测试用
+     */
+    TEST(),;
 
     public static Map<String, JobGroupEnum> NAME_TO_GROUP = new HashMap<>();
 

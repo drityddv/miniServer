@@ -10,7 +10,7 @@ import game.world.base.resource.MiniMapResource;
  * @since : 2019/7/10 下午9:22
  */
 
-public class MainCityMapInfo extends BaseMapInfo<MainCityMapScene> {
+public class MainCityMapInfo extends BaseMapInfo<MainCitySceneScene> {
 
     public static MainCityMapInfo valueOf(MiniMapResource mapResource) {
         MainCityMapInfo mapCommonInfo = new MainCityMapInfo();
@@ -20,11 +20,11 @@ public class MainCityMapInfo extends BaseMapInfo<MainCityMapScene> {
 
     @Override
     protected void initScene() {
-        mapScene = MainCityMapScene.valueOf(mapId);
+        mapScene = MainCitySceneScene.valueOf(mapId);
     }
 
     @Override
-    public MainCityMapScene getMapScene() {
+    public MainCitySceneScene getMapScene() {
         return mapScene;
     }
 }

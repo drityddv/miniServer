@@ -49,9 +49,11 @@
     <message id="2003" key="move" value="game.world.base.packet.CM_MoveMap"/>
     <message id="2005" key="changeMap" value="game.world.base.packet.CM_ChangeMap"/>
     <message id="2006" key="logMap" value="game.world.base.packet.CM_LogMap"/>
+    <message id="2007" value="game.map.packet.SM_AoiBroadCast"/>
 
     <!--地图内战斗  2100 - 2200 -->
-    <message id="2100" key="useSinglePointSkill" value="game.world.fight.packet.CM_UseSinglePointSkill"/>
-    <message id="2101" key="useGroupPointSkill" value="game.world.fight.packet.CM_UseGroupPointSkill"/>
+    <message id="2100" key="singletSkill" value="game.world.fight.packet.CM_UseSinglePointSkill"/>
+    <message id="2101" key="groupSkill" value="game.world.fight.packet.CM_UseGroupPointSkill"/>
+    <message id="2102" key="logUnit" value="game.world.fight.packet.CM_logUnitBattleInfo"/>
 
 </protocols>

@@ -4,9 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.base.effect.model.BaseBuffEffect;
+import game.base.effect.resource.EffectResource;
 import game.base.fight.model.componet.BaseUnitComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.map.handler.AbstractMapHandler;
+import game.world.fight.command.BuffActiveCommand;
+import scheduler.constant.JobGroupEnum;
+import scheduler.job.common.scene.EffectActiveJob;
+import scheduler.job.model.JobEntry;
+import spring.SpringContext;
 
 /**
  * pvp buff容器
@@ -18,23 +25,30 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 public class PVPBuffEffectComponent extends BaseUnitComponent<BaseCreatureUnit> {
 
     /**
-     * <effectConfigId,buff> buff存储对象
+     * 是否需要修正buff
      */
-    private Map<Long, BaseBuffEffect> buffMap = new HashMap<>();
+    private boolean needFix = false;
 
-    private Map<Integer, BaseBuffEffect> groupBuffMap = new HashMap<>();
-
-    // private Map<EffectTypeEnum, List<BaseBuffEffect>> typeBuffMap = new HashMap<>();
+    private BaseBuffEffect oldBuff;
 
     /**
-     * 添加buff 在这里进行合并等操作 相同groupId 相同id合并,不同id按照优先级覆盖
+     * <JobId,buff> buff存储对象
+     */
+    private Map<Long, BaseBuffEffect> buffMap = new HashMap<>();
+    /**
+     * effectTypeId - buff
+     */
+    private Map<Long, BaseBuffEffect> groupBuffMap = new HashMap<>();
+
+    /**
+     * 添加buff 在这里进行合并等操作 相同groupId 相同id合并,不同id按照优先级覆盖 FIXME 修正周期性buff触发器
      *
      * @param buff
      *            需要预处理的buff
      * @return 最终存储的buff
      */
-    public BaseBuffEffect doAddBuff(BaseBuffEffect buff) {
-        int groupId = buff.getEffectResource().getGroupId();
+    public BaseBuffEffect handleBuff(BaseBuffEffect buff) {
+        long groupId = buff.getEffectTypeId();
         BaseBuffEffect sameGroupBuff = groupBuffMap.get(groupId);
 
         if (sameGroupBuff != null) {
@@ -42,42 +56,55 @@ public class PVPBuffEffectComponent extends BaseUnitComponent<BaseCreatureUnit> 
                 // 不能合并的buff
                 return null;
             }
-
-            // 同等级merge
+            needFix = true;
+            oldBuff = sameGroupBuff;
+            // 同等级merge 返回旧的buff
             if (buff.getLevel() == sameGroupBuff.getLevel()) {
                 sameGroupBuff.merge(buff);
                 return sameGroupBuff;
-            } else {
-                // 等级高覆盖等级低的 如果新buff等级低就不允许合并
-                if (buff.getLevel() > sameGroupBuff.getLevel()) {
-                    cover(sameGroupBuff, buff);
-                    return buff;
-                }
             }
-
         }
         return buff;
     }
 
-    /**
-     * buff覆盖 后者覆盖前者
-     *
-     * @param buff1
-     * @param buff2
-     */
-    private void cover(BaseBuffEffect buff1, BaseBuffEffect buff2) {
-        removeBuff(buff1);
-        addBuff(buff2);
+    public void removeBuff(BaseBuffEffect buff) {
+        buffMap.remove(buff.getJobId());
+        groupBuffMap.remove(buff.getEffectTypeId());
     }
 
-    private void removeBuff(BaseBuffEffect buff) {
-        buffMap.remove(buff.getConfigId());
-        groupBuffMap.remove(buff.getGroupId());
+    public void addBuff(BaseBuffEffect buff) {
+        BaseBuffEffect finalBuff = handleBuff(buff);
+        if (finalBuff == null) {
+            return;
+        }
+
+        buffMap.put(finalBuff.getJobId(), finalBuff);
+        groupBuffMap.put(finalBuff.getEffectTypeId(), finalBuff);
+
+        reviseBuff(finalBuff);
     }
 
-    private void addBuff(BaseBuffEffect buff) {
-        buffMap.put(buff.getConfigId(), buff);
-        groupBuffMap.put(buff.getGroupId(), buff);
+    // 修正或者注册buff
+    private void reviseBuff(BaseBuffEffect buffEffect) {
+        int mapId = owner.getMapId();
+        Map<Long, BaseBuffEffect> buffEffects = AbstractMapHandler.getAbstractMapHandler(mapId).getBuffEffects(mapId);
+        EffectResource effectResource = buffEffect.getEffectResource();
+        if (oldBuff == null) {
+            if (effectResource.isRateEffect()) {
+                buffEffects.put(buffEffect.getJobId(), buffEffect);
+                JobEntry jobEntry =
+                    JobEntry.newRateJob(EffectActiveJob.class, (long)buffEffect.getEffectResource().getFrequencyTime(),
+                        buffEffect.getEffectResource().getPeriodTime(), buffEffect.getJobId(), JobGroupEnum.BUFF.name(),
+                        BuffActiveCommand.valueOf(buffEffect, mapId));
+
+                SpringContext.getQuartzService().registerJobAndSchedule(buffEffect.getJobId(), jobEntry);
+            }
+        } else {
+            SpringContext.getQuartzService().reviseBuffJob(oldBuff.getJobId());
+        }
+
+        needFix = false;
+        oldBuff = null;
     }
 
     /**

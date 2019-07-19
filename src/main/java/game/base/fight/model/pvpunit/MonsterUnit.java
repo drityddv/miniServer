@@ -51,7 +51,7 @@ public class MonsterUnit extends BaseCreatureUnit {
 
         monsterUnit.currentHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
         monsterUnit.currentMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
-
+        monsterUnit.mapId = creatureResource.getMapId();
         return monsterUnit;
     }
 

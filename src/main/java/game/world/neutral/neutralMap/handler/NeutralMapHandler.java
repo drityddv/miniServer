@@ -2,17 +2,19 @@ package game.world.neutral.neutralMap.handler;
 
 import java.util.Map;
 
+import game.map.base.AbstractMovableScene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.effect.model.BaseBuffEffect;
 import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
 import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.map.model.Grid;
-import game.map.visible.PlayerVisibleMapInfo;
-import game.map.visible.impl.MonsterVisibleMapInfo;
+import game.map.visible.PlayerVisibleMapObject;
+import game.map.visible.impl.MonsterVisibleMapObject;
 import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.neutral.neutralMap.service.INeutralMapService;
@@ -69,17 +71,22 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public Map<Long, PlayerVisibleMapInfo> getPlayerObjects(int mapId) {
-        return neutralMapService.getVisibleObjects(mapId);
+    public Map<Long, PlayerVisibleMapObject> getPlayerObjects(int mapId) {
+        return neutralMapService.getMapScene(mapId).getPlayerMap();
     }
 
     @Override
-    public Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId) {
-        return neutralMapService.getMonsterObjects(mapId);
+    public Map<Long, MonsterVisibleMapObject> getMonsterObjects(int mapId) {
+        return neutralMapService.getMapScene(mapId).getMonsterMap();
     }
 
     @Override
-    public AbstractScene getMapScene(int mapId) {
+    public Map<Long, BaseBuffEffect> getBuffEffects(int mapId) {
+        return neutralMapService.getMapScene(mapId).getBuffEffectMap();
+    }
+
+    @Override
+    public AbstractMovableScene getMapScene(int mapId) {
         return neutralMapService.getMapScene(mapId);
     }
 }

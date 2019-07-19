@@ -4,11 +4,13 @@ import java.util.Collections;
 import java.util.Map;
 
 import game.base.effect.model.BaseBuffEffect;
+import game.map.base.AbstractMovableScene;
 import game.map.base.AbstractPlayerMapInfo;
 import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
-import game.map.visible.PlayerVisibleMapInfo;
-import game.map.visible.impl.MonsterVisibleMapInfo;
+import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.PlayerVisibleMapObject;
+import game.map.visible.impl.MonsterVisibleMapObject;
 import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
 
@@ -64,7 +66,7 @@ public interface IMapHandler {
      * @param mapId
      * @return
      */
-    default Map<Long, PlayerVisibleMapInfo> getPlayerObjects(int mapId) {
+    default Map<Long, PlayerVisibleMapObject> getPlayerObjects(int mapId) {
         return Collections.emptyMap();
     }
 
@@ -74,8 +76,23 @@ public interface IMapHandler {
      * @param mapId
      * @return
      */
-    default Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId) {
+    default Map<Long, MonsterVisibleMapObject> getMonsterObjects(int mapId) {
         return Collections.emptyMap();
+    }
+
+    /**
+     * 获取单位
+     *
+     * @param mapId
+     * @param unitId
+     * @return
+     */
+    default AbstractVisibleMapObject getUnit(int mapId, long unitId) {
+        AbstractVisibleMapObject unit = getPlayerObjects(mapId).get(unitId);
+        if (unit == null) {
+            unit = getMonsterObjects(mapId).get(unitId);
+        }
+        return unit;
     }
 
     /**
@@ -94,6 +111,6 @@ public interface IMapHandler {
      * @param mapId
      * @return
      */
-    AbstractScene getMapScene(int mapId);
+	AbstractMovableScene getMapScene(int mapId);
 
 }

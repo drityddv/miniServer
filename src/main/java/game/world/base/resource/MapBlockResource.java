@@ -1,5 +1,12 @@
 package game.world.base.resource;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import game.map.base.BroadcastCenter;
+import game.map.model.Grid;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 import utils.JodaUtil;
@@ -14,12 +21,52 @@ public class MapBlockResource {
     private int configId;
     private int x;
     private int y;
-    private String mapDataString;
     private int[][] blockData;
+    private String mapDataString;
+
+    private Map<Grid, List<BroadcastCenter>> aoiModelMap;
+    private String aoiPointString;
 
     @Init
     public void init() {
         analysisMapData();
+        analysisAoiPoint();
+    }
+
+    private void analysisAoiPoint() {
+        aoiModelMap = new HashMap<>();
+        String[] data = aoiPointString.split(",");
+        for (String point : data) {
+            String[] split = point.split(":");
+            int x = Integer.parseInt(split[0]);
+            int y = Integer.parseInt(split[1]);
+            BroadcastCenter broadcastCenter = new BroadcastCenter(x, y);
+            init(broadcastCenter);
+        }
+    }
+
+    private void init(BroadcastCenter broadcastCenter) {
+        init2(broadcastCenter, broadcastCenter.getPointX(), broadcastCenter.getPointY());
+        init2(broadcastCenter, broadcastCenter.getPointX(), broadcastCenter.getPointY() + 1);
+        init2(broadcastCenter, broadcastCenter.getPointX(), broadcastCenter.getPointY() - 1);
+        init2(broadcastCenter, broadcastCenter.getPointX() + 1, broadcastCenter.getPointY());
+        init2(broadcastCenter, broadcastCenter.getPointX() + 1, broadcastCenter.getPointY() - 1);
+        init2(broadcastCenter, broadcastCenter.getPointX() + 1, broadcastCenter.getPointY() + 1);
+
+        init2(broadcastCenter, broadcastCenter.getPointX() - 1, broadcastCenter.getPointY() + 1);
+        init2(broadcastCenter, broadcastCenter.getPointX() - 1, broadcastCenter.getPointY() - 1);
+        init2(broadcastCenter, broadcastCenter.getPointX() - 1, broadcastCenter.getPointY());
+
+    }
+
+    private void init2(BroadcastCenter broadcastCenter, int x, int y) {
+        Grid grid = Grid.valueOf(x, y);
+        List<BroadcastCenter> broadcastCenters = aoiModelMap.get(grid);
+        if (broadcastCenters == null) {
+            broadcastCenters = new ArrayList<>();
+        }
+        broadcastCenters.add(broadcastCenter);
+        aoiModelMap.put(grid, broadcastCenters);
     }
 
     private void analysisMapData() {
@@ -44,6 +91,10 @@ public class MapBlockResource {
 
     public int getY() {
         return y;
+    }
+
+    public Map<Grid, List<BroadcastCenter>> getAoiModelMap() {
+        return aoiModelMap;
     }
 
     public int[][] getBlockData() {

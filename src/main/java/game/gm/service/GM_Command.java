@@ -31,10 +31,13 @@ import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
+import scheduler.constant.JobGroupEnum;
 import scheduler.job.common.TestJob;
 import scheduler.job.model.JobEntry;
+import scheduler.service.QuartzService;
 import spring.SpringContext;
 import utils.StringUtil;
+import utils.snow.IdUtil;
 
 /**
  * gm命令后台实现
@@ -208,8 +211,12 @@ public class GM_Command {
     }
 
     public void run(Player player) {
-        JobEntry entry = JobEntry.newDelayJob(TestJob.class, 5000, 500L, 500L);
-        SpringContext.getQuartzService().addJob(entry.getJobDetail(), entry.getTrigger());
+        QuartzService quartzService = SpringContext.getQuartzService();
+        JobEntry jobEntry =
+            JobEntry.newRateJob(TestJob.class, 2000, 100, IdUtil.getLongId(), JobGroupEnum.TEST.name(), null);
+        quartzService.addJob(jobEntry.getJobDetail(), jobEntry.getTrigger());
+        quartzService.removeJob(jobEntry.getJobDetail());
+
     }
 
 }

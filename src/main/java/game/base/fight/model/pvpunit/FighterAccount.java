@@ -22,12 +22,12 @@ public class FighterAccount {
      */
     private transient FighterAccount targetAccount;
 
-    public static FighterAccount valueOf(Player player) {
+    public static FighterAccount valueOf(Player player, int mapId) {
         FighterAccount fighterAccount = new FighterAccount();
         fighterAccount.setAccountId(player.getAccountId());
         fighterAccount.setAttack(false);
         fighterAccount.setTargetAccount(null);
-        fighterAccount.setCreatureUnit(PlayerUnit.valueOf(player, fighterAccount));
+        fighterAccount.setCreatureUnit(PlayerUnit.valueOf(player, fighterAccount, mapId));
         return fighterAccount;
     }
 

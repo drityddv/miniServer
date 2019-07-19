@@ -11,9 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import game.base.effect.model.BaseBuffEffect;
+import game.world.fight.command.BuffActiveCommand;
 import scheduler.constant.CronConst;
 import scheduler.constant.JobGroupEnum;
 import scheduler.job.common.server.OneHourQuartzJob;
+import scheduler.job.model.JobEntry;
 import utils.snow.IdUtil;
 
 /**
@@ -30,6 +33,7 @@ public class QuartzService {
 
     private Scheduler scheduler;
 
+    // FIXME quartz监听是真的🐔 居然没有后置回调 现在周期性buff清除逻辑先写在buff逻辑里吧
     public void init() {
         try {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
@@ -48,18 +52,32 @@ public class QuartzService {
 
         JobDetail jobDetail = JobBuilder.newJob(OneHourQuartzJob.class).withIdentity(jobName, groupName).build();
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, groupName)
-            .withSchedule(cronSchedule(CronConst.ONE_HOUR)).forJob(jobDetail.getKey()).build();
+            .withSchedule(cronSchedule(CronConst.ONE_HOUR)).startNow().forJob(jobDetail.getKey()).build();
 
         addJob(jobDetail, trigger);
         logger.info("初始化整点任务...");
     }
 
-    public void registerJobMap(Long jobId, JobDetail jobDetail) {
-        jobDetailMap.put(jobId, jobDetail);
+    public void registerJobAndSchedule(Long jobId, JobEntry entry) {
+        jobDetailMap.put(jobId, entry.getJobDetail());
+        addJob(entry.getJobDetail(), entry.getTrigger());
+    }
+
+    // 修正运行中的buff
+    public void reviseBuffJob(Long jobId) {
+        JobDetail jobDetail = jobDetailMap.get(jobId);
+        BuffActiveCommand command = (BuffActiveCommand)jobDetail.getJobDataMap().get("command");
+        BaseBuffEffect buff = command.getBuff();
+
+        Trigger trigger = JobEntry.newRateTrigger(jobDetail, (long)buff.getEffectResource().getFrequencyTime(),
+            buff.getRemainCount());
+        removeJob(jobDetail);
+        addJob(jobDetail, trigger);
     }
 
     public void addJob(JobDetail jobDetail, Trigger trigger) {
         try {
+            logger.info("提交新的job id[{}]", jobDetail.getKey().getName());
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {
             logger.warn("QuartzService 定时任务执行出错");
@@ -67,11 +85,7 @@ public class QuartzService {
         }
     }
 
-    public void removeJob(long jobId) {
-        JobDetail jobDetail = jobDetailMap.get(jobId);
-        if (jobDetail == null) {
-            return;
-        }
+    public void removeJob(JobDetail jobDetail) {
         try {
             scheduler.deleteJob(jobDetail.getKey());
         } catch (SchedulerException e) {

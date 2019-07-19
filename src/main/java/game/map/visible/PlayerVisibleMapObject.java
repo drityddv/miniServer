@@ -10,7 +10,7 @@ import game.role.player.model.Player;
  * @since : 2019/7/11 3:46 PM
  */
 
-public class PlayerVisibleMapInfo extends AbstractVisibleMapInfo {
+public class PlayerVisibleMapObject extends AbstractVisibleMapObject {
 
     private String accountId;
 
@@ -18,12 +18,12 @@ public class PlayerVisibleMapInfo extends AbstractVisibleMapInfo {
 
     private Player player;
 
-    public static PlayerVisibleMapInfo valueOf(Player player) {
-        PlayerVisibleMapInfo accountInfo = new PlayerVisibleMapInfo();
+    public static PlayerVisibleMapObject valueOf(Player player, int mapId) {
+        PlayerVisibleMapObject accountInfo = new PlayerVisibleMapObject();
         accountInfo.accountId = player.getAccountId();
         accountInfo.playerId = player.getPlayerId();
         accountInfo.player = player;
-        accountInfo.fighterAccount = FighterAccount.valueOf(player);
+        accountInfo.fighterAccount = FighterAccount.valueOf(player, mapId);
         return accountInfo;
     }
 

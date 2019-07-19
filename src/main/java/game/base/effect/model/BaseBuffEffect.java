@@ -1,8 +1,13 @@
 package game.base.effect.model;
 
-import game.base.effect.model.analysis.IBuffAnalysis;
+import java.util.List;
+import java.util.Map;
+
 import game.base.effect.resource.EffectResource;
+import game.base.fight.model.buff.PVPBuffEffectComponent;
+import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.map.handler.AbstractMapHandler;
 
 /**
  * 持续类buff
@@ -11,23 +16,19 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
  * @since : 2019/7/15 12:01 PM
  */
 
-public abstract class BaseBuffEffect extends BaseEffect<BaseCreatureUnit> implements IBuffAnalysis {
-    // 周期时间
-    protected long period;
-    // buff释放者
+public abstract class BaseBuffEffect extends BaseEffect<BaseCreatureUnit> {
+    // 周期次数
+    protected int period;
+    // buff拥有者,释放者
     protected BaseCreatureUnit caster;
-    // FIXME 要验证quartz 会不会序列化 jobData
-    protected volatile boolean cancel = false;
+    // 剩余执行次数
+    protected int remainCount;
 
-    public void init(BaseCreatureUnit caster, BaseCreatureUnit owner, EffectResource effectResource) {
-        super.init(owner, effectResource);
+    public void init(BaseCreatureUnit caster, List<BaseCreatureUnit> targetList, EffectResource effectResource) {
+        super.init(targetList, effectResource);
         this.period = effectResource.getPeriodTime();
+        this.remainCount = period;
         this.caster = caster;
-    }
-
-    @Override
-    public void doParse(EffectResource effectResource) {
-
     }
 
     // buff效果 默认啥都不做
@@ -36,11 +37,11 @@ public abstract class BaseBuffEffect extends BaseEffect<BaseCreatureUnit> implem
     }
 
     // get and set
-    public long getPeriod() {
+    public int getPeriod() {
         return period;
     }
 
-    public void setPeriod(long period) {
+    public void setPeriod(int period) {
         this.period = period;
     }
 
@@ -50,6 +51,23 @@ public abstract class BaseBuffEffect extends BaseEffect<BaseCreatureUnit> implem
 
     public void setCaster(BaseCreatureUnit caster) {
         this.caster = caster;
+    }
+
+    public int getRemainCount() {
+        return remainCount;
+    }
+
+    public Map<Long, BaseBuffEffect> getMapBuffGroup() {
+        return AbstractMapHandler.getAbstractMapHandler(caster.getMapId()).getBuffEffects(caster.getMapId());
+    }
+
+    // buff失效
+    public void removeBuff() {
+        targetList.forEach(creatureUnit -> {
+            PVPBuffEffectComponent component =
+                creatureUnit.getComponentContainer().getComponent(UnitComponentType.BUFF);
+            component.removeBuff(this);
+        });
     }
 
 }

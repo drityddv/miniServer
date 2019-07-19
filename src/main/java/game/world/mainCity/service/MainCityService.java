@@ -8,17 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.map.base.AbstractScene;
+import game.map.base.AbstractMovableScene;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
-import game.map.utils.VisibleUtil;
-import game.map.visible.PlayerVisibleMapInfo;
-import game.map.visible.impl.NpcVisibleInfo;
+import game.map.visible.PlayerVisibleMapObject;
+import game.map.visible.impl.NpcVisibleObject;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 import game.world.mainCity.model.MainCityMapInfo;
-import game.world.mainCity.model.MainCityMapScene;
+import game.world.mainCity.model.MainCitySceneScene;
 import game.world.utils.MapUtil;
 import spring.SpringContext;
 
@@ -45,10 +44,10 @@ public class MainCityService implements IMainCityService {
     @Override
     public void enterMap(Player player, int mapId) {
         MainCityMapInfo mapInfo = getMapInfo(mapId);
-        MainCityMapScene scene = mapInfo.getMapScene();
+        MainCitySceneScene scene = mapInfo.getMapScene();
         MiniMapResource miniMapResource = mapInfo.getMiniMapResource();
 
-        PlayerVisibleMapInfo visibleMapInfo = PlayerVisibleMapInfo.valueOf(player);
+        PlayerVisibleMapObject visibleMapInfo = PlayerVisibleMapObject.valueOf(player, mapId);
         visibleMapInfo.init(miniMapResource.getBornX(), miniMapResource.getBornY());
 
         scene.enter(player.getPlayerId(), visibleMapInfo);
@@ -61,33 +60,28 @@ public class MainCityService implements IMainCityService {
 
     @Override
     public void doMove(Player player, Grid targetGrid) {
-        MainCityMapInfo mapInfo = getMapInfo(player.getCurrentMapId());
-        MainCityMapScene mapScene = getScene(player.getCurrentMapId());
-        PlayerVisibleMapInfo sceneVisibleObject = mapScene.getVisibleObject(player.getAccountId());
-        if (sceneVisibleObject != null) {
-            sceneVisibleObject.setTargetX(targetGrid.getX());
-            sceneVisibleObject.setTargetY(targetGrid.getY());
-            VisibleUtil.doMove(sceneVisibleObject, mapInfo.getBlockResource().getBlockData());
-        }
+        MainCitySceneScene mapScene = getScene(player.getCurrentMapId());
+        mapScene.move(player.getPlayerId(), targetGrid);
+
     }
 
     @Override
-    public MainCityMapScene getCurrentScene(Player player) {
+    public MainCitySceneScene getCurrentScene(Player player) {
         return null;
     }
 
     @Override
     public void doLogMap(Player player, int mapId) {
         MainCityMapInfo mapCommonInfo = mainCityManager.getMainCityMapInfo(mapId);
-        MainCityMapScene mapScene = mapCommonInfo.getMapScene();
-        List<PlayerVisibleMapInfo> visibleObjects = mapScene.getVisibleObjects();
-        Collection<NpcVisibleInfo> npcList = mapScene.getNpcMap().values();
+        MainCitySceneScene mapScene = mapCommonInfo.getMapScene();
+        List<PlayerVisibleMapObject> visibleObjects = mapScene.getVisibleObjects();
+        Collection<NpcVisibleObject> npcList = mapScene.getNpcMap().values();
 
-        MapUtil.log(player, mapScene, visibleObjects, npcList, null);
+        MapUtil.log(player, mapScene, visibleObjects, npcList, null, null);
     }
 
     @Override
-    public AbstractScene getMapScene(int mapId) {
+    public AbstractMovableScene getMapScene(int mapId) {
         return getScene(mapId);
     }
 
@@ -105,7 +99,7 @@ public class MainCityService implements IMainCityService {
         return mainCityManager.getMainCityMapInfo(mapId);
     }
 
-    private MainCityMapScene getScene(int mapId) {
+    private MainCitySceneScene getScene(int mapId) {
         return getMapInfo(mapId).getMapScene();
     }
 

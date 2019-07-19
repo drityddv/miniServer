@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 
 import game.base.effect.model.BaseBuffEffect;
-import game.base.effect.model.analysis.IBuffAnalysis;
 import game.base.effect.model.impl.DizzyBuffEffect;
 import game.base.effect.model.impl.PoisonBuffEffect;
 
@@ -26,7 +25,7 @@ public enum EffectTypeEnum {
      */
     Poison(2, PoisonBuffEffect.class);
 
-    private static Map<Integer, EffectTypeEnum> ID_TO_TYPE = new HashMap<>();
+    private static Map<Long, EffectTypeEnum> ID_TO_TYPE = new HashMap<Long, EffectTypeEnum>();
     private static Map<String, EffectTypeEnum> NAME_TO_TYPE = new HashMap<>();
 
     static {
@@ -36,34 +35,30 @@ public enum EffectTypeEnum {
         }
     }
 
-    private int typeId;
+    private long typeId;
     private Class<? extends BaseBuffEffect> buffClazz;
-    private Class<? extends IBuffAnalysis> buffBeanClazz;
     private Set<RestrictStatusEnum> restrictStatus;
 
     EffectTypeEnum(int typeId, Class<? extends BaseBuffEffect> buffEffectClass) {
         this.typeId = typeId;
-        this.buffClazz = buffClazz;
+        this.buffClazz = buffEffectClass;
     }
 
-    public static EffectTypeEnum getById(int typeId) {
+    public static EffectTypeEnum getById(long typeId) {
         return ID_TO_TYPE.get(typeId);
     }
 
     public BaseBuffEffect create() {
         try {
-            return this.buffClazz.newInstance();
+            return buffClazz.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException();
+            e.printStackTrace();
         }
+        return null;
     }
 
     public Class<? extends BaseBuffEffect> getBuffClazz() {
         return buffClazz;
-    }
-
-    public Class<? extends IBuffAnalysis> getBuffBeanClazz() {
-        return buffBeanClazz;
     }
 
     public Set<RestrictStatusEnum> getRestrictStatus() {

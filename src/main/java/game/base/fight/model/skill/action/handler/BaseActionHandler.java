@@ -2,10 +2,17 @@ package game.base.fight.model.skill.action.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.effect.model.BaseBuffEffect;
+import game.base.effect.model.constant.EffectTypeEnum;
+import game.base.effect.resource.EffectResource;
+import game.base.effect.service.EffectManager;
+import game.base.fight.model.buff.PVPBuffEffectComponent;
+import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
@@ -26,12 +33,20 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     @Override
     public void action(BaseCreatureUnit caster, BaseCreatureUnit defender, BaseSkill skill) {
-        doAction();
+        run();
     }
 
     @Override
     public void action(BaseCreatureUnit caster, List<BaseCreatureUnit> target, BaseSkill skill) {
+        run();
+    }
+
+    private void run() {
+        if (!actionPre()) {
+            return;
+        }
         doAction();
+        actionAfter();
     }
 
     // 使用技能前的通用逻辑[检查技能合法性,记录cd等...] 子类按需重写
@@ -67,7 +82,9 @@ public abstract class BaseActionHandler implements IActionHandler {
         this.baseSkill = baseSkill;
     }
 
-    protected void doAction() {}
+    protected void doAction() {
+        triggerBuff();
+    }
 
     // 使用前
     protected boolean actionPre() {
@@ -75,10 +92,25 @@ public abstract class BaseActionHandler implements IActionHandler {
     }
 
     // 使用后
-    protected void actionAfter() {}
+    protected void actionAfter() {
+
+    }
 
     // 技能效果值
     public long getSkillValue() {
         return baseSkill.getSkillLevelResource().getValue();
+    }
+
+    private void triggerBuff() {
+        Set<Long> effectIds = baseSkill.getSkillLevelResource().getEffectIds();
+        effectIds.forEach(effectId -> {
+            BaseBuffEffect buffEffect = EffectTypeEnum.getById(effectId).create();
+            EffectResource effectResource = EffectManager.getInstance().getEffectResourceByEffectId(effectId);
+            buffEffect.init(caster, defenders, effectResource);
+            defenders.forEach(unit -> {
+                PVPBuffEffectComponent component = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
+                component.addBuff(buffEffect);
+            });
+        });
     }
 }

@@ -28,7 +28,7 @@ public class EquipSquareEnhanceResource {
 
     private long configId;
     /**
-     * 下一等级的配置id 无则为0
+     * 下一等级的配置id 无则为0 d
      */
     private int nextLevelConfigId;
     // 当前等级

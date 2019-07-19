@@ -23,6 +23,7 @@ public abstract class BaseUnit {
     protected boolean canMove;
     protected long currentHp;
     protected long currentMp;
+    protected int mapId;
 
     protected BaseUnit(long id) {
         this.id = id;
@@ -89,6 +90,14 @@ public abstract class BaseUnit {
 
     public void setCurrentHp(long currentHp) {
         this.currentHp = currentHp;
+    }
+
+    public int getMapId() {
+        return mapId;
+    }
+
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
     }
 
     public long getCurrentMp() {

@@ -23,6 +23,14 @@ public interface IFightService {
     FighterAccount initForPlayer(Player player);
 
     /**
+     * 查看场景对象信息
+     *
+     * @param player
+     * @param unitId
+     */
+    void logUnitBattleInfo(Player player, long unitId);
+
+    /**
      * 使用单点指向性技能
      *
      * @param player

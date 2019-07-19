@@ -20,14 +20,13 @@ public class DizzyBuffEffect extends BaseBuffEffect implements IRestrictObject {
     public void merge(BaseBuffEffect buffEffect) {
         if (buffEffect instanceof DizzyBuffEffect) {
             DizzyBuffEffect dizzyBuffEffect = (DizzyBuffEffect)buffEffect;
-            this.endAt = Math.max(this.endAt, dizzyBuffEffect.endAt);
             this.mergedCount++;
         }
     }
 
     @Override
     public void active() {
-        owner.setCanMove(false);
+
     }
 
     @Override

@@ -38,7 +38,7 @@ public class ResourceUtil {
             simpleFields = new ArrayList<>();
 
             for (String fieldName : fieldNames) {
-                Field field = tClass.getDeclaredField(fieldName);
+                Field field = tClass.getDeclaredField(fieldName.replaceAll(" ", ""));
                 field.setAccessible(true);
                 simpleFields.add(field);
             }
@@ -95,25 +95,5 @@ public class ResourceUtil {
     public static Map<String, Object> getNode(String key, Map<String, Object> node) {
         return (Map<String, Object>)node.get(key);
     }
-
-    // public static Object findNodeWithDeep(String key, Map<String, Object> node) {
-    // if(node == null){
-    // return null;
-    // }
-    //
-    // Object result = null;
-    //
-    // for (Map.Entry<String, Object> entry : node.entrySet()) {
-    // String entryKey = entry.getKey();
-    // Object entryValue = entry.getValue();
-    //
-    // if(entryKey.equals(key)){
-    // return entryValue;
-    // }
-    //
-    // return findNodeWithDeep(key,entryValue);
-    // }
-    // return result;
-    // }
 
 }

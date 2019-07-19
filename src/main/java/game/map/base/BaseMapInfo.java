@@ -11,11 +11,12 @@ import game.world.base.service.WorldManager;
  * @since : 2019/7/10 下午11:14
  */
 
-public abstract class BaseMapInfo<T extends AbstractScene> {
+public abstract class BaseMapInfo<T extends AbstractMovableScene> {
     // 地图id
     protected int mapId;
     // 无分线逻辑 每张地图只会有一张
     protected T mapScene;
+
     // 地图资源
     protected MiniMapResource miniMapResource;
     // 阻挡点资源
@@ -55,4 +56,8 @@ public abstract class BaseMapInfo<T extends AbstractScene> {
     public MapBlockResource getBlockResource() {
         return blockResource;
     }
+
+	public void setMapScene(T mapScene) {
+		this.mapScene = mapScene;
+	}
 }

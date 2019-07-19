@@ -12,6 +12,7 @@ import org.quartz.JobExecutionException;
 public class TestJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        System.out.println("i am running");
+        String name = context.getJobDetail().getKey().getName();
+        System.out.println("i am running" + " " + name);
     }
 }

@@ -1,5 +1,7 @@
 package game.world.neutral.neutralMap.service;
 
+import static org.quartz.DateBuilder.futureDate;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -13,22 +15,19 @@ import org.springframework.stereotype.Component;
 
 import game.base.effect.model.BaseBuffEffect;
 import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
-import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
-import game.map.utils.VisibleUtil;
-import game.map.visible.PlayerVisibleMapInfo;
-import game.map.visible.impl.MonsterVisibleMapInfo;
-import game.map.visible.impl.NpcVisibleInfo;
+import game.map.visible.PlayerVisibleMapObject;
+import game.map.visible.impl.MonsterVisibleMapObject;
+import game.map.visible.impl.NpcVisibleObject;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
-import game.world.neutral.neutralGather.service.INpcService;
 import game.world.neutral.neutralMap.model.NeutralMapInfo;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.utils.MapUtil;
 import scheduler.constant.JobGroupEnum;
-import scheduler.job.common.scene.SceneHeartBeatJob;
+import scheduler.job.common.scene.SceneHeartBeatRateJob;
 import spring.SpringContext;
 import utils.snow.IdUtil;
 
@@ -47,9 +46,6 @@ public class NeutralMapService implements INeutralMapService {
     @Autowired
     private WorldManager worldManager;
 
-    @Autowired
-    private INpcService neutralMapGatherService;
-
     @Override
     public void init() {
         initMapInfo();
@@ -59,7 +55,7 @@ public class NeutralMapService implements INeutralMapService {
     private void initMapInfo() {
         List<MiniMapResource> mapResources = worldManager.getMapResourcesByGroup(MapGroupType.NEUTRAL_MAP.getGroupId());
         mapResources.forEach(this::initNeutralMapInfo);
-        logger.info("中立地图资源与场景初始化完毕,数量[{}]", neutralMapManager.getCommonInfoMap().size());
+        logger.info("中立地图资源与场景初始化结束,数量[{}]", neutralMapManager.getCommonInfoMap().size());
     }
 
     @Override
@@ -74,14 +70,14 @@ public class NeutralMapService implements INeutralMapService {
         NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
         NeutralMapScene neutralMapScene = mapCommonInfo.getMapScene();
         MiniMapResource mapResource = mapCommonInfo.getMiniMapResource();
-        PlayerVisibleMapInfo visibleObject = neutralMapScene.getVisibleObject(player.getAccountId());
+        PlayerVisibleMapObject visibleObject = neutralMapScene.getPlayerObject(player.getPlayerId());
 
         if (visibleObject != null) {
             // 继续执行 考虑到断线等因素造成的残影 后期加入心跳 现在直接用新的替换掉
             logger.warn("玩家[{}]存在于地图[{}]中,错误的进入行为", player.getAccountId(), mapId);
         }
         if (visibleObject == null) {
-            visibleObject = PlayerVisibleMapInfo.valueOf(player);
+            visibleObject = PlayerVisibleMapObject.valueOf(player, mapId);
             visibleObject.init(mapResource.getBornX(), mapResource.getBornY());
         }
         neutralMapScene.enter(player.getPlayerId(), visibleObject);
@@ -96,18 +92,10 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void doMove(Player player, Grid targetGrid) {
-        NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(player.getCurrentMapId());
-        NeutralMapScene mapScene = mapCommonInfo.getMapScene();
-        PlayerVisibleMapInfo sceneVisibleObject = mapScene.getVisibleObject(player.getAccountId());
-
-        if (sceneVisibleObject != null) {
-            sceneVisibleObject.setTargetX(targetGrid.getX());
-            sceneVisibleObject.setTargetY(targetGrid.getY());
-            VisibleUtil.doMove(sceneVisibleObject, mapCommonInfo.getBlockResource().getBlockData());
-        }
+        NeutralMapScene scene = getMapScene(player.getCurrentMapId());
+        scene.move(player.getPlayerId(), targetGrid);
     }
 
-    // 因为没有分线概念 这里和上面的区别只是会再检查场景里有没有玩家单位存在
     @Override
     public NeutralMapScene getCurrentScene(Player player) {
         NeutralMapScene mapScene = neutralMapManager.getCommonInfoMap().get(player.getCurrentMapId()).getMapScene();
@@ -122,18 +110,19 @@ public class NeutralMapService implements INeutralMapService {
     public void logMap(Player player, int mapId) {
         NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
         NeutralMapScene mapScene = mapCommonInfo.getMapScene();
-        List<PlayerVisibleMapInfo> visibleObjects = mapScene.getVisibleObjects();
-        Collection<NpcVisibleInfo> npcList = mapScene.getNpcMap().values();
-        Collection<MonsterVisibleMapInfo> monsterList = mapScene.getMonsterMap().values();
-        MapUtil.log(player, mapScene, visibleObjects, npcList, monsterList);
+        List<PlayerVisibleMapObject> visibleObjects = mapScene.getVisibleObjects();
+        Collection<NpcVisibleObject> npcList = mapScene.getNpcMap().values();
+        Collection<MonsterVisibleMapObject> monsterList = mapScene.getMonsterMap().values();
+        MapUtil.log(player, mapScene, visibleObjects, npcList, monsterList, mapScene.getBuffEffectMap().values());
+
     }
 
     @Override
     public void heartBeat(int mapId) {
         NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
         NeutralMapScene mapScene = mapCommonInfo.getMapScene();
-        List<PlayerVisibleMapInfo> visibleObjects = mapScene.getVisibleObjects();
-        for (PlayerVisibleMapInfo visibleObject : visibleObjects) {
+        List<PlayerVisibleMapObject> visibleObjects = mapScene.getVisibleObjects();
+        for (PlayerVisibleMapObject visibleObject : visibleObjects) {
             if (!SpringContext.getPlayerService().isPlayerOnline(visibleObject.getAccountId())) {
                 mapScene.leave(visibleObject.getId());
             }
@@ -141,12 +130,12 @@ public class NeutralMapService implements INeutralMapService {
     }
 
     @Override
-    public Map<Long, PlayerVisibleMapInfo> getVisibleObjects(int mapId) {
+    public Map<Long, PlayerVisibleMapObject> getVisibleObjects(int mapId) {
         return getMapInfo(mapId).getMapScene().getPlayerMap();
     }
 
     @Override
-    public Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId) {
+    public Map<Long, MonsterVisibleMapObject> getMonsterObjects(int mapId) {
         return getMapInfo(mapId).getMapScene().getMonsterMap();
     }
 
@@ -156,16 +145,16 @@ public class NeutralMapService implements INeutralMapService {
     }
 
     @Override
-    public AbstractScene getMapScene(int mapId) {
+    public NeutralMapScene getMapScene(int mapId) {
         return getMapInfo(mapId).getMapScene();
     }
 
     private void initNeutralMapInfo(MiniMapResource mapResource) {
         NeutralMapInfo commonInfo = NeutralMapInfo.valueOf(mapResource);
-        commonInfo.init(mapResource);
-        commonInfo.getMapScene().initNpc(SpringContext.getCreatureManager().getNpcByMapId(commonInfo.getMapId()));
-        commonInfo.getMapScene()
-            .initMonster(SpringContext.getCreatureManager().getCreatureResourceByMapId(commonInfo.getMapId()));
+        NeutralMapScene mapScene = commonInfo.getMapScene();
+        mapScene.initNpc(SpringContext.getCreatureManager().getNpcByMapId(commonInfo.getMapId()));
+        mapScene.initMonster(SpringContext.getCreatureManager().getCreatureResourceByMapId(commonInfo.getMapId()));
+        mapScene.initAoiManager();
         neutralMapManager.addNeutralMapCommonInfo(commonInfo);
     }
 
@@ -182,12 +171,12 @@ public class NeutralMapService implements INeutralMapService {
 
             SceneHeartBeatCommand command = SceneHeartBeatCommand.valueOf(mapId, 1000 * 60 * 2, 0);
 
-            JobDetail jobDetail = JobBuilder.newJob(SceneHeartBeatJob.class).withIdentity(jobName, groupName).build();
-            Trigger trigger =
-                TriggerBuilder
-                    .newTrigger().withIdentity(triggerName, groupName).withSchedule(SimpleScheduleBuilder
-                        .simpleSchedule().withIntervalInMilliseconds(command.getDelay()).repeatForever())
-                    .forJob(jobDetail.getKey()).build();
+            JobDetail jobDetail =
+                JobBuilder.newJob(SceneHeartBeatRateJob.class).withIdentity(jobName, groupName).build();
+            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, groupName)
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(command.getDelay())
+                    .repeatForever())
+                .startAt((futureDate(60, DateBuilder.IntervalUnit.SECOND))).forJob(jobDetail.getKey()).build();
 
             jobDetail.getJobDataMap().put("command", command);
             SpringContext.getQuartzService().addJob(jobDetail, trigger);

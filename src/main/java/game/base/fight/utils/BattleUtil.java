@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Random;
 
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
+import game.base.fight.model.buff.PVPBuffEffectComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.BaseUnit;
@@ -15,10 +16,14 @@ import game.base.fight.model.skill.model.PVPSkillComponent;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.skill.model.BaseSkill;
+import game.gm.packet.SM_LogMessage;
 import game.map.handler.AbstractMapHandler;
-import game.map.visible.AbstractVisibleMapInfo;
-import game.map.visible.PlayerVisibleMapInfo;
+import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.PlayerVisibleMapObject;
+import game.role.player.model.Player;
 import game.world.fight.model.BattleParam;
+import net.utils.PacketUtil;
+import utils.StringUtil;
 import utils.TimeUtil;
 
 /**
@@ -63,7 +68,7 @@ public class BattleUtil {
     // 找到怪物或者玩家
     public static BaseCreatureUnit findTargetUnit(AbstractMapHandler mapHandler, long targetId, int mapId) {
         BaseCreatureUnit unit = null;
-        AbstractVisibleMapInfo mapObject = mapHandler.getPlayerObjects(mapId).get(targetId);
+        AbstractVisibleMapObject mapObject = mapHandler.getPlayerObjects(mapId).get(targetId);
         if (mapObject == null) {
             mapObject = mapHandler.getMonsterObjects(mapId).get(targetId);
         }
@@ -100,7 +105,7 @@ public class BattleUtil {
         AbstractMapHandler mapHandler = AbstractMapHandler.getAbstractMapHandler(mapId);
         BaseActionHandler actionHandler;
 
-        Map<Long, PlayerVisibleMapInfo> playerObjects = mapHandler.getPlayerObjects(mapId);
+        Map<Long, PlayerVisibleMapObject> playerObjects = mapHandler.getPlayerObjects(mapId);
         PlayerUnit caster = (PlayerUnit)playerObjects.get(playerId).getFighterAccount().getCreatureUnit();
 
         BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
@@ -132,4 +137,23 @@ public class BattleUtil {
         return component.getFinalAttributes().get(type).getValue();
     }
 
+    /**
+     * 打印战斗单元
+     *
+     * @param player
+     * @param unit
+     */
+    public static void logUnit(Player player, BaseCreatureUnit unit) {
+        StringBuilder sb = new StringBuilder();
+        // PVPCreatureAttributeComponent component =
+        // unit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
+        // AttributeUtils.logAttrs(component,sb);
+        PVPBuffEffectComponent buffComponent = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
+
+        buffComponent.getBuffMap().forEach((jobId, buff) -> {
+            sb.append(StringUtil.wipePlaceholder("jobId[{}] 释放者[{}] ", buff.getJobId(), buff.getCaster().getId()));
+        });
+
+        PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
+    }
 }

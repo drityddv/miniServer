@@ -53,7 +53,4 @@ public abstract class BaseCreatureUnit extends BaseUnit {
         this.fighterAccount = fighterAccount;
     }
 
-    private PVPBuffEffectComponent getBuffComponent() {
-        return componentContainer.getComponent(UnitComponentType.BUFF);
-    }
 }

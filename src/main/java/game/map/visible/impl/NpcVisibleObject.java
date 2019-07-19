@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.map.npc.reource.NpcResource;
-import game.map.visible.AbstractVisibleMapInfo;
+import game.map.visible.AbstractVisibleMapObject;
 import utils.snow.IdUtil;
 
 /**
@@ -12,9 +12,9 @@ import utils.snow.IdUtil;
  * @since : 2019/7/5 下午2:51
  */
 
-public class NpcVisibleInfo extends AbstractVisibleMapInfo {
+public class NpcVisibleObject extends AbstractVisibleMapObject {
 
-    private static Logger logger = LoggerFactory.getLogger(NpcVisibleInfo.class);
+    private static Logger logger = LoggerFactory.getLogger(NpcVisibleObject.class);
 
     private long id;
 
@@ -22,8 +22,8 @@ public class NpcVisibleInfo extends AbstractVisibleMapInfo {
 
     private boolean occupying = false;
 
-    public static NpcVisibleInfo valueOf(NpcResource resource) {
-        NpcVisibleInfo npcVisibleInfo = new NpcVisibleInfo();
+    public static NpcVisibleObject valueOf(NpcResource resource) {
+        NpcVisibleObject npcVisibleInfo = new NpcVisibleObject();
         npcVisibleInfo.id = IdUtil.getLongId();
         npcVisibleInfo.name = resource.getNpcName();
         npcVisibleInfo.init(resource.getX(), resource.getY());

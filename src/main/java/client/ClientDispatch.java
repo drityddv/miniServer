@@ -57,7 +57,7 @@ public class ClientDispatch {
         }
         cm.setMethodAndParams(content);
         ctx.writeAndFlush(PacketProtocol.valueOf(cm));
-        logger.info("执行gm命令,[{}]", cm.toString());
+        logger.info("执行gm命令 : [{}]", cm.toString());
     }
 
     // 发包
@@ -87,7 +87,7 @@ public class ClientDispatch {
             Object newInstance = aClass.newInstance();
             ClassUtil.insertDefaultFields(newInstance, list.stream().skip(1).collect(Collectors.toList()));
             ctx.writeAndFlush(PacketProtocol.valueOf(newInstance));
-            logger.info("执行命令,[{}]", newInstance.getClass().getSimpleName());
+            logger.info("执行命令 : [{}]", newInstance.getClass().getSimpleName());
         } catch (Exception e) {
             logger.error("派发器执行错误,input[{}]", input);
         }

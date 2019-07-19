@@ -1,11 +1,8 @@
 package game.map.utils;
 
-import java.util.List;
-
-import game.base.fight.model.pvpunit.BaseUnit;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
-import game.map.visible.AbstractVisibleMapInfo;
+import game.map.visible.AbstractVisibleMapObject;
 
 /**
  * @author : ddv
@@ -14,28 +11,21 @@ import game.map.visible.AbstractVisibleMapInfo;
 
 public class VisibleUtil {
 
-    // 移动
-    public static void doMove(List<? extends AbstractVisibleMapInfo> visibleObjects) {
-        visibleObjects.forEach(AbstractVisibleMapInfo::doMove);
-    }
-
-    public static void doMove(AbstractVisibleMapInfo info, int[][] blockData) {
-        int targetX = info.getTargetX();
-        int targetY = info.getTargetY();
+    public static boolean doMove(AbstractVisibleMapObject object, int[][] blockData) {
+        int targetX = object.getTargetGrid().getX();
+        int targetY = object.getTargetGrid().getY();
 
         try {
-            if (info.getFighterAccount().getCreatureUnit().isCanMove()) {
+            if (object.getFighterAccount().getCreatureUnit().isCanMove()) {
                 int blockPoint = blockData[targetX][targetY];
-                if (blockPoint != 1) {
-                    info.doMove();
+                if (blockPoint == 1) {
+                    object.doMove();
+                    return true;
                 }
             }
         } catch (NullPointerException e) {
             RequestException.throwException(I18N.TARGET_POSITION_ERROR);
         }
-    }
-
-    public static void doMove(BaseUnit unit, int[][] blockData) {
-
+        return false;
     }
 }

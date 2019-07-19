@@ -20,9 +20,7 @@ public class FrostBolt extends BaseActionHandler {
 
     @Override
     protected void doAction() {
-        if (!actionPre()) {
-            return;
-        }
+        super.doAction();
 
         long value = BattleUtil.calculateSkillValue1(baseSkill.getSkillLevelResource().getValue(),
             baseSkill.getSkillLevelResource().getAttributeTypes(),
@@ -30,6 +28,5 @@ public class FrostBolt extends BaseActionHandler {
 
         MagicSingleAttack attack = MagicSingleAttack.valueOf(caster, defender, baseSkill, value);
         attack.doActive();
-
     }
 }

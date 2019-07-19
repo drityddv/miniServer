@@ -5,8 +5,8 @@ import java.util.Map;
 import game.base.effect.model.BaseBuffEffect;
 import game.map.base.AbstractScene;
 import game.map.model.Grid;
-import game.map.visible.PlayerVisibleMapInfo;
-import game.map.visible.impl.MonsterVisibleMapInfo;
+import game.map.visible.PlayerVisibleMapObject;
+import game.map.visible.impl.MonsterVisibleMapObject;
 import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 
@@ -85,7 +85,7 @@ public interface INeutralMapService {
      * @param mapId
      * @return
      */
-    Map<Long, PlayerVisibleMapInfo> getVisibleObjects(int mapId);
+    Map<Long, PlayerVisibleMapObject> getVisibleObjects(int mapId);
 
     /**
      * 怪物单位
@@ -93,7 +93,7 @@ public interface INeutralMapService {
      * @param mapId
      * @return
      */
-    Map<Long, MonsterVisibleMapInfo> getMonsterObjects(int mapId);
+    Map<Long, MonsterVisibleMapObject> getMonsterObjects(int mapId);
 
     /**
      * buff组件
@@ -109,5 +109,5 @@ public interface INeutralMapService {
      * @param mapId
      * @return
      */
-    AbstractScene getMapScene(int mapId);
+    NeutralMapScene getMapScene(int mapId);
 }

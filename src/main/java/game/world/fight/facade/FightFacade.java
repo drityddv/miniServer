@@ -10,6 +10,7 @@ import game.dispatch.anno.HandlerAnno;
 import game.role.player.model.Player;
 import game.world.fight.packet.CM_UseGroupPointSkill;
 import game.world.fight.packet.CM_UseSinglePointSkill;
+import game.world.fight.packet.CM_logUnitBattleInfo;
 import net.utils.PacketUtil;
 import spring.SpringContext;
 
@@ -49,6 +50,23 @@ public class FightFacade {
     public void useGroupPointSkill(Player player, CM_UseGroupPointSkill request) {
         try {
             SpringContext.getFightService().useGroupPointSkill(player, request.getSkillId(), request.getTargetIdList());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 查看单位战斗单元信息
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void logUnitBattleInfo(Player player, CM_logUnitBattleInfo request) {
+        try {
+            SpringContext.getFightService().logUnitBattleInfo(player, request.getUnitId());
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

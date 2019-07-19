@@ -1,38 +1,39 @@
 package game.map.base;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import game.map.npc.reource.NpcResource;
-import game.map.visible.impl.NpcVisibleInfo;
+import game.map.visible.impl.NpcVisibleObject;
 
 /**
  * @author : ddv
  * @since : 2019/7/11 3:29 PM
  */
 
-public abstract class AbstractNpcMap extends AbstractScene {
+public abstract class AbstractNpcScene extends AbstractScene {
 
     // npc
-    private Map<Long, NpcVisibleInfo> npcMap = new ConcurrentHashMap<>();
+    private Map<Long, NpcVisibleObject> npcMap = new HashMap<>();
 
-    public AbstractNpcMap(int mapId) {
+    public AbstractNpcScene(int mapId) {
         super(mapId);
     }
 
     public void initNpc(List<NpcResource> npcResources) {
         npcResources.forEach(npcResource -> {
-            NpcVisibleInfo npc = NpcVisibleInfo.valueOf(npcResource);
+            NpcVisibleObject npc = NpcVisibleObject.valueOf(npcResource);
             npcMap.put(npc.getId(), npc);
         });
     }
 
-    public Map<Long, NpcVisibleInfo> getNpcMap() {
+    public Map<Long, NpcVisibleObject> getNpcMap() {
         return npcMap;
     }
 
-    public void setNpcMap(Map<Long, NpcVisibleInfo> npcMap) {
+    public void setNpcMap(Map<Long, NpcVisibleObject> npcMap) {
         this.npcMap = npcMap;
     }
 }

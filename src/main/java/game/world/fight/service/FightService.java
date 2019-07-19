@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.role.player.model.Player;
+import game.world.fight.command.LogUnitBattleInfoCommand;
 import game.world.fight.command.UseGroupPointSkillCommand;
 import game.world.fight.command.UseSinglePointSkillCommand;
 
@@ -25,8 +26,13 @@ public class FightService implements IFightService {
 
     @Override
     public FighterAccount initForPlayer(Player player) {
-        FighterAccount fighterAccount = FighterAccount.valueOf(player);
+        FighterAccount fighterAccount = FighterAccount.valueOf(player, player.getCurrentMapId());
         return fighterAccount;
+    }
+
+    @Override
+    public void logUnitBattleInfo(Player player, long unitId) {
+        ExecutorUtils.submit(LogUnitBattleInfoCommand.valueOf(player, unitId));
     }
 
     @Override

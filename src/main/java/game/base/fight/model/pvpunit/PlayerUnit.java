@@ -33,7 +33,7 @@ public class PlayerUnit extends BaseCreatureUnit {
         super(player.getPlayerId(), fighterAccount, player.getAccountId());
     }
 
-    public static PlayerUnit valueOf(Player player, FighterAccount fighterAccount) {
+    public static PlayerUnit valueOf(Player player, FighterAccount fighterAccount, int mapId) {
         PlayerUnit playerUnit = new PlayerUnit(player, fighterAccount);
         playerUnit.level = player.getLevel();
         playerUnit.initComponent();
@@ -49,8 +49,9 @@ public class PlayerUnit extends BaseCreatureUnit {
         unitAttributeComponent.containerRecompute();
         playerUnit.currentHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
         playerUnit.currentMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+        playerUnit.mapId = mapId;
 
-        // 初始化技能组件 FIXME 玩家api还没有支持自定义快捷施法栏
+        // 初始化技能组件
         PVPSkillComponent skillComponent = playerUnit.getSkillComponent();
         skillComponent.init(player, playerUnit);
 

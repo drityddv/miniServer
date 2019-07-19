@@ -3,12 +3,13 @@ package game.world.utils;
 import java.util.Collection;
 import java.util.List;
 
+import game.base.effect.model.BaseBuffEffect;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.gm.packet.SM_LogMessage;
 import game.map.base.AbstractScene;
-import game.map.visible.PlayerVisibleMapInfo;
-import game.map.visible.impl.MonsterVisibleMapInfo;
-import game.map.visible.impl.NpcVisibleInfo;
+import game.map.visible.PlayerVisibleMapObject;
+import game.map.visible.impl.MonsterVisibleMapObject;
+import game.map.visible.impl.NpcVisibleObject;
 import game.role.player.model.Player;
 import game.role.skill.model.SkillEntry;
 import game.role.skill.model.SkillList;
@@ -22,8 +23,9 @@ import utils.StringUtil;
 
 public class MapUtil {
 
-    public static void log(Player player, AbstractScene scene, List<PlayerVisibleMapInfo> visibleObjects,
-        Collection<NpcVisibleInfo> npcList, Collection<MonsterVisibleMapInfo> monsters) {
+    public static void log(Player player, AbstractScene scene, List<PlayerVisibleMapObject> visibleObjects,
+        Collection<NpcVisibleObject> npcList, Collection<MonsterVisibleMapObject> monsters,
+        Collection<BaseBuffEffect> buffs) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(StringUtil.wipePlaceholder("当前地图所处线程[{}]", Thread.currentThread().getName()));
@@ -33,7 +35,7 @@ public class MapUtil {
         visibleObjects.forEach(info -> {
             BaseCreatureUnit unit = info.getFighterAccount().getCreatureUnit();
             sb.append(StringUtil.wipePlaceholder("玩家[{}], 生命值[{}] 法力值[{}] 坐标[{},{}] 上次移动时间戳[{}]", info.getAccountId(),
-                unit.getCurrentHp(), unit.getCurrentMp(), info.getCurrentX(), info.getCurrentY(),
+                unit.getCurrentHp(), unit.getCurrentMp(), info.getCurrentGrid().getX(), info.getCurrentGrid().getY(),
                 info.getLastMoveAt()));
             // FighterAccount fighterAccount = info.getFighterAccount();
             // Map<UnitComponentType, IUnitComponent> component =
@@ -59,16 +61,24 @@ public class MapUtil {
         sb.append(StringUtil.wipePlaceholder("地图内npc数量[{}]", npcList.size()));
         npcList.forEach(npcVisibleInfo -> {
             sb.append(StringUtil.wipePlaceholder("NPC id[{}],名称[{}] 坐标[{},{}]", npcVisibleInfo.getId(),
-                npcVisibleInfo.getName(), npcVisibleInfo.getCurrentX(), npcVisibleInfo.getCurrentY()));
+                npcVisibleInfo.getName(), npcVisibleInfo.getCurrentGrid().getX(),
+                npcVisibleInfo.getCurrentGrid().getY()));
         });
 
         if (monsters != null) {
             sb.append(StringUtil.wipePlaceholder("地图内怪物数量[{}]", monsters.size()));
-            for (MonsterVisibleMapInfo monster : monsters) {
+            for (MonsterVisibleMapObject monster : monsters) {
                 BaseCreatureUnit unit = monster.getFighterAccount().getCreatureUnit();
                 sb.append(StringUtil.wipePlaceholder("怪物id[{}] 名称[{}] 生命值[{}] 法力值[{}] 坐标[{},{}]", monster.getId(),
-                    monster.getMonsterName(), unit.getCurrentHp(), unit.getCurrentMp(), monster.getCurrentX(),
-                    monster.getCurrentY()));
+                    monster.getMonsterName(), unit.getCurrentHp(), unit.getCurrentMp(), monster.getCurrentGrid().getX(),
+                    monster.getCurrentGrid().getY()));
+            }
+        }
+
+        if (buffs != null) {
+            sb.append(StringUtil.wipePlaceholder("地图内周期性buff注册数量 [{}]", buffs.size()));
+            for (BaseBuffEffect buff : buffs) {
+                sb.append(StringUtil.wipePlaceholder("jobId[{}] 释放者[{}] ", buff.getJobId(), buff.getCaster().getId()));
             }
         }
 

@@ -18,7 +18,9 @@ public enum SkillEnum {
      * 寒冰箭
      */
     Frost_Bolt(1, FrostBolt.class),
-
+    /**
+     * 午时已到
+     */
     HighNoon_Shoot(2, HighNoonShoot.class),;
 
     public static Map<SkillEnum, BaseActionHandler> TYPE_TO_HANDLER = new HashMap<>(SkillEnum.values().length);

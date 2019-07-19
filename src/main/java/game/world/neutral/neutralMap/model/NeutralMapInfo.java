@@ -4,7 +4,7 @@ import game.map.base.BaseMapInfo;
 import game.world.base.resource.MiniMapResource;
 
 /**
- * 中立地图基本数据信息
+ * 中立地图数据信息类
  *
  * @author : ddv
  * @since : 2019/7/3 下午5:57
@@ -20,7 +20,7 @@ public class NeutralMapInfo extends BaseMapInfo<NeutralMapScene> {
 
     @Override
     protected void initScene() {
-        mapScene = NeutralMapScene.valueOf(mapId);
+        mapScene = NeutralMapScene.valueOf(mapId, this);
     }
 
     @Override

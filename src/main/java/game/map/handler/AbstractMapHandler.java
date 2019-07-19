@@ -109,7 +109,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
     public final void enterMapAfter(Player player, int currentMapId) {
         player.setCurrentMapId(currentMapId);
         player.setChangingMap(false);
-        doLogMap(player, currentMapId);
+        // doLogMap(player, currentMapId);
     }
 
     /**

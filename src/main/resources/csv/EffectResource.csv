@@ -1,6 +1,6 @@
-configId,buffName,level,duration,period,maxMergeCount,groupId,valueString
-1,天神下凡,1,60,0,1,1,HP:300
-11,毒素,1,5,1,1,2,effect:10
-21,法术护盾,1,30,0,-1,3,"HP:100,PHYSICAL_ARMOR:10,MAGIC_ARMOR:10"
-31,眩晕,1,1,0,3,4,
-32,眩晕,2,2,0,3,4,
+configId,buffName,level,effectTypeId,durationTime,periodTime,frequencyTime,maxMergeCount,valueString
+"11      ","毒素      ","1    ","2           ","0           ","10        ","3            ","1            ",value:3
+"21      ","法术护盾    ","1    ","0           ","30          ","0         ",,"-1           ","HP:100,PHYSICAL_ARMOR:10,MAGIC_ARMOR:10"
+"31      ","眩晕      ","1    ","1           ","1           ","0         ",,"3            ",
+"32      ","眩晕      ","2    ","1           ","2           ","0         ",,3,
+"1       ","天神下凡    ","1    ","0           ","60          ","0         ",,"1            ",HP:300
