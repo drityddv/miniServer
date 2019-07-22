@@ -1,8 +1,10 @@
 package game.world.base.command;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
+import game.base.fight.model.pvpunit.FighterAccount;
 import game.map.base.AbstractScene;
 import game.map.handler.AbstractMapHandler;
+import game.map.visible.AbstractVisibleMapObject;
 import game.world.fight.syncStrategy.ISyncStrategy;
 
 /**
@@ -30,11 +32,11 @@ public class FighterSyncCommand extends AbstractSceneCommand {
     @Override
     public void action() {
         AbstractScene mapScene = AbstractMapHandler.getHandler(mapId).getMapScene(mapId);
-        // mapScene.getPlayerMap()
-        // FighterAccount fighterAccount = ((AbstractMovableScene) mapScene).getPlayerMap().get(playerId);
-        // if (fighterAccount != null) {
-        // iSyncStrategy.syncInfo(fighterAccount);
-        // }
+        AbstractVisibleMapObject playerObject = (AbstractVisibleMapObject)mapScene.getPlayerMap().get(playerId);
+        FighterAccount fighterAccount = playerObject.getFighterAccount();
+        if (fighterAccount != null) {
+            iSyncStrategy.syncInfo(fighterAccount);
+        }
     }
 
     @Override

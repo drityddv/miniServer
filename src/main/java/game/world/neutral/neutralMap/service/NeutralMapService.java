@@ -162,7 +162,7 @@ public class NeutralMapService implements INeutralMapService {
             String jobName = IdUtil.getLongId() + "";
             String triggerName = IdUtil.getLongId() + "";
 
-            SceneHeartBeatCommand command = SceneHeartBeatCommand.valueOf(mapId, 1000 * 60 * 2, 0);
+            SceneHeartBeatCommand command = SceneHeartBeatCommand.valueOf(mapId, 1000 * 60 * 10, 0);
 
             JobDetail jobDetail =
                 JobBuilder.newJob(SceneHeartBeatRateJob.class).withIdentity(jobName, groupName).build();

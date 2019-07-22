@@ -24,7 +24,7 @@ public class EffectActiveJob extends TriggerListenerSupport implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         command = (BuffActiveCommand)context.getMergedJobDataMap().get("command");
-        logger.info("jobId[{}]", command.getBuff().getJobId());
+        logger.info("jobId[{}] 剩余次数[{}] ", command.getBuff().getJobId(), command.getRemainCount());
         ExecutorUtils.submit(command);
     }
 

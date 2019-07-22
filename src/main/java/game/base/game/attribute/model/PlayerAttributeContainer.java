@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import game.base.game.attribute.AttributeUpdateRecords;
 import game.base.game.attribute.CreatureAttributeContainer;
 import game.role.player.model.Player;
+import game.world.fight.syncStrategy.impl.AttributeSynStrategy;
 
 /**
  * @author : ddv
@@ -32,6 +33,11 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
     @Override
     protected void recompute(AttributeUpdateRecords records, boolean needSyn) {
         super.recompute(records, needSyn);
+        if (needSyn) {
+            AttributeSynStrategy synStrategy = AttributeSynStrategy.valueOf(owner);
+            synStrategy.init(owner);
+            owner.fighterSync(synStrategy);
+        }
     }
 
 }

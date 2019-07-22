@@ -4,7 +4,6 @@ import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.object.AbstractCreature;
-import game.map.base.AbstractScene;
 import game.map.handler.AbstractMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.role.equip.model.EquipStorage;
@@ -71,16 +70,12 @@ public class Player extends AbstractCreature<Player> {
 
     public void fighterSync(BasePlayerSyncStrategy syncStrategy) {
         syncStrategy.init(this);
-        AbstractScene currentScene = null;
         try {
             AbstractMapHandler handler = AbstractMapHandler.getAbstractMapHandler(getCurrentMapId());
             ISceneMapHandler sceneMapHandler = (ISceneMapHandler)handler;
-            currentScene = sceneMapHandler.getCurrentScene(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
         }
-
         ExecutorUtils.submit(FighterSyncCommand.valueOf(this.getPlayerId(), syncStrategy, getCurrentMapId()));
     }
 

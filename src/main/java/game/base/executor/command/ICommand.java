@@ -41,11 +41,6 @@ public interface ICommand {
     boolean isCanceled();
 
     /**
-     * 取消command
-     */
-    void cancel();
-
-    /**
      * 刷新状态
      */
     void refreshState();

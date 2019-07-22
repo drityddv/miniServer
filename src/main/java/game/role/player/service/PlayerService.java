@@ -17,6 +17,7 @@ import game.role.player.entity.PlayerEnt;
 import game.role.player.model.Player;
 import game.role.player.resource.PlayerResource;
 import game.user.login.event.PlayerLoadSynEvent;
+import game.world.fight.syncStrategy.impl.LevelSynStrategy;
 import net.model.USession;
 import spring.SpringContext;
 import utils.SessionUtil;
@@ -68,7 +69,7 @@ public class PlayerService implements IPlayerService {
         player.getAttributeContainer().containerRecompute();
 
         savePlayer(playerEnt);
-        // player.fighterSync(LevelSynStrategy.success(player));
+        player.fighterSync(LevelSynStrategy.valueOf(player));
     }
 
     @Override

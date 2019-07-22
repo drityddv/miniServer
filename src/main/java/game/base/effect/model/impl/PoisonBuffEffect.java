@@ -40,6 +40,7 @@ public class PoisonBuffEffect extends BaseBuffEffect {
 
     @Override
     public void active() {
+        this.remainCount--;
         targetList.forEach(creatureUnit -> {
             PhysicalSingleAttack attack =
                 PhysicalSingleAttack.valueOf(caster, creatureUnit, null, damage * currentLevel);

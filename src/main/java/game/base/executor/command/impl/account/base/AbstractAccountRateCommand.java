@@ -21,7 +21,4 @@ public abstract class AbstractAccountRateCommand extends AbstractAccountDelayCom
         return period;
     }
 
-    public void setPeriod(long period) {
-        this.period = period;
-    }
 }

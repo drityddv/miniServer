@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import game.base.effect.model.BaseBuffEffect;
-import game.world.fight.command.BuffActiveCommand;
 import scheduler.constant.CronConst;
 import scheduler.constant.JobGroupEnum;
 import scheduler.job.common.server.OneHourQuartzJob;
@@ -28,7 +26,9 @@ import utils.snow.IdUtil;
 @Component
 public class QuartzService {
     private static final Logger logger = LoggerFactory.getLogger(QuartzService.class);
-
+    /**
+     * jobId -- jobDetail 所有的修正都是通过 删除-添加
+     */
     private static Map<Long, JobDetail> jobDetailMap = new ConcurrentHashMap<>();
 
     private Scheduler scheduler;
@@ -58,31 +58,11 @@ public class QuartzService {
         logger.info("初始化整点任务...");
     }
 
-    public void registerJobAndSchedule(Long jobId, JobEntry entry) {
-        jobDetailMap.put(jobId, entry.getJobDetail());
-        addJob(entry.getJobDetail(), entry.getTrigger());
-    }
-
-    // 修正运行中的buff
-    public void reviseBuffJob(Long jobId) {
+    public void removeJob(Long jobId) {
         JobDetail jobDetail = jobDetailMap.get(jobId);
-        BuffActiveCommand command = (BuffActiveCommand)jobDetail.getJobDataMap().get("command");
-        BaseBuffEffect buff = command.getBuff();
-
-        Trigger trigger = JobEntry.newRateTrigger(jobDetail, (long)buff.getEffectResource().getFrequencyTime(),
-            buff.getRemainCount());
         removeJob(jobDetail);
-        addJob(jobDetail, trigger);
-    }
+        jobDetailMap.remove(jobId);
 
-    public void addJob(JobDetail jobDetail, Trigger trigger) {
-        try {
-            logger.info("提交新的job id[{}]", jobDetail.getKey().getName());
-            scheduler.scheduleJob(jobDetail, trigger);
-        } catch (SchedulerException e) {
-            logger.warn("QuartzService 定时任务执行出错");
-            e.printStackTrace();
-        }
     }
 
     public void removeJob(JobDetail jobDetail) {
@@ -91,6 +71,20 @@ public class QuartzService {
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addJob(JobDetail jobDetail, Trigger trigger) {
+        try {
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (SchedulerException e) {
+            logger.error("提交调度任务异常");
+            e.printStackTrace();
+        }
+    }
+
+    public void addJob(Long jobId, JobEntry entry) {
+        jobDetailMap.put(jobId, entry.getJobDetail());
+        addJob(entry.getJobDetail(), entry.getTrigger());
     }
 
     public void shutdown() {

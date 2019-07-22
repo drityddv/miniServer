@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.base.effect.model.BaseBuffEffect;
-import game.base.effect.resource.EffectResource;
 import game.base.fight.model.componet.BaseUnitComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
@@ -88,20 +87,18 @@ public class PVPBuffEffectComponent extends BaseUnitComponent<BaseCreatureUnit> 
     private void reviseBuff(BaseBuffEffect buffEffect) {
         int mapId = owner.getMapId();
         Map<Long, BaseBuffEffect> buffEffects = AbstractMapHandler.getAbstractMapHandler(mapId).getBuffEffects(mapId);
-        EffectResource effectResource = buffEffect.getEffectResource();
-        if (oldBuff == null) {
-            if (effectResource.isRateEffect()) {
-                buffEffects.put(buffEffect.getJobId(), buffEffect);
-                JobEntry jobEntry =
-                    JobEntry.newRateJob(EffectActiveJob.class, (long)buffEffect.getEffectResource().getFrequencyTime(),
-                        buffEffect.getEffectResource().getPeriodTime(), buffEffect.getJobId(), JobGroupEnum.BUFF.name(),
-                        BuffActiveCommand.valueOf(buffEffect, mapId));
 
-                SpringContext.getQuartzService().registerJobAndSchedule(buffEffect.getJobId(), jobEntry);
-            }
-        } else {
-            SpringContext.getQuartzService().reviseBuffJob(oldBuff.getJobId());
+        JobEntry jobEntry = JobEntry.newRateJob(EffectActiveJob.class,
+            (long)buffEffect.getEffectResource().getFrequencyTime(), buffEffect.getRemainCount(), buffEffect.getJobId(),
+            JobGroupEnum.BUFF.name(), BuffActiveCommand.valueOf(buffEffect, mapId));
+        buffEffects.put(buffEffect.getJobId(), buffEffect);
+
+        if (oldBuff != null) {
+            // 删掉旧的 再加新的
+            SpringContext.getQuartzService().removeJob(buffEffect.getJobId());
         }
+
+        SpringContext.getQuartzService().addJob(buffEffect.getJobId(), jobEntry);
 
         needFix = false;
         oldBuff = null;

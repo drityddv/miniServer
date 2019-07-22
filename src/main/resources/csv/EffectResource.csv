@@ -1,5 +1,5 @@
 configId,buffName,level,effectTypeId,durationTime,periodTime,frequencyTime,maxMergeCount,valueString
-"11      ","毒素      ","1    ","2           ","0           ","10        ","3            ","1            ",value:3
+"11      ","毒素      ","1    ","2           ","0           ","10        ","3            ",3,value:3
 "21      ","法术护盾    ","1    ","0           ","30          ","0         ",,"-1           ","HP:100,PHYSICAL_ARMOR:10,MAGIC_ARMOR:10"
 "31      ","眩晕      ","1    ","1           ","1           ","0         ",,"3            ",
 "32      ","眩晕      ","2    ","1           ","2           ","0         ",,3,
