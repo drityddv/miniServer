@@ -49,6 +49,10 @@ public abstract class BaseMapInfo<T extends AbstractMovableScene> {
         return mapScene;
     }
 
+    public void setMapScene(T mapScene) {
+        this.mapScene = mapScene;
+    }
+
     public MiniMapResource getMiniMapResource() {
         return miniMapResource;
     }
@@ -56,8 +60,4 @@ public abstract class BaseMapInfo<T extends AbstractMovableScene> {
     public MapBlockResource getBlockResource() {
         return blockResource;
     }
-
-	public void setMapScene(T mapScene) {
-		this.mapScene = mapScene;
-	}
 }

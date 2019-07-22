@@ -5,8 +5,12 @@ import java.util.List;
 
 import game.base.effect.model.BaseBuffEffect;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.base.message.I18N;
+import game.base.message.exception.RequestException;
 import game.gm.packet.SM_LogMessage;
 import game.map.base.AbstractScene;
+import game.map.model.Grid;
+import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.PlayerVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;
 import game.map.visible.impl.NpcVisibleObject;
@@ -101,6 +105,31 @@ public class MapUtil {
                     skillEntry.getLevel(), skillEntry.hashCode()));
             }
         });
+    }
+
+    public static boolean doMove(AbstractVisibleMapObject object, int[][] blockData) {
+        int targetX = object.getTargetGrid().getX();
+        int targetY = object.getTargetGrid().getY();
+
+        try {
+            if (object.getFighterAccount().getCreatureUnit().isCanMove()) {
+                int blockPoint = blockData[targetX][targetY];
+                if (blockPoint == 1) {
+                    object.doMove();
+                    return true;
+                }
+            }
+        } catch (NullPointerException e) {
+            RequestException.throwException(I18N.TARGET_POSITION_ERROR);
+        }
+        return false;
+    }
+
+    // 计算距离
+    public static double calculateDistance(Grid grid, Grid targetGrid) {
+        int x = grid.getX() - targetGrid.getX();
+        int y = grid.getY() - targetGrid.getY();
+        return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
 }

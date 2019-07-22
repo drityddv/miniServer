@@ -2,12 +2,11 @@ package game.world.neutral.neutralMap.handler;
 
 import java.util.Map;
 
-import game.map.base.AbstractMovableScene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.effect.model.BaseBuffEffect;
-import game.map.base.AbstractScene;
+import game.map.base.AbstractMovableScene;
 import game.map.constant.MapGroupType;
 import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;

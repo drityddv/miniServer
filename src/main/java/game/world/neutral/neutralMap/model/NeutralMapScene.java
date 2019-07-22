@@ -20,8 +20,8 @@ public class NeutralMapScene extends AbstractMovableScene<PlayerVisibleMapObject
 
     public static NeutralMapScene valueOf(int mapId, BaseMapInfo baseMapInfo) {
         NeutralMapScene mapScene = new NeutralMapScene(mapId);
-        mapScene.aoiManager = MapAoiManager.valueOf(baseMapInfo);
         mapScene.baseMapInfo = baseMapInfo;
+        mapScene.aoiManager = MapAoiManager.valueOf(baseMapInfo);
         baseMapInfo.setMapScene(mapScene);
         return mapScene;
     }

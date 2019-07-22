@@ -6,7 +6,6 @@ import java.util.Map;
 import game.base.effect.model.BaseBuffEffect;
 import game.map.base.AbstractMovableScene;
 import game.map.base.AbstractPlayerMapInfo;
-import game.map.base.AbstractScene;
 import game.map.constant.MapGroupType;
 import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.PlayerVisibleMapObject;
@@ -111,6 +110,6 @@ public interface IMapHandler {
      * @param mapId
      * @return
      */
-	AbstractMovableScene getMapScene(int mapId);
+    AbstractMovableScene getMapScene(int mapId);
 
 }

@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.map.model.Grid;
-import game.map.utils.VisibleUtil;
 import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;
 import game.world.base.resource.MapBlockResource;
+import game.world.utils.MapUtil;
 
 /**
  * @author : ddv
@@ -44,14 +44,6 @@ public class MapAoiManager {
         broadcastCenters.forEach(aoiCenter -> aoiCenter.triggerEnter(object));
     }
 
-    public void registerUnits(MonsterVisibleMapObject monsterVisibleMapInfo) {
-        Grid grid = monsterVisibleMapInfo.getCurrentGrid();
-        List<BroadcastCenter> broadcastCenters = centerMap.get(grid);
-        broadcastCenters.forEach(aoiCenter -> {
-            aoiCenter.registerUnit(monsterVisibleMapInfo);
-        });
-    }
-
     public <T extends AbstractVisibleMapObject> void triggerMove(T object, Grid targetGrid) {
         List<BroadcastCenter> originCenters = centerMap.get(object.getCurrentGrid());
         List<BroadcastCenter> targetCenters = centerMap.get(targetGrid);
@@ -60,18 +52,35 @@ public class MapAoiManager {
         object.getTargetGrid().setY(targetGrid.getY());
         MapBlockResource blockResource = mapInfo.getBlockResource();
 
-        if (VisibleUtil.doMove(object, blockResource.getBlockData())) {
-            // 失去玩家焦点的广播中心 移除状态并且广播
+        if (MapUtil.doMove(object, blockResource.getBlockData())) {
+            // 失去玩家焦点的旧广播中心 移除状态并且广播
             originCenters = originCenters.stream().filter(broadcastCenter -> !isExist(broadcastCenter, targetCenters))
                 .collect(Collectors.toList());
             originCenters.forEach(broadcastCenter -> {
-                broadcastCenter.removeUnit(object);
+                broadcastCenter.removeUnit(object, 1);
             });
 
-            // 持有玩家视野注册状态并广播
+            // 持有玩家视野注册[新广播]状态并广播
             targetCenters.forEach(broadcastCenter -> broadcastCenter.registerUnit(object));
         }
 
+    }
+
+    // 玩家离开地图触发广播
+    public <T extends AbstractVisibleMapObject> void triggerLeave(T object) {
+        Grid currentGrid = object.getCurrentGrid();
+        List<BroadcastCenter> broadcastCenters = centerMap.get(currentGrid);
+        broadcastCenters.forEach(broadcastCenter -> {
+            broadcastCenter.removeUnit(object, 2);
+        });
+    }
+
+    public void registerUnits(MonsterVisibleMapObject monsterVisibleMapInfo) {
+        Grid grid = monsterVisibleMapInfo.getCurrentGrid();
+        List<BroadcastCenter> broadcastCenters = centerMap.get(grid);
+        broadcastCenters.forEach(aoiCenter -> {
+            aoiCenter.registerUnit(monsterVisibleMapInfo);
+        });
     }
 
     private boolean isExist(BroadcastCenter temp, List<BroadcastCenter> centers) {

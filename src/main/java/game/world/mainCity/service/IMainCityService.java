@@ -1,7 +1,6 @@
 package game.world.mainCity.service;
 
 import game.map.base.AbstractMovableScene;
-import game.map.base.AbstractScene;
 import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.mainCity.model.MainCitySceneScene;
@@ -63,5 +62,5 @@ public interface IMainCityService {
      * @param mapId
      * @return
      */
-	AbstractMovableScene getMapScene(int mapId);
+    AbstractMovableScene getMapScene(int mapId);
 }

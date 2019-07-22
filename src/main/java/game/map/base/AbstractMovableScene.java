@@ -38,16 +38,17 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
         super(mapId);
     }
 
-    //加载怪物
-	public void initMonster(List<CreatureResource> creatureResources) {
-		for (CreatureResource creatureResource : creatureResources) {
-			MonsterVisibleMapObject monster = MonsterVisibleMapObject.valueOf(creatureResource);
-			monsterMap.put(monster.getId(), monster);
-		}
-	}
+    // 加载怪物
+    public void initMonster(List<CreatureResource> creatureResources) {
+        for (CreatureResource creatureResource : creatureResources) {
+            MonsterVisibleMapObject monster = MonsterVisibleMapObject.valueOf(creatureResource);
+            monsterMap.put(monster.getId(), monster);
+        }
+        registerMonsterAoi();
+    }
 
     // 加载地图单位到广播中心
-    public void initAoiManager() {
+    private void registerMonsterAoi() {
         monsterMap.values().forEach(monsterVisibleMapInfo -> {
             aoiManager.registerUnits(monsterVisibleMapInfo);
         });
@@ -56,6 +57,7 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     public void enter(long playerId, T object) {
         T absent = playerMap.putIfAbsent(playerId, object);
         if (absent == null) {
+            playerMap.put(object.getId(), object);
             aoiManager.triggerEnter(object);
             logger.info("玩家[{}]进入中立场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
         }
@@ -70,26 +72,32 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     }
 
     public void leave(long playerId) {
+        PlayerVisibleMapObject object = (PlayerVisibleMapObject)playerMap.get(playerId);
+        if (object == null) {
+            return;
+        }
         playerMap.remove(playerId);
+        aoiManager.triggerLeave(object);
         logger.info("玩家[{}]离开中立场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
     }
 
-    public T getPlayerObject(Long playerId) {
+    public T getPlayerObject(long playerId) {
         return playerMap.get(playerId);
     }
 
-	@Override
-	public Map<Long, T> getPlayerMap() {
-		return playerMap;
-	}
-	@Override
+    @Override
+    public Map<Long, T> getPlayerMap() {
+        return playerMap;
+    }
+
+    @Override
     public Map<Long, MonsterVisibleMapObject> getMonsterMap() {
         return monsterMap;
     }
 
-	public List<T> getVisibleObjects() {
-		return new ArrayList<>(playerMap.values());
-	}
+    public List<T> getVisibleObjects() {
+        return new ArrayList<>(playerMap.values());
+    }
 
     // 玩家是否存在于场景中
     public boolean isContainPlayer(long playerId) {

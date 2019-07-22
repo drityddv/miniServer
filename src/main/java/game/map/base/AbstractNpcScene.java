@@ -3,7 +3,6 @@ package game.map.base;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import game.map.npc.reource.NpcResource;
 import game.map.visible.impl.NpcVisibleObject;

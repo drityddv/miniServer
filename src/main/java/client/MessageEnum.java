@@ -44,20 +44,20 @@ public enum MessageEnum {
 
     SKILL_POINT_NOT_ENOUGH(21, "技能点不足!"),;
 
-    private int id;
-    private String message;
-
-    MessageEnum(int id, String message) {
-        this.id = id;
-        this.message = message;
-    }
-
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 
     static {
         for (MessageEnum messageEnum : MessageEnum.values()) {
             ID_TO_ENUM.put(messageEnum.id, messageEnum);
         }
+    }
+
+    private int id;
+    private String message;
+
+    MessageEnum(int id, String message) {
+        this.id = id;
+        this.message = message;
     }
 
     public static MessageEnum getById(int id) {

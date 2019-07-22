@@ -9,6 +9,7 @@ import game.map.visible.AbstractVisibleMapObject;
  */
 
 public class AoiBroadCastVo {
+    private Grid broadCast;
     private String unitName;
     private long id;
     private int x;
@@ -16,10 +17,11 @@ public class AoiBroadCastVo {
     private long hp;
     private long mp;
 
-    public static AoiBroadCastVo valueOf(AbstractVisibleMapObject mapInfo) {
+    public static AoiBroadCastVo valueOf(AbstractVisibleMapObject mapInfo, int centerX, int centerY) {
         AoiBroadCastVo vo = new AoiBroadCastVo();
         BaseCreatureUnit unit = mapInfo.getFighterAccount().getCreatureUnit();
         vo.id = unit.getId();
+        vo.broadCast = Grid.valueOf(centerX, centerY);
         vo.unitName = unit.getName();
         vo.hp = unit.getCurrentHp();
         vo.mp = unit.getCurrentMp();
@@ -50,5 +52,9 @@ public class AoiBroadCastVo {
 
     public long getMp() {
         return mp;
+    }
+
+    public Grid getBroadCast() {
+        return broadCast;
     }
 }

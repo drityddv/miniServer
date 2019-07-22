@@ -70,16 +70,10 @@ public class NeutralMapService implements INeutralMapService {
         NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
         NeutralMapScene neutralMapScene = mapCommonInfo.getMapScene();
         MiniMapResource mapResource = mapCommonInfo.getMiniMapResource();
-        PlayerVisibleMapObject visibleObject = neutralMapScene.getPlayerObject(player.getPlayerId());
 
-        if (visibleObject != null) {
-            // 继续执行 考虑到断线等因素造成的残影 后期加入心跳 现在直接用新的替换掉
-            logger.warn("玩家[{}]存在于地图[{}]中,错误的进入行为", player.getAccountId(), mapId);
-        }
-        if (visibleObject == null) {
-            visibleObject = PlayerVisibleMapObject.valueOf(player, mapId);
-            visibleObject.init(mapResource.getBornX(), mapResource.getBornY());
-        }
+        PlayerVisibleMapObject visibleObject = PlayerVisibleMapObject.valueOf(player, mapId);
+        visibleObject.init(mapResource.getBornX(), mapResource.getBornY());
+
         neutralMapScene.enter(player.getPlayerId(), visibleObject);
     }
 
@@ -154,7 +148,6 @@ public class NeutralMapService implements INeutralMapService {
         NeutralMapScene mapScene = commonInfo.getMapScene();
         mapScene.initNpc(SpringContext.getCreatureManager().getNpcByMapId(commonInfo.getMapId()));
         mapScene.initMonster(SpringContext.getCreatureManager().getCreatureResourceByMapId(commonInfo.getMapId()));
-        mapScene.initAoiManager();
         neutralMapManager.addNeutralMapCommonInfo(commonInfo);
     }
 

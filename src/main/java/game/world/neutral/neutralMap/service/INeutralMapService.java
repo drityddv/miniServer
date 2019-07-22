@@ -3,7 +3,6 @@ package game.world.neutral.neutralMap.service;
 import java.util.Map;
 
 import game.base.effect.model.BaseBuffEffect;
-import game.map.base.AbstractScene;
 import game.map.model.Grid;
 import game.map.visible.PlayerVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;

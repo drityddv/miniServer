@@ -30,13 +30,13 @@ public abstract class AbstractScene<T extends AbstractVisibleMapObject> {
         this.mapId = mapId;
     }
 
-    public Map<Long,T> getPlayerMap(){
-		return Collections.emptyMap();
-	}
+    public Map<Long, T> getPlayerMap() {
+        return Collections.emptyMap();
+    }
 
-	public Map<Long, MonsterVisibleMapObject> getMonsterMap() {
-		return Collections.emptyMap();
-	}
+    public Map<Long, MonsterVisibleMapObject> getMonsterMap() {
+        return Collections.emptyMap();
+    }
 
     /**
      * 获取场景内玩家的同步对象
