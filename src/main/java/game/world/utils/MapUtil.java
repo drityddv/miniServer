@@ -139,4 +139,26 @@ public class MapUtil {
         return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
     }
 
+    // 格子是否合法
+    public static boolean isGridLegal(Grid target, int[][] blockData) {
+        int x = target.getX();
+        int y = target.getY();
+        try {
+            int data = blockData[x][y];
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
+
+    // 坐标是否合法
+    public static boolean isGridLegal(int x, int y, int[][] blockData) {
+        try {
+            int data = blockData[x][y];
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
+
 }

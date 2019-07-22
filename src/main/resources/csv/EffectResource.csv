@@ -4,3 +4,4 @@ configId,buffName,level,effectTypeId,durationTime,periodTime,frequencyTime,maxMe
 "31      ","眩晕      ","1    ","1           ","1           ","0         ",,"3            ",
 "32      ","眩晕      ","2    ","1           ","2           ","0         ",,3,
 "1       ","天神下凡    ","1    ","0           ","60          ","0         ",,"1            ",HP:300
+41,烈焰风暴,1,0,2,0,,,"damage:50,radius:2"

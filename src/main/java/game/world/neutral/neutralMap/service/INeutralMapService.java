@@ -109,4 +109,11 @@ public interface INeutralMapService {
      * @return
      */
     NeutralMapScene getMapScene(int mapId);
+
+    /**
+     * 测试用
+     *
+     * @param mapId
+     */
+    void test(int mapId, Map<String, Object> param);
 }

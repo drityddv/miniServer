@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import game.base.effect.model.BaseBuffEffect;
 import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
+import game.map.area.impl.RoundAreaProcess;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.visible.PlayerVisibleMapObject;
@@ -141,6 +142,15 @@ public class NeutralMapService implements INeutralMapService {
     @Override
     public NeutralMapScene getMapScene(int mapId) {
         return getMapInfo(mapId).getMapScene();
+    }
+
+    @Override
+    public void test(int mapId, Map<String, Object> param) {
+        NeutralMapScene mapScene = getMapScene(mapId);
+        RoundAreaProcess process = new RoundAreaProcess();
+        process.init(param, mapScene);
+        process.calculate();
+        List<Grid> result = process.getResult();
     }
 
     private void initNeutralMapInfo(MiniMapResource mapResource) {

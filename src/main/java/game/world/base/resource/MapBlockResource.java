@@ -1,9 +1,9 @@
 package game.world.base.resource;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import game.map.base.BroadcastCenter;
 import game.map.model.Grid;
@@ -34,7 +34,7 @@ public class MapBlockResource {
     }
 
     private void analysisAoiPoint() {
-        aoiModelMap = new HashMap<>();
+        aoiModelMap = new ConcurrentHashMap<>();
         String[] data = aoiPointString.split(",");
         for (String point : data) {
             String[] split = point.split(":");
@@ -94,10 +94,26 @@ public class MapBlockResource {
     }
 
     public Map<Grid, List<BroadcastCenter>> getAoiModelMap() {
-        return aoiModelMap;
+        Map<Grid, List<BroadcastCenter>> temp = new ConcurrentHashMap<>();
+        aoiModelMap.forEach((grid, centers) -> {
+            List<BroadcastCenter> broadcastCenterList = new ArrayList<>();
+            centers.forEach(resourceCenter -> broadcastCenterList.add(BroadcastCenter.valueOf(resourceCenter)));
+            temp.put(Grid.valueOf(grid), broadcastCenterList);
+        });
+        return temp;
     }
 
     public int[][] getBlockData() {
         return blockData;
     }
+
+    // methods
+    public boolean isGridLegal(Grid grid) {
+        return aoiModelMap.containsKey(grid);
+    }
+
+    public boolean isGridLegal(int x, int y) {
+        return aoiModelMap.containsKey(Grid.valueOf(x, y));
+    }
+
 }

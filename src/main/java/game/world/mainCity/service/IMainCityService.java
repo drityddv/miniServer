@@ -3,7 +3,7 @@ package game.world.mainCity.service;
 import game.map.base.AbstractMovableScene;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.mainCity.model.MainCitySceneScene;
+import game.world.mainCity.model.MainCityMapScene;
 
 /**
  * @author : ddv
@@ -46,7 +46,7 @@ public interface IMainCityService {
      * @param player
      * @return
      */
-    MainCitySceneScene getCurrentScene(Player player);
+    MainCityMapScene getCurrentScene(Player player);
 
     /**
      * 打印地图

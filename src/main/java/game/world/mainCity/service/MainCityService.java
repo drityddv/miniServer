@@ -17,7 +17,7 @@ import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 import game.world.mainCity.model.MainCityMapInfo;
-import game.world.mainCity.model.MainCitySceneScene;
+import game.world.mainCity.model.MainCityMapScene;
 import game.world.utils.MapUtil;
 import spring.SpringContext;
 
@@ -44,7 +44,7 @@ public class MainCityService implements IMainCityService {
     @Override
     public void enterMap(Player player, int mapId) {
         MainCityMapInfo mapInfo = getMapInfo(mapId);
-        MainCitySceneScene scene = mapInfo.getMapScene();
+        MainCityMapScene scene = mapInfo.getMapScene();
         MiniMapResource miniMapResource = mapInfo.getMiniMapResource();
 
         PlayerVisibleMapObject visibleMapInfo = PlayerVisibleMapObject.valueOf(player, mapId);
@@ -60,20 +60,20 @@ public class MainCityService implements IMainCityService {
 
     @Override
     public void doMove(Player player, Grid targetGrid) {
-        MainCitySceneScene mapScene = getScene(player.getCurrentMapId());
+        MainCityMapScene mapScene = getScene(player.getCurrentMapId());
         mapScene.move(player.getPlayerId(), targetGrid);
 
     }
 
     @Override
-    public MainCitySceneScene getCurrentScene(Player player) {
+    public MainCityMapScene getCurrentScene(Player player) {
         return null;
     }
 
     @Override
     public void doLogMap(Player player, int mapId) {
         MainCityMapInfo mapCommonInfo = mainCityManager.getMainCityMapInfo(mapId);
-        MainCitySceneScene mapScene = mapCommonInfo.getMapScene();
+        MainCityMapScene mapScene = mapCommonInfo.getMapScene();
         List<PlayerVisibleMapObject> visibleObjects = mapScene.getVisibleObjects();
         Collection<NpcVisibleObject> npcList = mapScene.getNpcMap().values();
 
@@ -92,6 +92,7 @@ public class MainCityService implements IMainCityService {
             MainCityMapInfo mapInfo = MainCityMapInfo.valueOf(mapResource);
             mapInfo.getMapScene().initNpc(SpringContext.getCreatureManager().getNpcByMapId(mapInfo.getMapId()));
             mainCityManager.addMainCityMapInfo(mapInfo);
+
         });
     }
 
@@ -99,7 +100,7 @@ public class MainCityService implements IMainCityService {
         return mainCityManager.getMainCityMapInfo(mapId);
     }
 
-    private MainCitySceneScene getScene(int mapId) {
+    private MainCityMapScene getScene(int mapId) {
         return getMapInfo(mapId).getMapScene();
     }
 

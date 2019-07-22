@@ -45,12 +45,23 @@ public class AttributeSynStrategy extends BasePlayerSyncStrategy {
 
     }
 
+    // 百分比修正其他属性
     @Override
     public void syncInfo(FighterAccount fighterAccount) {
         PlayerUnit playerUnit = getPlayerUnit(fighterAccount);
         PVPCreatureAttributeComponent component =
             playerUnit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
+        long currentMp = playerUnit.getCurrentMp();
+        long currentHp = playerUnit.getCurrentHp();
+
+        double originHpRatio = currentHp / component.getAttributeValue(AttributeType.MAX_HP);
+        double originMpRatio = currentMp / component.getAttributeValue(AttributeType.MAX_MP);
+
         component.setFinalAttributes(finalAttrs);
         component.setModelAttributeSet(modeAttributeSet);
+
+        playerUnit.setCurrentHp((long)(component.getAttributeValue(AttributeType.MAX_HP) * originHpRatio));
+        playerUnit.setCurrentMp((long)(component.getAttributeValue(AttributeType.MAX_MP) * originMpRatio));
+
     }
 }

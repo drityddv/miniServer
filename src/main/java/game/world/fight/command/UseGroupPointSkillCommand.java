@@ -7,6 +7,7 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.utils.BattleUtil;
+import game.base.skill.constant.SkillTypeEnum;
 import game.base.skill.model.BaseSkill;
 import game.role.player.model.Player;
 import game.world.fight.model.BattleParam;
@@ -21,13 +22,12 @@ public class UseGroupPointSkillCommand extends AbstractSceneCommand {
     private long skillId;
     private List<Long> targetIds;
 
-    public UseGroupPointSkillCommand(String accountId, int mapId) {
+    public UseGroupPointSkillCommand(int mapId) {
         super(mapId);
     }
 
     public static UseGroupPointSkillCommand valueOf(Player player, long skillId, List<Long> targetIds) {
-        UseGroupPointSkillCommand command =
-            new UseGroupPointSkillCommand(player.getAccountId(), player.getCurrentMapId());
+        UseGroupPointSkillCommand command = new UseGroupPointSkillCommand(player.getCurrentMapId());
         command.player = player;
         command.skillId = skillId;
         command.targetIds = targetIds;
@@ -44,6 +44,9 @@ public class UseGroupPointSkillCommand extends AbstractSceneCommand {
             BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
             List<BaseCreatureUnit> targetUnits = battleParam.getTargetUnits();
 
+            if (baseSkill.getSkillType() != SkillTypeEnum.Group_Point) {
+                return;
+            }
             actionHandler.init(caster, targetUnits, null, baseSkill);
             actionHandler.action(caster, targetUnits, baseSkill);
             battleParam.getMapHandler().doLogMap(player, mapId);

@@ -47,4 +47,14 @@ public interface IFightService {
      * @param targetIdList
      */
     void useGroupPointSkill(Player player, long skillId, List<Long> targetIdList);
+
+    /**
+     * 使用aoe技能
+     *
+     * @param player
+     * @param skillId
+     * @param centerX
+     * @param centerY
+     */
+    void useAoeSkill(Player player, long skillId, int centerX, int centerY);
 }

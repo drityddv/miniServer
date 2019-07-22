@@ -1,5 +1,6 @@
 package game.map.base;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;
@@ -23,6 +25,7 @@ public class MapAoiManager {
     private BaseMapInfo mapInfo;
     private Map<Grid, List<BroadcastCenter>> centerMap;
 
+    // FIXME 卧槽 给自己挖坑 我居然是多个地图共享一个资源文件
     public static MapAoiManager valueOf(BaseMapInfo mapInfo) {
         MapAoiManager aoiManager = new MapAoiManager();
         aoiManager.mapInfo = mapInfo;
@@ -78,8 +81,8 @@ public class MapAoiManager {
     public void registerUnits(MonsterVisibleMapObject monsterVisibleMapInfo) {
         Grid grid = monsterVisibleMapInfo.getCurrentGrid();
         List<BroadcastCenter> broadcastCenters = centerMap.get(grid);
-        broadcastCenters.forEach(aoiCenter -> {
-            aoiCenter.registerUnit(monsterVisibleMapInfo);
+        broadcastCenters.forEach(broadcastCenter -> {
+            broadcastCenter.registerUnit(monsterVisibleMapInfo);
         });
     }
 
@@ -90,5 +93,16 @@ public class MapAoiManager {
             }
         }
         return false;
+    }
+
+    public List<BaseCreatureUnit> getCreatureUnits(List<Grid> gridList) {
+        List<BaseCreatureUnit> creatureUnits = new ArrayList<>();
+        gridList.forEach(grid -> {
+            List<BroadcastCenter> broadcastCenters = centerMap.get(grid);
+            broadcastCenters.forEach(broadcastCenter -> {
+                creatureUnits.addAll(broadcastCenter.getCreatureUnitsByGrid(grid));
+            });
+        });
+        return creatureUnits.stream().distinct().collect(Collectors.toList());
     }
 }

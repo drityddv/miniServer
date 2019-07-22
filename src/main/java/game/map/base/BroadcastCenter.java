@@ -1,10 +1,11 @@
 package game.map.base;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.packet.SM_AoiBroadCast;
 import game.map.visible.AbstractVisibleMapObject;
@@ -26,25 +27,21 @@ public class BroadcastCenter {
     // 广播坐标集合
     private List<Grid> scopeGrid = new ArrayList<>();
     // 广播范围内的单位
-    private Map<Grid, Map<Long, AbstractVisibleMapObject>> unitMap = new HashMap<>();
-
-    public BroadcastCenter(int pointX, int pointY, List<Grid> scopeGrid) {
-        this.pointX = pointX;
-        this.pointY = pointY;
-        this.scopeGrid = scopeGrid;
-    }
+    private Map<Grid, Map<Long, AbstractVisibleMapObject>> unitMap = new ConcurrentHashMap<>();
 
     public BroadcastCenter(int pointX, int pointY) {
         this.pointX = pointX;
         this.pointY = pointY;
     }
 
-    public static BroadcastCenter valueOf(int pointX, int pointY, List<Grid> scopeGrid) {
-        BroadcastCenter aoiModel = new BroadcastCenter(pointX, pointY, scopeGrid);
-        scopeGrid.forEach(grid -> {
-            aoiModel.unitMap.put(grid, new HashMap<>());
+    public static BroadcastCenter valueOf(BroadcastCenter broadcastCenter) {
+        BroadcastCenter copy = new BroadcastCenter(broadcastCenter.pointX, broadcastCenter.pointY);
+        broadcastCenter.scopeGrid.forEach(grid -> {
+            Grid copyGrid = Grid.valueOf(grid);
+            copy.scopeGrid.add(copyGrid);
+            copy.unitMap.put(copyGrid, new ConcurrentHashMap<>());
         });
-        return aoiModel;
+        return copy;
     }
 
     // FIXME 广播信息 暂时只广播玩家对象 这里如果二号玩家去了很远的地方 一号玩家不会接受发包
@@ -82,7 +79,7 @@ public class BroadcastCenter {
     }
 
     public void init(Grid grid) {
-        unitMap.put(grid, new HashMap<>());
+        unitMap.put(grid, new ConcurrentHashMap<>());
     }
 
     // 清除单位并且广播 type==1 移动 type==2 离开
@@ -95,8 +92,19 @@ public class BroadcastCenter {
         broadCastAllUnits();
     }
 
+    public List<BaseCreatureUnit> getCreatureUnitsByGrid(Grid grid) {
+        List<BaseCreatureUnit> creatureUnits = new ArrayList<>();
+        Map<Long, AbstractVisibleMapObject> mapObjectMap = unitMap.get(grid);
+        mapObjectMap.values().forEach(abstractVisibleMapObject -> {
+            creatureUnits.add(abstractVisibleMapObject.getFighterAccount().getCreatureUnit());
+        });
+
+        return creatureUnits;
+    }
+
     // 注册单位并且广播
     public void registerUnit(AbstractVisibleMapObject object) {
+        System.out.println(unitMap.hashCode());
         Map<Long, AbstractVisibleMapObject> lastGrid = unitMap.get(object.getLastGrid());
 
         if (lastGrid != null && lastGrid.containsKey(object.getId())) {

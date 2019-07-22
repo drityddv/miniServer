@@ -110,6 +110,7 @@ public class BattleUtil {
 
         BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
         actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
+
         if (targetId != 0) {
             BaseCreatureUnit targetUnit = BattleUtil.findTargetUnit(mapHandler, targetId, mapId);
             battleParam.setTargetUnit(targetUnit);
@@ -123,6 +124,7 @@ public class BattleUtil {
         battleParam.setMapHandler(mapHandler);
         battleParam.setActionHandler(actionHandler);
         battleParam.setCaster(caster);
+        battleParam.setMapScene(mapHandler.getMapScene(mapId));
         return battleParam;
     }
 

@@ -88,4 +88,9 @@ public class NeutralMapHandler extends AbstractMapHandler
     public AbstractMovableScene getMapScene(int mapId) {
         return neutralMapService.getMapScene(mapId);
     }
+
+    @Override
+    public void test(int mapId, Map<String, Object> param) {
+        neutralMapService.test(mapId, param);
+    }
 }

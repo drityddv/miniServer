@@ -24,12 +24,12 @@ public class EnterMapCommand extends AbstractSceneCommand {
     private Player player;
     private int mapId;
 
-    public EnterMapCommand(String accountId, int mapId) {
+    public EnterMapCommand(int mapId) {
         super(mapId);
     }
 
     public static EnterMapCommand valueOf(Player player, int mapId) {
-        EnterMapCommand command = new EnterMapCommand(player.getAccountId(), mapId);
+        EnterMapCommand command = new EnterMapCommand(mapId);
         command.player = player;
         command.mapId = mapId;
         return command;

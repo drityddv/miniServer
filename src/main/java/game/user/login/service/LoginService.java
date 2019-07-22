@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.executor.util.ExecutorUtils;
 import game.base.manager.SessionManager;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
@@ -17,6 +18,7 @@ import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
 import game.user.login.packet.SM_LoginSuccess;
+import game.world.base.command.EnterMapCommand;
 import io.netty.channel.Channel;
 import net.model.USession;
 import net.utils.PacketUtil;
@@ -69,6 +71,8 @@ public class LoginService implements ILoginService {
             player.getAttributeContainer().containerRecompute();
         }
         PacketUtil.send(session, SM_LoginSuccess.valueOf());
+
+        ExecutorUtils.submit(EnterMapCommand.valueOf(player, 4));
     }
 
     @Override

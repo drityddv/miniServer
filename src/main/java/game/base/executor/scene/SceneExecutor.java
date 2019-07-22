@@ -49,6 +49,7 @@ public class SceneExecutor implements ApplicationListener<ContextRefreshedEvent>
                 }
             });
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("场景线程[{}] 执行任务[{}]出错 key[{}]", modIndex, taskName, key);
         }
     }

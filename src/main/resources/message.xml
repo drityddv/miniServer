@@ -54,6 +54,7 @@
     <!--地图内战斗  2100 - 2200 -->
     <message id="2100" key="singletSkill" value="game.world.fight.packet.CM_UseSinglePointSkill"/>
     <message id="2101" key="groupSkill" value="game.world.fight.packet.CM_UseGroupPointSkill"/>
-    <message id="2102" key="logUnit" value="game.world.fight.packet.CM_logUnitBattleInfo"/>
+    <message id="2102" key="aoeSkill" value="game.world.fight.packet.CM_UserAoeSkill"/>
+    <message id="2120" key="logUnit" value="game.world.fight.packet.CM_logUnitBattleInfo"/>
 
 </protocols>

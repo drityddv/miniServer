@@ -1,16 +1,16 @@
 package game.base.skill.resource;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import game.base.consume.AssetsConsume;
 import game.base.consume.IConsume;
 import game.base.game.attribute.AttributeType;
 import game.base.skill.constant.SkillEnum;
+import game.base.skill.constant.SkillTypeEnum;
+import game.map.area.AreaTypeEnum;
 import resource.anno.Init;
 import resource.anno.MiniResource;
+import resource.constant.CsvSymbol;
 import utils.StringUtil;
 
 /**
@@ -48,8 +48,20 @@ public class SkillLevelResource {
     private Set<Long> effectIds;
     private String effectIdString;
 
+    // 技能类型
+    private SkillTypeEnum skillType;
+    private String skillTypeString;
+
     /**
-     * 技能type
+     * 范围选择器 aoe专用
+     */
+    private AreaTypeEnum areaTypeEnum;
+    private String areaTypeString;
+    private Map<String, String> areaTypeParam;
+    private String areaTypeParamString;
+
+    /**
+     * 技能种类
      */
     private SkillEnum skillEnum;
     private String skillEnumId;
@@ -63,22 +75,41 @@ public class SkillLevelResource {
     @Init
     public void init() {
         analysisCd();
+        analysisSkill();
         analysisSkillType();
+        analysisAoeType();
         analysisConsume();
         analysisEffectIdSet();
         analysisAttributeTypes();
     }
 
+    private void analysisAoeType() {
+        if (StringUtil.isNotEmpty(areaTypeParamString)) {
+            areaTypeEnum = AreaTypeEnum.getByName(areaTypeString);
+            areaTypeParam = new HashMap<>();
+            String[] split = areaTypeParamString.split(CsvSymbol.COMMA);
+            for (String temp : split) {
+                String[] strings = temp.split(CsvSymbol.COLON);
+                areaTypeParam.put(strings[0], strings[1]);
+            }
+        }
+
+    }
+
+    private void analysisSkillType() {
+        skillType = SkillTypeEnum.getByName(skillTypeString);
+    }
+
     private void analysisAttributeTypes() {
         attributeTypes = new ArrayList<>();
         if (StringUtil.isNotEmpty(attributeTypeString)) {
-            for (String typeString : attributeTypeString.split(",")) {
+            for (String typeString : attributeTypeString.split(CsvSymbol.COMMA)) {
                 attributeTypes.add(AttributeType.getByName(typeString));
             }
         }
     }
 
-    private void analysisSkillType() {
+    private void analysisSkill() {
         if (StringUtil.isNotEmpty(skillEnumId)) {
             skillEnum = SkillEnum.getById(Integer.parseInt(skillEnumId));
         }
@@ -150,5 +181,17 @@ public class SkillLevelResource {
 
     public long getValue() {
         return value;
+    }
+
+    public SkillTypeEnum getSkillType() {
+        return skillType;
+    }
+
+    public AreaTypeEnum getAreaTypeEnum() {
+        return areaTypeEnum;
+    }
+
+    public Map<String, String> getAreaTypeParam() {
+        return areaTypeParam;
     }
 }

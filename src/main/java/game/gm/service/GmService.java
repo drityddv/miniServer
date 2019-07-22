@@ -46,7 +46,7 @@ public class GmService implements IGmService {
         throws InvocationTargetException, IllegalAccessException {
         GM_Command gmCommand = SpringContext.getGmCommand();
         Class<?>[] parameterTypes = method.getParameterTypes();
-
+        method.setAccessible(true);
         // gm命令都用USession占了一个参数位 目前出去session 最大三个参数
         switch (parameterTypes.length - 1) {
             case 0: {
@@ -66,6 +66,13 @@ public class GmService implements IGmService {
                 method.invoke(gmCommand, player, JodaUtil.convertFromString(parameterTypes[1], params[1]),
                     JodaUtil.convertFromString(parameterTypes[2], params[2]),
                     JodaUtil.convertFromString(parameterTypes[3], params[3]));
+                break;
+            }
+            case 4: {
+                method.invoke(gmCommand, player, JodaUtil.convertFromString(parameterTypes[1], params[1]),
+                    JodaUtil.convertFromString(parameterTypes[2], params[2]),
+                    JodaUtil.convertFromString(parameterTypes[3], params[3]),
+                    JodaUtil.convertFromString(parameterTypes[4], params[4]));
                 break;
             }
             default: {

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.pvpunit.FighterAccount;
+import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.fight.command.LogUnitBattleInfoCommand;
+import game.world.fight.command.UseAoeSkillCommand;
 import game.world.fight.command.UseGroupPointSkillCommand;
 import game.world.fight.command.UseSinglePointSkillCommand;
 
@@ -43,5 +45,10 @@ public class FightService implements IFightService {
     @Override
     public void useGroupPointSkill(Player player, long skillId, List<Long> targetIdList) {
         ExecutorUtils.submit(UseGroupPointSkillCommand.valueOf(player, skillId, targetIdList));
+    }
+
+    @Override
+    public void useAoeSkill(Player player, long skillId, int centerX, int centerY) {
+        ExecutorUtils.submit(UseAoeSkillCommand.valueOf(player, skillId, Grid.valueOf(centerX, centerY)));
     }
 }

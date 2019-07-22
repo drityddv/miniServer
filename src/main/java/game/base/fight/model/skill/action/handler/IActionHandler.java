@@ -4,6 +4,7 @@ import java.util.List;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.skill.model.BaseSkill;
+import game.map.model.Grid;
 
 /**
  * 技能动作处理
@@ -31,4 +32,13 @@ public interface IActionHandler {
      * @param baseSkill
      */
     void action(BaseCreatureUnit caster, List<BaseCreatureUnit> target, BaseSkill baseSkill);
+
+    /**
+     * aoe技能
+     *
+     * @param caster
+     * @param center
+     * @param baseSkill
+     */
+    void action(BaseCreatureUnit caster, Grid center, BaseSkill baseSkill);
 }

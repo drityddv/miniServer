@@ -5,6 +5,7 @@ import java.util.List;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
+import game.map.base.AbstractMovableScene;
 import game.map.handler.AbstractMapHandler;
 
 /**
@@ -15,11 +16,12 @@ import game.map.handler.AbstractMapHandler;
  */
 
 public class BattleParam {
-    AbstractMapHandler mapHandler;
-    BaseActionHandler actionHandler;
-    PlayerUnit caster;
-    BaseCreatureUnit targetUnit;
-    List<BaseCreatureUnit> targetUnits;
+    private AbstractMapHandler mapHandler;
+    private BaseActionHandler actionHandler;
+    private AbstractMovableScene mapScene;
+    private PlayerUnit caster;
+    private BaseCreatureUnit targetUnit;
+    private List<BaseCreatureUnit> targetUnits;
 
     public AbstractMapHandler getMapHandler() {
         return mapHandler;
@@ -59,5 +61,14 @@ public class BattleParam {
 
     public void setTargetUnits(List<BaseCreatureUnit> targetUnits) {
         this.targetUnits = targetUnits;
+    }
+
+    public AbstractMovableScene getMapScene() {
+
+        return mapScene;
+    }
+
+    public void setMapScene(AbstractMovableScene mapScene) {
+        this.mapScene = mapScene;
     }
 }

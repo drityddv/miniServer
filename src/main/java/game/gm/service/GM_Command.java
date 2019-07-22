@@ -1,5 +1,6 @@
 package game.gm.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.executor.util.ExecutorUtils;
 import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.id.AttributeId;
 import game.base.game.attribute.model.PlayerAttributeContainer;
@@ -29,6 +31,7 @@ import game.user.item.resource.ItemResource;
 import game.user.item.service.IItemService;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
+import game.world.base.command.TestMapCommand;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
 import scheduler.constant.JobGroupEnum;
@@ -102,7 +105,8 @@ public class GM_Command {
         PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
     }
 
-    private void logSkills(Player player, StringBuffer sb) {
+    private void logSkills(Player player) {
+        StringBuffer sb = new StringBuffer();
         SkillList skillList = player.getSkillList();
         sb.append(StringUtil.wipePlaceholder("默认技能栏[{}]", skillList.getDefaultSquareIndex()));
         skillList.getSkills().forEach((skillId, skillEntry) -> {
@@ -217,6 +221,15 @@ public class GM_Command {
         quartzService.addJob(jobEntry.getJobDetail(), jobEntry.getTrigger());
         quartzService.removeJob(jobEntry.getJobDetail());
 
+    }
+
+    public void mapTest(Player player, int mapId, int x, int y, int radius) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("x", x);
+        param.put("y", y);
+        param.put("radius", radius);
+        TestMapCommand command = TestMapCommand.valueOf(mapId, param);
+        ExecutorUtils.submit(command);
     }
 
 }

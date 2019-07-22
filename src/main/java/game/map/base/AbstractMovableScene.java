@@ -8,6 +8,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.PlayerVisibleMapObject;
@@ -59,7 +60,7 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
         if (absent == null) {
             playerMap.put(object.getId(), object);
             aoiManager.triggerEnter(object);
-            logger.info("玩家[{}]进入中立场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
+            logger.info("玩家[{}]进入场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
         }
     }
 
@@ -78,11 +79,11 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
         }
         playerMap.remove(playerId);
         aoiManager.triggerLeave(object);
-        logger.info("玩家[{}]离开中立场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
+        logger.info("玩家[{}]离开场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());
     }
 
-    public T getPlayerObject(long playerId) {
-        return playerMap.get(playerId);
+    public List<BaseCreatureUnit> getCreatureUnits(List<Grid> gridList) {
+        return aoiManager.getCreatureUnits(gridList);
     }
 
     @Override

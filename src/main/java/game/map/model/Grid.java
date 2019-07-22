@@ -22,6 +22,10 @@ public class Grid {
         return grid;
     }
 
+    public static Grid valueOf(Grid grid) {
+        return valueOf(grid.x, grid.y);
+    }
+
     public boolean canWalk() {
         return true;
     }
@@ -40,6 +44,22 @@ public class Grid {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void decreaseX() {
+        this.x--;
+    }
+
+    public void plusX() {
+        this.x++;
+    }
+
+    public void plusY() {
+        this.y++;
+    }
+
+    public void decreaseY() {
+        this.y--;
     }
 
     @Override
@@ -64,5 +84,10 @@ public class Grid {
         int result = x;
         result = 31 * result + y;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Grid{" + "x=" + x + ", y=" + y + '}';
     }
 }

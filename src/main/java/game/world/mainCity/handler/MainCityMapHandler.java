@@ -10,7 +10,7 @@ import game.map.handler.IMovableMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.mainCity.model.MainCitySceneScene;
+import game.world.mainCity.model.MainCityMapScene;
 import game.world.mainCity.service.IMainCityService;
 
 /**
@@ -21,7 +21,7 @@ import game.world.mainCity.service.IMainCityService;
  */
 @Component
 public class MainCityMapHandler extends AbstractMapHandler
-    implements IMovableMapHandler, ISceneMapHandler<MainCitySceneScene> {
+    implements IMovableMapHandler, ISceneMapHandler<MainCityMapScene> {
 
     @Autowired
     private IMainCityService mainCityService;
@@ -37,7 +37,7 @@ public class MainCityMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public MainCitySceneScene getCurrentScene(Player player) {
+    public MainCityMapScene getCurrentScene(Player player) {
         return mainCityService.getCurrentScene(player);
     }
 

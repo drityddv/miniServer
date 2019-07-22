@@ -26,8 +26,6 @@ public class MagicSingleAttack extends BaseActionEntry {
 
     @Override
     public void doActive() {
-
         defenders.forEach(creatureUnit -> creatureUnit.defend(this));
-
     }
 }

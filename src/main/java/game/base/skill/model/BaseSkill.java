@@ -2,6 +2,7 @@ package game.base.skill.model;
 
 import java.util.Set;
 
+import game.base.skill.constant.SkillTypeEnum;
 import game.base.skill.resource.SkillLevelResource;
 import game.base.skill.resource.SkillResource;
 import game.role.skill.service.SkillManager;
@@ -78,5 +79,9 @@ public abstract class BaseSkill implements Cloneable {
 
     public void setSkillLevelResource(SkillLevelResource skillLevelResource) {
         this.skillLevelResource = skillLevelResource;
+    }
+
+    public SkillTypeEnum getSkillType() {
+        return this.skillLevelResource.getSkillType();
     }
 }

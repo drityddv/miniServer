@@ -16,6 +16,7 @@ import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
+import game.map.model.Grid;
 import utils.TimeUtil;
 
 /**
@@ -41,6 +42,11 @@ public abstract class BaseActionHandler implements IActionHandler {
         run();
     }
 
+    @Override
+    public void action(BaseCreatureUnit caster, Grid center, BaseSkill baseSkill) {
+        run();
+    }
+
     private void run() {
         if (!actionPre()) {
             return;
@@ -53,8 +59,7 @@ public abstract class BaseActionHandler implements IActionHandler {
     protected boolean canUseSkill(BaseCreatureUnit caster, BaseSkill baseSkill) {
 
         if (baseSkill == null) {
-            logger.warn("玩家[{}] 使用技能失败,玩家未学习该技能[{}]", caster.getFighterAccount().getAccountId(),
-                baseSkill.getSkillId());
+            logger.warn("玩家[{}] 使用技能失败,技能为空", caster.getFighterAccount().getAccountId());
             return false;
         }
 

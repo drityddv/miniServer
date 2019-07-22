@@ -150,4 +150,8 @@ public abstract class AbstractMapHandler implements IMapHandler {
         // du nothing
     }
 
+    @Override
+    public void test(int mapId, Map<String, Object> param) {
+
+    }
 }

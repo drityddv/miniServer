@@ -112,4 +112,12 @@ public interface IMapHandler {
      */
     AbstractMovableScene getMapScene(int mapId);
 
+    /**
+     * 测试用
+     *
+     * @param mapId
+     * @param param
+     */
+    void test(int mapId, Map<String, Object> param);
+
 }

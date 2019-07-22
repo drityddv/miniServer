@@ -5,6 +5,7 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.utils.BattleUtil;
+import game.base.skill.constant.SkillTypeEnum;
 import game.base.skill.model.BaseSkill;
 import game.role.player.model.Player;
 import game.world.fight.model.BattleParam;
@@ -19,13 +20,12 @@ public class UseSinglePointSkillCommand extends AbstractSceneCommand {
     private long skillId;
     private long targetId;
 
-    public UseSinglePointSkillCommand(String accountId, int mapId) {
+    public UseSinglePointSkillCommand(int mapId) {
         super(mapId);
     }
 
     public static UseSinglePointSkillCommand valueOf(Player player, long skillId, long targetId) {
-        UseSinglePointSkillCommand command =
-            new UseSinglePointSkillCommand(player.getAccountId(), player.getCurrentMapId());
+        UseSinglePointSkillCommand command = new UseSinglePointSkillCommand(player.getCurrentMapId());
         command.player = player;
         command.skillId = skillId;
         command.targetId = targetId;
@@ -42,6 +42,10 @@ public class UseSinglePointSkillCommand extends AbstractSceneCommand {
             PlayerUnit caster = battleParam.getCaster();
 
             BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
+
+            if (baseSkill.getSkillType() != SkillTypeEnum.Single_Point) {
+                return;
+            }
 
             BaseCreatureUnit defender = battleParam.getTargetUnit();
             if (defender == null) {

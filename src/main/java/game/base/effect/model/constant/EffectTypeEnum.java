@@ -25,7 +25,7 @@ public enum EffectTypeEnum {
      */
     Poison(2, PoisonBuffEffect.class);
 
-    private static Map<Long, EffectTypeEnum> ID_TO_TYPE = new HashMap<Long, EffectTypeEnum>();
+    private static Map<Long, EffectTypeEnum> ID_TO_TYPE = new HashMap<>();
     private static Map<String, EffectTypeEnum> NAME_TO_TYPE = new HashMap<>();
 
     static {
