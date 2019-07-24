@@ -5,6 +5,10 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import client.MessageEnum;
 import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.message.I18N;
@@ -26,6 +30,8 @@ import game.world.base.service.WorldManager;
  */
 
 public abstract class AbstractMapHandler implements IMapHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(AbstractMapHandler.class);
 
     private static final Map<Integer, AbstractMapHandler> HANDLER_MAP = new HashMap<>();
 
@@ -67,6 +73,10 @@ public abstract class AbstractMapHandler implements IMapHandler {
      */
     public static <T extends AbstractMapHandler> T getAbstractMapHandler(int mapId) {
         MiniMapResource miniMapResource = WorldManager.getInstance().getMapResource(mapId);
+        if (miniMapResource == null) {
+            logger.warn("获取地图处理器失败,[{}]没有对应资源文件", mapId);
+            RequestException.throwException(MessageEnum.RESOURCE_NOT_EXIST);
+        }
         return AbstractMapHandler.getHandler(miniMapResource.getGroupId());
     }
 

@@ -58,13 +58,6 @@ public class QuartzService {
         logger.info("初始化整点任务...");
     }
 
-    public void removeJob(Long jobId) {
-        JobDetail jobDetail = jobDetailMap.get(jobId);
-        removeJob(jobDetail);
-        jobDetailMap.remove(jobId);
-
-    }
-
     public void removeJob(JobDetail jobDetail) {
         try {
             scheduler.deleteJob(jobDetail.getKey());
@@ -82,16 +75,15 @@ public class QuartzService {
         }
     }
 
-    public void addJob(Long jobId, JobEntry entry) {
-        jobDetailMap.put(jobId, entry.getJobDetail());
-        addJob(entry.getJobDetail(), entry.getTrigger());
-    }
-
     public void shutdown() {
         try {
             scheduler.shutdown();
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
+
+    public void scheduleJob(JobEntry jobEntry) {
+        addJob(jobEntry.getJobDetail(), jobEntry.getTrigger());
     }
 }

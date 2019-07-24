@@ -1,10 +1,13 @@
 package game.map.area.impl;
 
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import game.map.area.AreaProcessParam;
 import game.map.area.BaseAreaProcess;
 import game.map.base.AbstractMovableScene;
 import game.map.model.Grid;
+import game.map.visible.AbstractVisibleMapObject;
 import game.world.base.resource.MapBlockResource;
 import game.world.utils.MapUtil;
 
@@ -22,11 +25,11 @@ public class RoundAreaProcess extends BaseAreaProcess {
     protected Grid rightBottom;
 
     @Override
-    public void init(Map<String, Object> param, AbstractMovableScene mapScene) {
+    public void init(AreaProcessParam param, AbstractMovableScene mapScene) {
         this.mapScene = mapScene;
         this.blockData = mapScene.getBaseMapInfo().getBlockResource().getBlockData();
-        this.radius = (int)param.get("radius");
-        this.center = (Grid)param.get("center");
+        this.radius = param.getRadius();
+        this.center = param.getCenter();
         this.leftTop = Grid.valueOf(center.getX(), center.getY());
         this.rightBottom = Grid.valueOf(center.getX(), center.getY());
         calculateCorner(mapScene.getBaseMapInfo().getBlockResource());
@@ -35,7 +38,26 @@ public class RoundAreaProcess extends BaseAreaProcess {
     // FIXME 目前不支持奇形怪状的地图
     @Override
     public void calculate() {
+        calculateByAoi();
+    }
 
+    /**
+     * 通过aoi获取单位
+     */
+    private void calculateByAoi() {
+        List<AbstractVisibleMapObject> areaObjects = mapScene.getAreaObjects(center);
+        areaObjects = areaObjects.stream()
+            .filter(mapObject -> MapUtil.calculateDistance(center, mapObject.getCurrentGrid()) <= radius)
+            .collect(Collectors.toList());
+        areaObjects.forEach(mapObject -> {
+            targetUnits.add(mapObject.getFighterAccount().getCreatureUnit());
+        });
+    }
+
+    /**
+     * 自己计算影响坐标 再给出坐标向aoi获取单位
+     */
+    private void defaultCalculate() {
         int yDistance = rightBottom.getY() - leftTop.getY();
         int yPlus = 0;
         while (yDistance >= 0) {
@@ -48,7 +70,6 @@ public class RoundAreaProcess extends BaseAreaProcess {
             yDistance--;
             yPlus++;
         }
-
     }
 
     // 检验距离 加入结果集
@@ -60,35 +81,30 @@ public class RoundAreaProcess extends BaseAreaProcess {
     }
 
     private void calculateCorner(MapBlockResource blockResource) {
-
         while (center.getX() - leftTop.getX() < radius) {
             if (!blockResource.isGridLegal(leftTop.getX() - 1, leftTop.getY())) {
                 break;
             }
             leftTop.decreaseX();
         }
-
         while (center.getY() - leftTop.getY() < radius) {
             if (!blockResource.isGridLegal(leftTop.getX(), leftTop.getY() - 1)) {
                 break;
             }
             leftTop.decreaseY();
         }
-
         while (rightBottom.getX() - center.getX() < radius) {
             if (!blockResource.isGridLegal(rightBottom.getX() + 1, rightBottom.getY())) {
                 break;
             }
             rightBottom.plusX();
         }
-
         while (rightBottom.getY() - center.getY() < radius) {
             if (!blockResource.isGridLegal(rightBottom.getX(), rightBottom.getY() + 1)) {
                 break;
             }
             rightBottom.plusY();
         }
-
     }
 
 }

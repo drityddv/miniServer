@@ -10,10 +10,11 @@ import game.base.executor.util.ExecutorUtils;
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.fight.command.LogUnitBattleInfoCommand;
-import game.world.fight.command.UseAoeSkillCommand;
-import game.world.fight.command.UseGroupPointSkillCommand;
-import game.world.fight.command.UseSinglePointSkillCommand;
+import game.world.fight.command.log.LogUnitBattleInfoCommand;
+import game.world.fight.command.skill.UseAoeSkillCommand;
+import game.world.fight.command.skill.UseGroupPointSkillCommand;
+import game.world.fight.command.skill.UseSelfSkillCommand;
+import game.world.fight.command.skill.UseSinglePointSkillCommand;
 
 /**
  * 战斗对象的信息处理
@@ -50,5 +51,10 @@ public class FightService implements IFightService {
     @Override
     public void useAoeSkill(Player player, long skillId, int centerX, int centerY) {
         ExecutorUtils.submit(UseAoeSkillCommand.valueOf(player, skillId, Grid.valueOf(centerX, centerY)));
+    }
+
+    @Override
+    public void useSelfSkill(Player player, long skillId) {
+        ExecutorUtils.submit(UseSelfSkillCommand.valueOf(player, skillId));
     }
 }

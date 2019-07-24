@@ -22,7 +22,7 @@ public class MonsterVisibleMapObject extends AbstractVisibleMapObject {
         monster.monsterId = IdUtil.getLongId();
         monster.monsterName = creatureResource.getObjectName();
         monster.init(creatureResource.getBornX(), creatureResource.getBornY());
-        monster.fighterAccount = FighterAccount.valueOfMonster(creatureResource);
+        monster.fighterAccount = FighterAccount.valueOfMonster(creatureResource, monster.monsterId);
         return monster;
     }
 

@@ -2,8 +2,8 @@ package game.map.area;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.base.AbstractMovableScene;
 import game.map.model.Grid;
 
@@ -22,13 +22,14 @@ public abstract class BaseAreaProcess {
     protected AbstractMovableScene mapScene;
     protected int[][] blockData;
     protected List<Grid> targetGrids = new ArrayList<>();
+    protected List<BaseCreatureUnit> targetUnits = new ArrayList<>();
 
-    public List<Grid> getResult() {
+    public List<BaseCreatureUnit> getResult() {
         calculate();
-        return targetGrids;
+        return targetUnits;
     }
 
-    public void init(Map<String, Object> param, AbstractMovableScene mapScene) {
+    public void init(AreaProcessParam processParam, AbstractMovableScene mapScene) {
 
     }
 

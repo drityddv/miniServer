@@ -94,7 +94,4 @@ public class SimpleUtil {
         return list;
     }
 
-    public static void main(String[] args) {
-        System.out.println("ITEM:7:1,ITEM:7:1".replaceAll(" ", ""));
-    }
 }

@@ -1,14 +1,16 @@
-package game.world.fight.command;
+package game.world.fight.command.skill;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.utils.BattleUtil;
+import game.base.message.exception.RequestException;
 import game.base.skill.constant.SkillTypeEnum;
 import game.base.skill.model.BaseSkill;
 import game.role.player.model.Player;
 import game.world.fight.model.BattleParam;
+import net.utils.PacketUtil;
 
 /**
  * @author : ddv
@@ -54,6 +56,8 @@ public class UseSinglePointSkillCommand extends AbstractSceneCommand {
             actionHandler.init(caster, null, defender, BattleUtil.getUnitSkill(caster, skillId));
             actionHandler.action(caster, defender, baseSkill);
 
+        } catch (RequestException e) {
+            PacketUtil.send(player, e.getErrorCode());
         } catch (Exception e) {
             e.printStackTrace();
         }

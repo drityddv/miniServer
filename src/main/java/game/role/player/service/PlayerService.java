@@ -51,7 +51,7 @@ public class PlayerService implements IPlayerService {
 
     @Override
     public void addException(Player player, long exception) {
-        System.out.println(1);
+
     }
 
     @Override

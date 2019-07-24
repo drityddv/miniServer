@@ -1,6 +1,8 @@
 package utils;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * 集合工具类
@@ -19,5 +21,9 @@ public class CollectionUtil {
      */
     public static boolean isNotBlank(Collection collection) {
         return collection != null && collection.size() > 0;
+    }
+
+    public static <T> List<T> emptyArrayList() {
+        return new ArrayList<>();
     }
 }

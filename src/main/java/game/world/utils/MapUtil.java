@@ -4,13 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import game.base.effect.model.BaseBuffEffect;
-import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
+import game.base.effect.model.buff.BaseCreatureBuff;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.FighterAccount;
-import game.base.game.attribute.util.AttributeUtils;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
 import game.gm.packet.SM_LogMessage;
@@ -35,7 +33,7 @@ public class MapUtil {
 
     public static void log(Player player, AbstractScene scene, List<PlayerVisibleMapObject> visibleObjects,
         Collection<NpcVisibleObject> npcList, Collection<MonsterVisibleMapObject> monsters,
-        Collection<BaseBuffEffect> buffs) {
+        Collection<BaseCreatureBuff> buffs) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(StringUtil.wipePlaceholder("当前地图所处线程[{}]", Thread.currentThread().getName()));
@@ -52,10 +50,10 @@ public class MapUtil {
                 fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
             component.forEach((type, iUnitComponent) -> {
                 sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
-                if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
-                    PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
-                    AttributeUtils.logAttrs(attributeComponent, sb);
-                }
+                // if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
+                // PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
+                // AttributeUtils.logAttrs(attributeComponent, sb);
+                // }
 
                 // if (iUnitComponent instanceof PVPSkillComponent) {
                 // PVPSkillComponent skillComponent = (PVPSkillComponent)iUnitComponent;
@@ -80,17 +78,18 @@ public class MapUtil {
             sb.append(StringUtil.wipePlaceholder("地图内怪物数量[{}]", monsters.size()));
             for (MonsterVisibleMapObject monster : monsters) {
                 BaseCreatureUnit monsterUnit = monster.getFighterAccount().getCreatureUnit();
-                sb.append(StringUtil.wipePlaceholder("怪物id[{}] 名称[{}] 生命值[{}] 法力值[{}] 坐标[{},{}]", monster.getId(),
-                    monster.getMonsterName(), monsterUnit.getCurrentHp(), monsterUnit.getCurrentMp(),
-                    monster.getCurrentGrid().getX(), monster.getCurrentGrid().getY()));
+                sb.append(StringUtil.wipePlaceholder("怪物id[{}]  名称[{}] 生命值[{}] 法力值[{}] 坐标[{},{}]",
+                    monster.getFighterAccount().getCreatureUnit().getId(), monster.getMonsterName(),
+                    monsterUnit.getCurrentHp(), monsterUnit.getCurrentMp(), monster.getCurrentGrid().getX(),
+                    monster.getCurrentGrid().getY()));
             }
         }
 
         if (buffs != null) {
             sb.append(StringUtil.wipePlaceholder("地图内周期性buff注册数量 [{}]", buffs.size()));
-            for (BaseBuffEffect buff : buffs) {
-                sb.append(StringUtil.wipePlaceholder("jobId[{}] 释放者[{}] ", buff.getJobId(), buff.getCaster().getId()));
-            }
+//            for (BaseCreatureBuff buff : buffs) {
+//                sb.append(StringUtil.wipePlaceholder("jobId[{}] 释放者[{}] ", buff.getJobId(), buff.getCaster().getId()));
+//            }
         }
 
         String logFile = sb.toString();

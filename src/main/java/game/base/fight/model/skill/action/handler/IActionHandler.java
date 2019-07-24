@@ -41,4 +41,12 @@ public interface IActionHandler {
      * @param baseSkill
      */
     void action(BaseCreatureUnit caster, Grid center, BaseSkill baseSkill);
+
+    /**
+     * 自身释放技能
+     *
+     * @param caster
+     * @param baseSkill
+     */
+    void action(BaseCreatureUnit caster, BaseSkill baseSkill);
 }

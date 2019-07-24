@@ -1,6 +1,7 @@
 package game.map.base;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,6 +13,7 @@ import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.PlayerVisibleMapObject;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
+import utils.CollectionUtil;
 
 /**
  * 广播中心
@@ -24,10 +26,8 @@ public class BroadcastCenter {
     // 广播中心坐标
     private int pointX;
     private int pointY;
-    // 广播坐标集合
-    private List<Grid> scopeGrid = new ArrayList<>();
     // 广播范围内的单位
-    private Map<Grid, Map<Long, AbstractVisibleMapObject>> unitMap = new ConcurrentHashMap<>();
+    private Map<Grid, Map<Long, AbstractVisibleMapObject>> unitMap = new HashMap<>();
 
     public BroadcastCenter(int pointX, int pointY) {
         this.pointX = pointX;
@@ -36,10 +36,8 @@ public class BroadcastCenter {
 
     public static BroadcastCenter valueOf(BroadcastCenter broadcastCenter) {
         BroadcastCenter copy = new BroadcastCenter(broadcastCenter.pointX, broadcastCenter.pointY);
-        broadcastCenter.scopeGrid.forEach(grid -> {
-            Grid copyGrid = Grid.valueOf(grid);
-            copy.scopeGrid.add(copyGrid);
-            copy.unitMap.put(copyGrid, new ConcurrentHashMap<>());
+        broadcastCenter.unitMap.forEach((grid, longAbstractVisibleMapObjectMap) -> {
+            copy.unitMap.put(Grid.valueOf(grid), new HashMap<>());
         });
         return copy;
     }
@@ -104,7 +102,6 @@ public class BroadcastCenter {
 
     // 注册单位并且广播
     public void registerUnit(AbstractVisibleMapObject object) {
-        System.out.println(unitMap.hashCode());
         Map<Long, AbstractVisibleMapObject> lastGrid = unitMap.get(object.getLastGrid());
 
         if (lastGrid != null && lastGrid.containsKey(object.getId())) {
@@ -137,6 +134,19 @@ public class BroadcastCenter {
             return false;
         }
         return pointY == that.pointY;
+    }
+
+    public List<AbstractVisibleMapObject> getAreaObjects() {
+        List<AbstractVisibleMapObject> objects = CollectionUtil.emptyArrayList();
+        unitMap.values().forEach(objectMap -> {
+            objects.addAll(objectMap.values());
+        });
+
+        return objects;
+    }
+
+    public Map<Grid, Map<Long, AbstractVisibleMapObject>> getUnitMap() {
+        return unitMap;
     }
 
     @Override

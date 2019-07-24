@@ -92,8 +92,8 @@ public class EffectResource {
         return effectType;
     }
 
-    public double getFrequencyTime() {
-        return frequencyTime;
+    public long getFrequencyTime() {
+        return (long) frequencyTime;
     }
 
     public int getLevel() {

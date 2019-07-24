@@ -13,7 +13,6 @@ import game.base.fight.model.componet.UnitComponentType;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.id.AttributeIdEnum;
 import game.world.base.resource.CreatureResource;
-import utils.snow.IdUtil;
 
 /**
  * 怪物单元
@@ -33,12 +32,12 @@ public class MonsterUnit extends BaseCreatureUnit {
     // 怪物配置表
     private CreatureResource creatureResource;
 
-    public MonsterUnit(CreatureResource creatureResource, FighterAccount fighterAccount) {
-        super(IdUtil.getLongId(), fighterAccount, creatureResource.getObjectName());
+    public MonsterUnit(CreatureResource creatureResource, FighterAccount fighterAccount, long id) {
+        super(id, fighterAccount, creatureResource.getObjectName());
     }
 
-    public static MonsterUnit valueOf(CreatureResource creatureResource, FighterAccount fighterAccount) {
-        MonsterUnit monsterUnit = new MonsterUnit(creatureResource, fighterAccount);
+    public static MonsterUnit valueOf(CreatureResource creatureResource, FighterAccount fighterAccount, long id) {
+        MonsterUnit monsterUnit = new MonsterUnit(creatureResource, fighterAccount, id);
         monsterUnit.creatureResource = creatureResource;
         monsterUnit.fighterAccount = fighterAccount;
         monsterUnit.level = creatureResource.getLevel();

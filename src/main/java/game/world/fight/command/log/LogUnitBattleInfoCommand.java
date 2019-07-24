@@ -1,4 +1,4 @@
-package game.world.fight.command;
+package game.world.fight.command.log;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.fight.utils.BattleUtil;

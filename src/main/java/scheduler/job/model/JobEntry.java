@@ -4,6 +4,8 @@ import static org.quartz.DateBuilder.futureDate;
 
 import org.quartz.*;
 
+import spring.SpringContext;
+
 /**
  *
  * @author : ddv
@@ -13,6 +15,8 @@ import org.quartz.*;
 public class JobEntry {
 
     private JobDetail jobDetail;
+    // 是否已经取消
+    private volatile boolean isCanceled = false;
     private Trigger trigger;
 
     // FIXME 这里int溢出会有问题
@@ -50,20 +54,16 @@ public class JobEntry {
         return entry;
     }
 
-    // 申请触发器
-    public static Trigger newRateTrigger(JobDetail jobDetail, long delay, long period) {
-        return TriggerBuilder.newTrigger().withIdentity(jobDetail.getKey().getName(), jobDetail.getKey().getGroup())
-            .withSchedule(SimpleScheduleBuilder.simpleSchedule().withRepeatCount((int)(period - 1))
-                .withIntervalInMilliseconds(delay))
-            .forJob(jobDetail).build();
-
-    }
-
     public JobDetail getJobDetail() {
         return jobDetail;
     }
 
     public Trigger getTrigger() {
         return trigger;
+    }
+
+    public void cancel() {
+        SpringContext.getQuartzService().removeJob(jobDetail);
+        isCanceled = true;
     }
 }

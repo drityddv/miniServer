@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import client.MessageEnum;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.buff.PVPBuffEffectComponent;
 import game.base.fight.model.componet.UnitComponentType;
@@ -15,6 +16,7 @@ import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.model.skill.model.PVPSkillComponent;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
+import game.base.message.exception.RequestException;
 import game.base.skill.model.BaseSkill;
 import game.gm.packet.SM_LogMessage;
 import game.map.handler.AbstractMapHandler;
@@ -73,7 +75,7 @@ public class BattleUtil {
             mapObject = mapHandler.getMonsterObjects(mapId).get(targetId);
         }
         if (mapObject == null) {
-            return unit;
+            return null;
         }
         unit = mapObject.getFighterAccount().getCreatureUnit();
         return unit;
@@ -106,7 +108,12 @@ public class BattleUtil {
         BaseActionHandler actionHandler;
 
         Map<Long, PlayerVisibleMapObject> playerObjects = mapHandler.getPlayerObjects(mapId);
-        PlayerUnit caster = (PlayerUnit)playerObjects.get(playerId).getFighterAccount().getCreatureUnit();
+        PlayerVisibleMapObject playerVisibleMapObject = playerObjects.get(playerId);
+        if (playerVisibleMapObject == null) {
+            RequestException.throwException(MessageEnum.PLAYER_UNIT_NOT_EXIST);
+        }
+
+        PlayerUnit caster = (PlayerUnit)playerVisibleMapObject.getFighterAccount().getCreatureUnit();
 
         BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
         actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
@@ -116,6 +123,35 @@ public class BattleUtil {
             battleParam.setTargetUnit(targetUnit);
 
         }
+        if (targetIds != null) {
+            List<BaseCreatureUnit> targetUnits = BattleUtil.findTargetUnits(mapHandler, targetIds, mapId);
+            battleParam.setTargetUnits(targetUnits);
+        }
+
+        battleParam.setMapHandler(mapHandler);
+        battleParam.setActionHandler(actionHandler);
+        battleParam.setCaster(caster);
+        battleParam.setMapScene(mapHandler.getMapScene(mapId));
+        return battleParam;
+    }
+
+    public static BattleParam initParam(int mapId, long skillId, long playerId, List<Long> targetIds) {
+        BattleParam battleParam = new BattleParam();
+
+        AbstractMapHandler mapHandler = AbstractMapHandler.getAbstractMapHandler(mapId);
+        BaseActionHandler actionHandler;
+
+        Map<Long, PlayerVisibleMapObject> playerObjects = mapHandler.getPlayerObjects(mapId);
+        PlayerVisibleMapObject playerVisibleMapObject = playerObjects.get(playerId);
+        if (playerVisibleMapObject == null) {
+            RequestException.throwException(MessageEnum.PLAYER_UNIT_NOT_EXIST);
+        }
+
+        PlayerUnit caster = (PlayerUnit)playerVisibleMapObject.getFighterAccount().getCreatureUnit();
+
+        BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
+        actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
+
         if (targetIds != null) {
             List<BaseCreatureUnit> targetUnits = BattleUtil.findTargetUnits(mapHandler, targetIds, mapId);
             battleParam.setTargetUnits(targetUnits);
@@ -152,9 +188,6 @@ public class BattleUtil {
         // AttributeUtils.logAttrs(component,sb);
         PVPBuffEffectComponent buffComponent = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
 
-        buffComponent.getBuffMap().forEach((jobId, buff) -> {
-            sb.append(StringUtil.wipePlaceholder("jobId[{}] 释放者[{}] ", buff.getJobId(), buff.getCaster().getId()));
-        });
 
         PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
     }

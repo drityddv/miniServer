@@ -18,16 +18,7 @@ public class SceneExecutorService implements ISceneExecutorService {
 
     @Override
     public void submit(ICommand command) {
-        // if (command instanceof AbstractSceneRateCommand) {
-        // AbstractSceneRateCommand sceneRateCommand = (AbstractSceneRateCommand)command;
-        // sceneExecutor.schedule(sceneRateCommand, sceneRateCommand.getDelay(), sceneRateCommand.getPeriod());
-        // } else if (command instanceof AbstractSceneDelayCommand) {
-        // AbstractSceneDelayCommand sceneDelayCommand = (AbstractSceneDelayCommand)command;
-        // sceneExecutor.schedule(sceneDelayCommand, sceneDelayCommand.getDelay());
-        // } else {
         sceneExecutor.addTask(command);
-        // }
-
     }
 
     @Override

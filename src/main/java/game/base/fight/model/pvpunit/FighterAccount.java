@@ -31,12 +31,12 @@ public class FighterAccount {
         return fighterAccount;
     }
 
-    public static FighterAccount valueOfMonster(CreatureResource creatureResource) {
+    public static FighterAccount valueOfMonster(CreatureResource creatureResource, long id) {
         FighterAccount fighterAccount = new FighterAccount();
         fighterAccount.setAccountId(creatureResource.getObjectName());
         fighterAccount.setAttack(false);
         fighterAccount.setTargetAccount(null);
-        fighterAccount.setCreatureUnit(MonsterUnit.valueOf(creatureResource, fighterAccount));
+        fighterAccount.setCreatureUnit(MonsterUnit.valueOf(creatureResource, fighterAccount, id));
         return fighterAccount;
     }
 

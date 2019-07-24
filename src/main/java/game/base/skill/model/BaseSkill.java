@@ -1,7 +1,9 @@
 package game.base.skill.model;
 
-import java.util.Set;
+import java.util.List;
+import java.util.Map;
 
+import game.base.effect.model.buff.BuffTypeEnum;
 import game.base.skill.constant.SkillTypeEnum;
 import game.base.skill.resource.SkillLevelResource;
 import game.base.skill.resource.SkillResource;
@@ -36,9 +38,8 @@ public abstract class BaseSkill implements Cloneable {
         return skillLevelResource.getCd();
     }
 
-    // 技能buff效果id集合
-    public Set<Long> getSkillBuffSet() {
-        return skillLevelResource.getEffectIds();
+    public Map<BuffTypeEnum, List<Long>> getBuffEffectMap() {
+        return skillLevelResource.getBuffEffectMap();
     }
 
     public long getSkillId() {

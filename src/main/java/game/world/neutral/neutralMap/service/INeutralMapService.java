@@ -2,7 +2,7 @@ package game.world.neutral.neutralMap.service;
 
 import java.util.Map;
 
-import game.base.effect.model.BaseBuffEffect;
+import game.base.effect.model.buff.BaseCreatureBuff;
 import game.map.model.Grid;
 import game.map.visible.PlayerVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;
@@ -100,7 +100,7 @@ public interface INeutralMapService {
      * @param mapId
      * @return
      */
-    Map<Long, BaseBuffEffect> getBuffEffects(int mapId);
+    Map<Long, BaseCreatureBuff> getBuffEffects(int mapId);
 
     /**
      * 获得场景

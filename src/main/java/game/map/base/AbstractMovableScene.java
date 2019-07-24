@@ -96,6 +96,10 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
         return monsterMap;
     }
 
+    public List<AbstractVisibleMapObject> getAreaObjects(Grid grid) {
+        return aoiManager.getAreaObjects(grid);
+    }
+
     public List<T> getVisibleObjects() {
         return new ArrayList<>(playerMap.values());
     }

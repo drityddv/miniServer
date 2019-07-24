@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.base.effect.model.BaseBuffEffect;
+import game.base.effect.model.buff.BaseCreatureBuff;
 import game.map.base.AbstractMovableScene;
 import game.map.constant.MapGroupType;
 import game.map.handler.AbstractMapHandler;
@@ -80,7 +80,7 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public Map<Long, BaseBuffEffect> getBuffEffects(int mapId) {
+    public Map<Long, BaseCreatureBuff> getBuffEffects(int mapId) {
         return neutralMapService.getMapScene(mapId).getBuffEffectMap();
     }
 

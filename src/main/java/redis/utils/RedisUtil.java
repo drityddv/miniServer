@@ -1,8 +1,8 @@
 package redis.utils;
 
-import redis.clients.jedis.Jedis;
-
 import java.util.Set;
+
+import redis.clients.jedis.Jedis;
 
 /**
  * @author : ddv

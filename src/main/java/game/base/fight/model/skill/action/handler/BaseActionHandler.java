@@ -2,21 +2,23 @@ package game.base.fight.model.skill.action.handler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.base.effect.model.BaseBuffEffect;
+import game.base.effect.model.buff.BaseCreatureBuff;
+import game.base.effect.model.buff.BuffTypeEnum;
 import game.base.effect.model.constant.EffectTypeEnum;
+import game.base.effect.model.effect.BaseEffect;
 import game.base.effect.resource.EffectResource;
 import game.base.effect.service.EffectManager;
-import game.base.fight.model.buff.PVPBuffEffectComponent;
-import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
 import game.map.model.Grid;
+import scheduler.job.model.BuffJob;
+import utils.CollectionUtil;
 import utils.TimeUtil;
 
 /**
@@ -44,6 +46,11 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     @Override
     public void action(BaseCreatureUnit caster, Grid center, BaseSkill baseSkill) {
+        run();
+    }
+
+    @Override
+    public void action(BaseCreatureUnit caster, BaseSkill baseSkill) {
         run();
     }
 
@@ -88,7 +95,7 @@ public abstract class BaseActionHandler implements IActionHandler {
     }
 
     protected void doAction() {
-        triggerBuff();
+        triggerBuffs();
     }
 
     // 使用前
@@ -106,16 +113,35 @@ public abstract class BaseActionHandler implements IActionHandler {
         return baseSkill.getSkillLevelResource().getValue();
     }
 
-    private void triggerBuff() {
-        Set<Long> effectIds = baseSkill.getSkillLevelResource().getEffectIds();
-        effectIds.forEach(effectId -> {
-            BaseBuffEffect buffEffect = EffectTypeEnum.getById(effectId).create();
-            EffectResource effectResource = EffectManager.getInstance().getEffectResourceByEffectId(effectId);
-            buffEffect.init(caster, defenders, effectResource);
-            defenders.forEach(unit -> {
-                PVPBuffEffectComponent component = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
-                component.addBuff(buffEffect);
+    private void triggerBuffs() {
+        List<BuffTypeEnum> buffTypeEnums = baseSkill.getSkillLevelResource().getBuffTypeEnumList();
+        Map<BuffTypeEnum, List<Long>> buffEffectMap = baseSkill.getBuffEffectMap();
+
+        buffTypeEnums.forEach(buffTypeEnum -> {
+            BaseCreatureBuff creatureBuff = buffTypeEnum.create();
+            List<Long> effectIdList = buffEffectMap.get(buffTypeEnum);
+            List<BaseEffect> effectList = CollectionUtil.emptyArrayList();
+
+            effectIdList.forEach(effectId -> {
+                BaseEffect baseEffect = EffectTypeEnum.getById(effectId).create();
+                EffectResource effectResource = EffectManager.getInstance().getEffectResourceByEffectId(effectId);
+                baseEffect.init(creatureBuff, defenders, effectResource);
+                effectList.add(baseEffect);
             });
+
+            BuffJob buffJob = BuffJob.valueOf(creatureBuff, null);
+            creatureBuff.init( effectList, caster, defenders);
+			creatureBuff.active();
         });
+        // effectIds.forEach(effectId -> {
+        // BaseCreatureBuff buffEffect = EffectTypeEnum.getById(effectId).create();
+        // EffectResource effectResource = EffectManager.getInstance().getEffectResourceByEffectId(effectId);
+        // buffEffect.init(caster, defenders, effectResource);
+        // defenders.forEach(unit -> {
+        // PVPBuffEffectComponent component = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
+        // component.justAddBuff(buffEffect);
+        // });
+        // buffEffect.active();
+        // });
     }
 }

@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import game.base.effect.model.BaseBuffEffect;
-import game.base.effect.model.impl.DizzyBuffEffect;
-import game.base.effect.model.impl.PoisonBuffEffect;
+import game.base.effect.model.effect.BaseEffect;
+import game.base.effect.model.effect.DizzyEffect;
+import game.base.effect.model.effect.PoisonEffect;
 
 /**
  * 效果枚举
@@ -19,11 +19,11 @@ public enum EffectTypeEnum {
     /**
      * 眩晕
      */
-    Dizzy(1, DizzyBuffEffect.class),
+    Dizzy(1, DizzyEffect.class),
     /**
      * 毒素
      */
-    Poison(2, PoisonBuffEffect.class);
+    Poison(2, PoisonEffect.class);
 
     private static Map<Long, EffectTypeEnum> ID_TO_TYPE = new HashMap<>();
     private static Map<String, EffectTypeEnum> NAME_TO_TYPE = new HashMap<>();
@@ -36,29 +36,29 @@ public enum EffectTypeEnum {
     }
 
     private long typeId;
-    private Class<? extends BaseBuffEffect> buffClazz;
+    private Class<? extends BaseEffect> effectClazz;
     private Set<RestrictStatusEnum> restrictStatus;
 
-    EffectTypeEnum(int typeId, Class<? extends BaseBuffEffect> buffEffectClass) {
+    EffectTypeEnum(int typeId, Class<? extends BaseEffect> effectClazz) {
         this.typeId = typeId;
-        this.buffClazz = buffEffectClass;
+        this.effectClazz = effectClazz;
     }
 
     public static EffectTypeEnum getById(long typeId) {
-        return ID_TO_TYPE.get(typeId);
-    }
+		return ID_TO_TYPE.get(typeId);
+	}
 
-    public BaseBuffEffect create() {
+    public BaseEffect create() {
         try {
-            return buffClazz.newInstance();
+            return effectClazz.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public Class<? extends BaseBuffEffect> getBuffClazz() {
-        return buffClazz;
+    public Class<? extends BaseEffect> getEffectClazz() {
+        return effectClazz;
     }
 
     public Set<RestrictStatusEnum> getRestrictStatus() {

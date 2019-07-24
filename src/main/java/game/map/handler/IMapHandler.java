@@ -3,7 +3,7 @@ package game.map.handler;
 import java.util.Collections;
 import java.util.Map;
 
-import game.base.effect.model.BaseBuffEffect;
+import game.base.effect.model.buff.BaseCreatureBuff;
 import game.map.base.AbstractMovableScene;
 import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
@@ -100,7 +100,7 @@ public interface IMapHandler {
      * @param mapId
      * @return
      */
-    default Map<Long, BaseBuffEffect> getBuffEffects(int mapId) {
+    default Map<Long, BaseCreatureBuff> getBuffEffects(int mapId) {
         return Collections.emptyMap();
     }
 

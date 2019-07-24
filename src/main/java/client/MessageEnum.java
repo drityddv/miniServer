@@ -42,7 +42,11 @@ public enum MessageEnum {
 
     MAP_ENTER_CONDITION_NOT_SATISFY(20, "进图要求不合格!"),
 
-    SKILL_POINT_NOT_ENOUGH(21, "技能点不足!"),;
+    SKILL_POINT_NOT_ENOUGH(21, "技能点不足!"),
+
+    PLAYER_UNIT_NOT_EXIST(22, "地图无战斗角色!"),
+
+    SKILL_TYPE_ERROR(23, "技能种类发包错误!"),;
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 

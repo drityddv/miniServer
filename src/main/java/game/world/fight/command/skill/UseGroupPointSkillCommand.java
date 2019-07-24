@@ -1,57 +1,50 @@
-package game.world.fight.command;
+package game.world.fight.command.skill;
 
 import java.util.List;
 
-import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
-import game.base.fight.utils.BattleUtil;
+import game.base.message.exception.RequestException;
 import game.base.skill.constant.SkillTypeEnum;
-import game.base.skill.model.BaseSkill;
 import game.role.player.model.Player;
-import game.world.fight.model.BattleParam;
+import net.utils.PacketUtil;
 
 /**
  * @author : ddv
  * @since : 2019/7/16 12:30 PM
  */
 
-public class UseGroupPointSkillCommand extends AbstractSceneCommand {
-    private Player player;
-    private long skillId;
-    private List<Long> targetIds;
+public class UseGroupPointSkillCommand extends AbstractSkillCommand {
 
-    public UseGroupPointSkillCommand(int mapId) {
-        super(mapId);
+    public UseGroupPointSkillCommand(int mapId, Player player, long skillId, List<Long> targetIds) {
+        super(mapId, player, skillId, targetIds);
     }
 
     public static UseGroupPointSkillCommand valueOf(Player player, long skillId, List<Long> targetIds) {
-        UseGroupPointSkillCommand command = new UseGroupPointSkillCommand(player.getCurrentMapId());
-        command.player = player;
-        command.skillId = skillId;
-        command.targetIds = targetIds;
+        UseGroupPointSkillCommand command =
+            new UseGroupPointSkillCommand(player.getCurrentMapId(), player, skillId, targetIds);
         return command;
     }
 
     @Override
     public void action() {
         try {
-            BattleParam battleParam = BattleUtil.initBattleParam(mapId, skillId, player.getPlayerId(), 0, targetIds);
             BaseActionHandler actionHandler = battleParam.getActionHandler();
-
             PlayerUnit caster = battleParam.getCaster();
-            BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
             List<BaseCreatureUnit> targetUnits = battleParam.getTargetUnits();
-
-            if (baseSkill.getSkillType() != SkillTypeEnum.Group_Point) {
-                return;
-            }
             actionHandler.init(caster, targetUnits, null, baseSkill);
             actionHandler.action(caster, targetUnits, baseSkill);
             battleParam.getMapHandler().doLogMap(player, mapId);
+        } catch (RequestException e) {
+            PacketUtil.send(player, e.getErrorCode());
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected boolean isSkillLegality() {
+        return baseSkill.getSkillType() == SkillTypeEnum.Group_Point;
     }
 }

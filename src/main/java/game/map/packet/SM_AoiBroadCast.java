@@ -34,6 +34,7 @@ public class SM_AoiBroadCast {
             logger.info("灯塔[{} {}] 单位[{}] [{}] HP[{}] MP[{}] 坐标[{} {}]", vo.getBroadCast().getX(),
                 vo.getBroadCast().getY(), vo.getUnitName(), vo.getId(), vo.getHp(), vo.getMp(), vo.getX(), vo.getY());
         }
+        System.out.println();
     }
 
 }

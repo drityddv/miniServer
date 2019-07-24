@@ -1,9 +1,13 @@
 package game.base.skill.resource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import game.base.consume.AssetsConsume;
 import game.base.consume.IConsume;
+import game.base.effect.model.buff.BuffTypeEnum;
 import game.base.game.attribute.AttributeType;
 import game.base.skill.constant.SkillEnum;
 import game.base.skill.constant.SkillTypeEnum;
@@ -11,6 +15,7 @@ import game.map.area.AreaTypeEnum;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 import resource.constant.CsvSymbol;
+import utils.CollectionUtil;
 import utils.StringUtil;
 
 /**
@@ -43,9 +48,9 @@ public class SkillLevelResource {
     private List<IConsume> consumes;
     private String consumeString;
     /**
-     * 效果id
+     * buff对应的效果id
      */
-    private Set<Long> effectIds;
+    private Map<BuffTypeEnum, List<Long>> BuffEffectMap;
     private String effectIdString;
 
     // 技能类型
@@ -66,6 +71,9 @@ public class SkillLevelResource {
     private SkillEnum skillEnum;
     private String skillEnumId;
 
+    private List<BuffTypeEnum> buffTypeEnumList;
+    private String buffTypeString;
+
     /**
      * 计算技能伤害时关联的属性
      */
@@ -77,10 +85,21 @@ public class SkillLevelResource {
         analysisCd();
         analysisSkill();
         analysisSkillType();
+        analysisBuffType();
         analysisAoeType();
         analysisConsume();
         analysisEffectIdSet();
         analysisAttributeTypes();
+    }
+
+    private void analysisBuffType() {
+        buffTypeEnumList = new ArrayList<>();
+        if (StringUtil.isNotEmpty(buffTypeString)) {
+            String[] split = buffTypeString.split(CsvSymbol.COMMA);
+            for (String typeName : split) {
+                buffTypeEnumList.add(BuffTypeEnum.getByName(typeName));
+            }
+        }
     }
 
     private void analysisAoeType() {
@@ -121,11 +140,17 @@ public class SkillLevelResource {
 
     // 解析技能效果
     private void analysisEffectIdSet() {
-        effectIds = new HashSet<>();
+        BuffEffectMap = new HashMap<>();
         if (StringUtil.isNotEmpty(effectIdString)) {
-            String[] split = effectIdString.split(",");
+            String[] split = effectIdString.split(CsvSymbol.COMMA);
             for (String value : split) {
-                effectIds.add(Long.parseLong(value));
+                String[] idParam = value.split(CsvSymbol.COLON);
+                List<Long> effectIds = CollectionUtil.emptyArrayList();
+                BuffTypeEnum buffTypeEnum = BuffTypeEnum.getById(Integer.parseInt(idParam[0]));
+                for (int i = 1; i < idParam.length; i++) {
+                    effectIds.add(Long.parseLong(idParam[i]));
+                }
+                BuffEffectMap.put(buffTypeEnum, effectIds);
             }
         }
     }
@@ -163,10 +188,6 @@ public class SkillLevelResource {
         return consumes;
     }
 
-    public Set<Long> getEffectIds() {
-        return effectIds;
-    }
-
     public long getCd() {
         return cd;
     }
@@ -193,5 +214,13 @@ public class SkillLevelResource {
 
     public Map<String, String> getAreaTypeParam() {
         return areaTypeParam;
+    }
+
+    public Map<BuffTypeEnum, List<Long>> getBuffEffectMap() {
+        return BuffEffectMap;
+    }
+
+    public List<BuffTypeEnum> getBuffTypeEnumList() {
+        return buffTypeEnumList;
     }
 }
