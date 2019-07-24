@@ -1,9 +1,8 @@
 package game.base.effect.model.constant;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import game.base.buff.model.BuffTriggerPoint;
 import game.base.effect.model.effect.BaseEffect;
 import game.base.effect.model.effect.DizzyEffect;
 import game.base.effect.model.effect.PoisonEffect;
@@ -23,21 +22,28 @@ public enum EffectTypeEnum {
     /**
      * 毒素
      */
-    Poison(2, PoisonEffect.class);
+    Poison(2, PoisonEffect.class) {
+        @Override
+        public Set<BuffTriggerPoint> getTriggerPointSet() {
+            return new HashSet<>(Arrays.asList(BuffTriggerPoint.Schedule_Active));
+        }
+    };
 
     private static Map<Long, EffectTypeEnum> ID_TO_TYPE = new HashMap<>();
     private static Map<String, EffectTypeEnum> NAME_TO_TYPE = new HashMap<>();
+    private static Map<Class<? extends BaseEffect>, EffectTypeEnum> ClASS_TO_TYPE = new HashMap<>();
 
     static {
         for (EffectTypeEnum type : EffectTypeEnum.values()) {
             ID_TO_TYPE.put(type.typeId, type);
             NAME_TO_TYPE.put(type.name(), type);
+            ClASS_TO_TYPE.put(type.effectClazz, type);
         }
     }
 
     private long typeId;
     private Class<? extends BaseEffect> effectClazz;
-    private Set<RestrictStatusEnum> restrictStatus;
+    private Set<BuffTriggerPoint> triggerPointSet = new HashSet<>();
 
     EffectTypeEnum(int typeId, Class<? extends BaseEffect> effectClazz) {
         this.typeId = typeId;
@@ -45,8 +51,12 @@ public enum EffectTypeEnum {
     }
 
     public static EffectTypeEnum getById(long typeId) {
-		return ID_TO_TYPE.get(typeId);
-	}
+        return ID_TO_TYPE.get(typeId);
+    }
+
+    public static EffectTypeEnum getByClazz(Class<? extends BaseEffect> typeClazz) {
+        return ClASS_TO_TYPE.get(typeClazz);
+    }
 
     public BaseEffect create() {
         try {
@@ -61,7 +71,7 @@ public enum EffectTypeEnum {
         return effectClazz;
     }
 
-    public Set<RestrictStatusEnum> getRestrictStatus() {
-        return restrictStatus;
+    public Set<BuffTriggerPoint> getTriggerPointSet() {
+        return new HashSet<>();
     }
 }

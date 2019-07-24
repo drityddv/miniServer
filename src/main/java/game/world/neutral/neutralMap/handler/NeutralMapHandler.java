@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.base.effect.model.buff.BaseCreatureBuff;
+import game.base.buff.model.BaseCreatureBuff;
 import game.map.base.AbstractMovableScene;
 import game.map.constant.MapGroupType;
 import game.map.handler.AbstractMapHandler;

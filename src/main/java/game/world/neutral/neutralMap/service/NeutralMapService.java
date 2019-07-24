@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.base.effect.model.buff.BaseCreatureBuff;
+import game.base.buff.model.BaseCreatureBuff;
 import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.area.AreaProcessParam;

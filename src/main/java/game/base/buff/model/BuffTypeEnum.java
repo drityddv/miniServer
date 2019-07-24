@@ -1,9 +1,9 @@
-package game.base.effect.model.buff;
+package game.base.buff.model;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import game.base.effect.model.buff.impl.CycleActiveBuff;
+import game.base.buff.model.impl.PoisonCycleBuff;
 
 /**
  * @author : ddv
@@ -12,17 +12,10 @@ import game.base.effect.model.buff.impl.CycleActiveBuff;
 
 public enum BuffTypeEnum {
     /**
-     * 周期执行的buff
+     * 周期毒buff
      */
-    Cycle_Active(1, CycleActiveBuff.class),;
+    Poison_Cycle_Buff(1, PoisonCycleBuff.class),;
 
-    BuffTypeEnum(int id, Class<? extends BaseCreatureBuff> buffClazz) {
-        this.id = id;
-        this.buffClazz = buffClazz;
-    }
-
-    private int id;
-    private Class<? extends BaseCreatureBuff> buffClazz;
     private static Map<Integer, BuffTypeEnum> ID_TO_TYPE = new HashMap<>();
     private static Map<String, BuffTypeEnum> NAME_TO_TYPE = new HashMap<>();
 
@@ -31,6 +24,14 @@ public enum BuffTypeEnum {
             ID_TO_TYPE.put(anEnum.id, anEnum);
             NAME_TO_TYPE.put(anEnum.name(), anEnum);
         }
+    }
+
+    private int id;
+    private Class<? extends BaseCreatureBuff> buffClazz;
+
+    BuffTypeEnum(int id, Class<? extends BaseCreatureBuff> buffClazz) {
+        this.id = id;
+        this.buffClazz = buffClazz;
     }
 
     public static BuffTypeEnum getById(int id) {

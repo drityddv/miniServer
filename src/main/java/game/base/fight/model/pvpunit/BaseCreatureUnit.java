@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
-import game.base.fight.model.buff.PVPBuffEffectComponent;
+import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
@@ -21,7 +21,7 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     static {
         Map<UnitComponentType, Class<? extends IUnitComponent>> map = new HashMap<>();
         map.put(UnitComponentType.ATTRIBUTE, PVPCreatureAttributeComponent.class);
-        map.put(UnitComponentType.BUFF, PVPBuffEffectComponent.class);
+        map.put(UnitComponentType.BUFF, PVPBuffComponent.class);
         UnitComponentContainer.registerComponentClazz(BaseCreatureUnit.class, map);
     }
 

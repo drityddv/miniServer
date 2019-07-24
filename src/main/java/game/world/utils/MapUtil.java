@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import game.base.effect.model.buff.BaseCreatureBuff;
+import game.base.buff.model.BaseCreatureBuff;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
@@ -83,13 +83,6 @@ public class MapUtil {
                     monsterUnit.getCurrentHp(), monsterUnit.getCurrentMp(), monster.getCurrentGrid().getX(),
                     monster.getCurrentGrid().getY()));
             }
-        }
-
-        if (buffs != null) {
-            sb.append(StringUtil.wipePlaceholder("地图内周期性buff注册数量 [{}]", buffs.size()));
-//            for (BaseCreatureBuff buff : buffs) {
-//                sb.append(StringUtil.wipePlaceholder("jobId[{}] 释放者[{}] ", buff.getJobId(), buff.getCaster().getId()));
-//            }
         }
 
         String logFile = sb.toString();

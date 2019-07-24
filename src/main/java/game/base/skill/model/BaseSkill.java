@@ -3,7 +3,7 @@ package game.base.skill.model;
 import java.util.List;
 import java.util.Map;
 
-import game.base.effect.model.buff.BuffTypeEnum;
+import game.base.buff.model.BuffTypeEnum;
 import game.base.skill.constant.SkillTypeEnum;
 import game.base.skill.resource.SkillLevelResource;
 import game.base.skill.resource.SkillResource;

@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import game.base.buff.model.BuffTypeEnum;
 import game.base.consume.AssetsConsume;
 import game.base.consume.IConsume;
-import game.base.effect.model.buff.BuffTypeEnum;
 import game.base.game.attribute.AttributeType;
 import game.base.skill.constant.SkillEnum;
 import game.base.skill.constant.SkillTypeEnum;
@@ -71,8 +71,8 @@ public class SkillLevelResource {
     private SkillEnum skillEnum;
     private String skillEnumId;
 
-    private List<BuffTypeEnum> buffTypeEnumList;
-    private String buffTypeString;
+    private List<Long> buffConfigIdList;
+    private String buffIdString;
 
     /**
      * 计算技能伤害时关联的属性
@@ -85,19 +85,19 @@ public class SkillLevelResource {
         analysisCd();
         analysisSkill();
         analysisSkillType();
-        analysisBuffType();
+        analysisBuffIdList();
         analysisAoeType();
         analysisConsume();
         analysisEffectIdSet();
         analysisAttributeTypes();
     }
 
-    private void analysisBuffType() {
-        buffTypeEnumList = new ArrayList<>();
-        if (StringUtil.isNotEmpty(buffTypeString)) {
-            String[] split = buffTypeString.split(CsvSymbol.COMMA);
-            for (String typeName : split) {
-                buffTypeEnumList.add(BuffTypeEnum.getByName(typeName));
+    private void analysisBuffIdList() {
+        buffConfigIdList = new ArrayList<>();
+        if (StringUtil.isNotEmpty(buffIdString)) {
+            String[] split = buffIdString.split(CsvSymbol.COMMA);
+            for (String id : split) {
+                buffConfigIdList.add(Long.parseLong(id));
             }
         }
     }
@@ -220,7 +220,7 @@ public class SkillLevelResource {
         return BuffEffectMap;
     }
 
-    public List<BuffTypeEnum> getBuffTypeEnumList() {
-        return buffTypeEnumList;
+    public List<Long> getBuffList() {
+        return buffConfigIdList;
     }
 }

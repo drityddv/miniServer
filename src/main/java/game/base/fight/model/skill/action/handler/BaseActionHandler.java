@@ -2,23 +2,20 @@ package game.base.fight.model.skill.action.handler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.base.effect.model.buff.BaseCreatureBuff;
-import game.base.effect.model.buff.BuffTypeEnum;
-import game.base.effect.model.constant.EffectTypeEnum;
-import game.base.effect.model.effect.BaseEffect;
-import game.base.effect.resource.EffectResource;
-import game.base.effect.service.EffectManager;
+import game.base.buff.model.BaseCreatureBuff;
+import game.base.buff.resource.BuffResource;
+import game.base.buff.service.BuffService;
+import game.base.effect.model.BuffContext;
+import game.base.effect.model.BuffContextParamEnum;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
 import game.map.model.Grid;
-import scheduler.job.model.BuffJob;
-import utils.CollectionUtil;
+import spring.SpringContext;
 import utils.TimeUtil;
 
 /**
@@ -114,34 +111,20 @@ public abstract class BaseActionHandler implements IActionHandler {
     }
 
     private void triggerBuffs() {
-        List<BuffTypeEnum> buffTypeEnums = baseSkill.getSkillLevelResource().getBuffTypeEnumList();
-        Map<BuffTypeEnum, List<Long>> buffEffectMap = baseSkill.getBuffEffectMap();
+        List<Long> buffList = baseSkill.getSkillLevelResource().getBuffList();
+        BuffService buffService = SpringContext.getBuffService();
 
-        buffTypeEnums.forEach(buffTypeEnum -> {
-            BaseCreatureBuff creatureBuff = buffTypeEnum.create();
-            List<Long> effectIdList = buffEffectMap.get(buffTypeEnum);
-            List<BaseEffect> effectList = CollectionUtil.emptyArrayList();
-
-            effectIdList.forEach(effectId -> {
-                BaseEffect baseEffect = EffectTypeEnum.getById(effectId).create();
-                EffectResource effectResource = EffectManager.getInstance().getEffectResourceByEffectId(effectId);
-                baseEffect.init(creatureBuff, defenders, effectResource);
-                effectList.add(baseEffect);
+        for (Long configId : buffList) {
+            defenders.forEach(targetUnit -> {
+                BuffResource buffResource = buffService.getBuffResource(configId);
+                BaseCreatureBuff buff = buffService.createBuffByConfigId(configId);
+                BuffContext context = BuffContext.valueOf(buffResource.getBuffContext());
+                context.addParam(BuffContextParamEnum.CASTER, caster);
+                context.addParam(BuffContextParamEnum.Target, targetUnit);
+                buff.init(buffResource, context);
+                // buff开始启动
+                buff.active();
             });
-
-            BuffJob buffJob = BuffJob.valueOf(creatureBuff, null);
-            creatureBuff.init( effectList, caster, defenders);
-			creatureBuff.active();
-        });
-        // effectIds.forEach(effectId -> {
-        // BaseCreatureBuff buffEffect = EffectTypeEnum.getById(effectId).create();
-        // EffectResource effectResource = EffectManager.getInstance().getEffectResourceByEffectId(effectId);
-        // buffEffect.init(caster, defenders, effectResource);
-        // defenders.forEach(unit -> {
-        // PVPBuffEffectComponent component = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
-        // component.justAddBuff(buffEffect);
-        // });
-        // buffEffect.active();
-        // });
+        }
     }
 }

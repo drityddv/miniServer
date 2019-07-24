@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.base.effect.model.buff.BaseCreatureBuff;
+import game.base.buff.model.BaseCreatureBuff;
 import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;
 

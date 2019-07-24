@@ -1,12 +1,9 @@
 package game.base.effect.model.effect;
 
-import java.util.List;
-
-import game.base.effect.model.buff.BaseCreatureBuff;
-import game.base.effect.resource.EffectResource;
+import game.base.effect.model.BuffContext;
+import game.base.effect.model.BuffContextParamEnum;
 import game.base.fight.base.model.attack.impl.PhysicalSingleAttack;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import utils.TimeUtil;
 
 /**
  * 物理中毒效果
@@ -16,28 +13,14 @@ import utils.TimeUtil;
  */
 
 public class PoisonEffect extends BaseEffect {
-    // 毒素层数
-    private int currentLevel = 1;
-    private long damage;
 
     @Override
-    public void active() {
-        targetList.forEach(creatureUnit -> {
-            PhysicalSingleAttack attack =
-                PhysicalSingleAttack.valueOf(buff.getCaster(), creatureUnit, null, damage * currentLevel);
-            attack.doActive();
-        });
+    public void active(BuffContext buffContext) {
+        int level = buffContext.getParam(BuffContextParamEnum.POISON_LEVEL);
+        long damage = buffContext.getParam(BuffContextParamEnum.POISON_DAMAGE);
+        BaseCreatureUnit creatureUnit = buffContext.getParam(BuffContextParamEnum.Target);
+        PhysicalSingleAttack attack = PhysicalSingleAttack.valueOf(null, creatureUnit, null, level * damage);
+        attack.doActive();
     }
 
-    @Override
-    public void init(BaseCreatureBuff buff, List<BaseCreatureUnit> targetList, EffectResource effectResource) {
-        super.init(buff, targetList, effectResource);
-        damage = effectResource.getValueParam().get("value");
-        nextActiveAt = (long)(TimeUtil.now() + effectResource.getFrequencyTime());
-    }
-
-	@Override
-	public void merge(BaseEffect baseEffect1) {
-
-	}
 }

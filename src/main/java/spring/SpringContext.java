@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 import ebus.service.EventBus;
+import game.base.buff.service.BuffService;
 import game.base.effect.service.IEffectService;
 import game.base.executor.account.IAccountExecutorService;
 import game.base.executor.scene.ISceneExecutorService;
@@ -124,6 +125,9 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private CreatureManager creatureManager;
 
+    @Autowired
+    private BuffService buffService;
+
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
     }
@@ -222,6 +226,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IEffectService getEffectService() {
         return instance.effectService;
+    }
+
+    public static BuffService getBuffService() {
+        return instance.buffService;
     }
 
     public static ApplicationContext getApplicationContext() {

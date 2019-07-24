@@ -93,7 +93,7 @@ public class EffectResource {
     }
 
     public long getFrequencyTime() {
-        return (long) frequencyTime;
+        return (long)frequencyTime;
     }
 
     public int getLevel() {

@@ -67,6 +67,7 @@ public class QuartzService {
     }
 
     public void addJob(JobDetail jobDetail, Trigger trigger) {
+        logger.info("新的调度作业[{} {}]", jobDetail.getKey().getName(), jobDetail.getKey().getGroup());
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {

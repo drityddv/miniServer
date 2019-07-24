@@ -1,6 +1,6 @@
 package scheduler.job.model;
 
-import game.base.effect.model.buff.BaseCreatureBuff;
+import game.base.buff.model.BaseCreatureBuff;
 import utils.snow.IdUtil;
 
 /**

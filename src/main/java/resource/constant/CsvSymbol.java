@@ -9,4 +9,5 @@ public interface CsvSymbol {
 
     String COMMA = ",";
     String COLON = ":";
+    String AND = "&";
 }

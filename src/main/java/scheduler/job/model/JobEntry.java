@@ -4,8 +4,6 @@ import static org.quartz.DateBuilder.futureDate;
 
 import org.quartz.*;
 
-import spring.SpringContext;
-
 /**
  *
  * @author : ddv
@@ -15,11 +13,8 @@ import spring.SpringContext;
 public class JobEntry {
 
     private JobDetail jobDetail;
-    // 是否已经取消
-    private volatile boolean isCanceled = false;
     private Trigger trigger;
 
-    // FIXME 这里int溢出会有问题
     public static JobEntry newDelayJob(Class<? extends Job> jobClazz, long delay, int period, long jobId, long groupId,
         Object jobMapData) {
         JobEntry entry = new JobEntry();
@@ -60,10 +55,5 @@ public class JobEntry {
 
     public Trigger getTrigger() {
         return trigger;
-    }
-
-    public void cancel() {
-        SpringContext.getQuartzService().removeJob(jobDetail);
-        isCanceled = true;
     }
 }

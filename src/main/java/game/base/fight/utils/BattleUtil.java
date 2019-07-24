@@ -7,7 +7,7 @@ import java.util.Random;
 
 import client.MessageEnum;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
-import game.base.fight.model.buff.PVPBuffEffectComponent;
+import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.BaseUnit;
@@ -175,6 +175,11 @@ public class BattleUtil {
         return component.getFinalAttributes().get(type).getValue();
     }
 
+    public static PVPBuffComponent getUnitBuffComponent(BaseCreatureUnit unit) {
+        PVPBuffComponent component = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
+        return component;
+    }
+
     /**
      * 打印战斗单元
      *
@@ -183,12 +188,22 @@ public class BattleUtil {
      */
     public static void logUnit(Player player, BaseCreatureUnit unit) {
         StringBuilder sb = new StringBuilder();
-        // PVPCreatureAttributeComponent component =
-        // unit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
-        // AttributeUtils.logAttrs(component,sb);
-        PVPBuffEffectComponent buffComponent = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
+        PVPBuffComponent buffComponent = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
+        sb.append(StringUtil.wipePlaceholder("打印该单元释放的buff 长度[{}]", buffComponent.getCastBuffMap().size()));
+        buffComponent.getCastBuffMap().forEach((buffId, buff) -> {
+            sb.append(StringUtil.wipePlaceholder("buff id[{}] configId[{}]", buff.getBuffId(), buff.getConfigId()));
+        });
 
+        sb.append(StringUtil.wipePlaceholder("打印该单元拥有的buff 长度[{}]", buffComponent.getBuffMap().size()));
+        buffComponent.getBuffMap().forEach((buffId, buff) -> {
+            sb.append(StringUtil.wipePlaceholder("buff id[{}] configId[{}]", buff.getBuffId(), buff.getConfigId()));
+        });
 
+        sb.append(StringUtil.wipePlaceholder("打印该单元buff组 长度[{}]", buffComponent.getGroupBuffMap().size()));
+        buffComponent.getBuffMap().forEach((buffId, buff) -> {
+            sb.append(StringUtil.wipePlaceholder("buff id[{}] configId[{}] groupId[{}]", buff.getBuffId(),
+                buff.getConfigId(), buff.getGroupId()));
+        });
         PacketUtil.send(player, SM_LogMessage.valueOf(sb.toString()));
     }
 }

@@ -2,7 +2,7 @@ package game.world.neutral.neutralMap.service;
 
 import java.util.Map;
 
-import game.base.effect.model.buff.BaseCreatureBuff;
+import game.base.buff.model.BaseCreatureBuff;
 import game.map.model.Grid;
 import game.map.visible.PlayerVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;
