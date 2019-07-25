@@ -45,9 +45,21 @@ public abstract class BaseUnit {
         currentHp -= realDamage;
         if (currentHp == 0) {
             dead = true;
+            handlerDead(attackEntry);
         }
         logger.info("id[{}] 受到伤害[{}] 剩余生命值[{}] 死亡状态[{}]", id, realDamage, currentHp, dead);
+
     }
+
+    /**
+     * 处理死亡
+     */
+    protected abstract void handlerDead(BaseActionEntry attackEntry);
+
+    /**
+     * 重生
+     */
+    public abstract void relive();
 
     public void cureHp(long cureValue) {
         long realCure = 0;
@@ -134,6 +146,5 @@ public abstract class BaseUnit {
         return maxMp;
     }
 
-	public void reviseStatus() {
-	}
+    public void reviseStatus() {}
 }

@@ -83,7 +83,15 @@ public abstract class AttributeContainer<T> {
             putAttributes(id, attrs, records);
             recompute(records, needSync);
         }
+    }
 
+    /**
+     * 不重新计算
+     *
+     * @param attributeId
+     */
+    public void removeAttributeModel(AttributeId attributeId) {
+        modelAttributeSet.remove(attributeId);
     }
 
     /**

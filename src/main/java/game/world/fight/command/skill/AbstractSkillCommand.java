@@ -18,13 +18,34 @@ import game.world.fight.model.BattleParam;
 public abstract class AbstractSkillCommand extends AbstractSceneCommand {
 
     protected Player player;
+    protected long skillId;
     protected BaseSkill baseSkill;
     protected BattleParam battleParam;
 
-    public AbstractSkillCommand(int mapId, Player player, long skillId, List<Long> targetIds) {
-        super(mapId);
+    public AbstractSkillCommand(Player player, long skillId) {
+        super(player.getCurrentMapId());
         this.player = player;
-        this.battleParam = BattleUtil.initParam(mapId, skillId, player.getPlayerId(), targetIds);
+        this.battleParam = BattleUtil.init(mapId, skillId, player.getPlayerId());
+        this.baseSkill = BattleUtil.getUnitSkill(battleParam.getCaster(), skillId);
+        if (!isSkillLegality()) {
+            RequestException.throwException(MessageEnum.SKILL_TYPE_ERROR);
+        }
+    }
+
+    public AbstractSkillCommand(Player player, long skillId, Long targetId) {
+        super(player.getCurrentMapId());
+        this.player = player;
+        this.battleParam = BattleUtil.initTarget(mapId, skillId, player.getPlayerId(), targetId);
+        this.baseSkill = BattleUtil.getUnitSkill(battleParam.getCaster(), skillId);
+        if (!isSkillLegality()) {
+            RequestException.throwException(MessageEnum.SKILL_TYPE_ERROR);
+        }
+    }
+
+    public AbstractSkillCommand(Player player, long skillId, List<Long> targetIds) {
+        super(player.getCurrentMapId());
+        this.player = player;
+        this.battleParam = BattleUtil.initTargets(mapId, skillId, player.getPlayerId(), targetIds);
         this.baseSkill = BattleUtil.getUnitSkill(battleParam.getCaster(), skillId);
         if (!isSkillLegality()) {
             RequestException.throwException(MessageEnum.SKILL_TYPE_ERROR);

@@ -37,12 +37,13 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
         cancelSchedule();
         releaseCaster();
         releaseTarget();
+        triggerBuff(BuffTriggerPoint.End);
     }
 
     @Override
     public void init(BuffResource buffResource, BuffContext context) {
         super.init(buffResource, context);
-        remainCount = periodCount = buffResource.getPeriodTime();
+        remainCount = periodCount = buffResource.getPeriodCount();
         frequencyTime = (long)buffResource.getFrequencyTime();
         initBuffJob();
     }

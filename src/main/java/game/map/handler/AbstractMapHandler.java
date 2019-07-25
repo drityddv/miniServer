@@ -16,9 +16,10 @@ import game.base.message.exception.RequestException;
 import game.base.skill.constant.SkillEnum;
 import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
+import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.user.mapinfo.entity.MapInfoEnt;
-import game.world.base.command.EnterMapCommand;
+import game.world.base.command.scene.EnterMapCommand;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
 
@@ -164,4 +165,6 @@ public abstract class AbstractMapHandler implements IMapHandler {
     public void test(int mapId, Map<String, Object> param) {
 
     }
+
+    public void broadcast(int mapId, Grid currentGrid) {}
 }

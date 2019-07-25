@@ -4,6 +4,11 @@ import static org.quartz.DateBuilder.futureDate;
 
 import org.quartz.*;
 
+import game.world.base.command.scene.ReliveCommand;
+import scheduler.constant.JobGroupEnum;
+import scheduler.job.common.scene.SceneReliveJob;
+import spring.SpringContext;
+
 /**
  *
  * @author : ddv
@@ -15,11 +20,15 @@ public class JobEntry {
     private JobDetail jobDetail;
     private Trigger trigger;
 
-    public static JobEntry newDelayJob(Class<? extends Job> jobClazz, long delay, int period, long jobId, long groupId,
+    public static JobEntry newMapObjectReliveJob(long delay, long unitId, int mapId) {
+        ReliveCommand command = ReliveCommand.valueOf(mapId, unitId);
+        return newDelayJob(SceneReliveJob.class, delay, unitId, JobGroupEnum.SCENE_RELIVE.name(), command);
+    }
+
+    public static JobEntry newDelayJob(Class<? extends Job> jobClazz, long delay, long jobId, String groupName,
         Object jobMapData) {
         JobEntry entry = new JobEntry();
         String name = jobId + "";
-        String groupName = groupId + "";
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
         jobDetail.getJobDataMap().put("command", jobMapData);
@@ -47,6 +56,10 @@ public class JobEntry {
         entry.jobDetail = jobDetail;
         entry.trigger = trigger;
         return entry;
+    }
+
+    public void schedule() {
+        SpringContext.getQuartzService().addJob(jobDetail, trigger);
     }
 
     public JobDetail getJobDetail() {

@@ -7,7 +7,9 @@ package resource.constant;
 
 public interface CsvSymbol {
 
-    String COMMA = ",";
-    String COLON = ":";
+    String Comma = ",";
+    String Colon = ":";
     String AND = "&";
+    String Percent = "%";
+    String Space = "";
 }

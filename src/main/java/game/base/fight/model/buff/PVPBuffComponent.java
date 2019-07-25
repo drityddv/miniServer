@@ -77,12 +77,12 @@ public class PVPBuffComponent extends BaseUnitComponent<BaseCreatureUnit> {
         groupBuffMap.remove(buff.getGroupId());
     }
 
-	/**
-	 *
-	 * @param buff
-	 * @return true表示这次添加的buff入驻容器
-	 */
-	public boolean addBuff(BaseCreatureBuff buff) {
+    /**
+     *
+     * @param buff
+     * @return true表示这次添加的buff入驻容器
+     */
+    public boolean addBuff(BaseCreatureBuff buff) {
         BaseCreatureBuff finalBuff = handleBuff(buff);
         if (finalBuff == null) {
             return false;

@@ -8,7 +8,7 @@ import game.base.message.packet.SM_Message;
 import game.dispatch.anno.HandlerAnno;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.base.constant.MAP_CONSTANT;
+import game.world.base.constant.Map_Constant;
 import game.world.base.packet.CM_ChangeMap;
 import game.world.base.packet.CM_LeaveMap;
 import game.world.base.packet.CM_LogMap;
@@ -48,7 +48,7 @@ public class WorldFacade {
     @HandlerAnno
     public void gatewayLeaveMap(Player player, CM_LeaveMap request) {
         try {
-            worldService.gatewayLeaveMap(player, MAP_CONSTANT.EMPTY_MAP, true);
+            worldService.gatewayLeaveMap(player, Map_Constant.EMPTY_MAP, true);
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

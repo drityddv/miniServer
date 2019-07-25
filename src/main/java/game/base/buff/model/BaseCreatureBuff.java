@@ -63,13 +63,9 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
     }
 
     public void triggerBuff(BuffTriggerPoint point) {
-        switch (point) {
-            default:
-                triggerPoints.get(point).forEach(baseEffect -> {
-                    baseEffect.active(context);
-                });
-                break;
-        }
+        triggerPoints.get(point).forEach(baseEffect -> {
+            baseEffect.active(context);
+        });
     }
 
     /**

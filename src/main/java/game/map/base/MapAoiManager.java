@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
-import game.map.visible.AbstractVisibleMapObject;
-import game.map.visible.impl.MonsterVisibleMapObject;
+import game.map.visible.AbstractMapObject;
+import game.map.visible.impl.MonsterMapObject;
 import game.world.base.resource.MapBlockResource;
 import game.world.utils.MapUtil;
 import utils.CollectionUtil;
@@ -36,7 +36,7 @@ public class MapAoiManager {
     }
 
     // 玩家进入触发广播
-    public <T extends AbstractVisibleMapObject> void triggerEnter(T object) {
+    public <T extends AbstractMapObject> void triggerEnter(T object) {
         Grid currentGrid = object.getCurrentGrid();
         BroadcastCenter broadcastCenters = centerMap.get(currentGrid);
         if (broadcastCenters == null) {
@@ -46,7 +46,7 @@ public class MapAoiManager {
         broadcastCenters.triggerEnter(object);
     }
 
-    public <T extends AbstractVisibleMapObject> void triggerMove(T object, Grid targetGrid) {
+    public <T extends AbstractMapObject> void triggerMove(T object, Grid targetGrid) {
         BroadcastCenter originCenter = centerMap.get(object.getCurrentGrid());
         BroadcastCenter targetCenter = centerMap.get(targetGrid);
 
@@ -64,7 +64,7 @@ public class MapAoiManager {
     }
 
     // 玩家离开地图触发广播
-    public <T extends AbstractVisibleMapObject> void triggerLeave(T object) {
+    public <T extends AbstractMapObject> void triggerLeave(T object) {
         Grid currentGrid = object.getCurrentGrid();
         BroadcastCenter broadcastCenter = centerMap.get(currentGrid);
         broadcastCenter.removeUnit(object, 2);
@@ -80,8 +80,8 @@ public class MapAoiManager {
         return false;
     }
 
-    public List<AbstractVisibleMapObject> getAreaObjects(Grid grid) {
-        List<AbstractVisibleMapObject> creatureUnits = CollectionUtil.emptyArrayList();
+    public List<AbstractMapObject> getAreaObjects(Grid grid) {
+        List<AbstractMapObject> creatureUnits = CollectionUtil.emptyArrayList();
         BroadcastCenter broadcastCenter = centerMap.get(grid);
         creatureUnits.addAll(broadcastCenter.getAreaObjects());
         return creatureUnits;
@@ -108,15 +108,19 @@ public class MapAoiManager {
         return copy;
     }
 
-    public void registerUnits(MonsterVisibleMapObject monsterVisibleMapInfo) {
+    public void registerUnits(MonsterMapObject monsterVisibleMapInfo) {
         Grid grid = monsterVisibleMapInfo.getCurrentGrid();
         BroadcastCenter broadcastCenter = centerMap.get(grid);
         broadcastCenter.registerUnit(monsterVisibleMapInfo);
     }
 
-    public void registerUnits(AbstractVisibleMapObject object) {
+    public void registerUnits(AbstractMapObject object) {
         Grid grid = object.getCurrentGrid();
         BroadcastCenter broadcastCenter = centerMap.get(grid);
         broadcastCenter.registerUnit(object);
+    }
+
+    public void broadcast(Grid grid) {
+        centerMap.get(grid).broadCastAllUnits();
     }
 }

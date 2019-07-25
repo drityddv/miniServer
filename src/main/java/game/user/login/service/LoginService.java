@@ -18,7 +18,7 @@ import game.user.login.packet.CM_UserLogin;
 import game.user.login.packet.CM_UserLogout;
 import game.user.login.packet.CM_UserRegister;
 import game.user.login.packet.SM_LoginSuccess;
-import game.world.base.command.EnterMapCommand;
+import game.world.base.command.scene.EnterMapCommand;
 import io.netty.channel.Channel;
 import net.model.USession;
 import net.utils.PacketUtil;

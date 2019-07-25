@@ -14,10 +14,10 @@ import game.base.message.exception.RequestException;
 import game.gm.packet.SM_LogMessage;
 import game.map.base.AbstractScene;
 import game.map.model.Grid;
-import game.map.visible.AbstractVisibleMapObject;
-import game.map.visible.PlayerVisibleMapObject;
-import game.map.visible.impl.MonsterVisibleMapObject;
-import game.map.visible.impl.NpcVisibleObject;
+import game.map.visible.AbstractMapObject;
+import game.map.visible.PlayerMapObject;
+import game.map.visible.impl.MonsterMapObject;
+import game.map.visible.impl.NpcObject;
 import game.role.player.model.Player;
 import game.role.skill.model.SkillEntry;
 import game.role.skill.model.SkillList;
@@ -31,9 +31,8 @@ import utils.StringUtil;
 
 public class MapUtil {
 
-    public static void log(Player player, AbstractScene scene, List<PlayerVisibleMapObject> visibleObjects,
-        Collection<NpcVisibleObject> npcList, Collection<MonsterVisibleMapObject> monsters,
-        Collection<BaseCreatureBuff> buffs) {
+    public static void log(Player player, AbstractScene scene, List<PlayerMapObject> visibleObjects,
+        Collection<NpcObject> npcList, Collection<MonsterMapObject> monsters, Collection<BaseCreatureBuff> buffs) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(StringUtil.wipePlaceholder("当前地图所处线程[{}]", Thread.currentThread().getName()));
@@ -49,7 +48,7 @@ public class MapUtil {
             Map<UnitComponentType, IUnitComponent> component =
                 fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
             component.forEach((type, iUnitComponent) -> {
-//                sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
+                // sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
                 // if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
                 // PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
                 // AttributeUtils.logAttrs(attributeComponent, sb);
@@ -76,7 +75,7 @@ public class MapUtil {
 
         if (monsters != null) {
             sb.append(StringUtil.wipePlaceholder("地图内怪物数量[{}]", monsters.size()));
-            for (MonsterVisibleMapObject monster : monsters) {
+            for (MonsterMapObject monster : monsters) {
                 BaseCreatureUnit monsterUnit = monster.getFighterAccount().getCreatureUnit();
                 sb.append(StringUtil.wipePlaceholder("怪物id[{}]  名称[{}] 生命值[{}] 法力值[{}] 坐标[{},{}]",
                     monster.getFighterAccount().getCreatureUnit().getId(), monster.getMonsterName(),
@@ -106,7 +105,7 @@ public class MapUtil {
         });
     }
 
-    public static boolean doMove(AbstractVisibleMapObject object, int[][] blockData) {
+    public static boolean doMove(AbstractMapObject object, int[][] blockData) {
         int targetX = object.getTargetGrid().getX();
         int targetY = object.getTargetGrid().getY();
 

@@ -3,11 +3,18 @@ package game.base.fight.model.pvpunit;
 import java.util.HashMap;
 import java.util.Map;
 
+import game.base.fight.base.model.attack.BaseActionEntry;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
+import game.base.fight.utils.BattleUtil;
+import game.base.game.attribute.AttributeType;
+import game.map.handler.AbstractMapHandler;
+import game.map.visible.AbstractMapObject;
+import game.world.base.constant.Map_Constant;
+import scheduler.job.model.JobEntry;
 
 /**
  * 战斗成员对应的基础单元
@@ -25,7 +32,12 @@ public abstract class BaseCreatureUnit extends BaseUnit {
         UnitComponentContainer.registerComponentClazz(BaseCreatureUnit.class, map);
     }
 
-    protected transient FighterAccount fighterAccount;
+    /**
+     * 杀死我的单位
+     */
+    protected BaseCreatureUnit attackUnit;
+
+    protected FighterAccount fighterAccount;
     /**
      * 名称
      */
@@ -35,6 +47,20 @@ public abstract class BaseCreatureUnit extends BaseUnit {
         super(id);
         this.fighterAccount = fighterAccount;
         this.name = name;
+    }
+
+    @Override
+    protected void handlerDead(BaseActionEntry attackEntry) {
+        attackUnit = attackEntry.getCaster();
+        JobEntry.newMapObjectReliveJob(Map_Constant.Relive_Delay, id, mapId).schedule();
+    }
+
+    @Override
+    public void relive() {
+        initBaseAttribute();
+        dead = false;
+        AbstractMapObject mapObject = fighterAccount.getMapObject();
+        AbstractMapHandler.getAbstractMapHandler(mapId).broadcast(mapId, mapObject.getCurrentGrid());
     }
 
     public String getName() {
@@ -53,5 +79,10 @@ public abstract class BaseCreatureUnit extends BaseUnit {
         this.fighterAccount = fighterAccount;
     }
 
-
+    protected void initBaseAttribute() {
+        PVPCreatureAttributeComponent unitAttributeComponent = BattleUtil.getUnitAttrComponent(this);
+        unitAttributeComponent.containerRecompute();
+        currentHp = maxHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
+        currentMp = maxMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+    }
 }

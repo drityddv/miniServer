@@ -21,6 +21,10 @@ public enum JobGroupEnum {
      */
     SCENE_COMMON_RATE(),
     /**
+     * 场景复活任务
+     */
+    SCENE_RELIVE(),
+    /**
      * buff定时服务
      */
     BUFF(),

@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import client.anno.Action;
 import game.map.model.AoiBroadCastVo;
-import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.AbstractMapObject;
 
 /**
  * @author : ddv
@@ -20,9 +20,9 @@ public class SM_AoiBroadCast {
 
     private List<AoiBroadCastVo> mapInfoList = new ArrayList<>();
 
-    public static SM_AoiBroadCast valueOf(List<AbstractVisibleMapObject> mapInfoList, int centerX, int centerY) {
+    public static SM_AoiBroadCast valueOf(List<AbstractMapObject> mapInfoList, int centerX, int centerY) {
         SM_AoiBroadCast sm = new SM_AoiBroadCast();
-        for (AbstractVisibleMapObject mapInfo : mapInfoList) {
+        for (AbstractMapObject mapInfo : mapInfoList) {
             sm.mapInfoList.add(AoiBroadCastVo.valueOf(mapInfo, centerX, centerY));
         }
         return sm;

@@ -1,5 +1,8 @@
 package game.base.fight.model.pvpunit;
 
+import game.map.visible.BaseAttackAbleMapObject;
+import game.map.visible.PlayerMapObject;
+import game.map.visible.impl.MonsterMapObject;
 import game.role.player.model.Player;
 import game.world.base.resource.CreatureResource;
 
@@ -12,31 +15,25 @@ public class FighterAccount {
 
     private String accountId;
 
-    private transient boolean isAttack = false;
-
     // 战斗单位
     private BaseCreatureUnit creatureUnit;
 
-    /**
-     * 目标账号
-     */
-    private transient FighterAccount targetAccount;
+    private BaseAttackAbleMapObject mapObject;
 
-    public static FighterAccount valueOf(Player player, int mapId) {
+    public static FighterAccount valueOfPlayer(Player player, int mapId, PlayerMapObject mapObject) {
         FighterAccount fighterAccount = new FighterAccount();
         fighterAccount.setAccountId(player.getAccountId());
-        fighterAccount.setAttack(false);
-        fighterAccount.setTargetAccount(null);
+        fighterAccount.mapObject = mapObject;
         fighterAccount.setCreatureUnit(PlayerUnit.valueOf(player, fighterAccount, mapId));
         return fighterAccount;
     }
 
-    public static FighterAccount valueOfMonster(CreatureResource creatureResource, long id) {
+    public static FighterAccount valueOfMonster(CreatureResource creatureResource, long id,
+        MonsterMapObject mapObject) {
         FighterAccount fighterAccount = new FighterAccount();
         fighterAccount.setAccountId(creatureResource.getObjectName());
-        fighterAccount.setAttack(false);
-        fighterAccount.setTargetAccount(null);
         fighterAccount.setCreatureUnit(MonsterUnit.valueOf(creatureResource, fighterAccount, id));
+        fighterAccount.mapObject = mapObject;
         return fighterAccount;
     }
 
@@ -49,20 +46,8 @@ public class FighterAccount {
         this.accountId = accountId;
     }
 
-    public boolean isAttack() {
-        return isAttack;
-    }
-
-    public void setAttack(boolean attack) {
-        isAttack = attack;
-    }
-
-    public FighterAccount getTargetAccount() {
-        return targetAccount;
-    }
-
-    public void setTargetAccount(FighterAccount targetAccount) {
-        this.targetAccount = targetAccount;
+    public BaseAttackAbleMapObject getMapObject() {
+        return mapObject;
     }
 
     public BaseCreatureUnit getCreatureUnit() {

@@ -36,7 +36,7 @@ public class CreatureResource {
     private List<Attribute> attributeList;
     private String attributeString;
 
-    private String rewardString;
+    private long dropConfigId;
 
     @Init
     public void init() {
@@ -78,5 +78,9 @@ public class CreatureResource {
 
     public int getBornY() {
         return bornY;
+    }
+
+    public long getDropConfigId() {
+        return dropConfigId;
     }
 }

@@ -1,5 +1,5 @@
-configId,buffName,level,groupId,buffTypeId,effectIdString,effectParamString,periodTime,maxMergeCount,durationTime,buffTypeId,frequencyTime
-1,中毒[1级],1,1,1,2,POISON_LEVEL:1&POISON_DAMAGE:10,10,3,30,1,3
-2,中毒[2级],2,1,1,2,POISON_LEVEL:1&POISON_DAMAGE:15,10,3,30,1,2
-3,中毒[3级],3,1,1,2,POISON_LEVEL:2&POISON_DAMAGE:20,10,3,30,1,1
-4,天神下凡,1,2,2,"3,4",MAX_HP:100&MAX_MP:100&CureHp:5,10,0,30,2,1.5
+configId,buffName,level,groupId,buffTypeId,effectIdString,effectParamString              ,periodCount,maxMergeCount,durationTime,buffTypeId,frequencyTime
+1       ,中毒[1级]  ,1    ,1      ,1         ,2             ,POISON_LEVEL:1&POISON_DAMAGE:10,10         ,3            ,30          ,1         ,3
+2       ,中毒[2级]  ,2    ,1      ,1         ,2             ,POISON_LEVEL:1&POISON_DAMAGE:15,10         ,3            ,30          ,1         ,2
+3       ,中毒[3级]  ,3    ,1      ,1         ,2             ,POISON_LEVEL:2&POISON_DAMAGE:20,10         ,3            ,30          ,1         ,1
+4       ,天神下凡    ,1    ,2      ,2         ,"3,4,5"       ,MAX_HP:100&MAX_MP:100&CureHp:5 ,10         ,0            ,30          ,2         ,1.5

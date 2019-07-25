@@ -17,13 +17,12 @@ import net.utils.PacketUtil;
 
 public class UseGroupPointSkillCommand extends AbstractSkillCommand {
 
-    public UseGroupPointSkillCommand(int mapId, Player player, long skillId, List<Long> targetIds) {
-        super(mapId, player, skillId, targetIds);
+    public UseGroupPointSkillCommand(Player player, long skillId, List<Long> targetIds) {
+        super(player, skillId, targetIds);
     }
 
     public static UseGroupPointSkillCommand valueOf(Player player, long skillId, List<Long> targetIds) {
-        UseGroupPointSkillCommand command =
-            new UseGroupPointSkillCommand(player.getCurrentMapId(), player, skillId, targetIds);
+        UseGroupPointSkillCommand command = new UseGroupPointSkillCommand(player, skillId, targetIds);
         return command;
     }
 

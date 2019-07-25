@@ -1,9 +1,9 @@
 package game.base.buff.resource;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import game.base.buff.model.BaseCreatureBuff;
+import game.base.buff.model.BuffTriggerPoint;
 import game.base.buff.model.BuffTypeEnum;
 import game.base.effect.model.BuffContext;
 import game.base.effect.model.BuffContextParamEnum;
@@ -25,7 +25,7 @@ public class BuffResource {
     private int buffTypeId;
     private long durationTime;
     private double frequencyTime;
-    private int periodTime;
+    private int periodCount;
     /**
      * 0 不能merge
      */
@@ -34,6 +34,7 @@ public class BuffResource {
     private int groupId;
 
     private List<EffectTypeEnum> effectTypeEnums;
+    private Map<BuffTriggerPoint, List<BaseEffect>> triggerPoints;
     private List<BaseEffect> effectList;
     private String effectIdString;
 
@@ -47,18 +48,32 @@ public class BuffResource {
     private void init() {
         analysisTime();
         analysisEffect();
+        analysisTriggerPoints();
         analysisEffectContext();
     }
 
+    private void analysisTriggerPoints() {
+        triggerPoints = new HashMap<>();
+        for (BuffTriggerPoint triggerPoint : BuffTriggerPoint.values()) {
+            triggerPoints.put(triggerPoint, new ArrayList<>());
+        }
+
+        effectList.forEach(baseEffect -> {
+            Set<BuffTriggerPoint> triggerPointSet =
+                EffectTypeEnum.getByClazz(baseEffect.getClass()).getTriggerPointSet();
+            triggerPointSet.forEach(buffTriggerPoint -> {
+                triggerPoints.get(buffTriggerPoint).add(baseEffect);
+            });
+        });
+    }
+
     private void analysisEffectContext() {
-
         buffContext = BuffContext.valueOf();
-
-        String[] split = effectParamString.split(CsvSymbol.COMMA);
+        String[] split = effectParamString.split(CsvSymbol.Comma);
         for (String params : split) {
             String[] paramString = params.split(CsvSymbol.AND);
             for (String param : paramString) {
-                String[] singleParam = param.split(CsvSymbol.COLON);
+                String[] singleParam = param.split(CsvSymbol.Colon);
                 BuffContextParamEnum contextEnum = BuffContextParamEnum.getByName(singleParam[0]);
                 buffContext.addParam(contextEnum,
                     JodaUtil.convertFromString(contextEnum.getParamClazz(), singleParam[1]));
@@ -73,7 +88,7 @@ public class BuffResource {
 
     private void analysisEffect() {
         effectTypeEnums = new ArrayList<>();
-        String[] effectIds = effectIdString.split(CsvSymbol.COMMA);
+        String[] effectIds = effectIdString.split(CsvSymbol.Comma);
         for (String effectId : effectIds) {
             effectTypeEnums.add(EffectTypeEnum.getById(Long.parseLong(effectId)));
         }
@@ -112,8 +127,8 @@ public class BuffResource {
         return frequencyTime;
     }
 
-    public int getPeriodTime() {
-        return periodTime;
+    public int getPeriodCount() {
+        return periodCount;
     }
 
     public int getMaxMergeCount() {
@@ -134,5 +149,9 @@ public class BuffResource {
 
     public int getLevel() {
         return level;
+    }
+
+    public Map<BuffTriggerPoint, List<BaseEffect>> getTriggerPoints() {
+        return triggerPoints;
     }
 }

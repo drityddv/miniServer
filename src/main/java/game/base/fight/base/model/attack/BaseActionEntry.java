@@ -50,4 +50,8 @@ public abstract class BaseActionEntry {
      * 技能生效[伤害,效果...]
      */
     public abstract void doActive();
+
+    public BaseCreatureUnit getCaster() {
+        return caster;
+    }
 }

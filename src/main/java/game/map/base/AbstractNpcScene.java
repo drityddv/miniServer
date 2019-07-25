@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import game.map.npc.reource.NpcResource;
-import game.map.visible.impl.NpcVisibleObject;
+import game.map.visible.impl.NpcObject;
 
 /**
  * @author : ddv
@@ -15,7 +15,7 @@ import game.map.visible.impl.NpcVisibleObject;
 public abstract class AbstractNpcScene extends AbstractScene {
 
     // npc
-    protected Map<Long, NpcVisibleObject> npcMap = new HashMap<>();
+    protected Map<Long, NpcObject> npcMap = new HashMap<>();
 
     public AbstractNpcScene(int mapId) {
         super(mapId);
@@ -23,16 +23,16 @@ public abstract class AbstractNpcScene extends AbstractScene {
 
     public void initNpc(List<NpcResource> npcResources) {
         npcResources.forEach(npcResource -> {
-            NpcVisibleObject npc = NpcVisibleObject.valueOf(npcResource);
+            NpcObject npc = NpcObject.valueOf(npcResource);
             npcMap.put(npc.getId(), npc);
         });
     }
 
-    public Map<Long, NpcVisibleObject> getNpcMap() {
+    public Map<Long, NpcObject> getNpcMap() {
         return npcMap;
     }
 
-    public void setNpcMap(Map<Long, NpcVisibleObject> npcMap) {
+    public void setNpcMap(Map<Long, NpcObject> npcMap) {
         this.npcMap = npcMap;
     }
 }

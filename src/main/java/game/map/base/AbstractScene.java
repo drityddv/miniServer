@@ -5,15 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.base.buff.model.BaseCreatureBuff;
-import game.map.visible.AbstractVisibleMapObject;
-import game.map.visible.impl.MonsterVisibleMapObject;
+import game.map.visible.AbstractMapObject;
+import game.map.visible.impl.MonsterMapObject;
 
 /**
  * @author : ddv
  * @since : 2019/7/2 上午10:20
  */
 
-public abstract class AbstractScene<T extends AbstractVisibleMapObject> {
+public abstract class AbstractScene<T extends AbstractMapObject> {
 
     /**
      * 地图id
@@ -34,7 +34,7 @@ public abstract class AbstractScene<T extends AbstractVisibleMapObject> {
         return Collections.emptyMap();
     }
 
-    public Map<Long, MonsterVisibleMapObject> getMonsterMap() {
+    public Map<Long, MonsterMapObject> getMonsterMap() {
         return Collections.emptyMap();
     }
 
@@ -44,7 +44,7 @@ public abstract class AbstractScene<T extends AbstractVisibleMapObject> {
      * @param playerId
      * @return
      */
-    public abstract AbstractVisibleMapObject getPlayerFighter(long playerId);
+    public abstract AbstractMapObject getPlayerFighter(long playerId);
 
     // get and set
     public int getMapId() {

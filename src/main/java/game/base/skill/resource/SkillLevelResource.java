@@ -95,7 +95,7 @@ public class SkillLevelResource {
     private void analysisBuffIdList() {
         buffConfigIdList = new ArrayList<>();
         if (StringUtil.isNotEmpty(buffIdString)) {
-            String[] split = buffIdString.split(CsvSymbol.COMMA);
+            String[] split = buffIdString.split(CsvSymbol.Comma);
             for (String id : split) {
                 buffConfigIdList.add(Long.parseLong(id));
             }
@@ -106,9 +106,9 @@ public class SkillLevelResource {
         if (StringUtil.isNotEmpty(areaTypeParamString)) {
             areaTypeEnum = AreaTypeEnum.getByName(areaTypeString);
             areaTypeParam = new HashMap<>();
-            String[] split = areaTypeParamString.split(CsvSymbol.COMMA);
+            String[] split = areaTypeParamString.split(CsvSymbol.Comma);
             for (String temp : split) {
-                String[] strings = temp.split(CsvSymbol.COLON);
+                String[] strings = temp.split(CsvSymbol.Colon);
                 areaTypeParam.put(strings[0], strings[1]);
             }
         }
@@ -122,7 +122,7 @@ public class SkillLevelResource {
     private void analysisAttributeTypes() {
         attributeTypes = new ArrayList<>();
         if (StringUtil.isNotEmpty(attributeTypeString)) {
-            for (String typeString : attributeTypeString.split(CsvSymbol.COMMA)) {
+            for (String typeString : attributeTypeString.split(CsvSymbol.Comma)) {
                 attributeTypes.add(AttributeType.getByName(typeString));
             }
         }
@@ -142,9 +142,9 @@ public class SkillLevelResource {
     private void analysisEffectIdSet() {
         BuffEffectMap = new HashMap<>();
         if (StringUtil.isNotEmpty(effectIdString)) {
-            String[] split = effectIdString.split(CsvSymbol.COMMA);
+            String[] split = effectIdString.split(CsvSymbol.Comma);
             for (String value : split) {
-                String[] idParam = value.split(CsvSymbol.COLON);
+                String[] idParam = value.split(CsvSymbol.Colon);
                 List<Long> effectIds = CollectionUtil.emptyArrayList();
                 BuffTypeEnum buffTypeEnum = BuffTypeEnum.getById(Integer.parseInt(idParam[0]));
                 for (int i = 1; i < idParam.length; i++) {

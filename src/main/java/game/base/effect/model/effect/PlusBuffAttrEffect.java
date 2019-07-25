@@ -19,15 +19,14 @@ public class PlusBuffAttrEffect extends BaseEffect {
 
     @Override
     public void active(BuffContext buffContext) {
-		plusAttribute(buffContext);
-
+        plusAttribute(buffContext);
     }
 
-	private void plusAttribute(BuffContext buffContext) {
-		PVPCreatureAttributeComponent attributeComponent =
-			buffContext.getParam(BuffContextParamEnum.Attribute_Container);
-		Map<AttributeType, Attribute> attributeMap = buffContext.getParam(BuffContextParamEnum.Attribute);
-		PvpBuffAttributeId attributeId = PvpBuffAttributeId.valueOf(buffContext.getParam(BuffContextParamEnum.Buff_Id));
-		attributeComponent.putAttributesWithRecompute(attributeId, new ArrayList<>(attributeMap.values()), false);
-	}
+    private void plusAttribute(BuffContext buffContext) {
+        PVPCreatureAttributeComponent attributeComponent =
+            buffContext.getParam(BuffContextParamEnum.Attribute_Container);
+        Map<AttributeType, Attribute> attributeMap = buffContext.getParam(BuffContextParamEnum.Attribute);
+        PvpBuffAttributeId attributeId = PvpBuffAttributeId.valueOf(buffContext.getParam(BuffContextParamEnum.Buff_Id));
+        attributeComponent.putAttributesWithRecompute(attributeId, new ArrayList<>(attributeMap.values()), false);
+    }
 }

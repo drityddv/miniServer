@@ -29,7 +29,7 @@ public enum AttributeIdEnum implements AttributeId {
     PVP_BUFF {
         @Override
         public String getName() {
-             return "PVP_BUFF";
+            return "PVP_BUFF";
         }
     },;
 

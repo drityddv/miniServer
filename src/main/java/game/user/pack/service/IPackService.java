@@ -1,8 +1,10 @@
 package game.user.pack.service;
 
+import java.util.List;
+
+import game.base.item.base.model.AbstractItem;
+import game.base.item.resource.ItemResource;
 import game.role.player.model.Player;
-import game.user.item.base.model.AbstractItem;
-import game.user.item.resource.ItemResource;
 import game.user.pack.model.Pack;
 
 /**
@@ -39,6 +41,15 @@ public interface IPackService {
      * @return
      */
     boolean addItem(Player player, AbstractItem item);
+
+    /**
+     * 添加道具
+     *
+     * @param player
+     * @param items
+     * @return
+     */
+    boolean addItems(Player player, List<AbstractItem> items);
 
     /**
      * 扣除道具
@@ -103,6 +114,15 @@ public interface IPackService {
      * @return
      */
     boolean isEnoughSize(Player player, AbstractItem item);
+
+    /**
+     * 指定数量物品是否可以塞进背包
+     *
+     * @param player
+     * @param itemList
+     * @return
+     */
+    boolean isEnoughSize(Player player, List<AbstractItem> itemList);
 
     /**
      * 指定数量物品是否可以塞进背包

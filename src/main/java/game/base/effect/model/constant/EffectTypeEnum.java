@@ -27,7 +27,7 @@ public enum EffectTypeEnum {
         }
     },
 
-	Plus_Buff_Attribute(3, PlusBuffAttrEffect.class) {
+    Plus_Buff_Attribute(3, PlusBuffAttrEffect.class) {
         @Override
         public Set<BuffTriggerPoint> getTriggerPointSet() {
             return new HashSet<>(Arrays.asList(BuffTriggerPoint.First_Active, BuffTriggerPoint.End));
@@ -38,6 +38,13 @@ public enum EffectTypeEnum {
         @Override
         public Set<BuffTriggerPoint> getTriggerPointSet() {
             return new HashSet<>(Arrays.asList(BuffTriggerPoint.Schedule_Active));
+        }
+    },
+
+    Remove_Buff_Attribute(5, RemoveBuffAttrEffect.class) {
+        @Override
+        public Set<BuffTriggerPoint> getTriggerPointSet() {
+            return new HashSet<>(Arrays.asList(BuffTriggerPoint.End));
         }
     };
 

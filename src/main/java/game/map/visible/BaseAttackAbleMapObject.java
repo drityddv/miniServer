@@ -5,4 +5,4 @@ package game.map.visible;
  * @since : 2019/7/25 2:21 PM
  */
 
-public abstract class BaseAttackAbleMapObject extends AbstractVisibleMapObject {}
+public abstract class BaseAttackAbleMapObject extends AbstractMapObject {}

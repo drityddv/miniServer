@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.executor.command.impl.account.base.AbstractAccountCommand;
-import game.base.executor.command.impl.account.base.AbstractAccountDelayCommand;
-import game.base.executor.command.impl.account.base.AbstractAccountRateCommand;
 import game.dispatch.HandlerInvoke;
 import net.model.USession;
 import utils.SimpleUtil;
@@ -48,15 +46,7 @@ public class AccountExecutorService implements IAccountExecutorService {
 
     @Override
     public void submit(AbstractAccountCommand command) {
-        if (command instanceof AbstractAccountRateCommand) {
-            AbstractAccountRateCommand accountRateCommand = (AbstractAccountRateCommand)command;
-            accountExecutor.schedule(accountRateCommand, accountRateCommand.getDelay(), accountRateCommand.getPeriod());
-        } else if (command instanceof AbstractAccountDelayCommand) {
-            AbstractAccountDelayCommand accountDelayCommand = (AbstractAccountDelayCommand)command;
-            accountExecutor.schedule(accountDelayCommand, accountDelayCommand.getDelay());
-        } else {
-            accountExecutor.addTask(command);
-        }
+        accountExecutor.addTask(command);
     }
 
     @Override

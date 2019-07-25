@@ -12,11 +12,11 @@ import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.base.command.EnterMapCommand;
-import game.world.base.command.LeaveMapCommand;
-import game.world.base.command.LogMapCommand;
-import game.world.base.command.MoveCommand;
-import game.world.base.constant.MAP_CONSTANT;
+import game.world.base.command.scene.EnterMapCommand;
+import game.world.base.command.scene.LeaveMapCommand;
+import game.world.base.command.scene.LogMapCommand;
+import game.world.base.command.scene.MoveCommand;
+import game.world.base.constant.Map_Constant;
 import game.world.base.resource.MiniMapResource;
 import net.utils.PacketUtil;
 
@@ -44,7 +44,7 @@ public class WorldService implements IWorldService {
             }
 
             // 允许玩家从无地图状态切过来 如果有旧图就先去旧地图线程离开再提交进图命令
-            if (oldMapId != MAP_CONSTANT.EMPTY_MAP) {
+            if (oldMapId != Map_Constant.EMPTY_MAP) {
                 gatewayLeaveMap(player, mapId, clientRequest);
             } else {
                 ExecutorUtils.submit(EnterMapCommand.valueOf(player, mapId));

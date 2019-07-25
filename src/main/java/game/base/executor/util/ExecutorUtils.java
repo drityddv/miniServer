@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.executor.command.impl.account.base.AbstractAccountCommand;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import spring.SpringContext;
 
@@ -32,6 +33,10 @@ public class ExecutorUtils {
      */
     public static void submit(AbstractSceneCommand command) {
         SpringContext.getSceneExecutorService().submit(command);
+    }
+
+    public static void submit(AbstractAccountCommand command) {
+        SpringContext.getAccountExecutorService().submit(command);
     }
 
 }

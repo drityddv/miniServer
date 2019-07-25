@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.npc.reource.NpcResource;
-import game.map.visible.AbstractVisibleMapObject;
-import game.map.visible.PlayerVisibleMapObject;
-import game.map.visible.impl.MonsterVisibleMapObject;
+import game.map.visible.AbstractMapObject;
+import game.map.visible.PlayerMapObject;
+import game.map.visible.impl.MonsterMapObject;
 import game.world.base.resource.CreatureResource;
 
 /**
@@ -23,7 +23,7 @@ import game.world.base.resource.CreatureResource;
  * @since : 2019/7/3 下午2:33
  */
 
-public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> extends AbstractNpcScene {
+public abstract class AbstractMovableScene<T extends AbstractMapObject> extends AbstractNpcScene {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractMovableScene.class);
 
@@ -34,7 +34,7 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     protected Map<Long, T> playerMap = new HashMap<>();
 
     // 怪物unit
-    protected Map<Long, MonsterVisibleMapObject> monsterMap = new HashMap<>();
+    protected Map<Long, MonsterMapObject> monsterMap = new HashMap<>();
 
     public AbstractMovableScene(int mapId) {
         super(mapId);
@@ -43,7 +43,7 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     // 加载怪物
     public void initMonster(List<CreatureResource> creatureResources) {
         for (CreatureResource creatureResource : creatureResources) {
-            MonsterVisibleMapObject monster = MonsterVisibleMapObject.valueOf(creatureResource);
+            MonsterMapObject monster = MonsterMapObject.valueOf(creatureResource);
             monsterMap.put(monster.getId(), monster);
         }
         registerStaticUnitAoi(new ArrayList<>(monsterMap.values()));
@@ -57,7 +57,7 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     }
 
     // 加载地图单位到广播中心
-    private void registerStaticUnitAoi(List<AbstractVisibleMapObject> objects) {
+    private void registerStaticUnitAoi(List<AbstractMapObject> objects) {
         objects.forEach(object -> {
             aoiManager.registerUnits(object);
         });
@@ -73,7 +73,7 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     }
 
     public void move(long playerId, Grid targetGrid) {
-        PlayerVisibleMapObject object = (PlayerVisibleMapObject)playerMap.get(playerId);
+        PlayerMapObject object = (PlayerMapObject)playerMap.get(playerId);
         if (object == null) {
             return;
         }
@@ -81,7 +81,7 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     }
 
     public void leave(long playerId) {
-        PlayerVisibleMapObject object = (PlayerVisibleMapObject)playerMap.get(playerId);
+        PlayerMapObject object = (PlayerMapObject)playerMap.get(playerId);
         if (object == null) {
             return;
         }
@@ -100,11 +100,11 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     }
 
     @Override
-    public Map<Long, MonsterVisibleMapObject> getMonsterMap() {
+    public Map<Long, MonsterMapObject> getMonsterMap() {
         return monsterMap;
     }
 
-    public List<AbstractVisibleMapObject> getAreaObjects(Grid grid) {
+    public List<AbstractMapObject> getAreaObjects(Grid grid) {
         return aoiManager.getAreaObjects(grid);
     }
 
@@ -118,8 +118,11 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
     }
 
     @Override
-    public AbstractVisibleMapObject getPlayerFighter(long playerId) {
+    public AbstractMapObject getPlayerFighter(long playerId) {
         return playerMap.get(playerId);
     }
 
+    public void broadcast(Grid grid) {
+        aoiManager.broadcast(grid);
+    }
 }

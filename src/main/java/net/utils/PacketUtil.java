@@ -3,6 +3,7 @@ package net.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import client.MessageEnum;
 import game.base.manager.ClazzManager;
 import game.base.manager.SessionManager;
 import game.base.message.packet.SM_Message;
@@ -43,6 +44,10 @@ public class PacketUtil {
     }
 
     public static void send(Player player, Object object) {
+        if (object instanceof MessageEnum) {
+            send(player, ((MessageEnum)object).getId());
+            return;
+        }
         USession session = SessionManager.getSessionByAccountId(player.getAccountId());
         if (session == null) {
             return;

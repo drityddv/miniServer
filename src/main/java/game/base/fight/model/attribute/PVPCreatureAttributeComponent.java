@@ -38,6 +38,16 @@ public class PVPCreatureAttributeComponent extends AttributeContainer<BaseCreatu
     }
 
     @Override
+    public void removeAttributeModel(AttributeId attributeId) {
+        super.removeAttributeModel(attributeId);
+        if (attributeId instanceof PvpBuffAttributeId) {
+            buffAttributes.remove(attributeId);
+        }
+        containerRecompute();
+        owner.reviseStatus();
+    }
+
+    @Override
     public UnitComponentType getType() {
         return UnitComponentType.ATTRIBUTE;
     }
@@ -57,7 +67,7 @@ public class PVPCreatureAttributeComponent extends AttributeContainer<BaseCreatu
         // });
     }
 
-    // 同步需要手动从buff属性容器拉属性
+    // FIXME 同步后需要手动从buff属性容器拉属性 后面再加
     @Override
     public void putAttributesWithRecompute(AttributeId id, List<Attribute> attrs, boolean needSync) {
         if (id instanceof PvpBuffAttributeId) {
@@ -66,13 +76,5 @@ public class PVPCreatureAttributeComponent extends AttributeContainer<BaseCreatu
         }
         super.putAttributesWithRecompute(id, attrs, needSync);
         owner.reviseStatus();
-    }
-
-    public void removeBuffAttribute(long buffId) {
-        PvpBuffAttributeId attributeId = PvpBuffAttributeId.valueOf(buffId);
-        buffAttributes.remove(attributeId);
-        modelAttributeSet.remove(attributeId);
-        containerRecompute();
-		owner.reviseStatus();
     }
 }

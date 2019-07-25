@@ -34,10 +34,8 @@ public class BuffActiveCommand extends AbstractSceneCommand {
     public void action() {
         if (buff instanceof BaseCycleBuff) {
             BaseCycleBuff baseCycleBuff = (BaseCycleBuff)buff;
-            logger.info("period[{}] remainCount[{}]", baseCycleBuff.getPeriodCount(),
-                baseCycleBuff.getRemainCount());
+            logger.info("周期次数[{}] 剩余次数[{}]", baseCycleBuff.getPeriodCount(), baseCycleBuff.getRemainCount());
         }
-        logger.info("buff调度命令 buff[{} {}]", buff.getBuffId(), buff.getBuffResource().getBuffName());
         buff.triggerBuff(BuffTriggerPoint.Schedule_Active);
         buff.tryCancel();
     }

@@ -23,12 +23,12 @@ import utils.CollectionUtil;
 public class UseAoeSkillCommand extends AbstractSkillCommand {
     private Grid center;
 
-    public UseAoeSkillCommand(int mapId, Player player, long skillId) {
-        super(mapId, player, skillId, CollectionUtil.emptyArrayList());
+    public UseAoeSkillCommand(Player player, long skillId) {
+        super(player, skillId, CollectionUtil.emptyArrayList());
     }
 
     public static UseAoeSkillCommand valueOf(Player player, long skillId, Grid center) {
-        UseAoeSkillCommand command = new UseAoeSkillCommand(player.getCurrentMapId(), player, skillId);
+        UseAoeSkillCommand command = new UseAoeSkillCommand(player, skillId);
         command.center = center;
         return command;
     }
@@ -45,16 +45,15 @@ public class UseAoeSkillCommand extends AbstractSkillCommand {
             BaseActionHandler actionHandler = battleParam.getActionHandler();
             AbstractMovableScene mapScene = battleParam.getMapScene();
 
-            PlayerUnit caster = battleParam.getCaster();
-
             BaseAreaProcess baseAreaProcess = baseSkill.getSkillLevelResource().getAreaTypeEnum().create();
-
             AreaProcessParam param = AreaProcessParam.valueOf(center,
                 Integer.parseInt(baseSkill.getSkillLevelResource().getAreaTypeParam().get("radius")));
             baseAreaProcess.init(param, mapScene);
+
+            PlayerUnit caster = battleParam.getCaster();
             battleParam.setTargetUnits(baseAreaProcess.getResult());
 
-            actionHandler.init(caster, battleParam.getTargetUnits(), null, baseSkill);
+            actionHandler.init(battleParam);
             actionHandler.action(caster, battleParam.getTargetUnits(), baseSkill);
             mapHandler.doLogMap(player, mapId);
 

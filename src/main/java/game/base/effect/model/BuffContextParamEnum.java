@@ -49,13 +49,20 @@ public enum BuffContextParamEnum {
      * 回血数值
      */
     CureHp(Long.class),
-
+    /**
+     * 回蓝数值
+     */
+    CureMp(Long.class),
+    /**
+     * buffId
+     */
     Buff_Id(Long.class),
+    /**
+     * 触发点
+     */
+    Trigger_Point,
 
-	Trigger_Point,
-
-
-	;
+    ;
 
     private static Map<String, BuffContextParamEnum> NAME_TO_TYPE = new HashMap<>();
 

@@ -12,8 +12,8 @@ import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.map.model.Grid;
-import game.map.visible.PlayerVisibleMapObject;
-import game.map.visible.impl.MonsterVisibleMapObject;
+import game.map.visible.PlayerMapObject;
+import game.map.visible.impl.MonsterMapObject;
 import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.neutral.neutralMap.service.INeutralMapService;
@@ -70,12 +70,12 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public Map<Long, PlayerVisibleMapObject> getPlayerObjects(int mapId) {
+    public Map<Long, PlayerMapObject> getPlayerObjects(int mapId) {
         return neutralMapService.getMapScene(mapId).getPlayerMap();
     }
 
     @Override
-    public Map<Long, MonsterVisibleMapObject> getMonsterObjects(int mapId) {
+    public Map<Long, MonsterMapObject> getMonsterObjects(int mapId) {
         return neutralMapService.getMapScene(mapId).getMonsterMap();
     }
 
@@ -92,5 +92,10 @@ public class NeutralMapHandler extends AbstractMapHandler
     @Override
     public void test(int mapId, Map<String, Object> param) {
         neutralMapService.test(mapId, param);
+    }
+
+    @Override
+    public void broadcast(int mapId, Grid currentGrid) {
+        neutralMapService.broadcast(mapId, currentGrid);
     }
 }

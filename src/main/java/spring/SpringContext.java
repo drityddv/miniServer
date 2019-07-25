@@ -13,6 +13,7 @@ import game.base.buff.service.BuffService;
 import game.base.effect.service.IEffectService;
 import game.base.executor.account.IAccountExecutorService;
 import game.base.executor.scene.ISceneExecutorService;
+import game.base.item.service.IItemService;
 import game.base.manager.SessionManager;
 import game.common.service.ICommonService;
 import game.dispatch.Dispatcher;
@@ -23,7 +24,6 @@ import game.role.equip.service.IEquipService;
 import game.role.player.service.IPlayerService;
 import game.role.skill.service.ISkillService;
 import game.system.ISystemService;
-import game.user.item.service.IItemService;
 import game.user.login.service.ILoginService;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
@@ -32,6 +32,7 @@ import game.world.fight.service.IFightService;
 import game.world.mainCity.service.IMainCityService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
 import net.server.Server;
+import redis.service.RedisService;
 import resource.service.StorageManager;
 import scheduler.service.QuartzService;
 
@@ -127,6 +128,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private BuffService buffService;
+
+    @Autowired
+    private RedisService redisService;
 
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
@@ -239,6 +243,10 @@ public class SpringContext implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    public static RedisService getRedisService() {
+        return instance.redisService;
     }
 
     @PostConstruct

@@ -39,6 +39,8 @@ public class Start {
         // 初始化公共服务
         SpringContext.getSystemService().init();
 
+        SpringContext.getRedisService().init();
+
         // net服务器启动
         SpringContext.getServer().run();
 

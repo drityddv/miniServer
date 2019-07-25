@@ -46,7 +46,11 @@ public enum MessageEnum {
 
     PLAYER_UNIT_NOT_EXIST(22, "地图无战斗角色!"),
 
-    SKILL_TYPE_ERROR(23, "技能种类发包错误!"),;
+    SKILL_TYPE_ERROR(23, "技能种类发包错误!"),
+
+    DEAD(24, "您已死亡!"),
+
+    RE_LIVE(25, "您已重生!"),;
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 

@@ -7,7 +7,7 @@ import game.map.area.AreaProcessParam;
 import game.map.area.BaseAreaProcess;
 import game.map.base.AbstractMovableScene;
 import game.map.model.Grid;
-import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.AbstractMapObject;
 import game.world.base.resource.MapBlockResource;
 import game.world.utils.MapUtil;
 
@@ -45,7 +45,7 @@ public class RoundAreaProcess extends BaseAreaProcess {
      * 通过aoi获取单位
      */
     private void calculateByAoi() {
-        List<AbstractVisibleMapObject> areaObjects = mapScene.getAreaObjects(center);
+        List<AbstractMapObject> areaObjects = mapScene.getAreaObjects(center);
         areaObjects = areaObjects.stream()
             .filter(mapObject -> MapUtil.calculateDistance(center, mapObject.getCurrentGrid()) <= radius)
             .collect(Collectors.toList());

@@ -3,10 +3,10 @@ package game.role.equip.model;
 import java.util.List;
 
 import game.base.game.attribute.Attribute;
+import game.base.item.base.model.AbstractItem;
+import game.base.item.resource.ItemResource;
 import game.role.equip.constant.EquipPosition;
 import game.role.equip.recource.EquipResource;
-import game.user.item.base.model.AbstractItem;
-import game.user.item.resource.ItemResource;
 import spring.SpringContext;
 
 /**

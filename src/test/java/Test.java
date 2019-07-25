@@ -1,5 +1,6 @@
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import utils.MathUtil;
 
 /**
@@ -13,10 +14,7 @@ public class Test {
 
     @org.junit.Test
     public void run() {
-		System.out.println(MathUtil.getGcd(1,333));
-		System.out.println(MathUtil.getGcd(3,333));
+
     }
-
-
 
 }

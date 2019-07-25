@@ -47,26 +47,26 @@ public class BuffService {
      * @param caster
      */
     public void addBuffInScene(List<Long> buffIdList, BaseCreatureUnit caster, List<BaseCreatureUnit> targetList) {
-
-        buffIdList.forEach(configId -> {
-
-            targetList.forEach(targetUnit -> {
-				addBuffSingleUnit(caster, configId, targetUnit);
+        if (targetList == null) {
+            return;
+        }
+        targetList.forEach(targetUnit -> {
+            buffIdList.forEach(configId -> {
+                addBuffSingleUnit(caster, configId, targetUnit);
             });
         });
-
     }
 
-	public void addBuffSingleUnit(BaseCreatureUnit caster, Long configId, BaseCreatureUnit targetUnit) {
-		BuffResource buffResource = getBuffResource(configId);
-		BaseCreatureBuff buff = createBuffByConfigId(configId);
-		BuffContext context = BuffContext.valueOf(buffResource.getBuffContext());
+    public void addBuffSingleUnit(BaseCreatureUnit caster, Long configId, BaseCreatureUnit targetUnit) {
+        BuffResource buffResource = getBuffResource(configId);
+        BaseCreatureBuff buff = createBuffByConfigId(configId);
+        BuffContext context = BuffContext.valueOf(buffResource.getBuffContext());
 
-		context.addParam(BuffContextParamEnum.CASTER, caster);
-		context.addParam(BuffContextParamEnum.Target, targetUnit);
-		buff.init(buffResource, context);
-		// buff开始启动
-		buff.buffActive();
-	}
+        context.addParam(BuffContextParamEnum.CASTER, caster);
+        context.addParam(BuffContextParamEnum.Target, targetUnit);
+        buff.init(buffResource, context);
+        // buff开始启动
+        buff.buffActive();
+    }
 
 }

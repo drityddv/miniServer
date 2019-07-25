@@ -62,7 +62,7 @@ public class ClientDispatch {
 
     // 发包
     private void send(ChannelHandlerContext ctx, String input, List<String> list) {
-        String action = list.get(0);
+        String action = list.get(0).toLowerCase();
 
         try {
             Class<?> aClass = ClazzManager.getClazz(action);

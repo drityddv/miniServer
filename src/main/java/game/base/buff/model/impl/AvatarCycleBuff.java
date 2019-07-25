@@ -26,13 +26,16 @@ public class AvatarCycleBuff extends BaseCycleBuff {
         long hp = context.getParam(BuffContextParamEnum.MAX_HP);
         long mp = context.getParam(BuffContextParamEnum.MAX_MP);
 
-        Attribute attribute = Attribute.valueOf(AttributeType.getByName(BuffContextParamEnum.MAX_HP.name()), hp);
-        attributeMap.put(attribute.getAttributeType(), attribute);
+        Attribute hpAttribute = Attribute.valueOf(AttributeType.getByName(BuffContextParamEnum.MAX_HP.name()), hp);
+        Attribute mpAttribute = Attribute.valueOf(AttributeType.getByName(BuffContextParamEnum.MAX_MP.name()), mp);
+        attributeMap.put(hpAttribute.getAttributeType(), hpAttribute);
+        attributeMap.put(mpAttribute.getAttributeType(), mpAttribute);
 
         this.context.addParam(BuffContextParamEnum.Attribute, attributeMap);
         this.context.addParam(BuffContextParamEnum.Buff_Id, buffId);
         this.context.addParam(BuffContextParamEnum.Attribute_Container, BattleUtil.getUnitAttrComponent(target));
         this.context.addParam(BuffContextParamEnum.CureHp, context.getParam(BuffContextParamEnum.CureHp));
+        this.context.addParam(BuffContextParamEnum.CureMp, context.getParam(BuffContextParamEnum.CureHp));
     }
 
 }

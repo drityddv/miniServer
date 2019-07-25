@@ -1,7 +1,6 @@
 package game.role.player.model;
 
 import game.base.executor.util.ExecutorUtils;
-import game.base.fight.model.pvpunit.FighterAccount;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.object.AbstractCreature;
 import game.map.handler.AbstractMapHandler;
@@ -11,7 +10,7 @@ import game.role.player.entity.PlayerEnt;
 import game.role.skill.model.SkillList;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.pack.model.Pack;
-import game.world.base.command.FighterSyncCommand;
+import game.world.base.command.scene.FighterSyncCommand;
 import game.world.fight.syncStrategy.BasePlayerSyncStrategy;
 import spring.SpringContext;
 import utils.snow.IdUtil;
@@ -62,10 +61,6 @@ public class Player extends AbstractCreature<Player> {
         player.changingMap = false;
         player.setAttributeContainer(new PlayerAttributeContainer(player));
         return player;
-    }
-
-    public FighterAccount getFight() {
-        return SpringContext.getFightService().initForPlayer(this);
     }
 
     public void fighterSync(BasePlayerSyncStrategy syncStrategy) {

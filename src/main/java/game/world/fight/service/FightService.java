@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import game.base.executor.util.ExecutorUtils;
-import game.base.fight.model.pvpunit.FighterAccount;
 import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.fight.command.log.LogUnitBattleInfoCommand;
@@ -26,12 +25,6 @@ import game.world.fight.command.skill.UseSinglePointSkillCommand;
 public class FightService implements IFightService {
 
     private static final Logger logger = LoggerFactory.getLogger(FightService.class);
-
-    @Override
-    public FighterAccount initForPlayer(Player player) {
-        FighterAccount fighterAccount = FighterAccount.valueOf(player, player.getCurrentMapId());
-        return fighterAccount;
-    }
 
     @Override
     public void logUnitBattleInfo(Player player, long unitId) {

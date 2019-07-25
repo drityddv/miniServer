@@ -1,6 +1,6 @@
 package game.user.pack.model;
 
-import game.user.item.base.model.AbstractItem;
+import game.base.item.base.model.AbstractItem;
 import game.user.pack.constant.PackConstant;
 import spring.SpringContext;
 

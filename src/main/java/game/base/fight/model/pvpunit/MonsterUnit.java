@@ -1,18 +1,25 @@
 package game.base.fight.model.pvpunit;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.executor.util.ExecutorUtils;
+import game.base.fight.base.model.attack.BaseActionEntry;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.id.AttributeIdEnum;
+import game.base.item.base.model.AbstractItem;
+import game.role.player.model.Player;
+import game.world.base.command.player.AddItemToPackCommand;
 import game.world.base.resource.CreatureResource;
+import spring.SpringContext;
 
 /**
  * 怪物单元
@@ -63,4 +70,19 @@ public class MonsterUnit extends BaseCreatureUnit {
     public CreatureResource getCreatureResource() {
         return creatureResource;
     }
+
+    @Override
+    protected void handlerDead(BaseActionEntry attackEntry) {
+        super.handlerDead(attackEntry);
+        // 触发发奖
+        if (attackUnit instanceof PlayerUnit) {
+            PlayerUnit playerUnit = (PlayerUnit)attackUnit;
+            Player player = playerUnit.getMapObject().getPlayer();
+            long dropConfigId = creatureResource.getDropConfigId();
+            List<AbstractItem> rewardItems = SpringContext.getItemService().createItemsByDropConfig(dropConfigId);
+            ExecutorUtils.submit(AddItemToPackCommand.valueOf(player, rewardItems));
+        }
+
+    }
+
 }

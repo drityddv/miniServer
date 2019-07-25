@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import client.MessageEnum;
+import game.base.fight.base.model.attack.BaseActionEntry;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
@@ -15,7 +17,9 @@ import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.game.attribute.util.AttributeUtils;
+import game.map.visible.PlayerMapObject;
 import game.role.player.model.Player;
+import net.utils.PacketUtil;
 
 /**
  * @author : ddv
@@ -30,12 +34,15 @@ public class PlayerUnit extends BaseCreatureUnit {
         UnitComponentContainer.registerComponentClazz(PlayerUnit.class, map);
     }
 
+    private PlayerMapObject mapObject;
+
     public PlayerUnit(Player player, FighterAccount fighterAccount) {
         super(player.getPlayerId(), fighterAccount, player.getAccountId());
     }
 
     public static PlayerUnit valueOf(Player player, FighterAccount fighterAccount, int mapId) {
         PlayerUnit playerUnit = new PlayerUnit(player, fighterAccount);
+        playerUnit.mapObject = (PlayerMapObject)fighterAccount.getMapObject();
         playerUnit.level = player.getLevel();
         playerUnit.initComponent();
 
@@ -47,11 +54,8 @@ public class PlayerUnit extends BaseCreatureUnit {
             AttributeUtils.accumulateToMap(attributeSet, attributeList);
             unitAttributeComponent.putAttributes(attributeId, attributeList);
         });
-        unitAttributeComponent.containerRecompute();
-        playerUnit.currentHp =
-            playerUnit.maxHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
-        playerUnit.currentMp =
-            playerUnit.maxMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+
+        playerUnit.initBaseAttribute();
 
         playerUnit.mapId = mapId;
 
@@ -67,6 +71,18 @@ public class PlayerUnit extends BaseCreatureUnit {
     }
 
     @Override
+    protected void handlerDead(BaseActionEntry attackEntry) {
+        super.handlerDead(attackEntry);
+        PacketUtil.send(mapObject.getPlayer(), MessageEnum.DEAD);
+    }
+
+    @Override
+    public void relive() {
+        super.relive();
+        PacketUtil.send(mapObject.getPlayer(), MessageEnum.RE_LIVE);
+    }
+
+    @Override
     public void reviseStatus() {
         double hpRadio = (double)currentHp / (double)maxHp;
         double mpRadio = (double)currentMp / (double)maxMp;
@@ -75,11 +91,13 @@ public class PlayerUnit extends BaseCreatureUnit {
         maxMp = unitAttrComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
         currentHp = (long)(hpRadio * maxHp);
         currentMp = (long)(mpRadio * maxMp);
-
     }
 
     private PVPSkillComponent getSkillComponent() {
         return componentContainer.getComponent(UnitComponentType.SKILL);
     }
 
+    public PlayerMapObject getMapObject() {
+        return mapObject;
+    }
 }

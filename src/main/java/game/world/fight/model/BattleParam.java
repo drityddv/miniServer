@@ -5,6 +5,7 @@ import java.util.List;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
+import game.base.skill.model.BaseSkill;
 import game.map.base.AbstractMovableScene;
 import game.map.handler.AbstractMapHandler;
 
@@ -20,6 +21,7 @@ public class BattleParam {
     private BaseActionHandler actionHandler;
     private AbstractMovableScene mapScene;
     private PlayerUnit caster;
+    private BaseSkill baseSkill;
     private BaseCreatureUnit targetUnit;
     private List<BaseCreatureUnit> targetUnits;
 
@@ -70,5 +72,13 @@ public class BattleParam {
 
     public void setMapScene(AbstractMovableScene mapScene) {
         this.mapScene = mapScene;
+    }
+
+    public BaseSkill getBaseSkill() {
+        return baseSkill;
+    }
+
+    public void setBaseSkill(BaseSkill baseSkill) {
+        this.baseSkill = baseSkill;
     }
 }

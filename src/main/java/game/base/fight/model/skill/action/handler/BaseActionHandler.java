@@ -10,6 +10,7 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
 import game.map.model.Grid;
+import game.world.fight.model.BattleParam;
 import spring.SpringContext;
 import utils.TimeUtil;
 
@@ -20,7 +21,7 @@ import utils.TimeUtil;
 
 public abstract class BaseActionHandler implements IActionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(BaseActionHandler.class);
+    protected static final Logger logger = LoggerFactory.getLogger(BaseActionHandler.class);
     protected BaseCreatureUnit caster;
     protected BaseSkill baseSkill;
     protected BaseCreatureUnit defender;
@@ -45,8 +46,6 @@ public abstract class BaseActionHandler implements IActionHandler {
     public void action(BaseCreatureUnit caster, BaseSkill baseSkill) {
         run();
     }
-
-
 
     private void run() {
         if (!actionPre()) {
@@ -86,6 +85,13 @@ public abstract class BaseActionHandler implements IActionHandler {
         this.defender = defender;
         this.defenders = defenders;
         this.baseSkill = baseSkill;
+    }
+
+    public void init(BattleParam battleParam) {
+        this.caster = battleParam.getCaster();
+        this.defender = battleParam.getTargetUnit();
+        this.defenders = battleParam.getTargetUnits();
+        this.baseSkill = battleParam.getBaseSkill();
     }
 
     protected void doAction() {

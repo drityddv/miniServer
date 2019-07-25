@@ -21,9 +21,9 @@ import game.map.area.AreaTypeEnum;
 import game.map.area.BaseAreaProcess;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
-import game.map.visible.PlayerVisibleMapObject;
-import game.map.visible.impl.MonsterVisibleMapObject;
-import game.map.visible.impl.NpcVisibleObject;
+import game.map.visible.PlayerMapObject;
+import game.map.visible.impl.MonsterMapObject;
+import game.map.visible.impl.NpcObject;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
@@ -75,7 +75,7 @@ public class NeutralMapService implements INeutralMapService {
         NeutralMapScene neutralMapScene = mapCommonInfo.getMapScene();
         MiniMapResource mapResource = mapCommonInfo.getMiniMapResource();
 
-        PlayerVisibleMapObject visibleObject = PlayerVisibleMapObject.valueOf(player, mapId);
+        PlayerMapObject visibleObject = PlayerMapObject.valueOf(player, mapId);
         visibleObject.init(mapResource.getBornX(), mapResource.getBornY());
 
         neutralMapScene.enter(player.getPlayerId(), visibleObject);
@@ -108,9 +108,9 @@ public class NeutralMapService implements INeutralMapService {
     public void logMap(Player player, int mapId) {
         NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
         NeutralMapScene mapScene = mapCommonInfo.getMapScene();
-        List<PlayerVisibleMapObject> visibleObjects = mapScene.getVisibleObjects();
-        Collection<NpcVisibleObject> npcList = mapScene.getNpcMap().values();
-        Collection<MonsterVisibleMapObject> monsterList = mapScene.getMonsterMap().values();
+        List<PlayerMapObject> visibleObjects = mapScene.getVisibleObjects();
+        Collection<NpcObject> npcList = mapScene.getNpcMap().values();
+        Collection<MonsterMapObject> monsterList = mapScene.getMonsterMap().values();
         MapUtil.log(player, mapScene, visibleObjects, npcList, monsterList, mapScene.getBuffEffectMap().values());
 
     }
@@ -119,8 +119,8 @@ public class NeutralMapService implements INeutralMapService {
     public void heartBeat(int mapId) {
         NeutralMapInfo mapCommonInfo = neutralMapManager.getNeutralMapCommonInfo(mapId);
         NeutralMapScene mapScene = mapCommonInfo.getMapScene();
-        List<PlayerVisibleMapObject> visibleObjects = mapScene.getVisibleObjects();
-        for (PlayerVisibleMapObject visibleObject : visibleObjects) {
+        List<PlayerMapObject> visibleObjects = mapScene.getVisibleObjects();
+        for (PlayerMapObject visibleObject : visibleObjects) {
             if (!SpringContext.getPlayerService().isPlayerOnline(visibleObject.getAccountId())) {
                 mapScene.leave(visibleObject.getId());
             }
@@ -128,12 +128,12 @@ public class NeutralMapService implements INeutralMapService {
     }
 
     @Override
-    public Map<Long, PlayerVisibleMapObject> getVisibleObjects(int mapId) {
+    public Map<Long, PlayerMapObject> getVisibleObjects(int mapId) {
         return getMapInfo(mapId).getMapScene().getPlayerMap();
     }
 
     @Override
-    public Map<Long, MonsterVisibleMapObject> getMonsterObjects(int mapId) {
+    public Map<Long, MonsterMapObject> getMonsterObjects(int mapId) {
         return getMapInfo(mapId).getMapScene().getMonsterMap();
     }
 
@@ -157,6 +157,11 @@ public class NeutralMapService implements INeutralMapService {
         AreaProcessParam processParam = AreaProcessParam.valueOf(Grid.valueOf(x, y), radius);
         process.init(processParam, mapScene);
         List<BaseCreatureUnit> result = process.getResult();
+    }
+
+    @Override
+    public void broadcast(int mapId, Grid currentGrid) {
+        getMapScene(mapId).broadcast(currentGrid);
     }
 
     private void initNeutralMapInfo(MiniMapResource mapResource) {

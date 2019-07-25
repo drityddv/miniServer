@@ -1,15 +1,17 @@
 package game.user.pack.service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import game.base.item.base.model.AbstractItem;
+import game.base.item.resource.ItemResource;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
-import game.user.item.base.model.AbstractItem;
-import game.user.item.resource.ItemResource;
 import game.user.pack.model.Pack;
 import game.user.pack.model.PackSquare;
 import game.user.pack.packet.SM_PackInfo;
@@ -56,6 +58,18 @@ public class PackService implements IPackService {
     }
 
     @Override
+    public boolean addItems(Player player, List<AbstractItem> items) {
+        Pack pack = getPack(player);
+        for (AbstractItem item : items) {
+            if (!pack.addItem(item)) {
+                return false;
+            }
+        }
+        packManager.save(player.getPlayerId());
+        return true;
+    }
+
+    @Override
     public void useItem(Player player, ItemResource itemResource, int count) {}
 
     @Override
@@ -68,6 +82,16 @@ public class PackService implements IPackService {
     public boolean isEnoughSize(Player player, AbstractItem item) {
         Pack pack = getPack(player);
         return pack.isEnoughSize(item);
+    }
+
+    @Override
+    public boolean isEnoughSize(Player player, List<AbstractItem> itemList) {
+        for (AbstractItem abstractItem : itemList) {
+            if (!isEnoughSize(player, abstractItem)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

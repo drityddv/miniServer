@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import game.user.item.resource.ItemResource;
+import game.base.item.resource.ItemResource;
 import resource.anno.Static;
 
 /**

@@ -46,7 +46,7 @@ public class PoisonCycleBuff extends BaseCycleBuff {
             this.frequencyTime = Math.min(this.frequencyTime, newBuff.frequencyTime);
             modifyContext();
         }
-		initBuffJob();
+        initBuffJob();
 
     }
 }

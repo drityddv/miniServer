@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import game.map.base.AbstractMovableScene;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
-import game.map.visible.PlayerVisibleMapObject;
-import game.map.visible.impl.NpcVisibleObject;
+import game.map.visible.PlayerMapObject;
+import game.map.visible.impl.NpcObject;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
@@ -47,7 +47,7 @@ public class MainCityService implements IMainCityService {
         MainCityMapScene scene = mapInfo.getMapScene();
         MiniMapResource miniMapResource = mapInfo.getMiniMapResource();
 
-        PlayerVisibleMapObject visibleMapInfo = PlayerVisibleMapObject.valueOf(player, mapId);
+        PlayerMapObject visibleMapInfo = PlayerMapObject.valueOf(player, mapId);
         visibleMapInfo.init(miniMapResource.getBornX(), miniMapResource.getBornY());
 
         scene.enter(player.getPlayerId(), visibleMapInfo);
@@ -74,8 +74,8 @@ public class MainCityService implements IMainCityService {
     public void doLogMap(Player player, int mapId) {
         MainCityMapInfo mapCommonInfo = mainCityManager.getMainCityMapInfo(mapId);
         MainCityMapScene mapScene = mapCommonInfo.getMapScene();
-        List<PlayerVisibleMapObject> visibleObjects = mapScene.getVisibleObjects();
-        Collection<NpcVisibleObject> npcList = mapScene.getNpcMap().values();
+        List<PlayerMapObject> visibleObjects = mapScene.getVisibleObjects();
+        Collection<NpcObject> npcList = mapScene.getNpcMap().values();
 
         MapUtil.log(player, mapScene, visibleObjects, npcList, null, null);
     }

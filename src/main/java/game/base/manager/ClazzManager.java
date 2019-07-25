@@ -81,7 +81,7 @@ public class ClazzManager {
                     logger.error("协议资源文件key配置重复，重复id[{}]", id);
                     throw new RuntimeException("协议资源文件加载失败！");
                 }
-                actionMap.put(action, clazz);
+                actionMap.put(action.toLowerCase(), clazz);
             }
 
             clazzMap.put(id, value);

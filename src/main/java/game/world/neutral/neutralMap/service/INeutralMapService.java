@@ -4,8 +4,8 @@ import java.util.Map;
 
 import game.base.buff.model.BaseCreatureBuff;
 import game.map.model.Grid;
-import game.map.visible.PlayerVisibleMapObject;
-import game.map.visible.impl.MonsterVisibleMapObject;
+import game.map.visible.PlayerMapObject;
+import game.map.visible.impl.MonsterMapObject;
 import game.role.player.model.Player;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 
@@ -84,7 +84,7 @@ public interface INeutralMapService {
      * @param mapId
      * @return
      */
-    Map<Long, PlayerVisibleMapObject> getVisibleObjects(int mapId);
+    Map<Long, PlayerMapObject> getVisibleObjects(int mapId);
 
     /**
      * 怪物单位
@@ -92,7 +92,7 @@ public interface INeutralMapService {
      * @param mapId
      * @return
      */
-    Map<Long, MonsterVisibleMapObject> getMonsterObjects(int mapId);
+    Map<Long, MonsterMapObject> getMonsterObjects(int mapId);
 
     /**
      * buff组件
@@ -116,4 +116,11 @@ public interface INeutralMapService {
      * @param mapId
      */
     void test(int mapId, Map<String, Object> param);
+
+    /**
+     * 区域广播
+     *
+     * @param currentGrid
+     */
+    void broadcast(int mapId, Grid currentGrid);
 }

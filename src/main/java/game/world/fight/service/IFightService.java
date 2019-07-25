@@ -2,7 +2,6 @@ package game.world.fight.service;
 
 import java.util.List;
 
-import game.base.fight.model.pvpunit.FighterAccount;
 import game.role.player.model.Player;
 
 /**
@@ -13,14 +12,6 @@ import game.role.player.model.Player;
  */
 
 public interface IFightService {
-
-    /**
-     * 为玩家初始化战斗信息
-     *
-     * @param player
-     * @return
-     */
-    FighterAccount initForPlayer(Player player);
 
     /**
      * 查看场景对象信息

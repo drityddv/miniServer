@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.packet.SM_AoiBroadCast;
-import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.AbstractMapObject;
 import game.map.visible.BaseAttackAbleMapObject;
-import game.map.visible.PlayerVisibleMapObject;
-import game.world.base.constant.MAP_CONSTANT;
+import game.map.visible.PlayerMapObject;
+import game.world.base.constant.Map_Constant;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
 import utils.CollectionUtil;
@@ -28,7 +29,7 @@ public class BroadcastCenter {
     private int pointX;
     private int pointY;
     // 广播范围内的单位
-    private Map<Grid, Map<Long, AbstractVisibleMapObject>> unitMap = new HashMap<>();
+    private Map<Grid, Map<Long, AbstractMapObject>> unitMap = new HashMap<>();
 
     public BroadcastCenter(int pointX, int pointY) {
         this.pointX = pointX;
@@ -43,35 +44,39 @@ public class BroadcastCenter {
         return copy;
     }
 
-    public void broadCastUnits(AbstractVisibleMapObject object) {
-        List<AbstractVisibleMapObject> objects = new ArrayList<>();
+    public void broadCastUnits(AbstractMapObject object) {
+        if (!(object instanceof PlayerMapObject)) {
+            return;
+        }
+
+        List<AbstractMapObject> objects = new ArrayList<>();
         unitMap.values().forEach(girdUnitMap -> objects.addAll(girdUnitMap.values()));
 
-        objects.stream()
-            .filter(mapInfo -> mapInfo instanceof PlayerVisibleMapObject && MapUtil
-                .calculateDistance(object.getCurrentGrid(), mapInfo.getCurrentGrid()) <= MAP_CONSTANT.VISIBLE_DISTANCE)
-            .forEach(mapInfo -> {
-                SM_AoiBroadCast sm = SM_AoiBroadCast.valueOf(objects, pointX, pointY);
-                PlayerVisibleMapObject playerVisibleMapInfo = (PlayerVisibleMapObject)mapInfo;
-                PacketUtil.send(playerVisibleMapInfo.getPlayer(), sm);
-            });
+        List<AbstractMapObject> smObjects =
+            objects.stream().filter(mapObject -> MapUtil.calculateDistance(object.getCurrentGrid(),
+                mapObject.getCurrentGrid()) <= Map_Constant.VISIBLE_DISTANCE).collect(Collectors.toList());
+
+        SM_AoiBroadCast sm = SM_AoiBroadCast.valueOf(smObjects, pointX, pointY);
+        PlayerMapObject playerVisibleMapInfo = (PlayerMapObject)object;
+        PacketUtil.send(playerVisibleMapInfo.getPlayer(), sm);
+
     }
 
     public void broadCastAllUnits() {
-        List<AbstractVisibleMapObject> objects = new ArrayList<>();
+        List<AbstractMapObject> objects = new ArrayList<>();
         unitMap.values().forEach(girdUnitMap -> objects.addAll(girdUnitMap.values()));
         objects.forEach(abstractVisibleMapObject -> {
             broadCastUnits(abstractVisibleMapObject);
         });
     }
 
-    public void triggerEnter(AbstractVisibleMapObject object) {
+    public void triggerEnter(AbstractMapObject object) {
         Grid lastGrid = object.getLastGrid();
         if (unitMap.get(lastGrid).containsKey(object.getId())) {
             unitMap.get(lastGrid).remove(object.getId());
         }
         Grid currentGrid = object.getCurrentGrid();
-        Map<Long, AbstractVisibleMapObject> mapInfoMap = unitMap.get(currentGrid);
+        Map<Long, AbstractMapObject> mapInfoMap = unitMap.get(currentGrid);
         mapInfoMap.put(object.getId(), object);
         broadCastUnits(object);
     }
@@ -81,7 +86,7 @@ public class BroadcastCenter {
     }
 
     // 清除单位并且广播 type==1 移动 type==2 离开
-    public <T extends AbstractVisibleMapObject> void removeUnit(T object, int type) {
+    public <T extends AbstractMapObject> void removeUnit(T object, int type) {
         Grid grid = object.getLastGrid();
         if (type == 2) {
             grid = object.getCurrentGrid();
@@ -92,7 +97,7 @@ public class BroadcastCenter {
 
     public List<BaseCreatureUnit> getCreatureUnitsByGrid(Grid grid) {
         List<BaseCreatureUnit> creatureUnits = new ArrayList<>();
-        Map<Long, AbstractVisibleMapObject> mapObjectMap = unitMap.get(grid);
+        Map<Long, AbstractMapObject> mapObjectMap = unitMap.get(grid);
         mapObjectMap.values().forEach(mapObject -> {
             if (mapObject instanceof BaseAttackAbleMapObject) {
                 creatureUnits.add(mapObject.getFighterAccount().getCreatureUnit());
@@ -103,8 +108,8 @@ public class BroadcastCenter {
     }
 
     // 注册单位并且广播
-    public void registerUnit(AbstractVisibleMapObject object) {
-        Map<Long, AbstractVisibleMapObject> lastGrid = unitMap.get(object.getLastGrid());
+    public void registerUnit(AbstractMapObject object) {
+        Map<Long, AbstractMapObject> lastGrid = unitMap.get(object.getLastGrid());
 
         if (lastGrid != null && lastGrid.containsKey(object.getId())) {
             lastGrid.remove(object.getId());
@@ -130,8 +135,8 @@ public class BroadcastCenter {
         return pointY == that.pointY;
     }
 
-    public List<AbstractVisibleMapObject> getAreaObjects() {
-        List<AbstractVisibleMapObject> objects = CollectionUtil.emptyArrayList();
+    public List<AbstractMapObject> getAreaObjects() {
+        List<AbstractMapObject> objects = CollectionUtil.emptyArrayList();
         unitMap.values().forEach(objectMap -> {
             objects.addAll(objectMap.values());
         });
@@ -139,7 +144,7 @@ public class BroadcastCenter {
         return objects;
     }
 
-    public Map<Grid, Map<Long, AbstractVisibleMapObject>> getUnitMap() {
+    public Map<Grid, Map<Long, AbstractMapObject>> getUnitMap() {
         return unitMap;
     }
 

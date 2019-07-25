@@ -20,8 +20,8 @@ import game.base.message.exception.RequestException;
 import game.base.skill.model.BaseSkill;
 import game.gm.packet.SM_LogMessage;
 import game.map.handler.AbstractMapHandler;
-import game.map.visible.AbstractVisibleMapObject;
-import game.map.visible.PlayerVisibleMapObject;
+import game.map.visible.AbstractMapObject;
+import game.map.visible.PlayerMapObject;
 import game.role.player.model.Player;
 import game.world.fight.model.BattleParam;
 import net.utils.PacketUtil;
@@ -70,7 +70,7 @@ public class BattleUtil {
     // 找到怪物或者玩家
     public static BaseCreatureUnit findTargetUnit(AbstractMapHandler mapHandler, long targetId, int mapId) {
         BaseCreatureUnit unit = null;
-        AbstractVisibleMapObject mapObject = mapHandler.getPlayerObjects(mapId).get(targetId);
+        AbstractMapObject mapObject = mapHandler.getPlayerObjects(mapId).get(targetId);
         if (mapObject == null) {
             mapObject = mapHandler.getMonsterObjects(mapId).get(targetId);
         }
@@ -94,40 +94,24 @@ public class BattleUtil {
         return units;
     }
 
-    /**
-     * 战场工具 找寻目标对象unit
-     *
-     * @param mapId
-     * @param skillId
-     */
-    public static BattleParam initBattleParam(int mapId, long skillId, long playerId, long targetId,
-        List<Long> targetIds) {
+    public static BattleParam init(int mapId, long skillId, long playerId) {
         BattleParam battleParam = new BattleParam();
 
         AbstractMapHandler mapHandler = AbstractMapHandler.getAbstractMapHandler(mapId);
         BaseActionHandler actionHandler;
 
-        Map<Long, PlayerVisibleMapObject> playerObjects = mapHandler.getPlayerObjects(mapId);
-        PlayerVisibleMapObject playerVisibleMapObject = playerObjects.get(playerId);
-        if (playerVisibleMapObject == null) {
+        Map<Long, PlayerMapObject> playerObjects = mapHandler.getPlayerObjects(mapId);
+        PlayerMapObject playerMapObject = playerObjects.get(playerId);
+        if (playerMapObject == null) {
             RequestException.throwException(MessageEnum.PLAYER_UNIT_NOT_EXIST);
         }
 
-        PlayerUnit caster = (PlayerUnit)playerVisibleMapObject.getFighterAccount().getCreatureUnit();
+        PlayerUnit caster = (PlayerUnit)playerMapObject.getFighterAccount().getCreatureUnit();
 
         BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
         actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
 
-        if (targetId != 0) {
-            BaseCreatureUnit targetUnit = BattleUtil.findTargetUnit(mapHandler, targetId, mapId);
-            battleParam.setTargetUnit(targetUnit);
-
-        }
-        if (targetIds != null) {
-            List<BaseCreatureUnit> targetUnits = BattleUtil.findTargetUnits(mapHandler, targetIds, mapId);
-            battleParam.setTargetUnits(targetUnits);
-        }
-
+        battleParam.setBaseSkill(baseSkill);
         battleParam.setMapHandler(mapHandler);
         battleParam.setActionHandler(actionHandler);
         battleParam.setCaster(caster);
@@ -135,32 +119,21 @@ public class BattleUtil {
         return battleParam;
     }
 
-    public static BattleParam initParam(int mapId, long skillId, long playerId, List<Long> targetIds) {
-        BattleParam battleParam = new BattleParam();
+    public static BattleParam initTarget(int mapId, long skillId, long playerId, Long targetId) {
+        BattleParam battleParam = init(mapId, skillId, playerId);
+        battleParam.setTargetUnit(BattleUtil.findTargetUnit(battleParam.getMapHandler(), targetId, mapId));
+        return battleParam;
+    }
 
-        AbstractMapHandler mapHandler = AbstractMapHandler.getAbstractMapHandler(mapId);
-        BaseActionHandler actionHandler;
-
-        Map<Long, PlayerVisibleMapObject> playerObjects = mapHandler.getPlayerObjects(mapId);
-        PlayerVisibleMapObject playerVisibleMapObject = playerObjects.get(playerId);
-        if (playerVisibleMapObject == null) {
-            RequestException.throwException(MessageEnum.PLAYER_UNIT_NOT_EXIST);
-        }
-
-        PlayerUnit caster = (PlayerUnit)playerVisibleMapObject.getFighterAccount().getCreatureUnit();
-
-        BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
-        actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
+    public static BattleParam initTargets(int mapId, long skillId, long playerId, List<Long> targetIds) {
+        BattleParam battleParam = init(mapId, skillId, playerId);
 
         if (targetIds != null) {
-            List<BaseCreatureUnit> targetUnits = BattleUtil.findTargetUnits(mapHandler, targetIds, mapId);
+            List<BaseCreatureUnit> targetUnits =
+                BattleUtil.findTargetUnits(battleParam.getMapHandler(), targetIds, mapId);
             battleParam.setTargetUnits(targetUnits);
         }
 
-        battleParam.setMapHandler(mapHandler);
-        battleParam.setActionHandler(actionHandler);
-        battleParam.setCaster(caster);
-        battleParam.setMapScene(mapHandler.getMapScene(mapId));
         return battleParam;
     }
 

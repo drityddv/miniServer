@@ -3,7 +3,7 @@ package game.world.fight.command.log;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.fight.utils.BattleUtil;
 import game.map.handler.AbstractMapHandler;
-import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.AbstractMapObject;
 import game.role.player.model.Player;
 
 /**
@@ -27,8 +27,7 @@ public class LogUnitBattleInfoCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
-        AbstractVisibleMapObject visibleMapInfo =
-            AbstractMapHandler.getAbstractMapHandler(mapId).getUnit(mapId, unitId);
+        AbstractMapObject visibleMapInfo = AbstractMapHandler.getAbstractMapHandler(mapId).getUnit(mapId, unitId);
 
         if (visibleMapInfo == null) {
             return;

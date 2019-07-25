@@ -1,6 +1,7 @@
 package game.base.buff.model;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import game.base.buff.resource.BuffResource;
 import game.base.effect.model.BuffContext;
 import game.base.effect.model.BuffContextParamEnum;
-import game.base.effect.model.constant.EffectTypeEnum;
 import game.base.effect.model.effect.BaseEffect;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import scheduler.job.model.JobEntry;
@@ -28,7 +28,7 @@ public abstract class BaseBuff<T> {
 
     protected long buffId;
 
-    protected Map<BuffTriggerPoint, List<BaseEffect>> triggerPoints = new HashMap<>();
+    protected Map<BuffTriggerPoint, List<BaseEffect>> triggerPoints;
 
     // buff调度作业
     protected JobEntry buffJob;
@@ -45,27 +45,17 @@ public abstract class BaseBuff<T> {
     protected BuffResource buffResource;
 
     public void init(BuffResource buffResource, BuffContext context) {
-        for (BuffTriggerPoint triggerPoint : BuffTriggerPoint.values()) {
-            triggerPoints.put(triggerPoint, new ArrayList<>());
-        }
 
         this.buffId = IdUtil.getLongId();
         this.configId = buffResource.getConfigId();
         this.mergedCount = 0;
         this.buffResource = buffResource;
+        this.triggerPoints = buffResource.getTriggerPoints();
         this.effectList = buffResource.getEffectList();
 
-        this.effectList.forEach(baseEffect -> {
-            Set<BuffTriggerPoint> triggerPointSet =
-                EffectTypeEnum.getByClazz(baseEffect.getClass()).getTriggerPointSet();
-            triggerPointSet.forEach(buffTriggerPoint -> {
-                triggerPoints.get(buffTriggerPoint).add(baseEffect);
-            });
-        });
-
         this.context = BuffContext.valueOf();
-        caster = context.getParam(BuffContextParamEnum.CASTER);
-        target = context.getParam(BuffContextParamEnum.Target);
+        this.caster = context.getParam(BuffContextParamEnum.CASTER);
+        this.target = context.getParam(BuffContextParamEnum.Target);
         this.context.addParam(BuffContextParamEnum.CASTER, caster);
         this.context.addParam(BuffContextParamEnum.Target, target);
     }
