@@ -7,6 +7,7 @@ import java.util.Map;
 
 import game.map.base.BroadcastCenter;
 import game.map.model.Grid;
+import game.world.base.constant.MAP_CONSTANT;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 import utils.JodaUtil;
@@ -50,7 +51,7 @@ public class MapBlockResource {
     private void initAoi() {
         aoiModelMap = new HashMap<>();
         // 默认广播范围边长
-        int defaultSize = 4;
+        int defaultSize = MAP_CONSTANT.AOI_SIZE;
         Map<Grid, Boolean> occupyMap = new HashMap<>();
         List<BroadcastCenter> centerList = new ArrayList<>();
 
@@ -121,7 +122,7 @@ public class MapBlockResource {
     }
 
     public Map<Grid, BroadcastCenter> getAoiModelMap() {
-       return aoiModelMap;
+        return aoiModelMap;
     }
 
 }

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
@@ -12,6 +11,7 @@ import game.map.packet.SM_AoiBroadCast;
 import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.BaseAttackAbleMapObject;
 import game.map.visible.PlayerVisibleMapObject;
+import game.world.base.constant.MAP_CONSTANT;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
 import utils.CollectionUtil;
@@ -48,8 +48,8 @@ public class BroadcastCenter {
         unitMap.values().forEach(girdUnitMap -> objects.addAll(girdUnitMap.values()));
 
         objects.stream()
-            .filter(mapInfo -> mapInfo instanceof PlayerVisibleMapObject
-                && MapUtil.calculateDistance(object.getCurrentGrid(), mapInfo.getCurrentGrid()) <= 4)
+            .filter(mapInfo -> mapInfo instanceof PlayerVisibleMapObject && MapUtil
+                .calculateDistance(object.getCurrentGrid(), mapInfo.getCurrentGrid()) <= MAP_CONSTANT.VISIBLE_DISTANCE)
             .forEach(mapInfo -> {
                 SM_AoiBroadCast sm = SM_AoiBroadCast.valueOf(objects, pointX, pointY);
                 PlayerVisibleMapObject playerVisibleMapInfo = (PlayerVisibleMapObject)mapInfo;
