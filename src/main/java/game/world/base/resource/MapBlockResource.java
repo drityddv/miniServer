@@ -121,15 +121,7 @@ public class MapBlockResource {
     }
 
     public Map<Grid, BroadcastCenter> getAoiModelMap() {
-        Map<Grid, BroadcastCenter> copy = new HashMap<>();
-        aoiModelMap.forEach((grid, broadcastCenter) -> {
-            BroadcastCenter center = BroadcastCenter.valueOf(broadcastCenter);
-            center.getUnitMap().keySet().forEach(grid1 -> {
-                copy.put(grid1, center);
-            });
-
-        });
-        return copy;
+       return aoiModelMap;
     }
 
 }

@@ -53,4 +53,5 @@ public abstract class BaseCreatureUnit extends BaseUnit {
         this.fighterAccount = fighterAccount;
     }
 
+
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.model.skill.action.handler.IActionHandler;
+import game.base.fight.model.skill.action.handler.impl.Avatar;
 import game.base.fight.model.skill.action.handler.impl.FlameStorm;
 import game.base.fight.model.skill.action.handler.impl.FrostBolt;
 import game.base.fight.model.skill.action.handler.impl.HighNoonShoot;
@@ -26,7 +27,9 @@ public enum SkillEnum {
     /**
      * 烈焰风暴
      */
-    Flame_Storm(3, FlameStorm.class),;
+    Flame_Storm(3, FlameStorm.class),
+
+    Avatar_(4, Avatar.class);
 
     public static Map<SkillEnum, BaseActionHandler> TYPE_TO_HANDLER = new HashMap<>(SkillEnum.values().length);
     public static Map<Integer, SkillEnum> ID_TO_TYPE = new HashMap<>(SkillEnum.values().length);

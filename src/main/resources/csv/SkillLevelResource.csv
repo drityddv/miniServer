@@ -5,17 +5,17 @@ configId,skillId,level,value,mpConsume,cdString,nextLevelConfigId,consumeString,
 "4       ","1      ","4    ","20   ","20       ","0.3     ","5                ",SKILL_POINT:1,Single_Point,"              ","1          ",,"MAGIC_ATTACK_UPPER,MAGIC_ATTACK_LOWER",,
 "5       ","1      ","5    ","25   ","25       ","0.3     ","6                ",SKILL_POINT:1,Single_Point,"              ","1          ",,"MAGIC_ATTACK_UPPER,MAGIC_ATTACK_LOWER",,
 "6       ","1      ","6    ","30   ","30       ","0.3     ","0                ",SKILL_POINT:1,Single_Point,"              ","1          ",,"MAGIC_ATTACK_UPPER,MAGIC_ATTACK_LOWER",,
-"100     ","2      ","1    ","     ","5        ","0.5     ","101              ",SKILL_POINT:1,Self,,"           ",,,,
-"101     ","2      ","2    ","     ","10       ","0.5     ","102              ",SKILL_POINT:1,Self,,"           ",,,,
-"102     ","2      ","3    ","     ","15       ","0.5     ","103              ",SKILL_POINT:1,Self,,"           ",,,,
-"103     ","2      ","4    ","     ","20       ","0.5     ","104              ",SKILL_POINT:1,Self,,"           ",,,,
-"105     ","2      ","6    ","     ","30       ","0.5     ","0                ",SKILL_POINT:1,Self,,"           ",,,,
-"200     ","3      ","1    ","     ","5        ","0.5     ","201              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,
-"201     ","3      ","2    ","     ","10       ","0.5     ","202              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,
-"202     ","3      ","3    ","     ","15       ","0.5     ","203              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,
-"203     ","3      ","4    ","     ","20       ","0.5     ","204              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,
-"204     ","3      ","5    ","     ","25       ","0.5     ","205              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,
-"205     ","3      ","6    ","     ","30       ","0.5     ","0                ",SKILL_POINT:1,Single_Point,"              ","           ",,,,
+"100     ","2      ","1    ","     ","5        ","0.5     ","101              ",SKILL_POINT:1,Self,,4,,,,4
+"101     ","2      ","2    ","     ","10       ","0.5     ","102              ",SKILL_POINT:1,Self,,4,,,,4
+"102     ","2      ","3    ","     ","15       ","0.5     ","103              ",SKILL_POINT:1,Self,,4,,,,4
+"103     ","2      ","4    ","     ","20       ","0.5     ","104              ",SKILL_POINT:1,Self,,4,,,,4
+"105     ","2      ","6    ","     ","30       ","0.5     ","0                ",SKILL_POINT:1,Self,,4,,,,4
+"200     ","3      ","1    ","     ","5        ","0.5     ","201              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,4
+"201     ","3      ","2    ","     ","10       ","0.5     ","202              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,4
+"202     ","3      ","3    ","     ","15       ","0.5     ","203              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,4
+"203     ","3      ","4    ","     ","20       ","0.5     ","204              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,4
+"204     ","3      ","5    ","     ","25       ","0.5     ","205              ",SKILL_POINT:1,Single_Point,"              ","           ",,,,4
+"205     ","3      ","6    ","     ","30       ","0.5     ","0                ",SKILL_POINT:1,Single_Point,"              ","           ",,,,4
 "300     ","4      ","1    ","     ","5        ","0.5     ","301              ",SKILL_POINT:1,Aoe,,3,radius:1,,Round,
 "301     ","4      ","2    ","     ","10       ","0.5     ","302              ",SKILL_POINT:1,Aoe,,3,radius:1,,Round,
 "303     ","4      ","4    ","     ","20       ","0.5     ","304              ",SKILL_POINT:1,Aoe,,3,radius:2,,Round,

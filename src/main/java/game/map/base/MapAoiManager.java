@@ -1,7 +1,7 @@
 package game.map.base;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,9 +31,7 @@ public class MapAoiManager {
     public static MapAoiManager valueOf(BaseMapInfo mapInfo) {
         MapAoiManager aoiManager = new MapAoiManager();
         aoiManager.mapInfo = mapInfo;
-        aoiManager.centerMap = mapInfo.getBlockResource().getAoiModelMap();
-        Collection<BroadcastCenter> values =
-            aoiManager.centerMap.values().stream().distinct().collect(Collectors.toList());
+        aoiManager.centerMap = aoiManager.copyAoi(mapInfo.getBlockResource().getAoiModelMap());
         return aoiManager;
     }
 
@@ -73,12 +71,6 @@ public class MapAoiManager {
 
     }
 
-    public void registerUnits(MonsterVisibleMapObject monsterVisibleMapInfo) {
-        Grid grid = monsterVisibleMapInfo.getCurrentGrid();
-        BroadcastCenter broadcastCenter = centerMap.get(grid);
-        broadcastCenter.registerUnit(monsterVisibleMapInfo);
-    }
-
     private boolean isExist(BroadcastCenter temp, List<BroadcastCenter> centers) {
         for (BroadcastCenter center : centers) {
             if (center.equals(temp)) {
@@ -103,5 +95,28 @@ public class MapAoiManager {
             creatureUnits.addAll(broadcastCenter.getCreatureUnitsByGrid(grid));
         });
         return creatureUnits.stream().distinct().collect(Collectors.toList());
+    }
+
+    private Map<Grid, BroadcastCenter> copyAoi(Map<Grid, BroadcastCenter> aoiModelMap) {
+        Map<Grid, BroadcastCenter> copy = new HashMap<>();
+        aoiModelMap.forEach((grid, broadcastCenter) -> {
+            BroadcastCenter center = BroadcastCenter.valueOf(broadcastCenter);
+            center.getUnitMap().keySet().forEach(grid1 -> {
+                copy.put(grid1, center);
+            });
+        });
+        return copy;
+    }
+
+    public void registerUnits(MonsterVisibleMapObject monsterVisibleMapInfo) {
+        Grid grid = monsterVisibleMapInfo.getCurrentGrid();
+        BroadcastCenter broadcastCenter = centerMap.get(grid);
+        broadcastCenter.registerUnit(monsterVisibleMapInfo);
+    }
+
+    public void registerUnits(AbstractVisibleMapObject object) {
+        Grid grid = object.getCurrentGrid();
+        BroadcastCenter broadcastCenter = centerMap.get(grid);
+        broadcastCenter.registerUnit(object);
     }
 }

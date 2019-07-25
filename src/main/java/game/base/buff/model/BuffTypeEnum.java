@@ -3,6 +3,7 @@ package game.base.buff.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import game.base.buff.model.impl.AvatarCycleBuff;
 import game.base.buff.model.impl.PoisonCycleBuff;
 
 /**
@@ -14,7 +15,11 @@ public enum BuffTypeEnum {
     /**
      * 周期毒buff
      */
-    Poison_Cycle_Buff(1, PoisonCycleBuff.class),;
+    Poison_Cycle_Buff(1, PoisonCycleBuff.class),
+    /**
+     * 天神下凡
+     */
+    Avatar_Buff(2, AvatarCycleBuff.class),;
 
     private static Map<Integer, BuffTypeEnum> ID_TO_TYPE = new HashMap<>();
     private static Map<String, BuffTypeEnum> NAME_TO_TYPE = new HashMap<>();

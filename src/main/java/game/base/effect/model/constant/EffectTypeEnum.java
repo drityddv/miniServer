@@ -3,9 +3,7 @@ package game.base.effect.model.constant;
 import java.util.*;
 
 import game.base.buff.model.BuffTriggerPoint;
-import game.base.effect.model.effect.BaseEffect;
-import game.base.effect.model.effect.DizzyEffect;
-import game.base.effect.model.effect.PoisonEffect;
+import game.base.effect.model.effect.*;
 
 /**
  * 效果枚举
@@ -23,6 +21,20 @@ public enum EffectTypeEnum {
      * 毒素
      */
     Poison(2, PoisonEffect.class) {
+        @Override
+        public Set<BuffTriggerPoint> getTriggerPointSet() {
+            return new HashSet<>(Arrays.asList(BuffTriggerPoint.Schedule_Active));
+        }
+    },
+
+	Plus_Buff_Attribute(3, PlusBuffAttrEffect.class) {
+        @Override
+        public Set<BuffTriggerPoint> getTriggerPointSet() {
+            return new HashSet<>(Arrays.asList(BuffTriggerPoint.First_Active, BuffTriggerPoint.End));
+        }
+    },
+
+    Recover_Hp(4, RecoverHpEffect.class) {
         @Override
         public Set<BuffTriggerPoint> getTriggerPointSet() {
             return new HashSet<>(Arrays.asList(BuffTriggerPoint.Schedule_Active));

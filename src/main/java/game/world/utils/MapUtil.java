@@ -49,7 +49,7 @@ public class MapUtil {
             Map<UnitComponentType, IUnitComponent> component =
                 fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
             component.forEach((type, iUnitComponent) -> {
-                sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
+//                sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
                 // if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
                 // PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
                 // AttributeUtils.logAttrs(attributeComponent, sb);

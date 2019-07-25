@@ -21,7 +21,6 @@ import utils.CollectionUtil;
  */
 
 public class UseAoeSkillCommand extends AbstractSkillCommand {
-    private int radius;
     private Grid center;
 
     public UseAoeSkillCommand(int mapId, Player player, long skillId) {

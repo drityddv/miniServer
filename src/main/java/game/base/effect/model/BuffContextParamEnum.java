@@ -28,7 +28,34 @@ public enum BuffContextParamEnum {
     /**
      * 作用目标集合
      */
-    Target_List,;
+    Target_List,
+    /**
+     * 属性容器
+     */
+    Attribute_Container,
+    /**
+     * 属性集合
+     */
+    Attribute,
+    /**
+     * 最大生命值
+     */
+    MAX_HP(Long.class),
+    /**
+     * 最大法力值
+     */
+    MAX_MP(Long.class),
+    /**
+     * 回血数值
+     */
+    CureHp(Long.class),
+
+    Buff_Id(Long.class),
+
+	Trigger_Point,
+
+
+	;
 
     private static Map<String, BuffContextParamEnum> NAME_TO_TYPE = new HashMap<>();
 

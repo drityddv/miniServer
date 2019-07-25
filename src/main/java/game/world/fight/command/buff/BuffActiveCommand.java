@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import game.base.buff.model.BaseCreatureBuff;
 import game.base.buff.model.BuffTriggerPoint;
-import game.base.buff.model.impl.CycleActiveBuff;
+import game.base.buff.model.impl.BaseCycleBuff;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 
 /**
@@ -32,10 +32,10 @@ public class BuffActiveCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
-        if (buff instanceof CycleActiveBuff) {
-            CycleActiveBuff cycleActiveBuff = (CycleActiveBuff)buff;
-            logger.info("period[{}] remainCount[{}]", cycleActiveBuff.getPeriodCount(),
-                cycleActiveBuff.getRemainCount());
+        if (buff instanceof BaseCycleBuff) {
+            BaseCycleBuff baseCycleBuff = (BaseCycleBuff)buff;
+            logger.info("period[{}] remainCount[{}]", baseCycleBuff.getPeriodCount(),
+                baseCycleBuff.getRemainCount());
         }
         logger.info("buff调度命令 buff[{} {}]", buff.getBuffId(), buff.getBuffResource().getBuffName());
         buff.triggerBuff(BuffTriggerPoint.Schedule_Active);

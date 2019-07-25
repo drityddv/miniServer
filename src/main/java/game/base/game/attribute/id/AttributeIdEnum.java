@@ -24,7 +24,14 @@ public enum AttributeIdEnum implements AttributeId {
         public String getName() {
             return "BASE_EQUIPMENT";
         }
-    };
+    },
+
+    PVP_BUFF {
+        @Override
+        public String getName() {
+             return "PVP_BUFF";
+        }
+    },;
 
     @Override
     public String getName() {

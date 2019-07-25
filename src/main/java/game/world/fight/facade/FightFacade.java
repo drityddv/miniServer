@@ -8,10 +8,7 @@ import game.base.message.exception.RequestException;
 import game.base.message.packet.SM_Message;
 import game.dispatch.anno.HandlerAnno;
 import game.role.player.model.Player;
-import game.world.fight.packet.CM_UseGroupPointSkill;
-import game.world.fight.packet.CM_UseSinglePointSkill;
-import game.world.fight.packet.CM_UserAoeSkill;
-import game.world.fight.packet.CM_logUnitBattleInfo;
+import game.world.fight.packet.*;
 import net.utils.PacketUtil;
 import spring.SpringContext;
 
@@ -69,6 +66,23 @@ public class FightFacade {
         try {
             SpringContext.getFightService().useAoeSkill(player, request.getSkillId(), request.getCenterX(),
                 request.getCenterY());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 使用自身性技能
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void useSelfSkill(Player player, CM_UseSelfSkill request) {
+        try {
+            SpringContext.getFightService().useSelfSkill(player, request.getSkillId());
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

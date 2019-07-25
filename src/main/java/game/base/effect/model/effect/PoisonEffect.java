@@ -13,7 +13,6 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
  */
 
 public class PoisonEffect extends BaseEffect {
-
     @Override
     public void active(BuffContext buffContext) {
         int level = buffContext.getParam(BuffContextParamEnum.POISON_LEVEL);

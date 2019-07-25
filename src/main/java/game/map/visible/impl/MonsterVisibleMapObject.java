@@ -2,6 +2,7 @@ package game.map.visible.impl;
 
 import game.base.fight.model.pvpunit.FighterAccount;
 import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.BaseAttackAbleMapObject;
 import game.world.base.resource.CreatureResource;
 import utils.snow.IdUtil;
 
@@ -10,7 +11,7 @@ import utils.snow.IdUtil;
  * @since : 2019/7/11 5:08 PM
  */
 
-public class MonsterVisibleMapObject extends AbstractVisibleMapObject {
+public class MonsterVisibleMapObject extends BaseAttackAbleMapObject {
 
     private long monsterId;
 

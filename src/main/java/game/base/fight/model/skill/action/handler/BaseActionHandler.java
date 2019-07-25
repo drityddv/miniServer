@@ -6,11 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.base.buff.model.BaseCreatureBuff;
-import game.base.buff.resource.BuffResource;
-import game.base.buff.service.BuffService;
-import game.base.effect.model.BuffContext;
-import game.base.effect.model.BuffContextParamEnum;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
@@ -50,6 +45,8 @@ public abstract class BaseActionHandler implements IActionHandler {
     public void action(BaseCreatureUnit caster, BaseSkill baseSkill) {
         run();
     }
+
+
 
     private void run() {
         if (!actionPre()) {
@@ -112,19 +109,6 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     private void triggerBuffs() {
         List<Long> buffList = baseSkill.getSkillLevelResource().getBuffList();
-        BuffService buffService = SpringContext.getBuffService();
-
-        for (Long configId : buffList) {
-            defenders.forEach(targetUnit -> {
-                BuffResource buffResource = buffService.getBuffResource(configId);
-                BaseCreatureBuff buff = buffService.createBuffByConfigId(configId);
-                BuffContext context = BuffContext.valueOf(buffResource.getBuffContext());
-                context.addParam(BuffContextParamEnum.CASTER, caster);
-                context.addParam(BuffContextParamEnum.Target, targetUnit);
-                buff.init(buffResource, context);
-                // buff开始启动
-                buff.active();
-            });
-        }
+        SpringContext.getBuffService().addBuffInScene(buffList, caster, defenders);
     }
 }

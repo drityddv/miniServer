@@ -10,6 +10,7 @@ import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.skill.model.PVPSkillComponent;
+import game.base.fight.utils.BattleUtil;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.model.PlayerAttributeContainer;
@@ -47,8 +48,11 @@ public class PlayerUnit extends BaseCreatureUnit {
             unitAttributeComponent.putAttributes(attributeId, attributeList);
         });
         unitAttributeComponent.containerRecompute();
-        playerUnit.currentHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
-        playerUnit.currentMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+        playerUnit.currentHp =
+            playerUnit.maxHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
+        playerUnit.currentMp =
+            playerUnit.maxMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+
         playerUnit.mapId = mapId;
 
         // 初始化技能组件
@@ -60,6 +64,18 @@ public class PlayerUnit extends BaseCreatureUnit {
 
     private PVPCreatureAttributeComponent getAttributeComponent() {
         return componentContainer.getComponent(UnitComponentType.ATTRIBUTE);
+    }
+
+    @Override
+    public void reviseStatus() {
+        double hpRadio = (double)currentHp / (double)maxHp;
+        double mpRadio = (double)currentMp / (double)maxMp;
+        PVPCreatureAttributeComponent unitAttrComponent = BattleUtil.getUnitAttrComponent(this);
+        maxHp = unitAttrComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
+        maxMp = unitAttrComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+        currentHp = (long)(hpRadio * maxHp);
+        currentMp = (long)(mpRadio * maxMp);
+
     }
 
     private PVPSkillComponent getSkillComponent() {

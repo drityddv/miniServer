@@ -15,7 +15,7 @@ import game.map.visible.impl.NpcVisibleObject;
 public abstract class AbstractNpcScene extends AbstractScene {
 
     // npc
-    private Map<Long, NpcVisibleObject> npcMap = new HashMap<>();
+    protected Map<Long, NpcVisibleObject> npcMap = new HashMap<>();
 
     public AbstractNpcScene(int mapId) {
         super(mapId);

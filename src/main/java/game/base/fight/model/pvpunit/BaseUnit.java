@@ -21,6 +21,8 @@ public abstract class BaseUnit {
     protected int level;
     protected boolean dead;
     protected boolean canMove;
+    protected long maxHp;
+    protected long maxMp;
     protected long currentHp;
     protected long currentMp;
     protected int mapId;
@@ -45,6 +47,22 @@ public abstract class BaseUnit {
             dead = true;
         }
         logger.info("id[{}] 受到伤害[{}] 剩余生命值[{}] 死亡状态[{}]", id, realDamage, currentHp, dead);
+    }
+
+    public void cureHp(long cureValue) {
+        long realCure = 0;
+        if (!isDead()) {
+            if (!isHpFull()) {
+                realCure = maxHp - currentHp >= cureValue ? cureValue : maxHp - currentHp;
+                currentHp += realCure;
+            }
+        }
+        logger.info("单位[{}] 死亡状态[{}] 治疗血量[{}] 实际治疗血量[{}]", id, isDead(), cureValue, realCure);
+    }
+
+    // 考虑溢出
+    public boolean isHpFull() {
+        return currentHp >= maxHp;
     }
 
     // get and set
@@ -107,4 +125,15 @@ public abstract class BaseUnit {
     public void setCurrentMp(long currentMp) {
         this.currentMp = currentMp;
     }
+
+    public long getMaxHp() {
+        return maxHp;
+    }
+
+    public long getMaxMp() {
+        return maxMp;
+    }
+
+	public void reviseStatus() {
+	}
 }

@@ -1,10 +1,15 @@
 package game.base.buff.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.buff.model.BaseCreatureBuff;
 import game.base.buff.resource.BuffResource;
+import game.base.effect.model.BuffContext;
+import game.base.effect.model.BuffContextParamEnum;
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 
 /**
  * @author : ddv
@@ -33,5 +38,35 @@ public class BuffService {
     public boolean isAllowAddBuff() {
         return false;
     }
+
+    /**
+     * 为场景内的单位添加buff
+     *
+     * @param buffIdList
+     * @param targetList
+     * @param caster
+     */
+    public void addBuffInScene(List<Long> buffIdList, BaseCreatureUnit caster, List<BaseCreatureUnit> targetList) {
+
+        buffIdList.forEach(configId -> {
+
+            targetList.forEach(targetUnit -> {
+				addBuffSingleUnit(caster, configId, targetUnit);
+            });
+        });
+
+    }
+
+	public void addBuffSingleUnit(BaseCreatureUnit caster, Long configId, BaseCreatureUnit targetUnit) {
+		BuffResource buffResource = getBuffResource(configId);
+		BaseCreatureBuff buff = createBuffByConfigId(configId);
+		BuffContext context = BuffContext.valueOf(buffResource.getBuffContext());
+
+		context.addParam(BuffContextParamEnum.CASTER, caster);
+		context.addParam(BuffContextParamEnum.Target, targetUnit);
+		buff.init(buffResource, context);
+		// buff开始启动
+		buff.buffActive();
+	}
 
 }

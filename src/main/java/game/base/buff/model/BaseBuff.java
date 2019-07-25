@@ -48,10 +48,13 @@ public abstract class BaseBuff<T> {
         for (BuffTriggerPoint triggerPoint : BuffTriggerPoint.values()) {
             triggerPoints.put(triggerPoint, new ArrayList<>());
         }
+
         this.buffId = IdUtil.getLongId();
+        this.configId = buffResource.getConfigId();
         this.mergedCount = 0;
         this.buffResource = buffResource;
         this.effectList = buffResource.getEffectList();
+
         this.effectList.forEach(baseEffect -> {
             Set<BuffTriggerPoint> triggerPointSet =
                 EffectTypeEnum.getByClazz(baseEffect.getClass()).getTriggerPointSet();

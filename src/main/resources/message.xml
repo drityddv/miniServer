@@ -52,9 +52,10 @@
     <message id="2007" value="game.map.packet.SM_AoiBroadCast"/>
 
     <!--地图内战斗  2100 - 2200 -->
-    <message id="2100" key="singletSkill" value="game.world.fight.packet.CM_UseSinglePointSkill"/>
+    <message id="2100" key="singleSkill" value="game.world.fight.packet.CM_UseSinglePointSkill"/>
     <message id="2101" key="groupSkill" value="game.world.fight.packet.CM_UseGroupPointSkill"/>
     <message id="2102" key="aoeSkill" value="game.world.fight.packet.CM_UserAoeSkill"/>
+    <message id="2103" key="selfSkill" value="game.world.fight.packet.CM_UseSelfSkill"/>
     <message id="2120" key="logUnit" value="game.world.fight.packet.CM_logUnitBattleInfo"/>
 
 </protocols>

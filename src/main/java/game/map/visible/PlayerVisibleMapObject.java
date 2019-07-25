@@ -10,7 +10,7 @@ import game.role.player.model.Player;
  * @since : 2019/7/11 3:46 PM
  */
 
-public class PlayerVisibleMapObject extends AbstractVisibleMapObject {
+public class PlayerVisibleMapObject extends BaseAttackAbleMapObject {
 
     private String accountId;
 

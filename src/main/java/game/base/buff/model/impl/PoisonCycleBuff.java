@@ -10,7 +10,7 @@ import game.base.effect.model.BuffContextParamEnum;
  * @since : 2019/7/24 5:35 PM
  */
 
-public class PoisonCycleBuff extends CycleActiveBuff {
+public class PoisonCycleBuff extends BaseCycleBuff {
     /**
      * 层数
      */
@@ -40,12 +40,13 @@ public class PoisonCycleBuff extends CycleActiveBuff {
             this.level += newBuff.level;
             this.damage += newBuff.damage;
 
+            this.mergedCount++;
             this.remainCount += newBuff.remainCount;
             this.periodCount = remainCount;
             this.frequencyTime = Math.min(this.frequencyTime, newBuff.frequencyTime);
             modifyContext();
         }
-        super.merge(buff);
+		initBuffJob();
 
     }
 }

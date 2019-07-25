@@ -1,6 +1,7 @@
 package game.world.fight.command.skill;
 
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.utils.BattleUtil;
@@ -11,6 +12,9 @@ import game.map.handler.AbstractMapHandler;
 import game.role.player.model.Player;
 import game.world.fight.model.BattleParam;
 import net.utils.PacketUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 使用对自己释放的技能
@@ -47,8 +51,9 @@ public class UseSelfSkillCommand extends AbstractSceneCommand {
             if (baseSkill.getSkillType() != SkillTypeEnum.Self) {
                 return;
             }
-
-            actionHandler.init(caster, null, null, baseSkill);
+			List<BaseCreatureUnit> defenders = new ArrayList<>();
+			defenders.add(caster);
+            actionHandler.init(caster, defenders, caster, baseSkill);
             actionHandler.action(caster, baseSkill);
             mapHandler.doLogMap(player, mapId);
 

@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
+import game.map.npc.reource.NpcResource;
 import game.map.visible.AbstractVisibleMapObject;
 import game.map.visible.PlayerVisibleMapObject;
 import game.map.visible.impl.MonsterVisibleMapObject;
@@ -45,13 +46,20 @@ public abstract class AbstractMovableScene<T extends AbstractVisibleMapObject> e
             MonsterVisibleMapObject monster = MonsterVisibleMapObject.valueOf(creatureResource);
             monsterMap.put(monster.getId(), monster);
         }
-        registerMonsterAoi();
+        registerStaticUnitAoi(new ArrayList<>(monsterMap.values()));
+    }
+
+    @Override
+    public void initNpc(List<NpcResource> npcResources) {
+        super.initNpc(npcResources);
+        registerStaticUnitAoi(new ArrayList<>(npcMap.values()));
+
     }
 
     // 加载地图单位到广播中心
-    private void registerMonsterAoi() {
-        monsterMap.values().forEach(monsterVisibleMapInfo -> {
-            aoiManager.registerUnits(monsterVisibleMapInfo);
+    private void registerStaticUnitAoi(List<AbstractVisibleMapObject> objects) {
+        objects.forEach(object -> {
+            aoiManager.registerUnits(object);
         });
     }
 

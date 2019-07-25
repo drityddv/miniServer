@@ -17,7 +17,7 @@ import spring.SpringContext;
  * @since : 2019/7/23 8:21 PM
  */
 
-public abstract class CycleActiveBuff extends BaseCreatureBuff {
+public abstract class BaseCycleBuff extends BaseCreatureBuff {
     // 总共需要执行次数
     protected int periodCount;
     // 剩余执行次数
@@ -48,8 +48,8 @@ public abstract class CycleActiveBuff extends BaseCreatureBuff {
     }
 
     @Override
-    public boolean active() {
-        boolean success = super.active();
+    public boolean buffActive() {
+        boolean success = super.buffActive();
         if (success) {
             schedule();
         }
@@ -65,7 +65,7 @@ public abstract class CycleActiveBuff extends BaseCreatureBuff {
     // 默认合并重新生成调度任务
     @Override
     public void merge(BaseCreatureBuff buff) {
-        initBuffJob();
+
     }
 
     @Override
@@ -89,23 +89,8 @@ public abstract class CycleActiveBuff extends BaseCreatureBuff {
         return periodCount;
     }
 
-    public void setPeriodCount(int periodCount) {
-        this.periodCount = periodCount;
-    }
-
     public int getRemainCount() {
         return remainCount;
     }
 
-    public void setRemainCount(int remainCount) {
-        this.remainCount = remainCount;
-    }
-
-    public long getFrequencyTime() {
-        return frequencyTime;
-    }
-
-    public void setFrequencyTime(long frequencyTime) {
-        this.frequencyTime = frequencyTime;
-    }
 }

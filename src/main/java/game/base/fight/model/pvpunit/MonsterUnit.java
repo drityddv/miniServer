@@ -48,8 +48,10 @@ public class MonsterUnit extends BaseCreatureUnit {
         unitAttributeComponent.setOwner(monsterUnit);
         unitAttributeComponent.containerRecompute();
 
-        monsterUnit.currentHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
-        monsterUnit.currentMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+        monsterUnit.maxHp =
+            monsterUnit.currentHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
+        monsterUnit.maxMp =
+            monsterUnit.currentMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
         monsterUnit.mapId = creatureResource.getMapId();
         return monsterUnit;
     }

@@ -51,22 +51,23 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
     }
 
     /**
-     * 生效
+     * 外界第一次启动buff的入口
      */
-    public boolean active() {
-        registerCaster();
-        return registerTarget();
+    public boolean buffActive() {
+        boolean success = registerTarget();
+        if (success) {
+            registerCaster();
+        }
+        triggerBuff(BuffTriggerPoint.First_Active);
+        return success;
     }
 
     public void triggerBuff(BuffTriggerPoint point) {
         switch (point) {
-            case Schedule_Active: {
+            default:
                 triggerPoints.get(point).forEach(baseEffect -> {
                     baseEffect.active(context);
                 });
-                break;
-            }
-            default:
                 break;
         }
     }
@@ -90,14 +91,14 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
      * 拥有者注册
      */
     public boolean registerTarget() {
-        return BattleUtil.getUnitBuffComponent(caster).addBuff(this);
+        return BattleUtil.getUnitBuffComponent(target).addBuff(this);
     }
 
     /**
      * 拥有者卸载
      */
     public void releaseTarget() {
-        BattleUtil.getUnitBuffComponent(caster).removeBuff(this);
+        BattleUtil.getUnitBuffComponent(target).removeBuff(this);
     }
 
     public boolean isScheduleBuff() {

@@ -2,6 +2,7 @@ package game.map.model;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.impl.NpcVisibleObject;
 
 /**
  * @author : ddv
@@ -17,16 +18,23 @@ public class AoiBroadCastVo {
     private long hp;
     private long mp;
 
-    public static AoiBroadCastVo valueOf(AbstractVisibleMapObject mapInfo, int centerX, int centerY) {
+    public static AoiBroadCastVo valueOf(AbstractVisibleMapObject mapObject, int centerX, int centerY) {
         AoiBroadCastVo vo = new AoiBroadCastVo();
-        BaseCreatureUnit unit = mapInfo.getFighterAccount().getCreatureUnit();
+        vo.x = mapObject.getCurrentGrid().getX();
+		vo.y = mapObject.getCurrentGrid().getY();
+		vo.broadCast = Grid.valueOf(centerX, centerY);
+		if(mapObject instanceof NpcVisibleObject){
+			NpcVisibleObject npc = (NpcVisibleObject) mapObject;
+			vo.id =npc.getId();
+			vo.unitName = npc.getName();
+			return vo;
+		}
+        BaseCreatureUnit unit = mapObject.getFighterAccount().getCreatureUnit();
         vo.id = unit.getId();
-        vo.broadCast = Grid.valueOf(centerX, centerY);
         vo.unitName = unit.getName();
         vo.hp = unit.getCurrentHp();
         vo.mp = unit.getCurrentMp();
-        vo.x = mapInfo.getCurrentGrid().getX();
-        vo.y = mapInfo.getCurrentGrid().getY();
+
         return vo;
     }
 

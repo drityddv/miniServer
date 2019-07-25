@@ -10,6 +10,7 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.packet.SM_AoiBroadCast;
 import game.map.visible.AbstractVisibleMapObject;
+import game.map.visible.BaseAttackAbleMapObject;
 import game.map.visible.PlayerVisibleMapObject;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
@@ -42,7 +43,6 @@ public class BroadcastCenter {
         return copy;
     }
 
-    // FIXME 广播信息 暂时只广播玩家对象 这里如果二号玩家去了很远的地方 一号玩家不会接受发包
     public void broadCastUnits(AbstractVisibleMapObject object) {
         List<AbstractVisibleMapObject> objects = new ArrayList<>();
         unitMap.values().forEach(girdUnitMap -> objects.addAll(girdUnitMap.values()));
@@ -77,7 +77,7 @@ public class BroadcastCenter {
     }
 
     public void init(Grid grid) {
-        unitMap.put(grid, new ConcurrentHashMap<>());
+        unitMap.put(grid, new HashMap<>());
     }
 
     // 清除单位并且广播 type==1 移动 type==2 离开
@@ -93,8 +93,10 @@ public class BroadcastCenter {
     public List<BaseCreatureUnit> getCreatureUnitsByGrid(Grid grid) {
         List<BaseCreatureUnit> creatureUnits = new ArrayList<>();
         Map<Long, AbstractVisibleMapObject> mapObjectMap = unitMap.get(grid);
-        mapObjectMap.values().forEach(abstractVisibleMapObject -> {
-            creatureUnits.add(abstractVisibleMapObject.getFighterAccount().getCreatureUnit());
+        mapObjectMap.values().forEach(mapObject -> {
+            if (mapObject instanceof BaseAttackAbleMapObject) {
+                creatureUnits.add(mapObject.getFighterAccount().getCreatureUnit());
+            }
         });
 
         return creatureUnits;
@@ -109,14 +111,6 @@ public class BroadcastCenter {
         }
         unitMap.get(object.getCurrentGrid()).put(object.getId(), object);
         broadCastUnits(object);
-    }
-
-    public int getPointX() {
-        return pointX;
-    }
-
-    public int getPointY() {
-        return pointY;
     }
 
     @Override
