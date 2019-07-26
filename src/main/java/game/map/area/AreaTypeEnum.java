@@ -28,11 +28,13 @@ public enum AreaTypeEnum {
     private int id;
     private String typeName;
     private Class<? extends BaseAreaProcess> processClazz;
+    private BaseAreaProcess process;
 
     AreaTypeEnum(int id, String typeName, Class<? extends BaseAreaProcess> processClazz) {
         this.id = id;
         this.typeName = typeName;
         this.processClazz = processClazz;
+        this.create();
     }
 
     public static AreaTypeEnum getById(int id) {
@@ -51,12 +53,15 @@ public enum AreaTypeEnum {
         return typeName;
     }
 
-    public BaseAreaProcess create() {
+    public BaseAreaProcess getProcess() {
+        return process;
+    }
+
+    public void create() {
         try {
-            return processClazz.newInstance();
+            process = processClazz.newInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 }

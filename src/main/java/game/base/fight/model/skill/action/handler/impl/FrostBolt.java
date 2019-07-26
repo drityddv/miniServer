@@ -1,11 +1,12 @@
 package game.base.fight.model.skill.action.handler.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
 
 import game.base.fight.base.model.attack.impl.MagicSingleAttack;
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.utils.BattleUtil;
+import game.base.skill.model.BaseSkill;
 
 /**
  * 寒冰箭
@@ -16,17 +17,20 @@ import game.base.fight.utils.BattleUtil;
 
 public class FrostBolt extends BaseActionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(FrostBolt.class);
-
     @Override
-    protected void doAction() {
-        super.doAction();
+    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
+        if (targets == null || targets.size() != 1) {
+            logger.warn("使用寒冰箭失败,targets参数长度不为1");
+            return;
+        }
 
         long value = BattleUtil.calculateSkillValue1(baseSkill.getSkillLevelResource().getValue(),
             baseSkill.getSkillLevelResource().getAttributeTypes(),
             BattleUtil.getUnitAttrComponent(caster).getFinalAttributes());
+        BaseCreatureUnit target = targets.get(0);
 
-        MagicSingleAttack attack = MagicSingleAttack.valueOf(caster, defender, baseSkill, value);
-        attack.doActive();
+        MagicSingleAttack.valueOf(caster, target, baseSkill, value).doActive();
+        super.doAction(caster, targets, baseSkill);
     }
+
 }

@@ -65,7 +65,7 @@ public class FightFacade {
     public void useAoeSkill(Player player, CM_UserAoeSkill request) {
         try {
             SpringContext.getFightService().useAoeSkill(player, request.getSkillId(), request.getCenterX(),
-                request.getCenterY());
+                request.getCenterY(), request.getCenterType());
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

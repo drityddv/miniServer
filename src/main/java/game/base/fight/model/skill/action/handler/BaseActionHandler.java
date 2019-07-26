@@ -1,14 +1,16 @@
 package game.base.fight.model.skill.action.handler;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
+import game.map.area.AreaProcessParam;
+import game.map.area.BaseAreaProcess;
+import game.map.area.CenterTypeEnum;
 import game.map.model.Grid;
 import game.world.fight.model.BattleParam;
 import spring.SpringContext;
@@ -22,99 +24,104 @@ import utils.TimeUtil;
 public abstract class BaseActionHandler implements IActionHandler {
 
     protected static final Logger logger = LoggerFactory.getLogger(BaseActionHandler.class);
-    protected BaseCreatureUnit caster;
-    protected BaseSkill baseSkill;
-    protected BaseCreatureUnit defender;
-    protected List<BaseCreatureUnit> defenders = new ArrayList<>();
 
     @Override
-    public void action(BaseCreatureUnit caster, BaseCreatureUnit defender, BaseSkill skill) {
-        run();
-    }
-
-    @Override
-    public void action(BaseCreatureUnit caster, List<BaseCreatureUnit> target, BaseSkill skill) {
-        run();
-    }
-
-    @Override
-    public void action(BaseCreatureUnit caster, Grid center, BaseSkill baseSkill) {
-        run();
-    }
-
-    @Override
-    public void action(BaseCreatureUnit caster, BaseSkill baseSkill) {
-        run();
-    }
-
-    private void run() {
-        if (!actionPre()) {
-            return;
+    public void action(BattleParam battleParam) {
+        switch (battleParam.getSkillType()) {
+            case Single_Point: {
+                singlePoint(battleParam);
+                break;
+            }
+            case Group_Point: {
+                groupPoint(battleParam);
+                break;
+            }
+            case Aoe: {
+                aoeSkill(battleParam);
+                break;
+            }
+            case Self: {
+                selfSkill(battleParam);
+                break;
+            }
+            default: {
+                logger.warn("没有找到技能类型,忽略这次战斗");
+            }
         }
-        doAction();
-        actionAfter();
     }
 
-    // 使用技能前的通用逻辑[检查技能合法性,记录cd等...] 子类按需重写
-    protected boolean canUseSkill(BaseCreatureUnit caster, BaseSkill baseSkill) {
-
-        if (baseSkill == null) {
-            logger.warn("玩家[{}] 使用技能失败,技能为空", caster.getFighterAccount().getAccountId());
-            return false;
+    private void aoeSkill(BattleParam battleParam) {
+        actionPre(battleParam);
+        Grid center = null;
+        CenterTypeEnum centerTypeEnum = battleParam.getCenterTypeEnum();
+        switch (centerTypeEnum) {
+            case Self: {
+                center = battleParam.getCaster().getMapObject().getCurrentGrid();
+                break;
+            }
+            case Target_Grid: {
+                center = battleParam.getCenter();
+                break;
+            }
+            default: {
+                return;
+            }
         }
-
-        if (!BattleUtil.isEnoughMp(caster, baseSkill.getSkillMpConsume())) {
-            logger.warn("玩家[{}] 使用技能失败,魔法值不足 需要[{}] 实际拥有[{}]", caster.getFighterAccount().getAccountId(),
-                baseSkill.getSkillMpConsume(), caster.getCurrentMp());
-            return false;
-        }
-
-        if (BattleUtil.skillInCd(baseSkill)) {
-            logger.warn("玩家[{}] 使用技能失败,技能cd中", caster.getFighterAccount().getAccountId());
-            return false;
-        }
-
-        // 记录cd
-        baseSkill.setLastUsedAt(TimeUtil.now());
-        return true;
+        BaseSkill baseSkill = battleParam.getBaseSkill();
+        BaseAreaProcess baseAreaProcess = baseSkill.getSkillLevelResource().getAreaTypeEnum().getProcess();
+        AreaProcessParam param = AreaProcessParam.valueOf(center,
+            Integer.parseInt(baseSkill.getSkillLevelResource().getAreaTypeParam().get("radius")));
+        battleParam.setTargetUnits(baseAreaProcess.calculate(param, battleParam.getMapScene()));
+        doAction(battleParam.getCaster(), battleParam.getTargetUnits(), battleParam.getBaseSkill());
+        actionAfter(battleParam);
     }
 
-    public void init(BaseCreatureUnit caster, List<BaseCreatureUnit> defenders, BaseCreatureUnit defender,
-        BaseSkill baseSkill) {
-        this.caster = caster;
-        this.defender = defender;
-        this.defenders = defenders;
-        this.baseSkill = baseSkill;
+    private void singlePoint(BattleParam battleParam) {
+        battleParam.loadSingleTarget();
+        actionPre(battleParam);
+        doAction(battleParam.getCaster(), Arrays.asList(battleParam.getTargetUnit()), battleParam.getBaseSkill());
+        actionAfter(battleParam);
     }
 
-    public void init(BattleParam battleParam) {
-        this.caster = battleParam.getCaster();
-        this.defender = battleParam.getTargetUnit();
-        this.defenders = battleParam.getTargetUnits();
-        this.baseSkill = battleParam.getBaseSkill();
+    private void groupPoint(BattleParam battleParam) {
+        battleParam.loadGroupTargets();
+        actionPre(battleParam);
+        doAction(battleParam.getCaster(), battleParam.getTargetUnits(), battleParam.getBaseSkill());
+        actionAfter(battleParam);
     }
 
-    protected void doAction() {
-        triggerBuffs();
+    private void selfSkill(BattleParam battleParam) {
+        actionPre(battleParam);
+        doAction(battleParam.getCaster(), Arrays.asList(battleParam.getCaster()), battleParam.getBaseSkill());
+        actionAfter(battleParam);
     }
 
-    // 使用前
-    protected boolean actionPre() {
-        return canUseSkill(caster, baseSkill);
+    private void actionAfter(BattleParam battleParam) {
+        triggerAfterBuffs(battleParam);
     }
 
-    // 使用后
-    protected void actionAfter() {
-
+    private void actionPre(BattleParam battleParam) {
+        skillConsume(battleParam.getCaster(), battleParam.getBaseSkill());
+        triggerPreBuffs(battleParam);
     }
 
-    // 技能效果值
-    public long getSkillValue() {
-        return baseSkill.getSkillLevelResource().getValue();
+    private void triggerPreBuffs(BattleParam battleParam) {}
+
+    private void triggerAfterBuffs(BattleParam battleParam) {}
+
+    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
+        triggerBuffs(caster, targets, baseSkill);
     }
 
-    private void triggerBuffs() {
+    private void triggerBuffs(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
         List<Long> buffList = baseSkill.getSkillLevelResource().getBuffList();
-        SpringContext.getBuffService().addBuffInScene(buffList, caster, defenders);
+        SpringContext.getBuffService().addBuffInScene(buffList, caster, targets);
     }
+
+    // 技能消耗逻辑
+    private void skillConsume(BaseCreatureUnit caster, BaseSkill baseSkill) {
+        caster.consumeMp(baseSkill.getSkillMpConsume());
+        baseSkill.setLastUsedAt(TimeUtil.now());
+    }
+
 }

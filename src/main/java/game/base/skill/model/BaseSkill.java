@@ -82,7 +82,11 @@ public abstract class BaseSkill implements Cloneable {
         this.skillLevelResource = skillLevelResource;
     }
 
+    public long getSkillValue() {
+        return skillLevelResource.getValue();
+    }
+
     public SkillTypeEnum getSkillType() {
-        return this.skillLevelResource.getSkillType();
+        return this.skillLevelResource.getSkillTypeEnum();
     }
 }

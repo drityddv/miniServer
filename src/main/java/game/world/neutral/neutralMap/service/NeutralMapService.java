@@ -15,10 +15,6 @@ import org.springframework.stereotype.Component;
 
 import game.base.buff.model.BaseCreatureBuff;
 import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
-import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.map.area.AreaProcessParam;
-import game.map.area.AreaTypeEnum;
-import game.map.area.BaseAreaProcess;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.visible.PlayerMapObject;
@@ -149,14 +145,7 @@ public class NeutralMapService implements INeutralMapService {
 
     @Override
     public void test(int mapId, Map<String, Object> param) {
-        int x = (int)param.get("x");
-        int y = (int)param.get("y");
-        int radius = (int)param.get("radius");
-        NeutralMapScene mapScene = getMapScene(mapId);
-        BaseAreaProcess process = AreaTypeEnum.Round.create();
-        AreaProcessParam processParam = AreaProcessParam.valueOf(Grid.valueOf(x, y), radius);
-        process.init(processParam, mapScene);
-        List<BaseCreatureUnit> result = process.getResult();
+
     }
 
     @Override

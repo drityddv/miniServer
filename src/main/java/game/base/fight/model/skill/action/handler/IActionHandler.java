@@ -1,10 +1,6 @@
 package game.base.fight.model.skill.action.handler;
 
-import java.util.List;
-
-import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.skill.model.BaseSkill;
-import game.map.model.Grid;
+import game.world.fight.model.BattleParam;
 
 /**
  * 技能动作处理
@@ -16,37 +12,9 @@ import game.map.model.Grid;
 public interface IActionHandler {
 
     /**
-     * 单体指向性技能
+     * 处理战斗
      *
-     * @param caster
-     * @param defender
-     * @param baseSkill
+     * @param battleParam
      */
-    void action(BaseCreatureUnit caster, BaseCreatureUnit defender, BaseSkill baseSkill);
-
-    /**
-     * 群体指向性技能
-     *
-     * @param caster
-     * @param target
-     * @param baseSkill
-     */
-    void action(BaseCreatureUnit caster, List<BaseCreatureUnit> target, BaseSkill baseSkill);
-
-    /**
-     * aoe技能
-     *
-     * @param caster
-     * @param center
-     * @param baseSkill
-     */
-    void action(BaseCreatureUnit caster, Grid center, BaseSkill baseSkill);
-
-    /**
-     * 自身释放技能
-     *
-     * @param caster
-     * @param baseSkill
-     */
-    void action(BaseCreatureUnit caster, BaseSkill baseSkill);
+    void action(BattleParam battleParam);
 }

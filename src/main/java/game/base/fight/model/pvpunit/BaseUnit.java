@@ -147,4 +147,8 @@ public abstract class BaseUnit {
     }
 
     public void reviseStatus() {}
+
+    public void consumeMp(int consumeValue) {
+        currentMp -= consumeValue;
+    }
 }

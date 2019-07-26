@@ -46,8 +46,9 @@ public interface IFightService {
      * @param skillId
      * @param centerX
      * @param centerY
+     * @param centerType
      */
-    void useAoeSkill(Player player, long skillId, int centerX, int centerY);
+    void useAoeSkill(Player player, long skillId, int centerX, int centerY, int centerType);
 
     /**
      * 使用对自己释放的技能

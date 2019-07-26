@@ -94,7 +94,11 @@ public class BattleUtil {
         return units;
     }
 
-    public static BattleParam init(int mapId, long skillId, long playerId) {
+    public static void findTargetUnits(BattleParam battleParam) {
+
+    }
+
+    public static BattleParam loadParam(int mapId, long skillId, long playerId) {
         BattleParam battleParam = new BattleParam();
 
         AbstractMapHandler mapHandler = AbstractMapHandler.getAbstractMapHandler(mapId);
@@ -120,13 +124,13 @@ public class BattleUtil {
     }
 
     public static BattleParam initTarget(int mapId, long skillId, long playerId, Long targetId) {
-        BattleParam battleParam = init(mapId, skillId, playerId);
+        BattleParam battleParam = loadParam(mapId, skillId, playerId);
         battleParam.setTargetUnit(BattleUtil.findTargetUnit(battleParam.getMapHandler(), targetId, mapId));
         return battleParam;
     }
 
     public static BattleParam initTargets(int mapId, long skillId, long playerId, List<Long> targetIds) {
-        BattleParam battleParam = init(mapId, skillId, playerId);
+        BattleParam battleParam = loadParam(mapId, skillId, playerId);
 
         if (targetIds != null) {
             List<BaseCreatureUnit> targetUnits =

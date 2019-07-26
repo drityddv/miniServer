@@ -42,8 +42,8 @@ public class FightService implements IFightService {
     }
 
     @Override
-    public void useAoeSkill(Player player, long skillId, int centerX, int centerY) {
-        ExecutorUtils.submit(UseAoeSkillCommand.valueOf(player, skillId, Grid.valueOf(centerX, centerY)));
+    public void useAoeSkill(Player player, long skillId, int centerX, int centerY, int centerType) {
+        ExecutorUtils.submit(UseAoeSkillCommand.valueOf(player, skillId, Grid.valueOf(centerX, centerY), centerType));
     }
 
     @Override

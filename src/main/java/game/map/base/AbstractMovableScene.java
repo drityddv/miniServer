@@ -99,6 +99,22 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
         return playerMap;
     }
 
+    public List<AbstractMapObject> getMapObjects(List<Long> targetIdList) {
+        List<AbstractMapObject> mapObjects = new ArrayList<>();
+
+        targetIdList.forEach(objectId -> {
+            T t = playerMap.get(objectId);
+            if (t == null) {
+                t = (T)monsterMap.get(objectId);
+            }
+            if (t != null) {
+                mapObjects.add(t);
+            }
+        });
+
+        return mapObjects;
+    }
+
     @Override
     public Map<Long, MonsterMapObject> getMonsterMap() {
         return monsterMap;
@@ -124,5 +140,13 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
 
     public void broadcast(Grid grid) {
         aoiManager.broadcast(grid);
+    }
+
+    public AbstractMapObject getMapObject(long objectId) {
+        AbstractMapObject unit = monsterMap.get(objectId);
+        if (unit == null) {
+            unit = playerMap.get(objectId);
+        }
+        return unit;
     }
 }

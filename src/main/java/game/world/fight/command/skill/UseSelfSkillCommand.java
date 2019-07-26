@@ -1,16 +1,7 @@
 package game.world.fight.command.skill;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.fight.model.pvpunit.PlayerUnit;
-import game.base.fight.model.skill.action.handler.BaseActionHandler;
-import game.base.message.exception.RequestException;
 import game.base.skill.constant.SkillTypeEnum;
-import game.map.handler.AbstractMapHandler;
 import game.role.player.model.Player;
-import net.utils.PacketUtil;
 
 /**
  * 使用对自己释放的技能
@@ -31,26 +22,7 @@ public class UseSelfSkillCommand extends AbstractSkillCommand {
     }
 
     @Override
-    public void action() {
-        try {
-            AbstractMapHandler mapHandler = battleParam.getMapHandler();
-            BaseActionHandler actionHandler = battleParam.getActionHandler();
-
-            PlayerUnit caster = battleParam.getCaster();
-            if (baseSkill.getSkillType() != SkillTypeEnum.Self) {
-                return;
-            }
-
-            List<BaseCreatureUnit> defenders = new ArrayList<>();
-            defenders.add(caster);
-            actionHandler.init(caster, defenders, caster, baseSkill);
-            actionHandler.action(caster, baseSkill);
-            mapHandler.doLogMap(player, mapId);
-
-        } catch (RequestException e) {
-            PacketUtil.send(player, e.getErrorCode());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    protected boolean isSkillLegality() {
+        return battleParam.getBaseSkill().getSkillType() == SkillTypeEnum.Self;
     }
 }

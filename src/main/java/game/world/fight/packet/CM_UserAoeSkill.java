@@ -11,6 +11,11 @@ public class CM_UserAoeSkill {
     private long SkillId;
     private int centerX;
     private int centerY;
+    private int centerType;
+
+    public int getCenterType() {
+        return centerType;
+    }
 
     public long getSkillId() {
         return SkillId;

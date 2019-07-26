@@ -24,6 +24,7 @@ public class BuffResource {
     private String buffName;
     private int buffTypeId;
     private long durationTime;
+    // 1.999
     private double frequencyTime;
     private int periodCount;
     /**

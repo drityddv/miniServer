@@ -1,11 +1,9 @@
 package game.map.area;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.base.AbstractMovableScene;
-import game.map.model.Grid;
 
 /**
  *
@@ -16,25 +14,13 @@ import game.map.model.Grid;
  */
 
 public abstract class BaseAreaProcess {
-    /**
-     * 阻挡点信息带过来吧 方便以后拓展选择逻辑
-     */
-    protected AbstractMovableScene mapScene;
-    protected int[][] blockData;
-    protected List<Grid> targetGrids = new ArrayList<>();
-    protected List<BaseCreatureUnit> targetUnits = new ArrayList<>();
-
-    public List<BaseCreatureUnit> getResult() {
-        calculate();
-        return targetUnits;
-    }
-
-    public void init(AreaProcessParam processParam, AbstractMovableScene mapScene) {
-
-    }
 
     /**
-     * 计算影响的坐标点
+     * 计算区域单位集合
+     *
+     * @param param
+     * @param mapScene
+     * @return
      */
-    public abstract void calculate();
+    public abstract List<BaseCreatureUnit> calculate(AreaProcessParam param, AbstractMovableScene mapScene);
 }

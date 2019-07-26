@@ -50,7 +50,13 @@ public enum MessageEnum {
 
     DEAD(24, "您已死亡!"),
 
-    RE_LIVE(25, "您已重生!"),;
+    RE_LIVE(25, "您已重生!"),
+
+    SKILL_EMPTY(26, "技能为空!"),
+
+    SKILL_MP_NOT_ENOUGH(27, "技能使用失败,蓝量不足!"),
+
+    SKILL_IN_CD(28, "技能cd中!"),;
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 

@@ -204,7 +204,7 @@ public class SkillLevelResource {
         return value;
     }
 
-    public SkillTypeEnum getSkillType() {
+    public SkillTypeEnum getSkillTypeEnum() {
         return skillType;
     }
 
