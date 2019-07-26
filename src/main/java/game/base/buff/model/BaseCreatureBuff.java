@@ -20,14 +20,23 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
      * 是否需要提交调度请求
      */
     protected volatile boolean needScheduled = false;
+    /**
+     * 是否需要提交取消buff调度请求
+     */
+    protected volatile boolean needScheduleCancel = false;
 
     /**
      * 注册调度
      */
     public void schedule() {
         if (needScheduled) {
-            SpringContext.getQuartzService().scheduleJob(buffJob);
+            SpringContext.getQuartzService().scheduleJob(scheduleJob);
             needScheduled = false;
+        }
+
+        if (needScheduleCancel) {
+            SpringContext.getQuartzService().scheduleJob(cancelJob);
+            needScheduleCancel = false;
         }
     }
 

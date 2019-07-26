@@ -4,8 +4,10 @@ import static org.quartz.DateBuilder.futureDate;
 
 import org.quartz.*;
 
+import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.world.base.command.scene.ReliveCommand;
 import scheduler.constant.JobGroupEnum;
+import scheduler.constant.ScheduleConstant;
 import scheduler.job.common.scene.SceneReliveJob;
 import spring.SpringContext;
 
@@ -32,6 +34,41 @@ public class JobEntry {
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
         jobDetail.getJobDataMap().put("command", jobMapData);
+
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName)
+            .startAt(futureDate((int)delay, DateBuilder.IntervalUnit.MILLISECOND)).forJob(jobDetail).build();
+
+        entry.jobDetail = jobDetail;
+        entry.trigger = trigger;
+        return entry;
+    }
+
+    // buff周期调度
+    public static JobEntry newBuffRateJob(Class<? extends Job> jobClazz, long delay, long period, long jobId,
+        String groupName, AbstractSceneCommand jobMapData) {
+        JobEntry entry = new JobEntry();
+        String name = jobId + ScheduleConstant.SCHEDULE_NAME;
+
+        JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
+        jobDetail.getJobDataMap().put("command", jobMapData);
+
+        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName).withSchedule(
+            SimpleScheduleBuilder.simpleSchedule().withRepeatCount((int)(period - 1)).withIntervalInMilliseconds(delay))
+            .forJob(jobDetail).build();
+
+        entry.jobDetail = jobDetail;
+        entry.trigger = trigger;
+        return entry;
+    }
+
+    // buff延迟取消
+    public static JobEntry newBuffCancelJob(Class<? extends Job> jobClazz, long delay, long jobId, String groupName,
+        AbstractSceneCommand command) {
+        JobEntry entry = new JobEntry();
+        String name = jobId + ScheduleConstant.CANCEL_NAME;
+
+        JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
+        jobDetail.getJobDataMap().put("command", command);
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName)
             .startAt(futureDate((int)delay, DateBuilder.IntervalUnit.MILLISECOND)).forJob(jobDetail).build();

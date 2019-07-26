@@ -38,6 +38,11 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     protected BaseCreatureUnit attackUnit;
 
     protected FighterAccount fighterAccount;
+
+    /**
+     * 是否已经处理死亡事件
+     */
+    protected boolean handleDead;
     /**
      * 名称
      */
@@ -52,12 +57,16 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     @Override
     protected void handlerDead(BaseActionEntry attackEntry) {
         attackUnit = attackEntry.getCaster();
-        JobEntry.newMapObjectReliveJob(Map_Constant.Relive_Delay, id, mapId).schedule();
+        if (!handleDead) {
+            JobEntry.newMapObjectReliveJob(Map_Constant.Relive_Delay, id, mapId).schedule();
+            handleDead = true;
+        }
     }
 
     @Override
     public void relive() {
         initBaseAttribute();
+        handleDead = false;
         dead = false;
         AbstractMapObject mapObject = fighterAccount.getMapObject();
         AbstractMapHandler.getAbstractMapHandler(mapId).broadcast(mapId, mapObject.getCurrentGrid());

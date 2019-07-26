@@ -4,16 +4,21 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import game.world.fight.command.buff.BuffCancelCommand;
+
 /**
- * 效果延迟取消任务
+ * buff关闭job
  *
  * @author : ddv
  * @since : 2019/7/18 12:22 PM
  */
 
-public class EffectCancelDelayJob implements Job {
+public class BuffCancelDelayJob implements Job {
+    private BuffCancelCommand command;
+
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-
+        command = (BuffCancelCommand)context.getMergedJobDataMap().get("command");
+        command.action();
     }
 }

@@ -35,18 +35,13 @@ public class PoisonCycleBuff extends BaseCycleBuff {
 
     @Override
     public void merge(BaseCreatureBuff buff) {
+        super.merge(buff);
         if (buff instanceof PoisonCycleBuff) {
             PoisonCycleBuff newBuff = (PoisonCycleBuff)buff;
             this.level += newBuff.level;
             this.damage += newBuff.damage;
 
-            this.mergedCount++;
-            this.remainCount += newBuff.remainCount;
-            this.periodCount = remainCount;
-            this.frequencyTime = Math.min(this.frequencyTime, newBuff.frequencyTime);
             modifyContext();
         }
-        initBuffJob();
-
     }
 }

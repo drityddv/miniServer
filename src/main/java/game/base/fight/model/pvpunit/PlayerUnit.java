@@ -72,8 +72,10 @@ public class PlayerUnit extends BaseCreatureUnit {
 
     @Override
     protected void handlerDead(BaseActionEntry attackEntry) {
-        super.handlerDead(attackEntry);
-        PacketUtil.send(mapObject.getPlayer(), MessageEnum.DEAD);
+        if (!handleDead) {
+            super.handlerDead(attackEntry);
+            PacketUtil.send(mapObject.getPlayer(), MessageEnum.DEAD);
+        }
     }
 
     @Override

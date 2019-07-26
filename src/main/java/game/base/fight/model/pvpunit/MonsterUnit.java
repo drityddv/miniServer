@@ -73,14 +73,16 @@ public class MonsterUnit extends BaseCreatureUnit {
 
     @Override
     protected void handlerDead(BaseActionEntry attackEntry) {
-        super.handlerDead(attackEntry);
-        // 触发发奖
-        if (attackUnit instanceof PlayerUnit) {
-            PlayerUnit playerUnit = (PlayerUnit)attackUnit;
-            Player player = playerUnit.getMapObject().getPlayer();
-            long dropConfigId = creatureResource.getDropConfigId();
-            List<AbstractItem> rewardItems = SpringContext.getItemService().createItemsByDropConfig(dropConfigId);
-            ExecutorUtils.submit(AddItemToPackCommand.valueOf(player, rewardItems));
+        if (!handleDead) {
+            super.handlerDead(attackEntry);
+            // 触发发奖
+            if (attackUnit instanceof PlayerUnit) {
+                PlayerUnit playerUnit = (PlayerUnit)attackUnit;
+                Player player = playerUnit.getMapObject().getPlayer();
+                long dropConfigId = creatureResource.getDropConfigId();
+                List<AbstractItem> rewardItems = SpringContext.getItemService().createItemsByDropConfig(dropConfigId);
+                ExecutorUtils.submit(AddItemToPackCommand.valueOf(player, rewardItems));
+            }
         }
 
     }

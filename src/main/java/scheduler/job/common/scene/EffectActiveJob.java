@@ -18,7 +18,7 @@ import game.world.fight.command.buff.BuffActiveCommand;
 
 public class EffectActiveJob implements Job {
     private static final Logger logger = LoggerFactory.getLogger(EffectActiveJob.class);
-    BuffActiveCommand command;
+    private BuffActiveCommand command;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

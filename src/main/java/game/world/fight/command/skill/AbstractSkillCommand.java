@@ -33,7 +33,6 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
         super(player.getCurrentMapId());
         this.player = player;
         this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
-        checkSkillLegality();
     }
 
     public AbstractSkillCommand(Player player, long skillId, Long targetId) {
@@ -41,7 +40,6 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
         this.player = player;
         this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
         this.battleParam.setTargetId(targetId);
-        checkSkillLegality();
     }
 
     public AbstractSkillCommand(Player player, long skillId, List<Long> targetIdList) {
@@ -49,7 +47,6 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
         this.player = player;
         this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
         this.battleParam.setTargetIdList(targetIdList);
-        checkSkillLegality();
     }
 
     // 技能种类是否符合
@@ -85,6 +82,7 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
     @Override
     public void action() {
         try {
+            checkSkillLegality();
             BaseActionHandler actionHandler = battleParam.getActionHandler();
             actionHandler.action(battleParam);
 

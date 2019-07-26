@@ -30,8 +30,10 @@ public abstract class BaseBuff<T> {
 
     protected Map<BuffTriggerPoint, List<BaseEffect>> triggerPoints;
 
-    // buff调度作业
-    protected JobEntry buffJob;
+    // buff 周期调度
+    protected JobEntry scheduleJob;
+    // buff 结束调度
+    protected JobEntry cancelJob;
     // buff释放者
     protected BaseCreatureUnit caster;
     // buff作用对象
@@ -91,6 +93,16 @@ public abstract class BaseBuff<T> {
         return buffResource.getGroupId();
     }
 
+    // buff是否需要调度取消
+    public boolean isNeedCancel() {
+        return buffResource.getDurationTime() > 0;
+    }
+
+    // buff是否需要周期调度
+    public boolean isNeedSchedule() {
+        return buffResource.getFrequencyTime() > 0;
+    }
+
     // get set
 
     public long getConfigId() {
@@ -109,12 +121,12 @@ public abstract class BaseBuff<T> {
         this.buffId = buffId;
     }
 
-    public JobEntry getBuffJob() {
-        return buffJob;
+    public JobEntry getScheduleJob() {
+        return scheduleJob;
     }
 
-    public void setBuffJob(JobEntry buffJob) {
-        this.buffJob = buffJob;
+    public void setScheduleJob(JobEntry scheduleJob) {
+        this.scheduleJob = scheduleJob;
     }
 
     public BaseCreatureUnit getCaster() {

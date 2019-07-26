@@ -37,7 +37,6 @@ public class BuffActiveCommand extends AbstractSceneCommand {
             logger.info("周期次数[{}] 剩余次数[{}]", baseCycleBuff.getPeriodCount(), baseCycleBuff.getRemainCount());
         }
         buff.triggerBuff(BuffTriggerPoint.Schedule_Active);
-        buff.tryCancel();
     }
 
     public BaseCreatureBuff getBuff() {

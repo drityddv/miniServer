@@ -59,6 +59,7 @@ public class QuartzService {
     }
 
     public void removeJob(JobDetail jobDetail) {
+        logger.info("取消作业[{}]", jobDetail.getKey().getName());
         try {
             scheduler.deleteJob(jobDetail.getKey());
         } catch (SchedulerException e) {
@@ -67,7 +68,10 @@ public class QuartzService {
     }
 
     public void addJob(JobDetail jobDetail, Trigger trigger) {
-        logger.info("新的调度作业[{}]", jobDetail.getKey().getGroup());
+        logger.info("新的调度作业[{}]", jobDetail.getKey().getName());
+        if (trigger.getEndTime() != null) {
+            logger.info("触发器结束[{}]", trigger.getEndTime().getTime());
+        }
         try {
             scheduler.scheduleJob(jobDetail, trigger);
         } catch (SchedulerException e) {

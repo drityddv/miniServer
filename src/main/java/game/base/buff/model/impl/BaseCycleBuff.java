@@ -5,7 +5,9 @@ import game.base.buff.model.BuffTriggerPoint;
 import game.base.buff.resource.BuffResource;
 import game.base.effect.model.BuffContext;
 import game.world.fight.command.buff.BuffActiveCommand;
+import game.world.fight.command.buff.BuffCancelCommand;
 import scheduler.constant.JobGroupEnum;
+import scheduler.job.common.scene.BuffCancelDelayJob;
 import scheduler.job.common.scene.EffectActiveJob;
 import scheduler.job.model.JobEntry;
 import spring.SpringContext;
@@ -24,12 +26,23 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
     protected int remainCount;
     // 执行频率
     protected long frequencyTime;
+    // 延迟关闭时间
+    protected long delayEndTime;
 
     @Override
     public void initBuffJob() {
-        buffJob = JobEntry.newRateJob(EffectActiveJob.class, frequencyTime, periodCount, buffId,
-            JobGroupEnum.BUFF.name(), BuffActiveCommand.valueOf(this, mapId));
-        needScheduled = true;
+        if (isScheduleBuff()) {
+            scheduleJob = JobEntry.newBuffRateJob(EffectActiveJob.class, frequencyTime, periodCount, buffId,
+                JobGroupEnum.BUFF.name(), BuffActiveCommand.valueOf(this, mapId));
+            needScheduled = true;
+        }
+
+        if (isNeedCancel()) {
+            cancelJob = JobEntry.newBuffCancelJob(BuffCancelDelayJob.class, delayEndTime, buffId,
+                JobGroupEnum.BUFF.name(), BuffCancelCommand.valueOf(this, mapId));
+            needScheduleCancel = true;
+        }
+
     }
 
     @Override
@@ -45,6 +58,7 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
         super.init(buffResource, context);
         remainCount = periodCount = buffResource.getPeriodCount();
         frequencyTime = (long)buffResource.getFrequencyTime();
+        delayEndTime = buffResource.getDurationTime();
         initBuffJob();
     }
 
@@ -66,7 +80,16 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
     // 默认合并重新生成调度任务
     @Override
     public void merge(BaseCreatureBuff buff) {
-
+        if (buff instanceof BaseCycleBuff) {
+            BaseCycleBuff newBuff = (BaseCycleBuff)buff;
+            this.mergedCount++;
+            this.delayEndTime = remainCount * frequencyTime + newBuff.getDelayEndTime();
+            this.remainCount += newBuff.remainCount;
+            this.periodCount = remainCount;
+            this.frequencyTime = Math.min(this.frequencyTime, newBuff.frequencyTime);
+            this.needScheduled = true;
+            this.needScheduleCancel = true;
+        }
     }
 
     @Override
@@ -76,7 +99,8 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
 
     @Override
     public void cancelSchedule() {
-        SpringContext.getQuartzService().removeJob(buffJob.getJobDetail());
+        SpringContext.getQuartzService().removeJob(scheduleJob.getJobDetail());
+        SpringContext.getQuartzService().removeJob(cancelJob.getJobDetail());
     }
 
     @Override
@@ -94,4 +118,11 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
         return remainCount;
     }
 
+    public long getFrequencyTime() {
+        return frequencyTime;
+    }
+
+    public long getDelayEndTime() {
+        return delayEndTime;
+    }
 }

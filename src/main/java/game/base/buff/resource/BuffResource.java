@@ -24,8 +24,7 @@ public class BuffResource {
     private String buffName;
     private int buffTypeId;
     private long durationTime;
-    // 1.999
-    private double frequencyTime;
+    private long frequencyTime;
     private int periodCount;
     /**
      * 0 不能merge
@@ -47,7 +46,6 @@ public class BuffResource {
 
     @Init
     private void init() {
-        analysisTime();
         analysisEffect();
         analysisTriggerPoints();
         analysisEffectContext();
@@ -80,11 +78,6 @@ public class BuffResource {
                     JodaUtil.convertFromString(contextEnum.getParamClazz(), singleParam[1]));
             }
         }
-    }
-
-    private void analysisTime() {
-        durationTime *= 1000;
-        frequencyTime *= 1000;
     }
 
     private void analysisEffect() {
