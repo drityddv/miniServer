@@ -1,6 +1,9 @@
 package game.base.buff.resource;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import game.base.buff.model.*;
 import game.base.effect.model.BaseEffect;
@@ -32,13 +35,10 @@ public class BuffResource {
     private Map<BuffTriggerPointEnum, List<BaseEffect>> triggerPoints;
     // First_Active:2&3,Schedule_Active:2&1
     private String triggerPointString;
-    private String effectIdString;
 
     private BaseBuffConfig buffConfig;
     // POISON_LEVEL:1&POISON_DAMAGE:10,POISON_LEVEL:2&POISON_DAMAGE:20
     private String effectParamString;
-    // merge方式 1 合并 2 新覆盖旧 旧buff调用
-    private int mergeType;
 
     @Init
     private void init() {
@@ -61,16 +61,6 @@ public class BuffResource {
                 triggerPoints.get(triggerPointEnum).add(EffectTypeEnum.getById(Long.parseLong(pointId)).create());
             }
         }
-
-//        String[] effectIds = effectIdString.split(CsvSymbol.Comma);
-//        for (String effectId : effectIds) {
-//            BaseEffect baseEffect = EffectTypeEnum.getById(Long.parseLong(effectId)).create();
-//            Set<BuffTriggerPointEnum> triggerPointSet =
-//                EffectTypeEnum.getByClazz(baseEffect.getClass()).getTriggerPointSet();
-//            triggerPointSet.forEach(buffTriggerPoint -> {
-//                triggerPoints.get(buffTriggerPoint).add(baseEffect);
-//            });
-//        }
     }
 
     private void analysisBuffConfig() {
@@ -135,4 +125,5 @@ public class BuffResource {
     public BaseBuffConfig getBuffConfig() {
         return buffConfig;
     }
+
 }

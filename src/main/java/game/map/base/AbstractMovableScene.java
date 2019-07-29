@@ -117,7 +117,9 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
 
     public List<AbstractMapObject> getMapObjects(List<Long> targetIdList) {
         List<AbstractMapObject> mapObjects = new ArrayList<>();
-
+        if (targetIdList == null) {
+            return mapObjects;
+        }
         targetIdList.forEach(objectId -> {
             T t = playerMap.get(objectId);
             if (t == null) {

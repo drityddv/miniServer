@@ -3,7 +3,8 @@ package game.base.fight.model.pvpunit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import game.base.fight.base.model.attack.BaseActionEntry;
+import game.base.effect.model.constant.RestrictStatusEnum;
+import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.model.componet.UnitComponentContainer;
 
 /**
@@ -19,6 +20,7 @@ public abstract class BaseUnit {
     protected UnitComponentContainer componentContainer = new UnitComponentContainer();
     protected long id;
     protected int level;
+    protected RestrictStatusEnum statusEnum = RestrictStatusEnum.ALIVE;
     protected boolean dead;
     protected boolean canMove;
     protected long maxHp;
@@ -40,7 +42,7 @@ public abstract class BaseUnit {
     // 防御 自己扩展 可以走buff走生物自己的机制
     public void defend(BaseActionEntry attackEntry) {
         long damage = attackEntry.getValue();
-        long realDamage = 0;
+        long realDamage;
         realDamage = currentHp >= damage ? damage : currentHp;
         currentHp -= realDamage;
         if (currentHp == 0) {
@@ -54,7 +56,11 @@ public abstract class BaseUnit {
     /**
      * 处理死亡
      */
-    protected abstract void handlerDead(BaseActionEntry attackEntry);
+    public void handlerDead(BaseActionEntry attackEntry) {
+        if (dead) {
+            statusEnum = RestrictStatusEnum.DEAD;
+        }
+    }
 
     /**
      * 重生
@@ -75,6 +81,11 @@ public abstract class BaseUnit {
     // 考虑溢出
     public boolean isHpFull() {
         return currentHp >= maxHp;
+    }
+
+    // 法力值是否足够
+    public boolean isEnoughMp(long mpConsume) {
+        return currentMp >= mpConsume;
     }
 
     // get and set
@@ -120,6 +131,9 @@ public abstract class BaseUnit {
 
     public void setCurrentHp(long currentHp) {
         this.currentHp = currentHp;
+        if (currentHp <= 0) {
+            dead = true;
+        }
     }
 
     public int getMapId() {

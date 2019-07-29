@@ -5,9 +5,9 @@ import java.util.List;
 import game.base.fight.base.model.attack.impl.PhysicalSingleAttack;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
-import game.base.fight.utils.BattleUtil;
 import game.base.game.attribute.AttributeType;
 import game.base.skill.model.BaseSkill;
+import game.world.fight.model.BattleParam;
 import utils.MathUtil;
 
 /**
@@ -20,16 +20,16 @@ import utils.MathUtil;
 public class HighNoonShoot extends BaseActionHandler {
 
     @Override
-    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
+    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill,
+        BattleParam battleParam) {
         targets.forEach(target -> {
             long originValue = baseSkill.getSkillValue();
-            originValue +=
-                MathUtil.getLongRandom(BattleUtil.getUnitAttributeValue(caster, AttributeType.PHYSICAL_ATTACK_LOWER),
-                    BattleUtil.getUnitAttributeValue(caster, AttributeType.PHYSICAL_ATTACK_UPPER));
-            PhysicalSingleAttack.valueOf(caster, target, baseSkill, originValue).doActive();
+            originValue += MathUtil.getLongRandom(caster.getUnitAttributeValue(AttributeType.PHYSICAL_ATTACK_LOWER),
+                caster.getUnitAttributeValue(AttributeType.PHYSICAL_ATTACK_UPPER));
+            PhysicalSingleAttack.valueOf(caster, target, baseSkill, originValue, battleParam).doActive();
         });
 
-        super.doAction(caster, targets, baseSkill);
+        super.doAction(caster, targets, baseSkill, battleParam);
     }
 
 }

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.executor.util.ExecutorUtils;
-import game.base.fight.base.model.attack.BaseActionEntry;
+import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
@@ -68,7 +68,7 @@ public class MonsterUnit extends BaseCreatureUnit {
     }
 
     @Override
-    protected void handlerDead(BaseActionEntry attackEntry) {
+    public void handlerDead(BaseActionEntry attackEntry) {
         if (!handleDead) {
             super.handlerDead(attackEntry);
             // 触发发奖

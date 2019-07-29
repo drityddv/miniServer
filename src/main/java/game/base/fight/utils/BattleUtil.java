@@ -9,12 +9,12 @@ import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
-import game.base.fight.model.skill.model.PVPSkillComponent;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.message.exception.RequestException;
 import game.base.skill.model.BaseSkill;
 import game.gm.packet.SM_LogMessage;
+import game.map.area.CenterTypeEnum;
 import game.map.handler.AbstractMapHandler;
 import game.map.visible.PlayerMapObject;
 import game.role.player.model.Player;
@@ -28,11 +28,6 @@ import utils.StringUtil;
  */
 
 public class BattleUtil {
-
-    // 法力值是否足够
-    public static boolean isEnoughMp(BaseCreatureUnit unit, long mpConsume) {
-        return unit.getCurrentMp() >= mpConsume;
-    }
 
     // 计算技能一级数值 [收到属性增益之后的数值]
     public static long calculateSkillValue1(long skillValue, List<AttributeType> attributeTypeList,
@@ -63,17 +58,14 @@ public class BattleUtil {
         BaseSkill baseSkill = caster.getSkillComponent().getSKill(skillId);
         actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
 
+        battleParam.setCenterTypeEnum(CenterTypeEnum.Default);
+        battleParam.setPlayer(caster.getMapObject().getPlayer());
         battleParam.setBaseSkill(baseSkill);
         battleParam.setMapHandler(mapHandler);
         battleParam.setActionHandler(actionHandler);
         battleParam.setCaster(caster);
         battleParam.setMapScene(mapHandler.getMapScene(mapId));
         return battleParam;
-    }
-
-    // 自行检查空指针
-    public static long getUnitAttributeValue(BaseCreatureUnit unit, AttributeType type) {
-        return unit.getAttributeComponent().getFinalAttributes().get(type).getValue();
     }
 
     /**

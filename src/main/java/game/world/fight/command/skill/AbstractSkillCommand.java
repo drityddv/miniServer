@@ -33,6 +33,7 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
         super(player.getCurrentMapId());
         this.player = player;
         this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
+        this.battleParam.getTargetIdList().add(battleParam.getCaster().getId());
     }
 
     public AbstractSkillCommand(Player player, long skillId, Long targetId) {
@@ -40,6 +41,7 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
         this.player = player;
         this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
         this.battleParam.setTargetId(targetId);
+        this.battleParam.getTargetIdList().add(targetId);
     }
 
     public AbstractSkillCommand(Player player, long skillId, List<Long> targetIdList) {
@@ -67,7 +69,7 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
             RequestException.throwException(MessageEnum.SKILL_EMPTY);
         }
 
-        if (!BattleUtil.isEnoughMp(caster, baseSkill.getSkillMpConsume())) {
+        if (!caster.isEnoughMp(baseSkill.getSkillMpConsume())) {
             logger.warn("玩家[{}] 使用技能失败,魔法值不足 需要[{}] 实际拥有[{}]", caster.getFighterAccount().getAccountId(),
                 baseSkill.getSkillMpConsume(), caster.getCurrentMp());
             RequestException.throwException(MessageEnum.SKILL_MP_NOT_ENOUGH);
@@ -85,7 +87,6 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
             checkSkillLegality();
             BaseActionHandler actionHandler = battleParam.getActionHandler();
             actionHandler.action(battleParam);
-
         } catch (RequestException e) {
             PacketUtil.send(player, e.getErrorCode());
         } catch (Exception e) {

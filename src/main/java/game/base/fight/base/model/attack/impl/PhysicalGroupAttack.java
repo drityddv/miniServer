@@ -1,11 +1,10 @@
 package game.base.fight.base.model.attack.impl;
 
-import java.util.List;
-
+import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.base.model.attack.ActionTypeEnum;
-import game.base.fight.base.model.attack.BaseActionEntry;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.skill.model.BaseSkill;
+import game.world.fight.model.BattleParam;
 
 /**
  * 物理伤害型多体指向技能
@@ -16,19 +15,19 @@ import game.base.skill.model.BaseSkill;
 
 public class PhysicalGroupAttack extends BaseActionEntry {
 
-    public PhysicalGroupAttack(BaseCreatureUnit attacker, List<BaseCreatureUnit> defenders, BaseSkill skill,
-        long value) {
-        super(attacker, defenders, skill, value, ActionTypeEnum.Physical_Attack);
+    public PhysicalGroupAttack(BaseCreatureUnit attacker, BaseCreatureUnit defender, BaseSkill skill, long value,
+        BattleParam battleParam) {
+        super(attacker, defender, skill, value, ActionTypeEnum.Physical_Attack, battleParam);
     }
 
-    public static PhysicalGroupAttack valueOf(BaseCreatureUnit attacker, List<BaseCreatureUnit> defenders,
-        BaseSkill skill, long value) {
-        PhysicalGroupAttack attack = new PhysicalGroupAttack(attacker, defenders, skill, value);
+    public static PhysicalGroupAttack valueOf(BaseCreatureUnit attacker, BaseCreatureUnit defender, BaseSkill skill,
+        long value, BattleParam battleParam) {
+        PhysicalGroupAttack attack = new PhysicalGroupAttack(attacker, defender, skill, value, battleParam);
         return attack;
     }
 
     @Override
     public void doActive() {
-        defenders.forEach(defender -> defender.defend(this));
+        calculateAttack();
     }
 }

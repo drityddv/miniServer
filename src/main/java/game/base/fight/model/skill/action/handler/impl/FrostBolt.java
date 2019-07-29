@@ -7,6 +7,7 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.utils.BattleUtil;
 import game.base.skill.model.BaseSkill;
+import game.world.fight.model.BattleParam;
 
 /**
  * 寒冰箭
@@ -18,7 +19,8 @@ import game.base.skill.model.BaseSkill;
 public class FrostBolt extends BaseActionHandler {
 
     @Override
-    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
+    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill,
+        BattleParam battleParam) {
         if (targets == null || targets.size() != 1) {
             logger.warn("使用寒冰箭失败,targets参数长度不为1");
             return;
@@ -28,8 +30,8 @@ public class FrostBolt extends BaseActionHandler {
             baseSkill.getSkillLevelResource().getAttributeTypes(), caster.getAttributeComponent().getFinalAttributes());
         BaseCreatureUnit target = targets.get(0);
 
-        MagicSingleAttack.valueOf(caster, target, baseSkill, value).doActive();
-        super.doAction(caster, targets, baseSkill);
+        MagicSingleAttack.valueOf(caster, target, baseSkill, value, battleParam).doActive();
+        super.doAction(caster, targets, baseSkill, battleParam);
     }
 
 }

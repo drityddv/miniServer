@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import client.MessageEnum;
-import game.base.fight.base.model.attack.BaseActionEntry;
+import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
@@ -66,7 +66,7 @@ public class PlayerUnit extends BaseCreatureUnit {
     }
 
     @Override
-    protected void handlerDead(BaseActionEntry attackEntry) {
+    public void handlerDead(BaseActionEntry attackEntry) {
         if (!handleDead) {
             super.handlerDead(attackEntry);
             PacketUtil.send(mapObject.getPlayer(), MessageEnum.DEAD);

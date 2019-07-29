@@ -17,7 +17,8 @@ public enum BuffTypeEnum {
     Poison_Cycle_Buff(1, PoisonScheduleBuff.class) {
         @Override
         public Set<BuffTriggerPointEnum> getTriggerPointSet() {
-            return new HashSet<>(Arrays.asList(BuffTriggerPointEnum.First_Active, BuffTriggerPointEnum.Schedule_Active));
+            return new HashSet<>(
+                Arrays.asList(BuffTriggerPointEnum.First_Active, BuffTriggerPointEnum.Schedule_Active));
         }
     },
     /**
@@ -26,8 +27,8 @@ public enum BuffTypeEnum {
     Avatar_Buff(2, AvatarBuff.class) {
         @Override
         public Set<BuffTriggerPointEnum> getTriggerPointSet() {
-            return new HashSet<>(
-                Arrays.asList(BuffTriggerPointEnum.First_Active, BuffTriggerPointEnum.Schedule_Active, BuffTriggerPointEnum.End));
+            return new HashSet<>(Arrays.asList(BuffTriggerPointEnum.First_Active, BuffTriggerPointEnum.Schedule_Active,
+                BuffTriggerPointEnum.End));
         }
     },;
 

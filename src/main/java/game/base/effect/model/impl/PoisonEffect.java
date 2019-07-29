@@ -12,14 +12,15 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
  * @author : ddv
  * @since : 2019/7/23 8:04 PM
  */
-
+// FIXME 这里要记录相关信息
 public class PoisonEffect extends BaseEffect {
     @Override
     public void active(BuffContext buffContext) {
         int level = buffContext.getParam(BuffParamEnum.POISON_LEVEL);
         long damage = buffContext.getParam(BuffParamEnum.POISON_DAMAGE);
         BaseCreatureUnit creatureUnit = buffContext.getParam(BuffParamEnum.Target);
-        PhysicalSingleAttack attack = PhysicalSingleAttack.valueOf(null, creatureUnit, null, level * damage);
+        PhysicalSingleAttack attack = PhysicalSingleAttack.valueOf(null, creatureUnit, null, level * damage,
+            buffContext.getParam(BuffParamEnum.Battle_Param));
         attack.doActive();
     }
 

@@ -1,8 +1,11 @@
 package game.world.fight.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import game.base.fight.base.model.ActionResult;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
@@ -12,7 +15,9 @@ import game.map.area.CenterTypeEnum;
 import game.map.base.AbstractMovableScene;
 import game.map.handler.AbstractMapHandler;
 import game.map.model.Grid;
+import game.map.visible.AbstractMapObject;
 import game.map.visible.BaseAttackAbleMapObject;
+import game.role.player.model.Player;
 
 /**
  * 一次战斗所需对象集合
@@ -28,16 +33,19 @@ public class BattleParam {
     private AbstractMovableScene mapScene;
 
     // 单元参数
+    private Player player;
     private PlayerUnit caster;
     private BaseSkill baseSkill;
-    private BaseCreatureUnit targetUnit;
+    private BaseCreatureUnit primaryTargetUnit;
     private List<BaseCreatureUnit> targetUnits;
 
     // 其他参数
     private Grid center;
     private CenterTypeEnum centerTypeEnum;
     private long targetId;
-    private List<Long> targetIdList;
+    private List<Long> targetIdList = new ArrayList<>();
+
+    private Map<Long, ActionResult> unitResultMap = new HashMap<>();
 
     public AbstractMapHandler getMapHandler() {
         return mapHandler;
@@ -63,12 +71,12 @@ public class BattleParam {
         this.caster = caster;
     }
 
-    public BaseCreatureUnit getTargetUnit() {
-        return targetUnit;
+    public BaseCreatureUnit getPrimaryTargetUnit() {
+        return primaryTargetUnit;
     }
 
-    public void setTargetUnit(BaseCreatureUnit targetUnit) {
-        this.targetUnit = targetUnit;
+    public void setPrimaryTargetUnit(BaseCreatureUnit primaryTargetUnit) {
+        this.primaryTargetUnit = primaryTargetUnit;
     }
 
     public List<BaseCreatureUnit> getTargets() {
@@ -84,7 +92,6 @@ public class BattleParam {
     }
 
     public AbstractMovableScene getMapScene() {
-
         return mapScene;
     }
 
@@ -98,6 +105,14 @@ public class BattleParam {
 
     public void setTargetId(long targetId) {
         this.targetId = targetId;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public List<BaseCreatureUnit> getTargetUnits() {
@@ -136,8 +151,12 @@ public class BattleParam {
         return baseSkill.getSkillLevelResource().getSkillTypeEnum();
     }
 
-    public void loadSingleTarget() {
-        targetUnit = mapScene.getMapObject(targetId).getFighterAccount().getCreatureUnit();
+    public void loadTargets() {
+        AbstractMapObject mapObject = mapScene.getMapObject(targetId);
+        if (mapObject != null) {
+            primaryTargetUnit = mapObject.getFighterAccount().getCreatureUnit();
+        }
+        loadGroupTargets();
     }
 
     public void loadGroupTargets() {
@@ -148,4 +167,11 @@ public class BattleParam {
         });
     }
 
+    public Map<Long, ActionResult> getUnitResultMap() {
+        return unitResultMap;
+    }
+
+    public void putResult(long id, ActionResult actionResult) {
+        unitResultMap.put(id, actionResult);
+    }
 }

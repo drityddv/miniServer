@@ -3,7 +3,8 @@ package game.base.fight.model.pvpunit;
 import java.util.HashMap;
 import java.util.Map;
 
-import game.base.fight.base.model.attack.BaseActionEntry;
+import game.base.effect.model.constant.RestrictStatusEnum;
+import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.componet.IUnitComponent;
@@ -55,18 +56,23 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     }
 
     @Override
-    protected void handlerDead(BaseActionEntry attackEntry) {
-        attackUnit = attackEntry.getCaster();
+    public void handlerDead(BaseActionEntry attackEntry) {
         if (!handleDead) {
+            super.handlerDead(attackEntry);
             JobEntry.newMapObjectReliveJob(Map_Constant.Relive_Delay, id, mapId).schedule();
             handleDead = true;
         }
+    }
+
+    public void handlerStatus(BaseActionEntry attackEntry) {
+        attackEntry.getActionResult().setRestrictStatus(statusEnum);
     }
 
     @Override
     public void relive() {
         initBaseAttribute();
         handleDead = false;
+        statusEnum = RestrictStatusEnum.ALIVE;
         dead = false;
         AbstractMapObject mapObject = fighterAccount.getMapObject();
         AbstractMapHandler.getAbstractMapHandler(mapId).broadcast(mapId, mapObject.getCurrentGrid());
@@ -101,6 +107,10 @@ public abstract class BaseCreatureUnit extends BaseUnit {
 
     public PVPCreatureAttributeComponent getAttributeComponent() {
         return componentContainer.getComponent(UnitComponentType.ATTRIBUTE);
+    }
+
+    public long getUnitAttributeValue(AttributeType type) {
+        return getAttributeComponent().getFinalAttributes().get(type).getValue();
     }
 
     public PVPSkillComponent getSkillComponent() {

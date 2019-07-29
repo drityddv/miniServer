@@ -1,11 +1,11 @@
 package scheduler.job.common.scene;
 
-import game.base.executor.command.constant.ExecutorConstant;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.executor.command.constant.ExecutorConstant;
 import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
 import game.base.executor.util.ExecutorUtils;
 
@@ -21,7 +21,8 @@ public class SceneHeartBeatRateJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) {
-        SceneHeartBeatCommand command = (SceneHeartBeatCommand)context.getMergedJobDataMap().get(ExecutorConstant.COMMAND);
+        SceneHeartBeatCommand command =
+            (SceneHeartBeatCommand)context.getMergedJobDataMap().get(ExecutorConstant.COMMAND);
         logger.info("地图[{}] 心跳任务", command.getMapId());
         ExecutorUtils.submit(command);
     }

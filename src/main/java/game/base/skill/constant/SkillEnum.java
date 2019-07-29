@@ -27,7 +27,9 @@ public enum SkillEnum {
     /**
      * 烈焰风暴
      */
-    Flame_Storm(3, FlameStorm.class),
+    Flame_Storm(3, FlameStorm.class) {
+
+    },
 
     Avatar_(4, Avatar.class);
 

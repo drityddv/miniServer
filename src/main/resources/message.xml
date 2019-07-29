@@ -57,5 +57,6 @@
     <message id="2102" key="aoeSkill" value="game.world.fight.packet.CM_UserAoeSkill"/>
     <message id="2103" key="selfSkill" value="game.world.fight.packet.CM_UseSelfSkill"/>
     <message id="2120" key="logUnit" value="game.world.fight.packet.CM_logUnitBattleInfo"/>
+    <message id="2121"  value="game.world.fight.packet.SM_BattleReport"/>
 
 </protocols>

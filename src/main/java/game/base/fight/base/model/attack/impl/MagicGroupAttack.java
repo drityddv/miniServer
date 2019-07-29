@@ -1,11 +1,10 @@
 package game.base.fight.base.model.attack.impl;
 
-import java.util.List;
-
+import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.base.model.attack.ActionTypeEnum;
-import game.base.fight.base.model.attack.BaseActionEntry;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.skill.model.BaseSkill;
+import game.world.fight.model.BattleParam;
 
 /**
  * @author : ddv
@@ -14,18 +13,19 @@ import game.base.skill.model.BaseSkill;
 
 public class MagicGroupAttack extends BaseActionEntry {
 
-    public MagicGroupAttack(BaseCreatureUnit caster, List<BaseCreatureUnit> defenders, BaseSkill skill, long value) {
-        super(caster, defenders, skill, value, ActionTypeEnum.Magic_Attack);
+    public MagicGroupAttack(BaseCreatureUnit caster, BaseCreatureUnit defender, BaseSkill skill, long value,
+        BattleParam battleParam) {
+        super(caster, defender, skill, value, ActionTypeEnum.Magic_Attack, battleParam);
     }
 
-    public static MagicGroupAttack valueOf(BaseCreatureUnit caster, List<BaseCreatureUnit> defenders,
-        BaseSkill baseSkill, long originValue) {
-        MagicGroupAttack attack = new MagicGroupAttack(caster, defenders, baseSkill, originValue);
+    public static MagicGroupAttack valueOf(BaseCreatureUnit caster, BaseCreatureUnit defender, BaseSkill baseSkill,
+        long originValue, BattleParam battleParam) {
+        MagicGroupAttack attack = new MagicGroupAttack(caster, defender, baseSkill, originValue, battleParam);
         return attack;
     }
 
     @Override
     public void doActive() {
-        defenders.forEach(creatureUnit -> creatureUnit.defend(this));
+        calculateAttack();
     }
 }

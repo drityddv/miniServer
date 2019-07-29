@@ -61,8 +61,10 @@ public enum BuffParamEnum {
      * 触发点
      */
     Trigger_Point,
-
-    ;
+    /**
+     * 战报参数
+     */
+    Battle_Param,;
 
     private static Map<String, BuffParamEnum> NAME_TO_TYPE = new HashMap<>();
 

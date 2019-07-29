@@ -7,12 +7,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.base.skill.constant.SkillParamConstant;
 import game.base.skill.model.BaseSkill;
 import game.map.area.AreaProcessParam;
 import game.map.area.BaseAreaProcess;
 import game.map.area.CenterTypeEnum;
 import game.map.model.Grid;
 import game.world.fight.model.BattleParam;
+import game.world.fight.packet.SM_BattleReport;
+import net.utils.PacketUtil;
 import spring.SpringContext;
 import utils.TimeUtil;
 
@@ -27,77 +30,48 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     @Override
     public void action(BattleParam battleParam) {
-        switch (battleParam.getSkillType()) {
-            case Single_Point: {
-                singlePoint(battleParam);
-                break;
-            }
-            case Group_Point: {
-                groupPoint(battleParam);
-                break;
-            }
-            case Aoe: {
-                aoeSkill(battleParam);
-                break;
-            }
-            case Self: {
-                selfSkill(battleParam);
-                break;
-            }
-            default: {
-                logger.warn("没有找到技能类型,忽略这次战斗");
-            }
-        }
+        targetAction(battleParam);
     }
 
-    private void aoeSkill(BattleParam battleParam) {
+    private void targetAction(BattleParam battleParam) {
         actionPre(battleParam);
         Grid center;
         CenterTypeEnum centerTypeEnum = battleParam.getCenterTypeEnum();
         switch (centerTypeEnum) {
             case Self: {
                 center = battleParam.getCaster().getMapObject().getCurrentGrid();
+                loadWithAoe(battleParam, center);
                 break;
             }
             case Target_Grid: {
                 center = battleParam.getCenter();
+                loadWithAoe(battleParam, center);
+                break;
+            }
+            case Default: {
+                battleParam.loadTargets();
                 break;
             }
             default: {
                 return;
             }
         }
+
+        doAction(battleParam.getCaster(), battleParam.getTargetUnits(), battleParam.getBaseSkill(), battleParam);
+        actionAfter(battleParam);
+    }
+
+    private void loadWithAoe(BattleParam battleParam, Grid center) {
         BaseSkill baseSkill = battleParam.getBaseSkill();
         BaseAreaProcess baseAreaProcess = baseSkill.getSkillLevelResource().getAreaTypeEnum().getProcess();
         AreaProcessParam param = AreaProcessParam.valueOf(center,
-            Integer.parseInt(baseSkill.getSkillLevelResource().getAreaTypeParam().get("radius")));
+            Integer.parseInt(baseSkill.getSkillLevelResource().getAreaTypeParam().get(SkillParamConstant.RADIUS)));
         battleParam.setTargetUnits(baseAreaProcess.calculate(param, battleParam.getMapScene()));
-        doAction(battleParam.getCaster(), battleParam.getTargetUnits(), battleParam.getBaseSkill());
-        actionAfter(battleParam);
-    }
-
-    private void singlePoint(BattleParam battleParam) {
-        battleParam.loadSingleTarget();
-        actionPre(battleParam);
-        doAction(battleParam.getCaster(), Arrays.asList(battleParam.getTargetUnit()), battleParam.getBaseSkill());
-        actionAfter(battleParam);
-    }
-
-    private void groupPoint(BattleParam battleParam) {
-        battleParam.loadGroupTargets();
-        actionPre(battleParam);
-        doAction(battleParam.getCaster(), battleParam.getTargetUnits(), battleParam.getBaseSkill());
-        actionAfter(battleParam);
-    }
-
-    private void selfSkill(BattleParam battleParam) {
-        actionPre(battleParam);
-        doAction(battleParam.getCaster(), Arrays.asList(battleParam.getCaster()), battleParam.getBaseSkill());
-        actionAfter(battleParam);
     }
 
     private void actionAfter(BattleParam battleParam) {
         triggerAfterBuffs(battleParam);
+        sendBattleResult(battleParam);
     }
 
     private void actionPre(BattleParam battleParam) {
@@ -109,7 +83,12 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     private void triggerAfterBuffs(BattleParam battleParam) {}
 
-    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
+    private void sendBattleResult(BattleParam battleParam) {
+        PacketUtil.send(battleParam.getPlayer(), SM_BattleReport.valueOf(battleParam));
+    }
+
+    protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill,
+        BattleParam battleParam) {
         triggerBuffs(caster, targets, baseSkill);
     }
 
