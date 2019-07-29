@@ -15,6 +15,7 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.npc.reource.NpcResource;
 import game.map.visible.AbstractMapObject;
+import game.map.visible.BaseAttackAbleMapObject;
 import game.map.visible.PlayerMapObject;
 import game.map.visible.impl.MonsterMapObject;
 import game.world.base.resource.CreatureResource;
@@ -115,6 +116,12 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
         return playerMap;
     }
 
+    /**
+     * 这个方法只会返回玩家和怪物
+     *
+     * @param targetIdList
+     * @return
+     */
     public List<AbstractMapObject> getMapObjects(List<Long> targetIdList) {
         List<AbstractMapObject> mapObjects = new ArrayList<>();
         if (targetIdList == null) {
@@ -166,5 +173,16 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
             unit = playerMap.get(objectId);
         }
         return unit;
+    }
+
+    public List<BaseCreatureUnit> getMapUnits(List<Long> targetIdList) {
+        List<BaseCreatureUnit> unitList = new ArrayList<>();
+        List<AbstractMapObject> mapObjects = getMapObjects(targetIdList);
+        mapObjects.forEach(mapObject -> {
+            BaseAttackAbleMapObject attackAbleMapObject = (BaseAttackAbleMapObject)mapObject;
+            unitList.add(attackAbleMapObject.getFighterAccount().getCreatureUnit());
+        });
+
+        return unitList;
     }
 }

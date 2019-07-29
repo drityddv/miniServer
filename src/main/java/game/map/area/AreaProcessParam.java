@@ -1,5 +1,7 @@
 package game.map.area;
 
+import java.util.List;
+
 import game.map.model.Grid;
 
 /**
@@ -12,6 +14,7 @@ import game.map.model.Grid;
 public class AreaProcessParam {
     private Grid center;
     private int radius;
+    private List<Long> targetIdList;
 
     public AreaProcessParam(Grid center, int radius) {
         this.center = center;
@@ -24,6 +27,10 @@ public class AreaProcessParam {
 
     public Grid getCenter() {
         return center;
+    }
+
+    public List<Long> getTargetIdList() {
+        return targetIdList;
     }
 
     public int getRadius() {

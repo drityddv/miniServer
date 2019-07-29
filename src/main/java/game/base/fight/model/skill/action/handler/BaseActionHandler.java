@@ -1,18 +1,13 @@
 package game.base.fight.model.skill.action.handler;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.skill.constant.SkillParamConstant;
 import game.base.skill.model.BaseSkill;
-import game.map.area.AreaProcessParam;
-import game.map.area.BaseAreaProcess;
 import game.map.area.CenterTypeEnum;
-import game.map.model.Grid;
 import game.world.fight.model.BattleParam;
 import game.world.fight.packet.SM_BattleReport;
 import net.utils.PacketUtil;
@@ -35,38 +30,14 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     private void targetAction(BattleParam battleParam) {
         actionPre(battleParam);
-        Grid center;
         CenterTypeEnum centerTypeEnum = battleParam.getCenterTypeEnum();
-        switch (centerTypeEnum) {
-            case Self: {
-                center = battleParam.getCaster().getMapObject().getCurrentGrid();
-                loadWithAoe(battleParam, center);
-                break;
-            }
-            case Target_Grid: {
-                center = battleParam.getCenter();
-                loadWithAoe(battleParam, center);
-                break;
-            }
-            case Default: {
-                battleParam.loadTargets();
-                break;
-            }
-            default: {
-                return;
-            }
+        if (centerTypeEnum == null) {
+            logger.warn("目标收集器为null!");
+            return;
         }
-
+        centerTypeEnum.loadTargets(battleParam, null);
         doAction(battleParam.getCaster(), battleParam.getTargetUnits(), battleParam.getBaseSkill(), battleParam);
         actionAfter(battleParam);
-    }
-
-    private void loadWithAoe(BattleParam battleParam, Grid center) {
-        BaseSkill baseSkill = battleParam.getBaseSkill();
-        BaseAreaProcess baseAreaProcess = baseSkill.getSkillLevelResource().getAreaTypeEnum().getProcess();
-        AreaProcessParam param = AreaProcessParam.valueOf(center,
-            Integer.parseInt(baseSkill.getSkillLevelResource().getAreaTypeParam().get(SkillParamConstant.RADIUS)));
-        battleParam.setTargetUnits(baseAreaProcess.calculate(param, battleParam.getMapScene()));
     }
 
     private void actionAfter(BattleParam battleParam) {
