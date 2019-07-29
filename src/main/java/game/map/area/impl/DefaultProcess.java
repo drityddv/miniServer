@@ -3,9 +3,9 @@ package game.map.area.impl;
 import java.util.List;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.map.area.AreaProcessParam;
 import game.map.area.BaseAreaProcess;
 import game.map.base.AbstractMovableScene;
+import game.world.fight.model.BattleParam;
 
 /**
  * @author : ddv
@@ -13,9 +13,10 @@ import game.map.base.AbstractMovableScene;
  */
 
 public class DefaultProcess extends BaseAreaProcess {
+
     @Override
-    public List<BaseCreatureUnit> calculate(AreaProcessParam param, AbstractMovableScene mapScene) {
-        List<Long> targetIdList = param.getTargetIdList();
+    public List<BaseCreatureUnit> calculate(BattleParam battleParam, AbstractMovableScene mapScene) {
+        List<Long> targetIdList = battleParam.getTargetIdList();
         List mapUnits = mapScene.getMapUnits(targetIdList);
         return mapUnits;
     }

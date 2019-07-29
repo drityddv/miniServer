@@ -4,6 +4,8 @@ import java.util.List;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.base.AbstractMovableScene;
+import game.map.model.Grid;
+import game.world.fight.model.BattleParam;
 
 /**
  *
@@ -18,9 +20,13 @@ public abstract class BaseAreaProcess {
     /**
      * 计算区域单位集合
      *
-     * @param param
+     * @param battleParam
      * @param mapScene
      * @return
      */
-    public abstract List<BaseCreatureUnit> calculate(AreaProcessParam param, AbstractMovableScene mapScene);
+    public abstract List<BaseCreatureUnit> calculate(BattleParam battleParam, AbstractMovableScene mapScene);
+
+    public void loadTargets(BattleParam battleParam, Grid center) {
+        battleParam.setTargetUnits(calculate(battleParam, battleParam.getMapScene()));
+    }
 }

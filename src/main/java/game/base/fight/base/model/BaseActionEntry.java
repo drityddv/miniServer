@@ -14,7 +14,7 @@ import game.world.fight.model.BattleParam;
 
 public abstract class BaseActionEntry {
     protected ActionTypeEnum actionType;
-    protected BaseSkill skill;
+    protected BaseSkill baseSkill;
     protected long value;
     protected BaseCreatureUnit caster;
     protected BaseCreatureUnit defender;
@@ -25,7 +25,7 @@ public abstract class BaseActionEntry {
         ActionTypeEnum typeEnum, BattleParam battleParam) {
         this.value = value;
         this.actionType = typeEnum;
-        this.skill = skill;
+        this.baseSkill = skill;
         this.caster = caster;
         this.defender = defender;
         this.actionResult = ActionResult.valueOf();
@@ -43,7 +43,10 @@ public abstract class BaseActionEntry {
     /**
      * 技能生效[伤害,效果...]
      */
-    public abstract void doActive();
+    public  void doActive(){
+    	calculate();
+    	affect();
+	}
 
     public BaseCreatureUnit getCaster() {
         return caster;
@@ -53,20 +56,24 @@ public abstract class BaseActionEntry {
         return actionResult;
     }
 
-    public void calculateAttack() {
-        long currentHp = defender.getCurrentHp();
-        long realDamage;
-        realDamage = currentHp >= value ? value : currentHp;
-        currentHp -= realDamage;
-        defender.setCurrentHp(currentHp);
-        if (currentHp == 0) {
-            defender.handlerDead(this);
-        }
-        defender.handlerStatus(this);
-        actionResult.setId(defender.getId());
-        actionResult.setValue(realDamage);
-        if (battleParam != null) {
-            battleParam.putResult(defender.getId(), actionResult);
-        }
+    public void calculate() {
+
     }
+
+    public void affect(){
+		long currentHp = defender.getCurrentHp();
+		long realDamage;
+		realDamage = currentHp >= value ? value : currentHp;
+		currentHp -= realDamage;
+		defender.setCurrentHp(currentHp);
+		if (currentHp == 0) {
+			defender.handlerDead(this);
+		}
+		defender.handlerStatus(this);
+		actionResult.setId(defender.getId());
+		actionResult.setValue(realDamage);
+		if (battleParam != null) {
+			battleParam.putResult(defender.getId(), actionResult);
+		}
+	}
 }

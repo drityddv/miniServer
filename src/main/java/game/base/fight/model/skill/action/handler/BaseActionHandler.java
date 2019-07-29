@@ -2,6 +2,8 @@ package game.base.fight.model.skill.action.handler;
 
 import java.util.List;
 
+import game.map.area.AreaProcessParam;
+import game.map.area.BaseAreaProcess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +37,9 @@ public abstract class BaseActionHandler implements IActionHandler {
             logger.warn("目标收集器为null!");
             return;
         }
-        centerTypeEnum.loadTargets(battleParam, null);
+		BaseAreaProcess process = battleParam.getBaseSkill().getSkillLevelResource().getAreaTypeEnum().getProcess();
+        process.loadTargets(battleParam,centerTypeEnum.getCenterGrid(battleParam));
+
         doAction(battleParam.getCaster(), battleParam.getTargetUnits(), battleParam.getBaseSkill(), battleParam);
         actionAfter(battleParam);
     }
@@ -65,7 +69,7 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     private void triggerBuffs(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
         List<Long> buffList = baseSkill.getSkillLevelResource().getBuffList();
-        SpringContext.getBuffService().addBuffInScene(buffList, caster, targets);
+        SpringContext.getBuffService().addBuffInScene(buffList, caster, targets,baseSkill);
     }
 
     // 技能消耗逻辑

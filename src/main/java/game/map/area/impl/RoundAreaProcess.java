@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.base.skill.constant.SkillParamConstant;
+import game.base.skill.model.BaseSkill;
 import game.map.area.AreaProcessParam;
 import game.map.area.BaseAreaProcess;
 import game.map.base.AbstractMovableScene;
 import game.map.model.Grid;
 import game.map.visible.AbstractMapObject;
 import game.map.visible.BaseAttackAbleMapObject;
+import game.world.fight.model.BattleParam;
 import game.world.utils.MapUtil;
 
 /**
@@ -23,7 +26,10 @@ import game.world.utils.MapUtil;
 public class RoundAreaProcess extends BaseAreaProcess {
 
     @Override
-    public List<BaseCreatureUnit> calculate(AreaProcessParam param, AbstractMovableScene mapScene) {
+    public List<BaseCreatureUnit> calculate(BattleParam battleParam, AbstractMovableScene mapScene) {
+        BaseSkill baseSkill = battleParam.getBaseSkill();
+        AreaProcessParam param = AreaProcessParam.valueOf(battleParam.getCenter(),
+            Integer.parseInt(baseSkill.getSkillLevelResource().getAreaTypeParam().get(SkillParamConstant.RADIUS)));
         List<BaseCreatureUnit> units = new ArrayList<>();
         Grid center = param.getCenter();
         int radius = param.getRadius();

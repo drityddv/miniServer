@@ -3,8 +3,10 @@ package game.base.fight.base.model.attack.impl;
 import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.base.model.attack.ActionTypeEnum;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.base.game.attribute.AttributeType;
 import game.base.skill.model.BaseSkill;
 import game.world.fight.model.BattleParam;
+import utils.MathUtil;
 
 /**
  * 魔法伤害性单体攻击技能
@@ -27,7 +29,11 @@ public class PhysicalSingleAttack extends BaseActionEntry {
     }
 
     @Override
-    public void doActive() {
-        calculateAttack();
+    public void calculate() {
+        long originValue = baseSkill.getSkillValue();
+        originValue += MathUtil.getLongRandom(caster.getUnitAttributeValue(AttributeType.PHYSICAL_ATTACK_LOWER),
+            caster.getUnitAttributeValue(AttributeType.PHYSICAL_ATTACK_UPPER));
+        long physicalArmor = defender.getUnitAttributeValue(AttributeType.PHYSICAL_ARMOR);
+        value = originValue > physicalArmor ? originValue - physicalArmor : 0;
     }
 }

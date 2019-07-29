@@ -102,9 +102,9 @@ public class SkillLevelResource {
     }
 
     private void analysisAoeType() {
+        areaTypeEnum = AreaTypeEnum.getByName(areaTypeString);
+        areaTypeParam = new HashMap<>();
         if (StringUtil.isNotEmpty(areaTypeParamString)) {
-            areaTypeEnum = AreaTypeEnum.getByName(areaTypeString);
-            areaTypeParam = new HashMap<>();
             String[] split = areaTypeParamString.split(CsvSymbol.Comma);
             for (String temp : split) {
                 String[] strings = temp.split(CsvSymbol.Colon);

@@ -3,8 +3,10 @@ package game.base.fight.base.model.attack.impl;
 import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.base.model.attack.ActionTypeEnum;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
+import game.base.game.attribute.AttributeType;
 import game.base.skill.model.BaseSkill;
 import game.world.fight.model.BattleParam;
+import utils.MathUtil;
 
 /**
  * 魔法伤害性单体攻击技能
@@ -26,8 +28,12 @@ public class MagicSingleAttack extends BaseActionEntry {
         return attack;
     }
 
-    @Override
-    public void doActive() {
-        calculateAttack();
-    }
+	@Override
+	public void calculate() {
+		long originValue = baseSkill.getSkillValue();
+		originValue += MathUtil.getLongRandom(caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_LOWER),
+				caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_UPPER));
+		long magicArmor = defender.getUnitAttributeValue(AttributeType.MAGIC_ARMOR);
+		value = originValue > magicArmor ? originValue - magicArmor : 0;
+	}
 }
