@@ -1,7 +1,8 @@
-package game.base.effect.model.effect;
+package game.base.effect.model.impl;
 
-import game.base.effect.model.BuffContext;
-import game.base.effect.model.BuffContextParamEnum;
+import game.base.buff.model.BuffContext;
+import game.base.buff.model.BuffParamEnum;
+import game.base.effect.model.BaseEffect;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.game.attribute.id.PvpBuffAttributeId;
 
@@ -18,9 +19,8 @@ public class RemoveBuffAttrEffect extends BaseEffect {
     }
 
     private void removeAttribute(BuffContext buffContext) {
-        PVPCreatureAttributeComponent attributeComponent =
-            buffContext.getParam(BuffContextParamEnum.Attribute_Container);
-        PvpBuffAttributeId attributeId = PvpBuffAttributeId.valueOf(buffContext.getParam(BuffContextParamEnum.Buff_Id));
+        PVPCreatureAttributeComponent attributeComponent = buffContext.getParam(BuffParamEnum.Attribute_Container);
+        PvpBuffAttributeId attributeId = PvpBuffAttributeId.valueOf(buffContext.getParam(BuffParamEnum.Buff_Id));
         attributeComponent.removeAttributeModel(attributeId);
     }
 }

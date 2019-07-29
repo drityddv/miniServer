@@ -8,6 +8,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.buff.model.BaseBuff;
+import game.base.buff.model.BaseCreatureBuff;
+import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.map.model.Grid;
 import game.map.npc.reource.NpcResource;
@@ -85,6 +88,20 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
         if (object == null) {
             return;
         }
+
+        BaseCreatureUnit creatureUnit = object.getFighterAccount().getCreatureUnit();
+
+        PVPBuffComponent buffComponent = creatureUnit.getBuffComponent();
+
+        logger.info("玩家[{}]即将离开场景,清除释放buff容器 数量[{}]", object.getAccountId(),
+            buffComponent.getCastBuffMap().values().size());
+        for (BaseCreatureBuff castBuff : buffComponent.getCastBuffMap().values()) {
+            castBuff.forceCancel();
+        }
+
+        logger.info("玩家[{}]即将离开场景,清除buff容器 数量[{}]", object.getAccountId(), buffComponent.getBuffMap().values().size());
+        buffComponent.getBuffMap().values().forEach(BaseBuff::forceCancel);
+
         playerMap.remove(playerId);
         aoiManager.triggerLeave(object);
         logger.info("玩家[{}]离开场景[{}],场景内人数[{}]", playerId, mapId, playerMap.size());

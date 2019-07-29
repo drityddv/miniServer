@@ -3,7 +3,8 @@ package game.base.effect.model.constant;
 import java.util.*;
 
 import game.base.buff.model.BuffTriggerPoint;
-import game.base.effect.model.effect.*;
+import game.base.effect.model.BaseEffect;
+import game.base.effect.model.impl.*;
 
 /**
  * 效果枚举

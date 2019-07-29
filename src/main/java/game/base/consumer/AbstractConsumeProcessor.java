@@ -6,10 +6,12 @@ import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
 
 /**
+ * 用consume包下的新的消耗器
+ *
  * @author : ddv
  * @since : 2019/6/28 下午3:27
  */
-
+@Deprecated
 public abstract class AbstractConsumeProcessor {
 
     protected Map<Long, Integer> consumeParams;

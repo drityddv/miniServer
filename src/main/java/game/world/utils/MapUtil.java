@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import game.base.buff.model.BaseCreatureBuff;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
@@ -32,7 +31,7 @@ import utils.StringUtil;
 public class MapUtil {
 
     public static void log(Player player, AbstractScene scene, List<PlayerMapObject> visibleObjects,
-        Collection<NpcObject> npcList, Collection<MonsterMapObject> monsters, Collection<BaseCreatureBuff> buffs) {
+        Collection<NpcObject> npcList, Collection<MonsterMapObject> monsters) {
         StringBuilder sb = new StringBuilder();
 
         sb.append(StringUtil.wipePlaceholder("当前地图所处线程[{}]", Thread.currentThread().getName()));

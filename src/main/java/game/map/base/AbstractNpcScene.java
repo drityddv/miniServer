@@ -32,7 +32,4 @@ public abstract class AbstractNpcScene extends AbstractScene {
         return npcMap;
     }
 
-    public void setNpcMap(Map<Long, NpcObject> npcMap) {
-        this.npcMap = npcMap;
-    }
 }

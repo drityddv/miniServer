@@ -9,7 +9,7 @@ import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
-import game.base.fight.utils.BattleUtil;
+import game.base.fight.model.skill.model.PVPSkillComponent;
 import game.base.game.attribute.AttributeType;
 import game.map.handler.AbstractMapHandler;
 import game.map.visible.AbstractMapObject;
@@ -89,9 +89,21 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     }
 
     protected void initBaseAttribute() {
-        PVPCreatureAttributeComponent unitAttributeComponent = BattleUtil.getUnitAttrComponent(this);
+        PVPCreatureAttributeComponent unitAttributeComponent = getAttributeComponent();
         unitAttributeComponent.containerRecompute();
         currentHp = maxHp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
         currentMp = maxMp = unitAttributeComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
+    }
+
+    public PVPBuffComponent getBuffComponent() {
+        return componentContainer.getComponent(UnitComponentType.BUFF);
+    }
+
+    public PVPCreatureAttributeComponent getAttributeComponent() {
+        return componentContainer.getComponent(UnitComponentType.ATTRIBUTE);
+    }
+
+    public PVPSkillComponent getSkillComponent() {
+        return componentContainer.getComponent(UnitComponentType.SKILL);
     }
 }

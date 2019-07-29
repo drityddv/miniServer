@@ -63,10 +63,6 @@ public class MonsterUnit extends BaseCreatureUnit {
         return monsterUnit;
     }
 
-    private PVPCreatureAttributeComponent getAttributeComponent() {
-        return componentContainer.getComponent(UnitComponentType.ATTRIBUTE);
-    }
-
     public CreatureResource getCreatureResource() {
         return creatureResource;
     }

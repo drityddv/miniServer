@@ -3,12 +3,12 @@ package game.base.buff.resource;
 import java.util.*;
 
 import game.base.buff.model.BaseCreatureBuff;
+import game.base.buff.model.BuffParamEnum;
 import game.base.buff.model.BuffTriggerPoint;
 import game.base.buff.model.BuffTypeEnum;
-import game.base.effect.model.BuffContext;
-import game.base.effect.model.BuffContextParamEnum;
+import game.base.buff.model.BaseBuffConfig;
+import game.base.effect.model.BaseEffect;
 import game.base.effect.model.constant.EffectTypeEnum;
-import game.base.effect.model.effect.BaseEffect;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 import resource.constant.CsvSymbol;
@@ -33,12 +33,10 @@ public class BuffResource {
     private int level;
     private int groupId;
 
-    private List<EffectTypeEnum> effectTypeEnums;
     private Map<BuffTriggerPoint, List<BaseEffect>> triggerPoints;
-    private List<BaseEffect> effectList;
     private String effectIdString;
 
-    private BuffContext buffContext;
+    private BaseBuffConfig buffConfig;
     // POISON_LEVEL:1&POISON_DAMAGE:10,POISON_LEVEL:2&POISON_DAMAGE:20
     private String effectParamString;
     // merge方式 1 合并 2 新覆盖旧 旧buff调用
@@ -46,7 +44,6 @@ public class BuffResource {
 
     @Init
     private void init() {
-        analysisEffect();
         analysisTriggerPoints();
         analysisEffectContext();
     }
@@ -57,39 +54,30 @@ public class BuffResource {
             triggerPoints.put(triggerPoint, new ArrayList<>());
         }
 
-        effectList.forEach(baseEffect -> {
+        String[] effectIds = effectIdString.split(CsvSymbol.Comma);
+        for (String effectId : effectIds) {
+            BaseEffect baseEffect = EffectTypeEnum.getById(Long.parseLong(effectId)).create();
             Set<BuffTriggerPoint> triggerPointSet =
                 EffectTypeEnum.getByClazz(baseEffect.getClass()).getTriggerPointSet();
             triggerPointSet.forEach(buffTriggerPoint -> {
                 triggerPoints.get(buffTriggerPoint).add(baseEffect);
             });
-        });
+        }
+
     }
 
     private void analysisEffectContext() {
-        buffContext = BuffContext.valueOf();
+        buffConfig = BaseBuffConfig.valueOf();
         String[] split = effectParamString.split(CsvSymbol.Comma);
         for (String params : split) {
             String[] paramString = params.split(CsvSymbol.AND);
             for (String param : paramString) {
                 String[] singleParam = param.split(CsvSymbol.Colon);
-                BuffContextParamEnum contextEnum = BuffContextParamEnum.getByName(singleParam[0]);
-                buffContext.addParam(contextEnum,
+                BuffParamEnum contextEnum = BuffParamEnum.getByName(singleParam[0]);
+                buffConfig.addParam(contextEnum,
                     JodaUtil.convertFromString(contextEnum.getParamClazz(), singleParam[1]));
             }
         }
-    }
-
-    private void analysisEffect() {
-        effectTypeEnums = new ArrayList<>();
-        String[] effectIds = effectIdString.split(CsvSymbol.Comma);
-        for (String effectId : effectIds) {
-            effectTypeEnums.add(EffectTypeEnum.getById(Long.parseLong(effectId)));
-        }
-        effectList = new ArrayList<>();
-        effectTypeEnums.forEach(effectTypeEnum -> {
-            effectList.add(effectTypeEnum.create());
-        });
     }
 
     public BaseCreatureBuff createBuff() {
@@ -109,10 +97,6 @@ public class BuffResource {
         return buffName;
     }
 
-    public List<EffectTypeEnum> getEffectTypeEnums() {
-        return effectTypeEnums;
-    }
-
     public long getDurationTime() {
         return durationTime;
     }
@@ -129,16 +113,8 @@ public class BuffResource {
         return maxMergeCount;
     }
 
-    public BuffContext getBuffContext() {
-        return buffContext;
-    }
-
     public int getGroupId() {
         return groupId;
-    }
-
-    public List<BaseEffect> getEffectList() {
-        return effectList;
     }
 
     public int getLevel() {
@@ -147,5 +123,9 @@ public class BuffResource {
 
     public Map<BuffTriggerPoint, List<BaseEffect>> getTriggerPoints() {
         return triggerPoints;
+    }
+
+    public BaseBuffConfig getBuffConfig() {
+        return buffConfig;
     }
 }

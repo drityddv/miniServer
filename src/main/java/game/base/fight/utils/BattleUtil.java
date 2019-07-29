@@ -36,7 +36,7 @@ import utils.TimeUtil;
 public class BattleUtil {
 
     // 法力值是否足够
-    public static boolean isEnoughMp(BaseUnit unit, long mpConsume) {
+    public static boolean isEnoughMp(BaseCreatureUnit unit, long mpConsume) {
         return unit.getCurrentMp() >= mpConsume;
     }
 
@@ -46,13 +46,9 @@ public class BattleUtil {
     }
 
     // 获取战斗单元技能 可能为null
-    public static BaseSkill getUnitSkill(BaseUnit unit, long skillId) {
+    public static BaseSkill getUnitSkill(BaseCreatureUnit unit, long skillId) {
         PVPSkillComponent component = unit.getComponentContainer().getComponent(UnitComponentType.SKILL);
         return component.getSkillMap().get(skillId);
-    }
-
-    public static PVPCreatureAttributeComponent getUnitAttrComponent(BaseUnit baseUnit) {
-        return baseUnit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
     }
 
     // 计算技能一级数值 [收到属性增益之后的数值]
@@ -94,10 +90,6 @@ public class BattleUtil {
         return units;
     }
 
-    public static void findTargetUnits(BattleParam battleParam) {
-
-    }
-
     public static BattleParam loadParam(int mapId, long skillId, long playerId) {
         BattleParam battleParam = new BattleParam();
 
@@ -123,24 +115,6 @@ public class BattleUtil {
         return battleParam;
     }
 
-    public static BattleParam initTarget(int mapId, long skillId, long playerId, Long targetId) {
-        BattleParam battleParam = loadParam(mapId, skillId, playerId);
-        battleParam.setTargetUnit(BattleUtil.findTargetUnit(battleParam.getMapHandler(), targetId, mapId));
-        return battleParam;
-    }
-
-    public static BattleParam initTargets(int mapId, long skillId, long playerId, List<Long> targetIds) {
-        BattleParam battleParam = loadParam(mapId, skillId, playerId);
-
-        if (targetIds != null) {
-            List<BaseCreatureUnit> targetUnits =
-                BattleUtil.findTargetUnits(battleParam.getMapHandler(), targetIds, mapId);
-            battleParam.setTargetUnits(targetUnits);
-        }
-
-        return battleParam;
-    }
-
     public static long getLongRandom(long left, long right) {
         return left + (((long)(new Random().nextDouble() * (right - left + 1))));
     }
@@ -150,11 +124,6 @@ public class BattleUtil {
         PVPCreatureAttributeComponent component =
             unit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
         return component.getFinalAttributes().get(type).getValue();
-    }
-
-    public static PVPBuffComponent getUnitBuffComponent(BaseCreatureUnit unit) {
-        PVPBuffComponent component = unit.getComponentContainer().getComponent(UnitComponentType.BUFF);
-        return component;
     }
 
     /**

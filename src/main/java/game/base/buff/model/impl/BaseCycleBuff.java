@@ -1,9 +1,9 @@
 package game.base.buff.model.impl;
 
 import game.base.buff.model.BaseCreatureBuff;
+import game.base.buff.model.BuffContext;
 import game.base.buff.model.BuffTriggerPoint;
 import game.base.buff.resource.BuffResource;
-import game.base.effect.model.BuffContext;
 import game.world.fight.command.buff.BuffActiveCommand;
 import game.world.fight.command.buff.BuffCancelCommand;
 import scheduler.constant.JobGroupEnum;
@@ -73,8 +73,10 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
 
     @Override
     public void triggerBuff(BuffTriggerPoint point) {
+        if (point == BuffTriggerPoint.Schedule_Active) {
+            remainCount--;
+        }
         super.triggerBuff(point);
-        remainCount--;
     }
 
     // 默认合并重新生成调度任务
@@ -105,9 +107,7 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
 
     @Override
     public void tryCancel() {
-        if (remainCount == 0) {
-            forceCancel();
-        }
+        forceCancel();
     }
 
     public int getPeriodCount() {

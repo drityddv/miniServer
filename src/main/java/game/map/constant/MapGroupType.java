@@ -38,7 +38,11 @@ public enum MapGroupType {
             return false;
         }
 
-    };
+    },
+    /**
+     * 副本
+     */
+    INSTANCE(3, null),;
     private static final Map<Class<? extends AbstractPlayerMapInfo>, MapGroupType> CLASS_TO_TYPE = new HashMap<>();
     private static final Map<Integer, MapGroupType> GROUP_ID_TO_TYPE = new HashMap<>();
 

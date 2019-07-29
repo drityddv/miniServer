@@ -9,12 +9,14 @@ import redis.clients.jedis.Jedis;
  * @since : 2019/7/22 6:16 PM
  */
 @Component
-public class RedisService {
+public class RedisService implements IRedisService {
 
     private static Jedis jedis;
 
+    @Override
     public void init() {
-        jedis = new Jedis("localhost", 6379);
+        // jedis = new Jedis("localhost", 6379);
+
     }
 
 }

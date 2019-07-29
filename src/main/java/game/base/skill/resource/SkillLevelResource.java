@@ -38,7 +38,6 @@ public class SkillLevelResource {
      */
     private long value;
     private int mpConsume;
-    // 单位毫秒 配置表中为秒
     private long cd;
     private String cdString;
     private int nextLevelConfigId;
@@ -50,7 +49,7 @@ public class SkillLevelResource {
     /**
      * buff对应的效果id
      */
-    private Map<BuffTypeEnum, List<Long>> BuffEffectMap;
+    private Map<BuffTypeEnum, List<Long>> buffEffectMap;
     private String effectIdString;
 
     // 技能类型
@@ -140,7 +139,7 @@ public class SkillLevelResource {
 
     // 解析技能效果
     private void analysisEffectIdSet() {
-        BuffEffectMap = new HashMap<>();
+        buffEffectMap = new HashMap<>();
         if (StringUtil.isNotEmpty(effectIdString)) {
             String[] split = effectIdString.split(CsvSymbol.Comma);
             for (String value : split) {
@@ -150,7 +149,7 @@ public class SkillLevelResource {
                 for (int i = 1; i < idParam.length; i++) {
                     effectIds.add(Long.parseLong(idParam[i]));
                 }
-                BuffEffectMap.put(buffTypeEnum, effectIds);
+                buffEffectMap.put(buffTypeEnum, effectIds);
             }
         }
     }
@@ -158,7 +157,7 @@ public class SkillLevelResource {
     // 解析技能升级消耗
     private void analysisConsume() {
         consumes = new ArrayList<>();
-        String[] split = consumeString.split(",");
+        String[] split = consumeString.split(CsvSymbol.Comma);
         for (String value : split) {
             consumes.add(AssetsConsume.valueOf(value));
         }
@@ -217,7 +216,7 @@ public class SkillLevelResource {
     }
 
     public Map<BuffTypeEnum, List<Long>> getBuffEffectMap() {
-        return BuffEffectMap;
+        return buffEffectMap;
     }
 
     public List<Long> getBuffList() {

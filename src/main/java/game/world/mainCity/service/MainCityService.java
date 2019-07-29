@@ -76,8 +76,7 @@ public class MainCityService implements IMainCityService {
         MainCityMapScene mapScene = mapCommonInfo.getMapScene();
         List<PlayerMapObject> visibleObjects = mapScene.getVisibleObjects();
         Collection<NpcObject> npcList = mapScene.getNpcMap().values();
-
-        MapUtil.log(player, mapScene, visibleObjects, npcList, null, null);
+        MapUtil.log(player, mapScene, visibleObjects, npcList, null);
     }
 
     @Override

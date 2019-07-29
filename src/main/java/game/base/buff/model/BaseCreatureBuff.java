@@ -1,10 +1,8 @@
 package game.base.buff.model;
 
 import game.base.buff.resource.BuffResource;
-import game.base.effect.model.BuffContext;
 import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.fight.utils.BattleUtil;
 import spring.SpringContext;
 
 /**
@@ -66,8 +64,8 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
         boolean success = registerTarget();
         if (success) {
             registerCaster();
+            triggerBuff(BuffTriggerPoint.First_Active);
         }
-        triggerBuff(BuffTriggerPoint.First_Active);
         return success;
     }
 
@@ -81,7 +79,7 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
      * 施法者注册buff
      */
     public void registerCaster() {
-        PVPBuffComponent buffComponent = BattleUtil.getUnitBuffComponent(caster);
+        PVPBuffComponent buffComponent = caster.getBuffComponent();
         buffComponent.addCastBuff(this);
     }
 
@@ -89,21 +87,21 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
      * 施法者卸载
      */
     public void releaseCaster() {
-        BattleUtil.getUnitBuffComponent(caster).removeCastBuff(this);
+        caster.getBuffComponent().removeCastBuff(this);
     }
 
     /**
      * 拥有者注册
      */
     public boolean registerTarget() {
-        return BattleUtil.getUnitBuffComponent(target).addBuff(this);
+        return target.getBuffComponent().addBuff(this);
     }
 
     /**
      * 拥有者卸载
      */
     public void releaseTarget() {
-        BattleUtil.getUnitBuffComponent(target).removeBuff(this);
+        target.getBuffComponent().removeBuff(this);
     }
 
     public boolean isScheduleBuff() {

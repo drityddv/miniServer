@@ -7,9 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.buff.resource.BuffResource;
-import game.base.effect.model.BuffContext;
-import game.base.effect.model.BuffContextParamEnum;
-import game.base.effect.model.effect.BaseEffect;
+import game.base.effect.model.BaseEffect;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import scheduler.job.model.JobEntry;
 import utils.snow.IdUtil;
@@ -40,8 +38,8 @@ public abstract class BaseBuff<T> {
     protected BaseCreatureUnit target;
     // 当前合并次数
     protected int mergedCount;
+
     // 效果集合
-    protected List<BaseEffect> effectList;
     protected BuffContext context;
 
     protected BuffResource buffResource;
@@ -53,13 +51,16 @@ public abstract class BaseBuff<T> {
         this.mergedCount = 0;
         this.buffResource = buffResource;
         this.triggerPoints = buffResource.getTriggerPoints();
-        this.effectList = buffResource.getEffectList();
 
-        this.context = BuffContext.valueOf();
-        this.caster = context.getParam(BuffContextParamEnum.CASTER);
-        this.target = context.getParam(BuffContextParamEnum.Target);
-        this.context.addParam(BuffContextParamEnum.CASTER, caster);
-        this.context.addParam(BuffContextParamEnum.Target, target);
+        this.context = context;
+        this.caster = context.getParam(BuffParamEnum.CASTER);
+        this.target = context.getParam(BuffParamEnum.Target);
+
+        doInit();
+    }
+
+    protected void doInit() {
+
     }
 
     /**
@@ -151,14 +152,6 @@ public abstract class BaseBuff<T> {
 
     public void setMergedCount(int mergedCount) {
         this.mergedCount = mergedCount;
-    }
-
-    public List<BaseEffect> getEffectList() {
-        return effectList;
-    }
-
-    public void setEffectList(List<BaseEffect> effectList) {
-        this.effectList = effectList;
     }
 
     public BuffContext getContext() {

@@ -1,10 +1,11 @@
-package game.base.effect.model.effect;
+package game.base.effect.model.impl;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import game.base.effect.model.BuffContext;
-import game.base.effect.model.BuffContextParamEnum;
+import game.base.buff.model.BuffContext;
+import game.base.buff.model.BuffParamEnum;
+import game.base.effect.model.BaseEffect;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
@@ -23,10 +24,9 @@ public class PlusBuffAttrEffect extends BaseEffect {
     }
 
     private void plusAttribute(BuffContext buffContext) {
-        PVPCreatureAttributeComponent attributeComponent =
-            buffContext.getParam(BuffContextParamEnum.Attribute_Container);
-        Map<AttributeType, Attribute> attributeMap = buffContext.getParam(BuffContextParamEnum.Attribute);
-        PvpBuffAttributeId attributeId = PvpBuffAttributeId.valueOf(buffContext.getParam(BuffContextParamEnum.Buff_Id));
+        PVPCreatureAttributeComponent attributeComponent = buffContext.getParam(BuffParamEnum.Attribute_Container);
+        Map<AttributeType, Attribute> attributeMap = buffContext.getParam(BuffParamEnum.Attribute);
+        PvpBuffAttributeId attributeId = PvpBuffAttributeId.valueOf(buffContext.getParam(BuffParamEnum.Buff_Id));
         attributeComponent.putAttributesWithRecompute(attributeId, new ArrayList<>(attributeMap.values()), false);
     }
 }

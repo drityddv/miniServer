@@ -52,7 +52,7 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     private void aoeSkill(BattleParam battleParam) {
         actionPre(battleParam);
-        Grid center = null;
+        Grid center;
         CenterTypeEnum centerTypeEnum = battleParam.getCenterTypeEnum();
         switch (centerTypeEnum) {
             case Self: {

@@ -17,6 +17,7 @@ import resource.anno.Static;
 public class BuffManager {
 
     private static BuffManager instance;
+
     @Static
     private Map<Long, BuffResource> buffResourceMap;
 

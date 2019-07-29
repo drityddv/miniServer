@@ -25,8 +25,7 @@ public class FrostBolt extends BaseActionHandler {
         }
 
         long value = BattleUtil.calculateSkillValue1(baseSkill.getSkillLevelResource().getValue(),
-            baseSkill.getSkillLevelResource().getAttributeTypes(),
-            BattleUtil.getUnitAttrComponent(caster).getFinalAttributes());
+            baseSkill.getSkillLevelResource().getAttributeTypes(), caster.getAttributeComponent().getFinalAttributes());
         BaseCreatureUnit target = targets.get(0);
 
         MagicSingleAttack.valueOf(caster, target, baseSkill, value).doActive();

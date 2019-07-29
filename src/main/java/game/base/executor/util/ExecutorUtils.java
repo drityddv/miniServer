@@ -19,6 +19,7 @@ public class ExecutorUtils {
     private static final Logger logger = LoggerFactory.getLogger(ExecutorUtils.class);
 
     public static void shutdown(ThreadPoolExecutor[] executors, String serviceName) {
+        logger.info("正在关闭[{}]线程池", serviceName);
         for (ThreadPoolExecutor executor : executors) {
             if (executor != null) {
                 executor.shutdown();
@@ -27,7 +28,7 @@ public class ExecutorUtils {
     }
 
     /**
-     * 提交命令 这里暂时全部走地图线程
+     * 提交命令
      *
      * @param command
      */

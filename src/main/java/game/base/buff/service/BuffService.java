@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import game.base.buff.model.BaseCreatureBuff;
+import game.base.buff.model.BuffContext;
+import game.base.buff.model.BuffParamEnum;
 import game.base.buff.resource.BuffResource;
-import game.base.effect.model.BuffContext;
-import game.base.effect.model.BuffContextParamEnum;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 
 /**
@@ -35,10 +35,6 @@ public class BuffService {
         return buffManager.getBuffResourceById(configId);
     }
 
-    public boolean isAllowAddBuff() {
-        return false;
-    }
-
     /**
      * 为场景内的单位添加buff
      *
@@ -60,10 +56,10 @@ public class BuffService {
     public void addBuffSingleUnit(BaseCreatureUnit caster, Long configId, BaseCreatureUnit targetUnit) {
         BuffResource buffResource = getBuffResource(configId);
         BaseCreatureBuff buff = createBuffByConfigId(configId);
-        BuffContext context = BuffContext.valueOf(buffResource.getBuffContext());
+        BuffContext context = BuffContext.valueOf(buffResource.getBuffConfig());
 
-        context.addParam(BuffContextParamEnum.CASTER, caster);
-        context.addParam(BuffContextParamEnum.Target, targetUnit);
+        context.addParam(BuffParamEnum.CASTER, caster);
+        context.addParam(BuffParamEnum.Target, targetUnit);
         buff.init(buffResource, context);
         // buff开始启动
         buff.buffActive();

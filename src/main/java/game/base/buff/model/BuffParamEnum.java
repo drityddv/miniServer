@@ -1,4 +1,4 @@
-package game.base.effect.model;
+package game.base.buff.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
  * @since : 2019/7/24 10:51 AM
  */
 
-public enum BuffContextParamEnum {
+public enum BuffParamEnum {
     /**
      * 毒素层数
      */
@@ -64,25 +64,25 @@ public enum BuffContextParamEnum {
 
     ;
 
-    private static Map<String, BuffContextParamEnum> NAME_TO_TYPE = new HashMap<>();
+    private static Map<String, BuffParamEnum> NAME_TO_TYPE = new HashMap<>();
 
     static {
-        for (BuffContextParamEnum anEnum : BuffContextParamEnum.values()) {
+        for (BuffParamEnum anEnum : BuffParamEnum.values()) {
             NAME_TO_TYPE.put(anEnum.name(), anEnum);
         }
     }
 
     private Class paramClazz;
 
-    BuffContextParamEnum() {
+    BuffParamEnum() {
 
     }
 
-    BuffContextParamEnum(Class paramClazz) {
+    BuffParamEnum(Class paramClazz) {
         this.paramClazz = paramClazz;
     }
 
-    public static BuffContextParamEnum getByName(String name) {
+    public static BuffParamEnum getByName(String name) {
         return NAME_TO_TYPE.get(name);
     }
 

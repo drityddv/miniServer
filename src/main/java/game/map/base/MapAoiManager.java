@@ -18,6 +18,8 @@ import game.world.utils.MapUtil;
 import utils.CollectionUtil;
 
 /**
+ * aoi模块
+ *
  * @author : ddv
  * @since : 2019/7/18 11:10 PM
  */
@@ -87,7 +89,6 @@ public class MapAoiManager {
         return creatureUnits;
     }
 
-    // 现在不会有重复unit 所以不需要去重
     public List<BaseCreatureUnit> getCreatureUnits(List<Grid> gridList) {
         List<BaseCreatureUnit> creatureUnits = new ArrayList<>();
         gridList.forEach(grid -> {

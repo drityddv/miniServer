@@ -12,7 +12,6 @@ import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.skill.model.PVPSkillComponent;
-import game.base.fight.utils.BattleUtil;
 import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.model.PlayerAttributeContainer;
@@ -66,10 +65,6 @@ public class PlayerUnit extends BaseCreatureUnit {
         return playerUnit;
     }
 
-    private PVPCreatureAttributeComponent getAttributeComponent() {
-        return componentContainer.getComponent(UnitComponentType.ATTRIBUTE);
-    }
-
     @Override
     protected void handlerDead(BaseActionEntry attackEntry) {
         if (!handleDead) {
@@ -88,15 +83,11 @@ public class PlayerUnit extends BaseCreatureUnit {
     public void reviseStatus() {
         double hpRadio = (double)currentHp / (double)maxHp;
         double mpRadio = (double)currentMp / (double)maxMp;
-        PVPCreatureAttributeComponent unitAttrComponent = BattleUtil.getUnitAttrComponent(this);
+        PVPCreatureAttributeComponent unitAttrComponent = getAttributeComponent();
         maxHp = unitAttrComponent.getFinalAttributes().get(AttributeType.MAX_HP).getValue();
         maxMp = unitAttrComponent.getFinalAttributes().get(AttributeType.MAX_MP).getValue();
         currentHp = (long)(hpRadio * maxHp);
         currentMp = (long)(mpRadio * maxMp);
-    }
-
-    private PVPSkillComponent getSkillComponent() {
-        return componentContainer.getComponent(UnitComponentType.SKILL);
     }
 
     public PlayerMapObject getMapObject() {

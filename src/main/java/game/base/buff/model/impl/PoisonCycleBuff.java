@@ -1,9 +1,7 @@
 package game.base.buff.model.impl;
 
 import game.base.buff.model.BaseCreatureBuff;
-import game.base.buff.resource.BuffResource;
-import game.base.effect.model.BuffContext;
-import game.base.effect.model.BuffContextParamEnum;
+import game.base.buff.model.BuffParamEnum;
 
 /**
  * @author : ddv
@@ -21,16 +19,15 @@ public class PoisonCycleBuff extends BaseCycleBuff {
     private long damage;
 
     @Override
-    public void init(BuffResource buffResource, BuffContext context) {
-        super.init(buffResource, context);
-        level = context.getParam(BuffContextParamEnum.POISON_LEVEL);
-        damage = context.getParam(BuffContextParamEnum.POISON_DAMAGE);
+    protected void doInit() {
+        level = context.getParam(BuffParamEnum.POISON_LEVEL);
+        damage = context.getParam(BuffParamEnum.POISON_DAMAGE);
         modifyContext();
     }
 
     private void modifyContext() {
-        this.context.addParam(BuffContextParamEnum.POISON_LEVEL, level);
-        this.context.addParam(BuffContextParamEnum.POISON_DAMAGE, damage);
+        this.context.addParam(BuffParamEnum.POISON_LEVEL, level);
+        this.context.addParam(BuffParamEnum.POISON_DAMAGE, damage);
     }
 
     @Override
@@ -44,4 +41,5 @@ public class PoisonCycleBuff extends BaseCycleBuff {
             modifyContext();
         }
     }
+
 }

@@ -1,6 +1,7 @@
-package game.base.effect.model.effect;
+package game.base.effect.model.impl;
 
-import game.base.effect.model.BuffContext;
+import game.base.buff.model.BuffContext;
+import game.base.effect.model.BaseEffect;
 
 /**
  * @author : ddv

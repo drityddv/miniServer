@@ -1,10 +1,8 @@
 package game.map.base;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
-import game.base.buff.model.BaseCreatureBuff;
 import game.map.visible.AbstractMapObject;
 import game.map.visible.impl.MonsterMapObject;
 
@@ -21,10 +19,6 @@ public abstract class AbstractScene<T extends AbstractMapObject> {
     protected int mapId;
 
     protected BaseMapInfo baseMapInfo;
-    /**
-     * buff定时job注册点 key和调度service注册点要保持一致
-     */
-    private Map<Long, BaseCreatureBuff> buffEffectMap = new HashMap<>();
 
     public AbstractScene(int mapId) {
         this.mapId = mapId;
@@ -55,7 +49,4 @@ public abstract class AbstractScene<T extends AbstractMapObject> {
         return baseMapInfo;
     }
 
-    public Map<Long, BaseCreatureBuff> getBuffEffectMap() {
-        return buffEffectMap;
-    }
 }
