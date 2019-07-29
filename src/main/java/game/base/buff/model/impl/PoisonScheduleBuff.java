@@ -8,7 +8,7 @@ import game.base.buff.model.BuffParamEnum;
  * @since : 2019/7/24 5:35 PM
  */
 
-public class PoisonCycleBuff extends BaseCycleBuff {
+public class PoisonScheduleBuff extends BaseScheduleBuff {
     /**
      * 层数
      */
@@ -20,8 +20,8 @@ public class PoisonCycleBuff extends BaseCycleBuff {
 
     @Override
     protected void doInit() {
-        level = context.getParam(BuffParamEnum.POISON_LEVEL);
-        damage = context.getParam(BuffParamEnum.POISON_DAMAGE);
+        level = buffResource.getBuffConfig().getParam(BuffParamEnum.POISON_LEVEL);
+        damage = buffResource.getBuffConfig().getParam(BuffParamEnum.POISON_DAMAGE);
         modifyContext();
     }
 
@@ -33,8 +33,8 @@ public class PoisonCycleBuff extends BaseCycleBuff {
     @Override
     public void merge(BaseCreatureBuff buff) {
         super.merge(buff);
-        if (buff instanceof PoisonCycleBuff) {
-            PoisonCycleBuff newBuff = (PoisonCycleBuff)buff;
+        if (buff instanceof PoisonScheduleBuff) {
+            PoisonScheduleBuff newBuff = (PoisonScheduleBuff)buff;
             this.level += newBuff.level;
             this.damage += newBuff.damage;
 

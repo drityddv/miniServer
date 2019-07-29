@@ -1,5 +1,8 @@
 package game.map.area;
 
+import client.MessageEnum;
+import game.base.message.exception.RequestException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,8 +40,12 @@ public enum CenterTypeEnum {
     }
 
     public static CenterTypeEnum getById(Integer id) {
-        return ID_TO_TYPE.get(id);
-    }
+		CenterTypeEnum centerTypeEnum = ID_TO_TYPE.get(id);
+		if(centerTypeEnum == null){
+			RequestException.throwException(MessageEnum.SKILL_TYPE_ERROR);
+		}
+		return centerTypeEnum;
+	}
 
     public static CenterTypeEnum getByName(String name) {
         return NAME_TO_TYPE.get(name);

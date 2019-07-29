@@ -68,4 +68,8 @@ public class PVPSkillComponent extends BaseUnitComponent<BaseCreatureUnit> {
     public void setSkillSquare(SkillSquare skillSquare) {
         this.skillSquare = skillSquare;
     }
+
+    public BaseSkill getSKill(long skillId) {
+        return skillMap.get(skillId);
+    }
 }

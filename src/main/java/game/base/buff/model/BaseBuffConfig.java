@@ -23,7 +23,4 @@ public class BaseBuffConfig {
         return (T)params.get(key);
     }
 
-	public Map<BuffParamEnum, Object> getParams() {
-		return params;
-	}
 }

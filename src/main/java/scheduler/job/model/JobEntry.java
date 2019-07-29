@@ -4,6 +4,7 @@ import static org.quartz.DateBuilder.futureDate;
 
 import org.quartz.*;
 
+import game.base.executor.command.constant.ExecutorConstant;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.world.base.command.scene.ReliveCommand;
 import scheduler.constant.JobGroupEnum;
@@ -33,7 +34,7 @@ public class JobEntry {
         String name = jobId + "";
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
-        jobDetail.getJobDataMap().put("command", jobMapData);
+        jobDetail.getJobDataMap().put(ExecutorConstant.COMMAND, jobMapData);
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName)
             .startAt(futureDate((int)delay, DateBuilder.IntervalUnit.MILLISECOND)).forJob(jobDetail).build();
@@ -50,7 +51,7 @@ public class JobEntry {
         String name = jobId + ScheduleConstant.SCHEDULE_NAME;
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
-        jobDetail.getJobDataMap().put("command", jobMapData);
+        jobDetail.getJobDataMap().put(ExecutorConstant.COMMAND, jobMapData);
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName).withSchedule(
             SimpleScheduleBuilder.simpleSchedule().withRepeatCount((int)(period - 1)).withIntervalInMilliseconds(delay))
@@ -68,7 +69,7 @@ public class JobEntry {
         String name = jobId + ScheduleConstant.CANCEL_NAME;
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
-        jobDetail.getJobDataMap().put("command", command);
+        jobDetail.getJobDataMap().put(ExecutorConstant.COMMAND, command);
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName)
             .startAt(futureDate((int)delay, DateBuilder.IntervalUnit.MILLISECOND)).forJob(jobDetail).build();
@@ -84,7 +85,7 @@ public class JobEntry {
         String name = jobId + "";
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
-        jobDetail.getJobDataMap().put("command", jobMapData);
+        jobDetail.getJobDataMap().put(ExecutorConstant.COMMAND, jobMapData);
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName).withSchedule(
             SimpleScheduleBuilder.simpleSchedule().withRepeatCount((int)(period - 1)).withIntervalInMilliseconds(delay))

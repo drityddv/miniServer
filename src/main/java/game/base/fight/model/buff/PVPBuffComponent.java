@@ -1,7 +1,7 @@
 package game.base.fight.model.buff;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import game.base.buff.model.BaseCreatureBuff;
 import game.base.fight.model.componet.BaseUnitComponent;
@@ -30,16 +30,16 @@ public class PVPBuffComponent extends BaseUnitComponent<BaseCreatureUnit> {
     /**
      * <buffId,buff>释放的buff
      */
-    private Map<Long, BaseCreatureBuff> castBuffMap = new ConcurrentHashMap<>();
+    private Map<Long, BaseCreatureBuff> castBuffMap = new HashMap<>();
 
     /**
      * <buffId,buff> buff存储对象
      */
-    private Map<Long, BaseCreatureBuff> buffMap = new ConcurrentHashMap<>();
+    private Map<Long, BaseCreatureBuff> buffMap = new HashMap<>();
     /**
      * groupId - buff
      */
-    private Map<Integer, BaseCreatureBuff> groupBuffMap = new ConcurrentHashMap<>();
+    private Map<Integer, BaseCreatureBuff> groupBuffMap = new HashMap<>();
 
     /**
      * 添加buff

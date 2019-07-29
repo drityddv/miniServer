@@ -8,6 +8,7 @@ import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.utils.BattleUtil;
 import game.base.game.attribute.AttributeType;
 import game.base.skill.model.BaseSkill;
+import utils.MathUtil;
 
 /**
  * 烈焰风暴
@@ -22,7 +23,7 @@ public class FlameStorm extends BaseActionHandler {
     protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
         long originValue = baseSkill.getSkillValue();
         originValue +=
-            BattleUtil.getLongRandom(BattleUtil.getUnitAttributeValue(caster, AttributeType.MAGIC_ATTACK_LOWER),
+            MathUtil.getLongRandom(BattleUtil.getUnitAttributeValue(caster, AttributeType.MAGIC_ATTACK_LOWER),
                 BattleUtil.getUnitAttributeValue(caster, AttributeType.MAGIC_ATTACK_UPPER));
         MagicGroupAttack.valueOf(caster, targets, baseSkill, originValue).doActive();
         super.doAction(caster, targets, baseSkill);

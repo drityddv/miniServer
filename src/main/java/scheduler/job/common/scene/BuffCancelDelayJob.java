@@ -1,9 +1,11 @@
 package scheduler.job.common.scene;
 
+import game.base.executor.command.constant.ExecutorConstant;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import game.base.executor.util.ExecutorUtils;
 import game.world.fight.command.buff.BuffCancelCommand;
 
 /**
@@ -18,7 +20,7 @@ public class BuffCancelDelayJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        command = (BuffCancelCommand)context.getMergedJobDataMap().get("command");
-        command.action();
+        command = (BuffCancelCommand)context.getMergedJobDataMap().get(ExecutorConstant.COMMAND);
+        ExecutorUtils.submit(command);
     }
 }

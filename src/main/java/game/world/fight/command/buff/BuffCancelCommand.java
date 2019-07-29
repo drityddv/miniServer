@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.buff.model.BaseCreatureBuff;
-import game.base.buff.model.impl.BaseCycleBuff;
+import game.base.buff.model.impl.BaseScheduleBuff;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 
 /**
@@ -28,9 +28,9 @@ public class BuffCancelCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
-        if (buff instanceof BaseCycleBuff) {
-            BaseCycleBuff baseCycleBuff = (BaseCycleBuff)buff;
-            logger.info("取消buff[{}]", baseCycleBuff.getBuffId());
+        if (buff instanceof BaseScheduleBuff) {
+            BaseScheduleBuff baseScheduleBuff = (BaseScheduleBuff)buff;
+            logger.info("取消buff[{}]", baseScheduleBuff.getBuffId());
         }
         buff.tryCancel();
     }

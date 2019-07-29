@@ -8,6 +8,7 @@ import game.base.skill.constant.SkillTypeEnum;
 import game.base.skill.resource.SkillLevelResource;
 import game.base.skill.resource.SkillResource;
 import game.role.skill.service.SkillManager;
+import utils.TimeUtil;
 
 /**
  * @author : ddv
@@ -26,6 +27,10 @@ public abstract class BaseSkill implements Cloneable {
         this.skillLevel = skillLevel;
         this.skillResource = SkillManager.getInstance().getSkillResource(skillId);
         this.skillLevelResource = SkillManager.getInstance().getSkillLevelResource(skillId, skillLevel);
+    }
+
+    public boolean isCd() {
+        return TimeUtil.now() < (getSkillCd() + getLastUsedAt());
     }
 
     // 技能耗蓝数值

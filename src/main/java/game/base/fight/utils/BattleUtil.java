@@ -1,16 +1,12 @@
 package game.base.fight.utils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import client.MessageEnum;
-import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.buff.PVPBuffComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import game.base.fight.model.pvpunit.BaseUnit;
 import game.base.fight.model.pvpunit.PlayerUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.fight.model.skill.model.PVPSkillComponent;
@@ -20,13 +16,11 @@ import game.base.message.exception.RequestException;
 import game.base.skill.model.BaseSkill;
 import game.gm.packet.SM_LogMessage;
 import game.map.handler.AbstractMapHandler;
-import game.map.visible.AbstractMapObject;
 import game.map.visible.PlayerMapObject;
 import game.role.player.model.Player;
 import game.world.fight.model.BattleParam;
 import net.utils.PacketUtil;
 import utils.StringUtil;
-import utils.TimeUtil;
 
 /**
  * @author : ddv
@@ -40,17 +34,6 @@ public class BattleUtil {
         return unit.getCurrentMp() >= mpConsume;
     }
 
-    // 技能是否在cd
-    public static boolean skillInCd(BaseSkill baseSkill) {
-        return TimeUtil.now() < (baseSkill.getSkillCd() + baseSkill.getLastUsedAt());
-    }
-
-    // 获取战斗单元技能 可能为null
-    public static BaseSkill getUnitSkill(BaseCreatureUnit unit, long skillId) {
-        PVPSkillComponent component = unit.getComponentContainer().getComponent(UnitComponentType.SKILL);
-        return component.getSkillMap().get(skillId);
-    }
-
     // 计算技能一级数值 [收到属性增益之后的数值]
     public static long calculateSkillValue1(long skillValue, List<AttributeType> attributeTypeList,
         Map<AttributeType, Attribute> attributes) {
@@ -61,33 +44,6 @@ public class BattleUtil {
             }
         }
         return skillValue;
-    }
-
-    // 找到怪物或者玩家
-    public static BaseCreatureUnit findTargetUnit(AbstractMapHandler mapHandler, long targetId, int mapId) {
-        BaseCreatureUnit unit = null;
-        AbstractMapObject mapObject = mapHandler.getPlayerObjects(mapId).get(targetId);
-        if (mapObject == null) {
-            mapObject = mapHandler.getMonsterObjects(mapId).get(targetId);
-        }
-        if (mapObject == null) {
-            return null;
-        }
-        unit = mapObject.getFighterAccount().getCreatureUnit();
-        return unit;
-    }
-
-    // 可能返回空集合
-    public static List<BaseCreatureUnit> findTargetUnits(AbstractMapHandler mapHandler, List<Long> targetIds,
-        int mapId) {
-        List<BaseCreatureUnit> units = new ArrayList<>();
-        targetIds.forEach(targetId -> {
-            BaseCreatureUnit unit = findTargetUnit(mapHandler, targetId, mapId);
-            if (unit != null) {
-                units.add(unit);
-            }
-        });
-        return units;
     }
 
     public static BattleParam loadParam(int mapId, long skillId, long playerId) {
@@ -104,7 +60,7 @@ public class BattleUtil {
 
         PlayerUnit caster = (PlayerUnit)playerMapObject.getFighterAccount().getCreatureUnit();
 
-        BaseSkill baseSkill = BattleUtil.getUnitSkill(caster, skillId);
+        BaseSkill baseSkill = caster.getSkillComponent().getSKill(skillId);
         actionHandler = AbstractMapHandler.getActionHandler(baseSkill.getSkillLevelResource().getSkillEnum());
 
         battleParam.setBaseSkill(baseSkill);
@@ -115,15 +71,9 @@ public class BattleUtil {
         return battleParam;
     }
 
-    public static long getLongRandom(long left, long right) {
-        return left + (((long)(new Random().nextDouble() * (right - left + 1))));
-    }
-
     // 自行检查空指针
-    public static long getUnitAttributeValue(BaseUnit unit, AttributeType type) {
-        PVPCreatureAttributeComponent component =
-            unit.getComponentContainer().getComponent(UnitComponentType.ATTRIBUTE);
-        return component.getFinalAttributes().get(type).getValue();
+    public static long getUnitAttributeValue(BaseCreatureUnit unit, AttributeType type) {
+        return unit.getAttributeComponent().getFinalAttributes().get(type).getValue();
     }
 
     /**

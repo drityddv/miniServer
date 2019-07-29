@@ -2,7 +2,7 @@ package game.base.buff.model.impl;
 
 import game.base.buff.model.BaseCreatureBuff;
 import game.base.buff.model.BuffContext;
-import game.base.buff.model.BuffTriggerPoint;
+import game.base.buff.model.BuffTriggerPointEnum;
 import game.base.buff.resource.BuffResource;
 import game.world.fight.command.buff.BuffActiveCommand;
 import game.world.fight.command.buff.BuffCancelCommand;
@@ -13,13 +13,13 @@ import scheduler.job.model.JobEntry;
 import spring.SpringContext;
 
 /**
- * 周期调度[延时取消,定时执行,周期执行...]
+ * 周期调度[延时取消,定时执行,周期执行...]Buff
  *
  * @author : ddv
  * @since : 2019/7/23 8:21 PM
  */
 
-public abstract class BaseCycleBuff extends BaseCreatureBuff {
+public abstract class BaseScheduleBuff extends BaseCreatureBuff {
     // 总共需要执行次数
     protected int periodCount;
     // 剩余执行次数
@@ -50,7 +50,7 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
         cancelSchedule();
         releaseCaster();
         releaseTarget();
-        triggerBuff(BuffTriggerPoint.End);
+        triggerBuff(BuffTriggerPointEnum.End);
     }
 
     @Override
@@ -72,8 +72,8 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
     }
 
     @Override
-    public void triggerBuff(BuffTriggerPoint point) {
-        if (point == BuffTriggerPoint.Schedule_Active) {
+    public void triggerBuff(BuffTriggerPointEnum point) {
+        if (point == BuffTriggerPointEnum.Schedule_Active) {
             remainCount--;
         }
         super.triggerBuff(point);
@@ -82,8 +82,8 @@ public abstract class BaseCycleBuff extends BaseCreatureBuff {
     // 默认合并重新生成调度任务
     @Override
     public void merge(BaseCreatureBuff buff) {
-        if (buff instanceof BaseCycleBuff) {
-            BaseCycleBuff newBuff = (BaseCycleBuff)buff;
+        if (buff instanceof BaseScheduleBuff) {
+            BaseScheduleBuff newBuff = (BaseScheduleBuff)buff;
             this.mergedCount++;
             this.delayEndTime = remainCount * frequencyTime + newBuff.getDelayEndTime();
             this.remainCount += newBuff.remainCount;

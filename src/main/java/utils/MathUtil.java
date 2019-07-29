@@ -43,4 +43,8 @@ public class MathUtil {
         return getRandomDouble(0, 1) <= num;
     }
 
+    public static long getLongRandom(long left, long right) {
+        return left + (((long)(new Random().nextDouble() * (right - left + 1))));
+    }
+
 }

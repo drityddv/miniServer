@@ -90,17 +90,16 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
         }
 
         BaseCreatureUnit creatureUnit = object.getFighterAccount().getCreatureUnit();
-
         PVPBuffComponent buffComponent = creatureUnit.getBuffComponent();
+        Map<Long, BaseCreatureBuff> tempMap = new HashMap<>(buffComponent.getCastBuffMap());
 
         logger.info("玩家[{}]即将离开场景,清除释放buff容器 数量[{}]", object.getAccountId(),
             buffComponent.getCastBuffMap().values().size());
-        for (BaseCreatureBuff castBuff : buffComponent.getCastBuffMap().values()) {
-            castBuff.forceCancel();
-        }
+        tempMap.values().forEach(BaseBuff::forceCancel);
 
+        tempMap = new HashMap<>(buffComponent.getBuffMap());
         logger.info("玩家[{}]即将离开场景,清除buff容器 数量[{}]", object.getAccountId(), buffComponent.getBuffMap().values().size());
-        buffComponent.getBuffMap().values().forEach(BaseBuff::forceCancel);
+        tempMap.values().forEach(BaseBuff::forceCancel);
 
         playerMap.remove(playerId);
         aoiManager.triggerLeave(object);

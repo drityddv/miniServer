@@ -64,12 +64,12 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
         boolean success = registerTarget();
         if (success) {
             registerCaster();
-            triggerBuff(BuffTriggerPoint.First_Active);
+            triggerBuff(BuffTriggerPointEnum.First_Active);
         }
         return success;
     }
 
-    public void triggerBuff(BuffTriggerPoint point) {
+    public void triggerBuff(BuffTriggerPointEnum point) {
         triggerPoints.get(point).forEach(baseEffect -> {
             baseEffect.active(context);
         });

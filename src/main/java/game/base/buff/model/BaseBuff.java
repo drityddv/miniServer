@@ -26,7 +26,7 @@ public abstract class BaseBuff<T> {
 
     protected long buffId;
 
-    protected Map<BuffTriggerPoint, List<BaseEffect>> triggerPoints;
+    protected Map<BuffTriggerPointEnum, List<BaseEffect>> triggerPoints;
 
     // buff 周期调度
     protected JobEntry scheduleJob;

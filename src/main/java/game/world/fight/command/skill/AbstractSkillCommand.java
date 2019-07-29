@@ -73,7 +73,7 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
             RequestException.throwException(MessageEnum.SKILL_MP_NOT_ENOUGH);
         }
 
-        if (BattleUtil.skillInCd(baseSkill)) {
+        if (baseSkill.isCd()) {
             logger.warn("玩家[{}] 使用技能失败,技能cd中", caster.getFighterAccount().getAccountId());
             RequestException.throwException(MessageEnum.SKILL_IN_CD);
         }

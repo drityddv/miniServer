@@ -54,4 +54,13 @@ public interface ISkillService {
      */
     void setDefaultSquare(Player player, int squareIndex);
 
+    /**
+     * 是否学习过对应技能
+     *
+     * @param player
+     * @param skillId
+     * @return
+     */
+    boolean hasLearnedSkill(Player player, long skillId);
+
 }

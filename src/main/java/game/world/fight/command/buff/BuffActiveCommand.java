@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.base.buff.model.BaseCreatureBuff;
-import game.base.buff.model.BuffTriggerPoint;
-import game.base.buff.model.impl.BaseCycleBuff;
+import game.base.buff.model.BuffTriggerPointEnum;
+import game.base.buff.model.impl.BaseScheduleBuff;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 
 /**
@@ -32,15 +32,14 @@ public class BuffActiveCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
-        if (buff instanceof BaseCycleBuff) {
-            BaseCycleBuff baseCycleBuff = (BaseCycleBuff)buff;
-            logger.info("周期次数[{}] 剩余次数[{}]", baseCycleBuff.getPeriodCount(), baseCycleBuff.getRemainCount());
+        if (buff instanceof BaseScheduleBuff) {
+            BaseScheduleBuff baseScheduleBuff = (BaseScheduleBuff)buff;
+            logger.info("周期次数[{}] 剩余次数[{}]", baseScheduleBuff.getPeriodCount(), baseScheduleBuff.getRemainCount());
         }
-        buff.triggerBuff(BuffTriggerPoint.Schedule_Active);
+        buff.triggerBuff(BuffTriggerPointEnum.Schedule_Active);
     }
 
     public BaseCreatureBuff getBuff() {
         return buff;
     }
-
 }

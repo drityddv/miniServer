@@ -12,12 +12,8 @@ public class BuffContext {
 
     private Map<BuffParamEnum, Object> contextMap = new HashMap<>();
 
-    public static BuffContext valueOf(BaseBuffConfig config) {
-        BuffContext context = new BuffContext();
-        config.getParams().forEach((buffParamEnum, o) -> {
-            context.contextMap.put(buffParamEnum, o);
-        });
-        return context;
+    public static BuffContext valueOf() {
+        return new BuffContext();
     }
 
     public void addParam(BuffParamEnum key, Object object) {

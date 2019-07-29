@@ -2,11 +2,7 @@ package game.base.buff.resource;
 
 import java.util.*;
 
-import game.base.buff.model.BaseCreatureBuff;
-import game.base.buff.model.BuffParamEnum;
-import game.base.buff.model.BuffTriggerPoint;
-import game.base.buff.model.BuffTypeEnum;
-import game.base.buff.model.BaseBuffConfig;
+import game.base.buff.model.*;
 import game.base.effect.model.BaseEffect;
 import game.base.effect.model.constant.EffectTypeEnum;
 import resource.anno.Init;
@@ -33,7 +29,9 @@ public class BuffResource {
     private int level;
     private int groupId;
 
-    private Map<BuffTriggerPoint, List<BaseEffect>> triggerPoints;
+    private Map<BuffTriggerPointEnum, List<BaseEffect>> triggerPoints;
+    // First_Active:2&3,Schedule_Active:2&1
+    private String triggerPointString;
     private String effectIdString;
 
     private BaseBuffConfig buffConfig;
@@ -45,28 +43,37 @@ public class BuffResource {
     @Init
     private void init() {
         analysisTriggerPoints();
-        analysisEffectContext();
+        analysisBuffConfig();
     }
 
     private void analysisTriggerPoints() {
         triggerPoints = new HashMap<>();
-        for (BuffTriggerPoint triggerPoint : BuffTriggerPoint.values()) {
+        for (BuffTriggerPointEnum triggerPoint : BuffTriggerPointEnum.values()) {
             triggerPoints.put(triggerPoint, new ArrayList<>());
         }
 
-        String[] effectIds = effectIdString.split(CsvSymbol.Comma);
-        for (String effectId : effectIds) {
-            BaseEffect baseEffect = EffectTypeEnum.getById(Long.parseLong(effectId)).create();
-            Set<BuffTriggerPoint> triggerPointSet =
-                EffectTypeEnum.getByClazz(baseEffect.getClass()).getTriggerPointSet();
-            triggerPointSet.forEach(buffTriggerPoint -> {
-                triggerPoints.get(buffTriggerPoint).add(baseEffect);
-            });
+        String[] split = triggerPointString.split(CsvSymbol.Comma);
+        for (String pointString : split) {
+            String[] strings = pointString.split(CsvSymbol.Colon);
+            String[] pointIds = strings[1].split(CsvSymbol.AND);
+            BuffTriggerPointEnum triggerPointEnum = BuffTriggerPointEnum.getByName(strings[0]);
+            for (String pointId : pointIds) {
+                triggerPoints.get(triggerPointEnum).add(EffectTypeEnum.getById(Long.parseLong(pointId)).create());
+            }
         }
 
+//        String[] effectIds = effectIdString.split(CsvSymbol.Comma);
+//        for (String effectId : effectIds) {
+//            BaseEffect baseEffect = EffectTypeEnum.getById(Long.parseLong(effectId)).create();
+//            Set<BuffTriggerPointEnum> triggerPointSet =
+//                EffectTypeEnum.getByClazz(baseEffect.getClass()).getTriggerPointSet();
+//            triggerPointSet.forEach(buffTriggerPoint -> {
+//                triggerPoints.get(buffTriggerPoint).add(baseEffect);
+//            });
+//        }
     }
 
-    private void analysisEffectContext() {
+    private void analysisBuffConfig() {
         buffConfig = BaseBuffConfig.valueOf();
         String[] split = effectParamString.split(CsvSymbol.Comma);
         for (String params : split) {
@@ -121,7 +128,7 @@ public class BuffResource {
         return level;
     }
 
-    public Map<BuffTriggerPoint, List<BaseEffect>> getTriggerPoints() {
+    public Map<BuffTriggerPointEnum, List<BaseEffect>> getTriggerPoints() {
         return triggerPoints;
     }
 

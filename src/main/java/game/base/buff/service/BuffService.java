@@ -56,7 +56,7 @@ public class BuffService {
     public void addBuffSingleUnit(BaseCreatureUnit caster, Long configId, BaseCreatureUnit targetUnit) {
         BuffResource buffResource = getBuffResource(configId);
         BaseCreatureBuff buff = createBuffByConfigId(configId);
-        BuffContext context = BuffContext.valueOf(buffResource.getBuffConfig());
+        BuffContext context = BuffContext.valueOf();
 
         context.addParam(BuffParamEnum.CASTER, caster);
         context.addParam(BuffParamEnum.Target, targetUnit);

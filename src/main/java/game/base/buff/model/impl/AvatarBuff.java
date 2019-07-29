@@ -14,13 +14,13 @@ import game.base.game.attribute.AttributeType;
  * @since : 2019/7/24 6:46 PM
  */
 
-public class AvatarCycleBuff extends BaseCycleBuff {
+public class AvatarBuff extends BaseScheduleBuff {
     private Map<AttributeType, Attribute> attributeMap = new HashMap<>();
 
     @Override
     protected void doInit() {
-        long hp = context.getParam(BuffParamEnum.MAX_HP);
-        long mp = context.getParam(BuffParamEnum.MAX_MP);
+        long hp = buffResource.getBuffConfig().getParam(BuffParamEnum.MAX_HP);
+        long mp = buffResource.getBuffConfig().getParam(BuffParamEnum.MAX_HP);
 
         Attribute hpAttribute = Attribute.valueOf(AttributeType.getByName(BuffParamEnum.MAX_HP.name()), hp);
         Attribute mpAttribute = Attribute.valueOf(AttributeType.getByName(BuffParamEnum.MAX_MP.name()), mp);

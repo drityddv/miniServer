@@ -1,5 +1,6 @@
 package scheduler.job.common.scene;
 
+import game.base.executor.command.constant.ExecutorConstant;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -22,7 +23,7 @@ public class EffectActiveJob implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        command = (BuffActiveCommand)context.getMergedJobDataMap().get("command");
+        command = (BuffActiveCommand)context.getMergedJobDataMap().get(ExecutorConstant.COMMAND);
         ExecutorUtils.submit(command);
     }
 

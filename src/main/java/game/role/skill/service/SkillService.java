@@ -131,6 +131,12 @@ public class SkillService implements ISkillService {
         saveSkillEnt(ent);
     }
 
+    @Override
+    public boolean hasLearnedSkill(Player player, long skillId) {
+        SkillList skillList = getSkillList(player);
+        return skillList.isLearnedSkill(skillId);
+    }
+
     private SkillEnt getPlayerSkillEnt(Player player) {
         return skillManager.loadOrCreate(player);
     }
