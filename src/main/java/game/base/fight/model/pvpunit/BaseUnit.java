@@ -58,6 +58,7 @@ public abstract class BaseUnit {
      */
     public void handlerDead(BaseActionEntry attackEntry) {
         if (dead) {
+
             statusEnum = RestrictStatusEnum.DEAD;
         }
     }

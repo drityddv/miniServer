@@ -1,4 +1,4 @@
-package scheduler.constant;
+package quartz.constant;
 
 import java.util.HashMap;
 import java.util.Map;

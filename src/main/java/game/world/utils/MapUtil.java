@@ -87,7 +87,6 @@ public class MapUtil {
 
         String logFile = sb.toString();
         PacketUtil.send(player, SM_LogMessage.valueOf(logFile));
-
     }
 
     public static void logPlayerSkill(SkillList skillList, StringBuffer sb) {

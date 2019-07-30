@@ -22,5 +22,5 @@ public interface Map_Constant {
     /**
      * 复活时间
      */
-    long Relive_Delay = 60 * 1000;
+    long Relive_Delay = 15 * 1000;
 }

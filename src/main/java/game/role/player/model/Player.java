@@ -30,6 +30,8 @@ public class Player extends AbstractCreature<Player> {
 
     private long playerId;
 
+    private transient long battleScore;
+
     /**
      * 0为男性 1为女性 2为无相关信息
      */
@@ -178,4 +180,12 @@ public class Player extends AbstractCreature<Player> {
     public void setLoaded(boolean loaded) {
         isLoaded = loaded;
     }
+
+	public long getBattleScore() {
+		return battleScore;
+	}
+
+	public void setBattleScore(long battleScore) {
+		this.battleScore = battleScore;
+	}
 }

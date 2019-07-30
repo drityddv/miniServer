@@ -16,7 +16,7 @@ import game.base.game.attribute.AttributeType;
 import game.map.handler.AbstractMapHandler;
 import game.map.visible.AbstractMapObject;
 import game.world.base.constant.Map_Constant;
-import scheduler.job.model.JobEntry;
+import quartz.job.model.JobEntry;
 
 /**
  * 战斗成员对应的基础单元
@@ -60,6 +60,7 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     public void handlerDead(BaseActionEntry attackEntry) {
         if (!handleDead) {
             super.handlerDead(attackEntry);
+            attackUnit = attackEntry.getCaster();
             JobEntry.newMapObjectReliveJob(Map_Constant.Relive_Delay, id, mapId).schedule();
             handleDead = true;
         }

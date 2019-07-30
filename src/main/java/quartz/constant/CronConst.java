@@ -1,4 +1,4 @@
-package scheduler.constant;
+package quartz.constant;
 
 /**
  * 常用cron表达式

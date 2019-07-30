@@ -1,4 +1,4 @@
-package scheduler.constant;
+package quartz.constant;
 
 /**
  * @author : ddv

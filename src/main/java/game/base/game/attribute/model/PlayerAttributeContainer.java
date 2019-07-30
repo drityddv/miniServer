@@ -3,6 +3,7 @@ package game.base.game.attribute.model;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
+import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.AttributeUpdateRecords;
 import game.base.game.attribute.CreatureAttributeContainer;
 import game.role.player.model.Player;
@@ -38,6 +39,25 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
             synStrategy.init(owner);
             owner.fighterSync(synStrategy);
         }
+
+        if (calculateBattleScore()) {
+
+        }
+    }
+
+    // 计算战斗力 返回是否变化
+    public boolean calculateBattleScore() {
+        long oldScore = owner.getBattleScore();
+        long newScore = 0;
+        for (AttributeSet attributeSet : modelAttributeSet.values()) {
+            newScore += attributeSet.getBattleScore();
+        }
+
+        owner.setBattleScore(newScore);
+        if (newScore != oldScore) {
+            return true;
+        }
+        return false;
     }
 
 }

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import game.base.buff.resource.BuffResource;
 import game.base.effect.model.BaseEffect;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
-import scheduler.job.model.JobEntry;
+import quartz.job.model.JobEntry;
 import utils.snow.IdUtil;
 
 /**

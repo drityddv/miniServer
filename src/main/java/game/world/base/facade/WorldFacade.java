@@ -1,5 +1,6 @@
 package game.world.base.facade;
 
+import game.world.base.packet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -9,10 +10,6 @@ import game.dispatch.anno.HandlerAnno;
 import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.base.constant.Map_Constant;
-import game.world.base.packet.CM_ChangeMap;
-import game.world.base.packet.CM_LeaveMap;
-import game.world.base.packet.CM_LogMap;
-import game.world.base.packet.CM_MoveMap;
 import game.world.base.service.IWorldService;
 import net.utils.PacketUtil;
 
@@ -86,5 +83,18 @@ public class WorldFacade {
         }
 
     }
+
+
+	@HandlerAnno
+	public void showAround(Player player, CM_ShowAround request) {
+		try {
+			worldService.showAround(player, request);
+		} catch (RequestException e) {
+			PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 
 }

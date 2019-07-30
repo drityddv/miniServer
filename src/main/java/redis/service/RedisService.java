@@ -15,8 +15,7 @@ public class RedisService implements IRedisService {
 
     @Override
     public void init() {
-        // jedis = new Jedis("localhost", 6379);
-
+         jedis = new Jedis("localhost", 6379);
     }
 
 }

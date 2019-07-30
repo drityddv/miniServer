@@ -1,9 +1,6 @@
-package scheduler.service;
+package quartz.service;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
@@ -11,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import scheduler.constant.CronConst;
-import scheduler.constant.JobGroupEnum;
-import scheduler.job.common.server.OneHourQuartzJob;
-import scheduler.job.model.JobEntry;
+import quartz.constant.CronConst;
+import quartz.constant.JobGroupEnum;
+import quartz.job.common.server.OneHourQuartzJob;
+import quartz.job.model.JobEntry;
 import utils.snow.IdUtil;
 
 /**
@@ -25,11 +22,7 @@ import utils.snow.IdUtil;
  */
 @Component
 public class QuartzService {
-    private static final Logger logger = LoggerFactory.getLogger(QuartzService.class);
-    /**
-     * jobId -- jobDetail 所有的修正都是通过 删除-添加
-     */
-    private static Map<Long, JobDetail> jobDetailMap = new ConcurrentHashMap<>();
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Scheduler scheduler;
 

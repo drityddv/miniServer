@@ -109,4 +109,9 @@ public interface IMapHandler {
      */
     void test(int mapId, Map<String, Object> param);
 
+	/**
+	 * show
+	 * @param player
+	 */
+	void showAround(Player player);
 }

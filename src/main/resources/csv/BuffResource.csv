@@ -2,6 +2,6 @@ configId,buffName,level,groupId,buffTypeId,"effectParamString              ",per
 "1       ","中毒[1级]  ","1    ","1      ","1         ",POISON_LEVEL:1&POISON_DAMAGE:10,"10         ","3            ",10000,"1         ",1000,"First_Active:2,Schedule_Active:2"
 "2       ","中毒[2级]  ","2    ","1      ","1         ",POISON_LEVEL:1&POISON_DAMAGE:15,"10         ","3            ","30000      ","1         ",2000,"First_Active:2,Schedule_Active:2"
 "3       ","中毒[3级]  ","3    ","1      ","1         ",POISON_LEVEL:2&POISON_DAMAGE:20,"10         ","3            ","30000      ","1         ",1000,"First_Active:2,Schedule_Active:2"
-"4       ","天神下凡    ","1    ","2      ","2         ","MAX_HP:100&MAX_MP:100&CureHp:5 ","10         ","0            ",60000,"2         ",1500,"First_Active:3,Schedule_Active:4,End:5"
+"4       ","天神下凡    ","1    ","2      ","2         ","MAX_HP:100&MAX_MP:100&CureHp:5 ","10         ","0            ",20000,"2         ",1500,"First_Active:3,Schedule_Active:4,End:5"
 5,天神下凡,2,2,2,MAX_HP:100&MAX_MP:100,0,0,0,2,0,"First_Active:3,Schedule_Active:4,End:5"
 6,天神下凡,3,2,2,MAX_HP:100&MAX_MP:100,0,0,15000,2,0,"First_Active:3,Schedule_Active:4,End:5"

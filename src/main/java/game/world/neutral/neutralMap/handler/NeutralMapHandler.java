@@ -79,6 +79,11 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
+    public void showAround(Player player) {
+        move(player, getCurrentScene(player).getMapObject(player.getPlayerId()).getCurrentGrid());
+    }
+
+    @Override
     public AbstractMovableScene getMapScene(int mapId) {
         return neutralMapService.getMapScene(mapId);
     }

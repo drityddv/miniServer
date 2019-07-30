@@ -1,4 +1,4 @@
-package scheduler.job.model;
+package quartz.job.model;
 
 import static org.quartz.DateBuilder.futureDate;
 
@@ -7,9 +7,9 @@ import org.quartz.*;
 import game.base.executor.command.constant.ExecutorConstant;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.world.base.command.scene.ReliveCommand;
-import scheduler.constant.JobGroupEnum;
-import scheduler.constant.ScheduleConstant;
-import scheduler.job.common.scene.SceneReliveJob;
+import quartz.constant.JobGroupEnum;
+import quartz.constant.ScheduleConstant;
+import quartz.job.common.scene.SceneReliveJob;
 import spring.SpringContext;
 
 /**

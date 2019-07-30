@@ -2,6 +2,7 @@ package game.world.base.service;
 
 import game.map.model.Grid;
 import game.role.player.model.Player;
+import game.world.base.packet.CM_ShowAround;
 
 /**
  * @author : ddv
@@ -52,4 +53,10 @@ public interface IWorldService {
      */
     void move(Player player, Grid targetPosition);
 
+	/**
+	 * 查看周围
+	 * @param player
+	 * @param request
+	 */
+	void showAround(Player player, CM_ShowAround request);
 }

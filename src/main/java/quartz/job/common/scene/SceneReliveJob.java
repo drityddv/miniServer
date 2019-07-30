@@ -1,4 +1,4 @@
-package scheduler.job.common.scene;
+package quartz.job.common.scene;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -6,21 +6,17 @@ import org.quartz.JobExecutionException;
 
 import game.base.executor.command.constant.ExecutorConstant;
 import game.base.executor.util.ExecutorUtils;
-import game.world.fight.command.buff.BuffCancelCommand;
+import game.world.base.command.scene.ReliveCommand;
 
 /**
- * buff关闭job
- *
  * @author : ddv
- * @since : 2019/7/18 12:22 PM
+ * @since : 2019/7/25 5:03 PM
  */
 
-public class BuffCancelDelayJob implements Job {
-    private BuffCancelCommand command;
-
+public class SceneReliveJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        command = (BuffCancelCommand)context.getMergedJobDataMap().get(ExecutorConstant.COMMAND);
+        ReliveCommand command = (ReliveCommand)context.getMergedJobDataMap().get(ExecutorConstant.COMMAND);
         ExecutorUtils.submit(command);
     }
 }

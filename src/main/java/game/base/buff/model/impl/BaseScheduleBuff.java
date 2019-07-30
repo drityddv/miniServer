@@ -6,10 +6,10 @@ import game.base.buff.model.BuffTriggerPointEnum;
 import game.base.buff.resource.BuffResource;
 import game.world.fight.command.buff.BuffActiveCommand;
 import game.world.fight.command.buff.BuffCancelCommand;
-import scheduler.constant.JobGroupEnum;
-import scheduler.job.common.scene.BuffCancelDelayJob;
-import scheduler.job.common.scene.EffectActiveJob;
-import scheduler.job.model.JobEntry;
+import quartz.constant.JobGroupEnum;
+import quartz.job.common.scene.BuffCancelDelayJob;
+import quartz.job.common.scene.EffectActiveJob;
+import quartz.job.model.JobEntry;
 import spring.SpringContext;
 
 /**

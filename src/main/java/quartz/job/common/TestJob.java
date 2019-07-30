@@ -1,4 +1,4 @@
-package scheduler.job.common;
+package quartz.job.common;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;

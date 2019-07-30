@@ -1,4 +1,4 @@
-package scheduler.job.player;
+package quartz.job.player;
 
 import java.util.Set;
 

@@ -1,5 +1,7 @@
 package game.world.base.service;
 
+import game.world.base.command.scene.*;
+import game.world.base.packet.CM_ShowAround;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,6 @@ import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.base.command.scene.EnterMapCommand;
-import game.world.base.command.scene.LeaveMapCommand;
-import game.world.base.command.scene.LogMapCommand;
-import game.world.base.command.scene.MoveCommand;
 import game.world.base.constant.Map_Constant;
 import game.world.base.resource.MiniMapResource;
 import net.utils.PacketUtil;
@@ -90,7 +88,12 @@ public class WorldService implements IWorldService {
         }
     }
 
-    // 测试用 gm和facade都会走这里
+	@Override
+	public void showAround(Player player, CM_ShowAround request) {
+		ExecutorUtils.submit(ShowAroundCommand.valueOf(player));
+	}
+
+	// 测试用 gm和facade都会走这里
     @Override
     public void logMap(Player player, int mapId) {
         ExecutorUtils.submit(LogMapCommand.valueOf(player, mapId));

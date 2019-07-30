@@ -25,8 +25,8 @@ import game.world.base.service.WorldManager;
 import game.world.neutral.neutralMap.model.NeutralMapInfo;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.utils.MapUtil;
-import scheduler.constant.JobGroupEnum;
-import scheduler.job.common.scene.SceneHeartBeatRateJob;
+import quartz.constant.JobGroupEnum;
+import quartz.job.common.scene.SceneHeartBeatRateJob;
 import spring.SpringContext;
 import utils.snow.IdUtil;
 

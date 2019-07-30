@@ -166,5 +166,11 @@ public abstract class AbstractMapHandler implements IMapHandler {
 
     }
 
-    public void broadcast(int mapId, Grid currentGrid) {}
+	@Override
+	public void showAround(Player player) {
+    	
+
+	}
+
+	public void broadcast(int mapId, Grid currentGrid) {}
 }

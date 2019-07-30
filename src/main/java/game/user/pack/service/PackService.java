@@ -14,6 +14,7 @@ import game.base.message.exception.RequestException;
 import game.role.player.model.Player;
 import game.user.pack.model.Pack;
 import game.user.pack.model.PackSquare;
+import game.user.pack.packet.SM_Items;
 import game.user.pack.packet.SM_PackInfo;
 import net.utils.PacketUtil;
 import spring.SpringContext;
@@ -66,6 +67,7 @@ public class PackService implements IPackService {
             }
         }
         packManager.save(player.getPlayerId());
+        PacketUtil.send(player, SM_Items.valueOf(items));
         return true;
     }
 
