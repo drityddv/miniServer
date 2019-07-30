@@ -33,6 +33,7 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
         super(player.getCurrentMapId());
         this.player = player;
         this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
+        this.battleParam.setTargetId(player.getPlayerId());
         this.battleParam.getTargetIdList().add(battleParam.getCaster().getId());
     }
 

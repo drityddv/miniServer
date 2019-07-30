@@ -8,7 +8,7 @@ import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.skill.constant.SkillParamConstant;
 import game.base.skill.model.BaseSkill;
 import game.map.area.AreaProcessParam;
-import game.map.area.BaseAreaProcess;
+import game.map.area.BaseUnitCollector;
 import game.map.base.AbstractMovableScene;
 import game.map.model.Grid;
 import game.map.visible.AbstractMapObject;
@@ -23,10 +23,10 @@ import game.world.utils.MapUtil;
  * @since : 2019/7/22 2:11 PM
  */
 
-public class RoundAreaProcess extends BaseAreaProcess {
+public class RoundAreaProcess extends BaseUnitCollector {
 
     @Override
-    public List<BaseCreatureUnit> calculate(BattleParam battleParam, AbstractMovableScene mapScene) {
+    public List<BaseCreatureUnit> doCollect(BattleParam battleParam, AbstractMovableScene mapScene) {
         BaseSkill baseSkill = battleParam.getBaseSkill();
         AreaProcessParam param = AreaProcessParam.valueOf(battleParam.getCenter(),
             Integer.parseInt(baseSkill.getSkillLevelResource().getAreaTypeParam().get(SkillParamConstant.RADIUS)));

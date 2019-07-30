@@ -32,7 +32,7 @@ public class PhysicalSingleAttack extends BaseActionEntry {
     public void calculate() {
         long originValue = baseSkill.getSkillValue();
         originValue += MathUtil.getLongRandom(caster.getUnitAttributeValue(AttributeType.PHYSICAL_ATTACK_LOWER),
-            caster.getUnitAttributeValue(AttributeType.PHYSICAL_ATTACK_UPPER));
+            caster.getUnitAttributeValue(AttributeType.PHYSICAL_ATTACK_UPPER)) / 5;
         long physicalArmor = defender.getUnitAttributeValue(AttributeType.PHYSICAL_ARMOR);
         value = originValue > physicalArmor ? originValue - physicalArmor : 0;
     }

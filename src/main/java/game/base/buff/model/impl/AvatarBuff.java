@@ -21,6 +21,8 @@ public class AvatarBuff extends BaseScheduleBuff {
     protected void doInit() {
         long hp = buffResource.getBuffConfig().getParam(BuffParamEnum.MAX_HP);
         long mp = buffResource.getBuffConfig().getParam(BuffParamEnum.MAX_HP);
+        long cureHp = buffResource.getBuffConfig().getParam(BuffParamEnum.CureHp);
+        long cureMp = buffResource.getBuffConfig().getParam(BuffParamEnum.CureHp);
 
         Attribute hpAttribute = Attribute.valueOf(AttributeType.getByName(BuffParamEnum.MAX_HP.name()), hp);
         Attribute mpAttribute = Attribute.valueOf(AttributeType.getByName(BuffParamEnum.MAX_MP.name()), mp);
@@ -30,7 +32,7 @@ public class AvatarBuff extends BaseScheduleBuff {
         this.context.addParam(BuffParamEnum.Attribute, attributeMap);
         this.context.addParam(BuffParamEnum.Buff_Id, buffId);
         this.context.addParam(BuffParamEnum.Attribute_Container, target.getAttributeComponent());
-        this.context.addParam(BuffParamEnum.CureHp, context.getParam(BuffParamEnum.CureHp));
-        this.context.addParam(BuffParamEnum.CureMp, context.getParam(BuffParamEnum.CureHp));
+        this.context.addParam(BuffParamEnum.CureHp, cureHp);
+        this.context.addParam(BuffParamEnum.CureMp, cureMp);
     }
 }

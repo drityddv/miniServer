@@ -29,7 +29,7 @@ public class HighNoonShoot extends BaseActionHandler {
             PhysicalSingleAttack.valueOf(caster, target, baseSkill, originValue, battleParam).doActive();
         });
 
-        super.doAction(caster, targets, baseSkill, battleParam);
+        triggerBuffs(caster, targets, baseSkill);
     }
 
 }

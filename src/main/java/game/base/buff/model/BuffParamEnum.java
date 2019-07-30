@@ -65,10 +65,10 @@ public enum BuffParamEnum {
      * 战报参数
      */
     Battle_Param,
-	/**
-	 *
-	 */
-	Skill;
+    /**
+     *
+     */
+    Skill;
 
     private static Map<String, BuffParamEnum> NAME_TO_TYPE = new HashMap<>();
 

@@ -11,6 +11,7 @@ import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentContainer;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.skill.model.PVPSkillComponent;
+import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.map.handler.AbstractMapHandler;
 import game.map.visible.AbstractMapObject;
@@ -110,7 +111,8 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     }
 
     public long getUnitAttributeValue(AttributeType type) {
-        return getAttributeComponent().getFinalAttributes().get(type).getValue();
+        Attribute attribute = getAttributeComponent().getFinalAttributes().get(type);
+        return attribute == null ? 0 : attribute.getValue();
     }
 
     public PVPSkillComponent getSkillComponent() {

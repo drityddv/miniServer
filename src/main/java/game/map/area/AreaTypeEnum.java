@@ -16,8 +16,8 @@ import game.map.area.impl.RoundAreaProcess;
 public enum AreaTypeEnum {
     // 圆形
     Round(1, "圆形范围", RoundAreaProcess.class),
-	//地图计算
-	Default(2, "默认通过地图计算", DefaultProcess.class),;
+    // 地图计算
+    Default(2, "默认通过地图计算", DefaultProcess.class),;
     public static Map<Integer, AreaTypeEnum> ID_TO_TYPE = new HashMap<>();
     public static Map<String, AreaTypeEnum> NAME_TO_TYPE = new HashMap<>();
 
@@ -30,10 +30,10 @@ public enum AreaTypeEnum {
 
     private int id;
     private String typeName;
-    private Class<? extends BaseAreaProcess> processClazz;
-    private BaseAreaProcess process;
+    private Class<? extends BaseUnitCollector> processClazz;
+    private BaseUnitCollector process;
 
-    AreaTypeEnum(int id, String typeName, Class<? extends BaseAreaProcess> processClazz) {
+    AreaTypeEnum(int id, String typeName, Class<? extends BaseUnitCollector> processClazz) {
         this.id = id;
         this.typeName = typeName;
         this.processClazz = processClazz;
@@ -56,7 +56,7 @@ public enum AreaTypeEnum {
         return typeName;
     }
 
-    public BaseAreaProcess getProcess() {
+    public BaseUnitCollector getProcess() {
         return process;
     }
 

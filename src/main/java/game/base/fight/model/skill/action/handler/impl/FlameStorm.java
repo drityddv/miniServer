@@ -27,7 +27,7 @@ public class FlameStorm extends BaseActionHandler {
             originValue += MathUtil.getLongRandom(caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_LOWER),
                 caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_UPPER));
             MagicGroupAttack.valueOf(caster, target, baseSkill, originValue, battleParam).doActive();
-            super.doAction(caster, targets, baseSkill, battleParam);
+            triggerBuffs(caster, targets, baseSkill);
         });
 
     }

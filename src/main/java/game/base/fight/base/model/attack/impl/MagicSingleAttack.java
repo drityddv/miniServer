@@ -28,12 +28,12 @@ public class MagicSingleAttack extends BaseActionEntry {
         return attack;
     }
 
-	@Override
-	public void calculate() {
-		long originValue = baseSkill.getSkillValue();
-		originValue += MathUtil.getLongRandom(caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_LOWER),
-				caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_UPPER));
-		long magicArmor = defender.getUnitAttributeValue(AttributeType.MAGIC_ARMOR);
-		value = originValue > magicArmor ? originValue - magicArmor : 0;
-	}
+    @Override
+    public void calculate() {
+        long originValue = baseSkill.getSkillValue();
+        originValue += MathUtil.getLongRandom(caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_LOWER),
+            caster.getUnitAttributeValue(AttributeType.MAGIC_ATTACK_UPPER));
+        long magicArmor = defender.getUnitAttributeValue(AttributeType.MAGIC_ARMOR);
+        value = originValue > magicArmor ? originValue - magicArmor : 0;
+    }
 }
