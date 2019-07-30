@@ -4,10 +4,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
 import game.base.fight.model.componet.IUnitComponent;
 import game.base.fight.model.componet.UnitComponentType;
 import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.pvpunit.FighterAccount;
+import game.base.game.attribute.util.AttributeUtils;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
 import game.gm.packet.SM_LogMessage;
@@ -47,11 +49,11 @@ public class MapUtil {
             Map<UnitComponentType, IUnitComponent> component =
                 fighterAccount.getCreatureUnit().getComponentContainer().getTypeToComponent();
             component.forEach((type, iUnitComponent) -> {
-                // sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
-                // if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
-                // PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
-                // AttributeUtils.logAttrs(attributeComponent, sb);
-                // }
+                sb.append(StringUtil.wipePlaceholder("玩家战斗组件类型[{}]", type.name()));
+                if (iUnitComponent instanceof PVPCreatureAttributeComponent) {
+                    PVPCreatureAttributeComponent attributeComponent = (PVPCreatureAttributeComponent)iUnitComponent;
+                    AttributeUtils.logAttrs(attributeComponent, sb);
+                }
 
                 // if (iUnitComponent instanceof PVPSkillComponent) {
                 // PVPSkillComponent skillComponent = (PVPSkillComponent)iUnitComponent;
