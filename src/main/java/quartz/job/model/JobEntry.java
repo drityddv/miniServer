@@ -9,8 +9,10 @@ import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.world.base.command.scene.ReliveCommand;
 import quartz.constant.JobGroupEnum;
 import quartz.constant.ScheduleConstant;
+import quartz.job.common.scene.SceneCommandJob;
 import quartz.job.common.scene.SceneReliveJob;
 import spring.SpringContext;
+import utils.snow.IdUtil;
 
 /**
  *
@@ -23,9 +25,19 @@ public class JobEntry {
     private JobDetail jobDetail;
     private Trigger trigger;
 
-    public static JobEntry newMapObjectReliveJob(long delay, long unitId, int mapId) {
-        ReliveCommand command = ReliveCommand.valueOf(mapId, unitId);
+    public static JobEntry newMapObjectReliveJob(long delay, long unitId, int mapId, long sceneId) {
+        ReliveCommand command = ReliveCommand.valueOf(mapId, unitId, sceneId);
         return newDelayJob(SceneReliveJob.class, delay, unitId, JobGroupEnum.SCENE_RELIVE.name(), command);
+    }
+
+    public static JobEntry newSceneDelayJob(long delay, AbstractSceneCommand command) {
+        return newDelayJob(SceneCommandJob.class, delay, IdUtil.getLongId(), JobGroupEnum.SCENE_COMMAND.name(),
+            command);
+    }
+
+    public static JobEntry newSceneRateJob(long delay, int period, AbstractSceneCommand command) {
+        return newRateJob(SceneCommandJob.class, delay, period, IdUtil.getLongId(),
+            JobGroupEnum.SCENE_COMMON_RATE.name(), command);
     }
 
     public static JobEntry newDelayJob(Class<? extends Job> jobClazz, long delay, long jobId, String groupName,
@@ -83,13 +95,22 @@ public class JobEntry {
         String groupName, Object jobMapData) {
         JobEntry entry = new JobEntry();
         String name = jobId + "";
+        Trigger trigger;
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
         jobDetail.getJobDataMap().put(ExecutorConstant.COMMAND, jobMapData);
 
-        Trigger trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName).withSchedule(
-            SimpleScheduleBuilder.simpleSchedule().withRepeatCount((int)(period - 1)).withIntervalInMilliseconds(delay))
-            .forJob(jobDetail).build();
+        if (period == 0) {
+            trigger = TriggerBuilder.newTrigger().withIdentity(name, groupName)
+                .withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatForever().withIntervalInMilliseconds(delay))
+                .forJob(jobDetail).build();
+        } else {
+            trigger =
+                TriggerBuilder
+                    .newTrigger().withIdentity(name, groupName).withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                        .withRepeatCount((int)(period - 1)).withIntervalInMilliseconds(delay))
+                    .forJob(jobDetail).build();
+        }
 
         entry.jobDetail = jobDetail;
         entry.trigger = trigger;
@@ -106,5 +127,9 @@ public class JobEntry {
 
     public Trigger getTrigger() {
         return trigger;
+    }
+
+    public void cancel() {
+        SpringContext.getQuartzService().removeJob(jobDetail);
     }
 }

@@ -16,6 +16,7 @@ import game.base.game.attribute.AttributeType;
 import game.map.handler.AbstractMapHandler;
 import game.map.visible.AbstractMapObject;
 import game.world.base.constant.Map_Constant;
+import game.world.base.resource.CreatureResource;
 import quartz.job.model.JobEntry;
 
 /**
@@ -56,14 +57,28 @@ public abstract class BaseCreatureUnit extends BaseUnit {
         this.name = name;
     }
 
+    /**
+     * 孵化逻辑
+     *
+     * @param creatureResource
+     * @param fighterAccount
+     * @param id
+     * @return
+     */
+    public BaseCreatureUnit hatch(CreatureResource creatureResource, FighterAccount fighterAccount, long id, int mapId,
+        long sceneId) {
+        return null;
+    }
+
     @Override
     public void handlerDead(BaseActionEntry attackEntry) {
         if (!handleDead) {
             super.handlerDead(attackEntry);
             attackUnit = attackEntry.getCaster();
-            JobEntry.newMapObjectReliveJob(Map_Constant.Relive_Delay, id, mapId).schedule();
+            JobEntry.newMapObjectReliveJob(Map_Constant.Relive_Delay, id, mapId, sceneId).schedule();
             handleDead = true;
         }
+
     }
 
     public void handlerStatus(BaseActionEntry attackEntry) {

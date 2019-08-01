@@ -16,7 +16,6 @@ public abstract class BaseMapInfo<T extends AbstractMovableScene> {
     protected int mapId;
     // 无分线逻辑 每张地图只会有一张
     protected T mapScene;
-
     // 地图资源
     protected MiniMapResource miniMapResource;
     // 阻挡点资源
@@ -51,6 +50,10 @@ public abstract class BaseMapInfo<T extends AbstractMovableScene> {
 
     public void setMapScene(T mapScene) {
         this.mapScene = mapScene;
+    }
+
+    public T getMapScene(long sceneId) {
+        return null;
     }
 
     public MiniMapResource getMiniMapResource() {

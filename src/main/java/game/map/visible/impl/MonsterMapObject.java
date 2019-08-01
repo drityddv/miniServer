@@ -17,12 +17,13 @@ public class MonsterMapObject extends BaseAttackAbleMapObject {
     // 怪物名称
     private String monsterName;
 
-    public static MonsterMapObject valueOf(CreatureResource creatureResource) {
+    public static MonsterMapObject valueOf(CreatureResource creatureResource, int mapId, long sceneId) {
         MonsterMapObject monster = new MonsterMapObject();
         monster.monsterId = IdUtil.getLongId();
         monster.monsterName = creatureResource.getObjectName();
         monster.init(creatureResource.getBornX(), creatureResource.getBornY());
-        monster.fighterAccount = FighterAccount.valueOfMonster(creatureResource, monster.monsterId, monster);
+        monster.fighterAccount =
+            FighterAccount.valueOfMonster(creatureResource, monster.monsterId, mapId, sceneId, monster);
         return monster;
     }
 

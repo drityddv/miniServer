@@ -31,7 +31,7 @@ public class FrostBolt extends BaseActionHandler {
         BaseCreatureUnit target = targets.get(0);
 
         MagicSingleAttack.valueOf(caster, target, baseSkill, value, battleParam).doActive();
-        triggerBuffs(caster, targets, baseSkill);
+        triggerBuffs(caster, targets, baseSkill, battleParam);
     }
 
 }

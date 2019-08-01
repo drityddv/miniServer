@@ -8,9 +8,14 @@ package game.world.base.packet;
 public class CM_ChangeMap {
 
     private int mapId;
+    private long sceneId;
 
     public int getMapId() {
         return mapId;
+    }
+
+    public long getSceneId() {
+        return sceneId;
     }
 
     @Override

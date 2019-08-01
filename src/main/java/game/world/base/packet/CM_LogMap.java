@@ -10,6 +10,11 @@ package game.world.base.packet;
 public class CM_LogMap {
 
     private int mapId;
+    private long sceneId;
+
+    public long getSceneId() {
+        return sceneId;
+    }
 
     public int getMapId() {
         return mapId;

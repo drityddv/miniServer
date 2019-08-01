@@ -3,6 +3,8 @@ package game.world.base.resource;
 import java.util.List;
 
 import game.base.game.attribute.Attribute;
+import game.world.instance.model.hatch.BaseMapObjectHatch;
+import game.world.instance.model.hatch.MapHatchEnum;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 import utils.ResourceUtil;
@@ -20,7 +22,8 @@ public class CreatureResource {
     /**
      * 对象类型
      */
-    private int objectType;
+    private BaseMapObjectHatch hatch;
+    private int hatchTypeId;
     /**
      * 名称
      */
@@ -41,6 +44,9 @@ public class CreatureResource {
     @Init
     public void init() {
         attributeList = ResourceUtil.initAttrs(attributeString);
+        if (hatchTypeId != 0) {
+            hatch = MapHatchEnum.getById(hatchTypeId).getHatch();
+        }
     }
 
     // get and set
@@ -48,8 +54,8 @@ public class CreatureResource {
         return configId;
     }
 
-    public int getObjectType() {
-        return objectType;
+    public int getHatchTypeId() {
+        return hatchTypeId;
     }
 
     public String getObjectName() {
@@ -82,5 +88,9 @@ public class CreatureResource {
 
     public long getDropConfigId() {
         return dropConfigId;
+    }
+
+    public BaseMapObjectHatch getHatch() {
+        return hatch;
     }
 }

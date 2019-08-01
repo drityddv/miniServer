@@ -28,6 +28,7 @@ public abstract class BaseUnit {
     protected long currentHp;
     protected long currentMp;
     protected int mapId;
+    protected long sceneId;
 
     protected BaseUnit(long id) {
         this.id = id;
@@ -58,7 +59,6 @@ public abstract class BaseUnit {
      */
     public void handlerDead(BaseActionEntry attackEntry) {
         if (dead) {
-
             statusEnum = RestrictStatusEnum.DEAD;
         }
     }
@@ -143,6 +143,10 @@ public abstract class BaseUnit {
 
     public void setMapId(int mapId) {
         this.mapId = mapId;
+    }
+
+    public long getSceneId() {
+        return sceneId;
     }
 
     public long getCurrentMp() {

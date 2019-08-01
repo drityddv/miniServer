@@ -56,7 +56,7 @@ public enum MessageEnum {
 
     SKILL_MP_NOT_ENOUGH(27, "技能使用失败,蓝量不足!"),
 
-    SKILL_IN_CD(28, "技能cd中!"),;
+    SKILL_IN_CD(28, "技能cd中!"), Instance_Occupy(29, "副本已经占用!"),;
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 

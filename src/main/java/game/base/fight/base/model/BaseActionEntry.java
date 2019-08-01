@@ -79,6 +79,10 @@ public abstract class BaseActionEntry {
         if (battleParam != null) {
             battleParam.putResult(defender.getId(), actionResult);
         }
-        logger.info("受到伤害[{}] 死亡状态[{}]", realDamage, defender.isDead());
+        // logger.info("受到伤害[{}] 死亡状态[{}]", realDamage, defender.isDead());
+    }
+
+    public BattleParam getBattleParam() {
+        return battleParam;
     }
 }

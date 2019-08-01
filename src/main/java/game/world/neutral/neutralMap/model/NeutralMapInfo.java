@@ -23,8 +23,4 @@ public class NeutralMapInfo extends BaseMapInfo<NeutralMapScene> {
         mapScene = NeutralMapScene.valueOf(mapId, this);
     }
 
-    @Override
-    public NeutralMapScene getMapScene() {
-        return mapScene;
-    }
 }

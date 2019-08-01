@@ -1,6 +1,5 @@
 package game.world.base.facade;
 
-import game.world.base.packet.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +9,7 @@ import game.dispatch.anno.HandlerAnno;
 import game.map.model.Grid;
 import game.role.player.model.Player;
 import game.world.base.constant.Map_Constant;
+import game.world.base.packet.*;
 import game.world.base.service.IWorldService;
 import net.utils.PacketUtil;
 
@@ -34,7 +34,7 @@ public class WorldFacade {
     @HandlerAnno
     public void gatewayChangeMap(Player player, CM_ChangeMap request) {
         try {
-            worldService.gatewayChangeMap(player, request.getMapId(), true);
+            worldService.gatewayChangeMap(player, request.getMapId(), request.getSceneId(), true);
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class WorldFacade {
     @HandlerAnno
     public void gatewayLeaveMap(Player player, CM_LeaveMap request) {
         try {
-            worldService.gatewayLeaveMap(player, Map_Constant.EMPTY_MAP, true);
+            worldService.gatewayLeaveMap(player, Map_Constant.EMPTY_MAP, Map_Constant.EMPTY_SCENE, true);
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class WorldFacade {
     @HandlerAnno
     public void logMap(Player player, CM_LogMap request) {
         try {
-            worldService.logMap(player, request.getMapId());
+            worldService.logMap(player, request.getMapId(), request.getSceneId());
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -84,17 +84,16 @@ public class WorldFacade {
 
     }
 
+    @HandlerAnno
+    public void showAround(Player player, CM_ShowAround request) {
+        try {
+            worldService.showAround(player, request);
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	@HandlerAnno
-	public void showAround(Player player, CM_ShowAround request) {
-		try {
-			worldService.showAround(player, request);
-		} catch (RequestException e) {
-			PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
+    }
 
 }

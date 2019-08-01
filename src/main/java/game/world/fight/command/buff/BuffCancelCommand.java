@@ -16,12 +16,12 @@ public class BuffCancelCommand extends AbstractSceneCommand {
     private Logger logger = LoggerFactory.getLogger(BuffCancelCommand.class);
     private BaseCreatureBuff buff;
 
-    public BuffCancelCommand(int mapId) {
-        super(mapId);
+    public BuffCancelCommand(int mapId, long sceneId) {
+        super(mapId, sceneId);
     }
 
-    public static BuffCancelCommand valueOf(BaseCreatureBuff buff, int mapId) {
-        BuffCancelCommand command = new BuffCancelCommand(mapId);
+    public static BuffCancelCommand valueOf(BaseCreatureBuff buff, int mapId, long sceneId) {
+        BuffCancelCommand command = new BuffCancelCommand(mapId, sceneId);
         command.buff = buff;
         return command;
     }

@@ -1,5 +1,8 @@
 package game.base.executor.command.impl.scene.base;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import game.base.executor.command.AbstractCommand;
 
 /**
@@ -8,10 +11,13 @@ import game.base.executor.command.AbstractCommand;
  */
 
 public abstract class AbstractSceneCommand extends AbstractCommand {
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractSceneCommand.class);
     protected int mapId;
+    protected long sceneId;
 
-    public AbstractSceneCommand(int mapId) {
+    public AbstractSceneCommand(int mapId, long sceneId) {
         this.mapId = mapId;
+        this.sceneId = sceneId;
     }
 
     @Override

@@ -29,6 +29,9 @@ public class MapInfoEnt extends AbstractEntity<String> {
     @Column(columnDefinition = "int default 0 comment '玩家当前所在地图'", nullable = true)
     private volatile int currentMapId;
 
+    @Column(columnDefinition = "bigint default 0 comment '玩家当前所在地图分线场景'", nullable = true)
+    private volatile long currentSceneId;
+
     @Column(columnDefinition = "int default 0 comment '玩家上一张地图'", nullable = true)
     private volatile int lastMapId;
 
@@ -84,5 +87,13 @@ public class MapInfoEnt extends AbstractEntity<String> {
 
     public void setLastMapId(int lastMapId) {
         this.lastMapId = lastMapId;
+    }
+
+    public long getCurrentSceneId() {
+        return currentSceneId;
+    }
+
+    public void setCurrentSceneId(long currentSceneId) {
+        this.currentSceneId = currentSceneId;
     }
 }

@@ -73,7 +73,7 @@ public class Player extends AbstractCreature<Player> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ExecutorUtils.submit(FighterSyncCommand.valueOf(this.getPlayerId(), syncStrategy, getCurrentMapId()));
+        ExecutorUtils.submit(FighterSyncCommand.valueOf(this, syncStrategy));
     }
 
     @Override
@@ -155,6 +155,16 @@ public class Player extends AbstractCreature<Player> {
         SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
     }
 
+    public long getCurrentSceneId() {
+        return SpringContext.getMapInfoService().getMapInfoEnt(this).getCurrentSceneId();
+    }
+
+    public void setCurrentSceneId(long sceneId) {
+        MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
+        mapInfoEnt.setCurrentSceneId(sceneId);
+        SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
+    }
+
     public int getSkillPoint() {
         return skillPoint;
     }
@@ -181,11 +191,11 @@ public class Player extends AbstractCreature<Player> {
         isLoaded = loaded;
     }
 
-	public long getBattleScore() {
-		return battleScore;
-	}
+    public long getBattleScore() {
+        return battleScore;
+    }
 
-	public void setBattleScore(long battleScore) {
-		this.battleScore = battleScore;
-	}
+    public void setBattleScore(long battleScore) {
+        this.battleScore = battleScore;
+    }
 }

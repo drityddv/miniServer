@@ -41,13 +41,13 @@ public class BattleUtil {
         return skillValue;
     }
 
-    public static BattleParam loadParam(int mapId, long skillId, long playerId) {
+    public static BattleParam loadParam(int mapId, long sceneId, long skillId, long playerId) {
         BattleParam battleParam = new BattleParam();
 
         AbstractMapHandler mapHandler = AbstractMapHandler.getAbstractMapHandler(mapId);
         BaseActionHandler actionHandler;
 
-        Map<Long, PlayerMapObject> playerObjects = mapHandler.getPlayerObjects(mapId);
+        Map<Long, PlayerMapObject> playerObjects = mapHandler.getPlayerObjects(mapId, sceneId);
         PlayerMapObject playerMapObject = playerObjects.get(playerId);
         if (playerMapObject == null) {
             RequestException.throwException(MessageEnum.PLAYER_UNIT_NOT_EXIST);
@@ -64,7 +64,7 @@ public class BattleUtil {
         battleParam.setMapHandler(mapHandler);
         battleParam.setActionHandler(actionHandler);
         battleParam.setCaster(caster);
-        battleParam.setMapScene(mapHandler.getMapScene(mapId));
+        battleParam.setMapScene(mapHandler.getMapScene(mapId, sceneId));
         return battleParam;
     }
 

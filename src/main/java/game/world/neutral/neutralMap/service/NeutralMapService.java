@@ -1,19 +1,14 @@
 package game.world.neutral.neutralMap.service;
 
-import static org.quartz.DateBuilder.futureDate;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.visible.PlayerMapObject;
@@ -25,10 +20,7 @@ import game.world.base.service.WorldManager;
 import game.world.neutral.neutralMap.model.NeutralMapInfo;
 import game.world.neutral.neutralMap.model.NeutralMapScene;
 import game.world.utils.MapUtil;
-import quartz.constant.JobGroupEnum;
-import quartz.job.common.scene.SceneHeartBeatRateJob;
 import spring.SpringContext;
-import utils.snow.IdUtil;
 
 /**
  * @author : ddv
@@ -48,7 +40,6 @@ public class NeutralMapService implements INeutralMapService {
     @Override
     public void init() {
         initMapInfo();
-        initHeartBeat();
     }
 
     private void initMapInfo() {
@@ -70,7 +61,7 @@ public class NeutralMapService implements INeutralMapService {
         NeutralMapScene neutralMapScene = mapCommonInfo.getMapScene();
         MiniMapResource mapResource = mapCommonInfo.getMiniMapResource();
 
-        PlayerMapObject visibleObject = PlayerMapObject.valueOf(player, mapId);
+        PlayerMapObject visibleObject = PlayerMapObject.valueOf(player, mapId, mapId);
         visibleObject.init(mapResource.getBornX(), mapResource.getBornY());
 
         neutralMapScene.enter(player.getPlayerId(), visibleObject);
@@ -157,28 +148,6 @@ public class NeutralMapService implements INeutralMapService {
 
     private NeutralMapInfo getMapInfo(int mapId) {
         return neutralMapManager.getNeutralMapCommonInfo(mapId);
-    }
-
-    private void initHeartBeat() {
-        Set<Integer> mapIdSet = neutralMapManager.getCommonInfoMap().keySet();
-        for (Integer mapId : mapIdSet) {
-            String groupName = JobGroupEnum.SCENE_COMMON_RATE.name();
-            String jobName = IdUtil.getLongId() + "";
-            String triggerName = IdUtil.getLongId() + "";
-
-            SceneHeartBeatCommand command = SceneHeartBeatCommand.valueOf(mapId, 1000 * 60 * 10, 0);
-
-            JobDetail jobDetail =
-                JobBuilder.newJob(SceneHeartBeatRateJob.class).withIdentity(jobName, groupName).build();
-            Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, groupName)
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMilliseconds(command.getDelay())
-                    .repeatForever())
-                .startAt((futureDate(60, DateBuilder.IntervalUnit.SECOND))).forJob(jobDetail.getKey()).build();
-
-            jobDetail.getJobDataMap().put("command", command);
-            SpringContext.getQuartzService().addJob(jobDetail, trigger);
-        }
-
     }
 
 }

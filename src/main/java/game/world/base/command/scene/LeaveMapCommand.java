@@ -17,15 +17,17 @@ public class LeaveMapCommand extends AbstractSceneCommand {
     private Player player;
 
     private int newMapId;
+    private long newSceneId;
 
     public LeaveMapCommand(Player player) {
-        super(player.getCurrentMapId());
+        super(player.getCurrentMapId(), player.getCurrentSceneId());
     }
 
-    public static LeaveMapCommand valueOf(Player player, int newMapId) {
+    public static LeaveMapCommand valueOf(Player player, int newMapId, long newSceneId) {
         LeaveMapCommand command = new LeaveMapCommand(player);
         command.player = player;
         command.newMapId = newMapId;
+        command.newSceneId = newSceneId;
         return command;
     }
 
@@ -48,7 +50,7 @@ public class LeaveMapCommand extends AbstractSceneCommand {
             handler.leaveMapAfter(player);
 
             if (newMapId != 0) {
-                ExecutorUtils.submit(EnterMapCommand.valueOf(player, newMapId));
+                ExecutorUtils.submit(EnterMapCommand.valueOf(player, newMapId, newSceneId));
             }
         } catch (Exception e) {
             player.setChangingMap(false);

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.base.effect.model.constant.RestrictStatusEnum;
 import game.base.executor.util.ExecutorUtils;
 import game.base.fight.base.model.BaseActionEntry;
 import game.base.fight.model.attribute.PVPCreatureAttributeComponent;
@@ -16,9 +17,12 @@ import game.base.fight.model.componet.UnitComponentType;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.id.AttributeIdEnum;
 import game.base.item.base.model.AbstractItem;
+import game.map.handler.AbstractMapHandler;
 import game.role.player.model.Player;
 import game.world.base.command.player.AddItemToPackCommand;
 import game.world.base.resource.CreatureResource;
+import game.world.instance.handler.InstanceMapHandler;
+import game.world.instance.model.InstanceMapScene;
 import spring.SpringContext;
 
 /**
@@ -29,6 +33,7 @@ import spring.SpringContext;
  */
 
 public class MonsterUnit extends BaseCreatureUnit {
+
     private static Logger logger = LoggerFactory.getLogger(MonsterUnit.class);
 
     static {
@@ -43,11 +48,14 @@ public class MonsterUnit extends BaseCreatureUnit {
         super(id, fighterAccount, creatureResource.getObjectName());
     }
 
-    public static MonsterUnit valueOf(CreatureResource creatureResource, FighterAccount fighterAccount, long id) {
+    public static MonsterUnit valueOf(CreatureResource creatureResource, FighterAccount fighterAccount, long id,
+        int mapId, long sceneId) {
         MonsterUnit monsterUnit = new MonsterUnit(creatureResource, fighterAccount, id);
         monsterUnit.creatureResource = creatureResource;
         monsterUnit.fighterAccount = fighterAccount;
         monsterUnit.level = creatureResource.getLevel();
+        monsterUnit.mapId = mapId;
+        monsterUnit.sceneId = sceneId;
 
         monsterUnit.initComponent();
         PVPCreatureAttributeComponent unitAttributeComponent = monsterUnit.getAttributeComponent();
@@ -68,7 +76,22 @@ public class MonsterUnit extends BaseCreatureUnit {
     }
 
     @Override
+    public BaseCreatureUnit hatch(CreatureResource creatureResource, FighterAccount fighterAccount, long id, int mapId,
+        long sceneId) {
+        return MonsterUnit.valueOf(creatureResource, fighterAccount, id, mapId, sceneId);
+    }
+
+    @Override
     public void handlerDead(BaseActionEntry attackEntry) {
+        AbstractMapHandler mapHandler = attackEntry.getBattleParam().getMapHandler();
+        if (mapHandler instanceof InstanceMapHandler) {
+            if (dead) {
+                statusEnum = RestrictStatusEnum.DEAD;
+            }
+            InstanceMapScene mapScene = (InstanceMapScene)mapHandler.getMapScene(mapId, sceneId);
+            mapScene.stageCheck();
+            return;
+        }
         if (!handleDead) {
             super.handlerDead(attackEntry);
             // 触发发奖

@@ -12,4 +12,5 @@ public interface CsvSymbol {
     String AND = "&";
     String Percent = "%";
     String Space = "";
+    String Semicolon = ";";
 }

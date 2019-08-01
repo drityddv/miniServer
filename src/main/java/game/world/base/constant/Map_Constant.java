@@ -12,6 +12,10 @@ public interface Map_Constant {
      */
     int EMPTY_MAP = 0;
     /**
+     * 空场景id
+     */
+    int EMPTY_SCENE = 0;
+    /**
      * aoi默认边长
      */
     int AOI_SIZE = 4;

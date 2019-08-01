@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import game.base.executor.command.impl.scene.impl.rate.SceneHeartBeatCommand;
+import game.world.base.service.WorldManager;
 import quartz.constant.CronConst;
 import quartz.constant.JobGroupEnum;
 import quartz.job.common.server.OneHourQuartzJob;
@@ -32,9 +34,16 @@ public class QuartzService {
             scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             initOneHourJob();
+            initSceneHearJob();
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initSceneHearJob() {
+        WorldManager.getInstance().getMapResources().forEach(mapResource -> {
+            JobEntry.newSceneRateJob(1000 * 60, 0, SceneHeartBeatCommand.valueOf(mapResource.getMapId())).schedule();
+        });
     }
 
     // 整点任务

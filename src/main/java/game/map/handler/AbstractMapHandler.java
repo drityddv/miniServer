@@ -96,7 +96,7 @@ public abstract class AbstractMapHandler implements IMapHandler {
         return true;
     }
 
-    public void canEnterMapThrow(Player player, int mapId) {
+    public void canEnterMapThrow(Player player, int mapId, long sceneId) {
         if (!canEnterMap(player, mapId)) {
             RequestException.throwException(I18N.MAP_ENTER_CONDITION_NOT_SATISFY);
         }
@@ -117,10 +117,10 @@ public abstract class AbstractMapHandler implements IMapHandler {
      * @param player
      * @param currentMapId
      */
-    public final void enterMapAfter(Player player, int currentMapId) {
+    public final void enterMapAfter(Player player, int currentMapId, long currentSceneId) {
         player.setCurrentMapId(currentMapId);
+        player.setCurrentSceneId(currentSceneId);
         player.setChangingMap(false);
-        // doLogMap(player, currentMapId);
     }
 
     /**
@@ -149,11 +149,11 @@ public abstract class AbstractMapHandler implements IMapHandler {
      * @param player
      * @param mapId
      */
-    public abstract void doLogMap(Player player, int mapId);
+    public abstract void doLogMap(Player player, int mapId, long sceneId);
 
     // 进图失败 自动回到主城
     public void handEnterMapFailed(Player player) {
-        ExecutorUtils.submit(EnterMapCommand.valueOf(player, 4));
+        ExecutorUtils.submit(EnterMapCommand.valueOf(player, 4, 0));
     }
 
     @Override
@@ -162,15 +162,18 @@ public abstract class AbstractMapHandler implements IMapHandler {
     }
 
     @Override
-    public void test(int mapId, Map<String, Object> param) {
+    public void test(int mapId, long sceneId, Map<String, Object> param) {
 
     }
 
-	@Override
-	public void showAround(Player player) {
-    	
+    @Override
+    public void showAround(Player player) {
 
-	}
+    }
 
-	public void broadcast(int mapId, Grid currentGrid) {}
+    public void broadcast(int mapId, Grid currentGrid) {}
+
+    public void closeInstance(int mapId, long sceneId) {
+
+    }
 }

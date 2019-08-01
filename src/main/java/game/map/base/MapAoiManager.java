@@ -1,9 +1,6 @@
 package game.map.base;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -27,9 +24,10 @@ public class MapAoiManager {
 
     private final Logger logger = LoggerFactory.getLogger(MapAoiManager.class);
     private BaseMapInfo mapInfo;
+    // 1 1 2 2
+
     private Map<Grid, BroadcastCenter> centerMap;
 
-    // FIXME 卧槽 给自己挖坑 我居然是多个地图共享一个资源文件
     public static MapAoiManager valueOf(BaseMapInfo mapInfo) {
         MapAoiManager aoiManager = new MapAoiManager();
         aoiManager.mapInfo = mapInfo;
@@ -71,6 +69,20 @@ public class MapAoiManager {
         BroadcastCenter broadcastCenter = centerMap.get(currentGrid);
         broadcastCenter.removeUnit(object, 2);
 
+    }
+
+    public void removeMonsters() {
+        centerMap.values().forEach(broadcastCenter -> {
+            Collection<Map<Long, AbstractMapObject>> mapObjectsCollection = broadcastCenter.getUnitMap().values();
+            mapObjectsCollection.forEach(objectMap -> {
+                Map<Long, AbstractMapObject> temp = new HashMap<>(objectMap);
+                temp.values().forEach(mapObject -> {
+                    if (mapObject instanceof MonsterMapObject) {
+                        objectMap.remove(mapObject.getId());
+                    }
+                });
+            });
+        });
     }
 
     private boolean isExist(BroadcastCenter temp, List<BroadcastCenter> centers) {

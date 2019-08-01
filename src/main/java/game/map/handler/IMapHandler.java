@@ -49,7 +49,7 @@ public interface IMapHandler {
      * @param player
      * @param mapId
      */
-    void realEnterMap(Player player, int mapId);
+    void realEnterMap(Player player, int mapId, long sceneId);
 
     /**
      * 地图心跳
@@ -64,7 +64,7 @@ public interface IMapHandler {
      * @param mapId
      * @return
      */
-    default Map<Long, PlayerMapObject> getPlayerObjects(int mapId) {
+    default Map<Long, PlayerMapObject> getPlayerObjects(int mapId, long sceneId) {
         return Collections.emptyMap();
     }
 
@@ -74,7 +74,7 @@ public interface IMapHandler {
      * @param mapId
      * @return
      */
-    default Map<Long, MonsterMapObject> getMonsterObjects(int mapId) {
+    default Map<Long, MonsterMapObject> getMonsterObjects(int mapId, long sceneId) {
         return Collections.emptyMap();
     }
 
@@ -85,10 +85,10 @@ public interface IMapHandler {
      * @param unitId
      * @return
      */
-    default AbstractMapObject getUnit(int mapId, long unitId) {
-        AbstractMapObject unit = getPlayerObjects(mapId).get(unitId);
+    default AbstractMapObject getUnit(int mapId, long sceneId, long unitId) {
+        AbstractMapObject unit = getPlayerObjects(mapId, sceneId).get(unitId);
         if (unit == null) {
-            unit = getMonsterObjects(mapId).get(unitId);
+            unit = getMonsterObjects(mapId, sceneId).get(unitId);
         }
         return unit;
     }
@@ -97,9 +97,10 @@ public interface IMapHandler {
      * 获得场景
      *
      * @param mapId
+     * @param sceneId
      * @return
      */
-    AbstractMovableScene getMapScene(int mapId);
+    AbstractMovableScene getMapScene(int mapId, long sceneId);
 
     /**
      * 测试用
@@ -107,11 +108,12 @@ public interface IMapHandler {
      * @param mapId
      * @param param
      */
-    void test(int mapId, Map<String, Object> param);
+    void test(int mapId, long sceneId, Map<String, Object> param);
 
-	/**
-	 * show
-	 * @param player
-	 */
-	void showAround(Player player);
+    /**
+     * show
+     *
+     * @param player
+     */
+    void showAround(Player player);
 }

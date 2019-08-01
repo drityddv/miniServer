@@ -20,20 +20,20 @@ public class FighterAccount {
 
     private BaseAttackAbleMapObject mapObject;
 
-    public static FighterAccount valueOfPlayer(Player player, int mapId, PlayerMapObject mapObject) {
+    public static FighterAccount valueOfPlayer(Player player, int mapId, long sceneId, PlayerMapObject mapObject) {
         FighterAccount fighterAccount = new FighterAccount();
         fighterAccount.setAccountId(player.getAccountId());
         fighterAccount.mapObject = mapObject;
-        fighterAccount.setCreatureUnit(PlayerUnit.valueOf(player, fighterAccount, mapId));
+        fighterAccount.setCreatureUnit(PlayerUnit.valueOf(player, fighterAccount, mapId, sceneId));
         return fighterAccount;
     }
 
-    public static FighterAccount valueOfMonster(CreatureResource creatureResource, long id,
+    public static FighterAccount valueOfMonster(CreatureResource creatureResource, long id, int mapId, long sceneId,
         MonsterMapObject mapObject) {
         FighterAccount fighterAccount = new FighterAccount();
-        fighterAccount.setAccountId(creatureResource.getObjectName());
-        fighterAccount.setCreatureUnit(MonsterUnit.valueOf(creatureResource, fighterAccount, id));
         fighterAccount.mapObject = mapObject;
+        fighterAccount.setAccountId(creatureResource.getObjectName());
+        fighterAccount.setCreatureUnit(MonsterUnit.valueOf(creatureResource, fighterAccount, id, mapId, sceneId));
         return fighterAccount;
     }
 

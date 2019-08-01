@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import game.base.executor.NameThreadFactory;
 import game.base.executor.command.AbstractCommand;
 import game.base.executor.command.ICommand;
-import game.base.executor.command.impl.scene.base.AbstractSceneRateCommand;
 import game.base.executor.constant.ExecutorConst;
 import game.base.executor.util.ExecutorUtils;
 
@@ -63,18 +62,6 @@ public class SceneExecutor implements ApplicationListener<ContextRefreshedEvent>
     public final void schedule(AbstractCommand command, long delay) {
         command.refreshState();
         // command.setFuture(SpringContext.getSceneScheduleService());
-
-    }
-
-    /**
-     * 周期命令
-     *
-     * @param command
-     * @param delay
-     * @param period
-     */
-    public final void schedule(AbstractSceneRateCommand command, long delay, long period) {
-
     }
 
     public void shutdown() {

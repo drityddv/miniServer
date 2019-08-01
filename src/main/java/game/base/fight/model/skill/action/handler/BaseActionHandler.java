@@ -61,12 +61,13 @@ public abstract class BaseActionHandler implements IActionHandler {
 
     protected void doAction(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill,
         BattleParam battleParam) {
-        triggerBuffs(caster, targets, baseSkill);
+        triggerBuffs(caster, targets, baseSkill, battleParam);
     }
 
-    protected void triggerBuffs(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill) {
+    protected void triggerBuffs(BaseCreatureUnit caster, List<BaseCreatureUnit> targets, BaseSkill baseSkill,
+        BattleParam battleParam) {
         List<Long> buffList = baseSkill.getSkillLevelResource().getBuffList();
-        SpringContext.getBuffService().addBuffInScene(buffList, caster, targets, baseSkill);
+        SpringContext.getBuffService().addBuffInScene(buffList, caster, targets, baseSkill, battleParam);
     }
 
     // 技能消耗逻辑

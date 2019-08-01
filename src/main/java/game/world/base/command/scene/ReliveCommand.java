@@ -15,19 +15,20 @@ import game.map.visible.BaseAttackAbleMapObject;
 public class ReliveCommand extends AbstractSceneCommand {
     private long mapObjectId;
 
-    public ReliveCommand(int mapId, long mapObjectId) {
-        super(mapId);
+    public ReliveCommand(int mapId, long sceneId, long mapObjectId) {
+        super(mapId, sceneId);
         this.mapObjectId = mapObjectId;
     }
 
-    public static ReliveCommand valueOf(int mapId, long mapObjectId) {
-        ReliveCommand command = new ReliveCommand(mapId, mapObjectId);
+    public static ReliveCommand valueOf(int mapId, long sceneId, long mapObjectId) {
+        ReliveCommand command = new ReliveCommand(mapId, sceneId, mapObjectId);
         return command;
     }
 
     @Override
     public void action() {
-        AbstractMapObject mapObject = AbstractMapHandler.getAbstractMapHandler(mapId).getUnit(mapId, mapObjectId);
+        AbstractMapObject mapObject =
+            AbstractMapHandler.getAbstractMapHandler(mapId).getUnit(mapId, sceneId, mapObjectId);
         if (mapObject instanceof BaseAttackAbleMapObject) {
             BaseAttackAbleMapObject object = (BaseAttackAbleMapObject)mapObject;
             object.getFighterAccount().getCreatureUnit().relive();

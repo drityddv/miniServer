@@ -1,7 +1,5 @@
 package game.world.base.service;
 
-import game.world.base.command.scene.*;
-import game.world.base.packet.CM_ShowAround;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,9 @@ import game.map.handler.AbstractMapHandler;
 import game.map.handler.IMovableMapHandler;
 import game.map.model.Grid;
 import game.role.player.model.Player;
+import game.world.base.command.scene.*;
 import game.world.base.constant.Map_Constant;
+import game.world.base.packet.CM_ShowAround;
 import game.world.base.resource.MiniMapResource;
 import net.utils.PacketUtil;
 
@@ -33,8 +33,8 @@ public class WorldService implements IWorldService {
     private WorldManager worldManager;
 
     @Override
-    public void gatewayChangeMap(Player player, int mapId, boolean clientRequest) {
-        int oldMapId = player.getCurrentMapId();
+    public void gatewayChangeMap(Player player, int newMapId, long newSceneId, boolean clientRequest) {
+        int currentMapId = player.getCurrentMapId();
         try {
             if (player.isChangingMap()) {
                 logger.warn("玩家[{}]正在切图", player.getAccountId());
@@ -42,16 +42,16 @@ public class WorldService implements IWorldService {
             }
 
             // 允许玩家从无地图状态切过来 如果有旧图就先去旧地图线程离开再提交进图命令
-            if (oldMapId != Map_Constant.EMPTY_MAP) {
-                gatewayLeaveMap(player, mapId, clientRequest);
+            if (currentMapId != Map_Constant.EMPTY_MAP) {
+                gatewayLeaveMap(player, newMapId, newSceneId, clientRequest);
             } else {
-                ExecutorUtils.submit(EnterMapCommand.valueOf(player, mapId));
+                ExecutorUtils.submit(EnterMapCommand.valueOf(player, newMapId, newSceneId));
             }
 
         } catch (RequestException e) {
             // 如果是客户端调用 打印日志
             if (clientRequest) {
-                logger.warn("玩家[{}]请求从地图[{}]进入地图[{}]失败,原因[{}]", player.getAccountId(), oldMapId, mapId,
+                logger.warn("玩家[{}]请求从地图[{}]进入地图[{}]失败,原因[{}]", player.getAccountId(), currentMapId, newMapId,
                     e.getErrorCode());
                 PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
             }
@@ -63,8 +63,8 @@ public class WorldService implements IWorldService {
     }
 
     @Override
-    public void gatewayLeaveMap(Player player, int mapId, boolean clientRequest) {
-        ExecutorUtils.submit(LeaveMapCommand.valueOf(player, mapId));
+    public void gatewayLeaveMap(Player player, int mapId, long sceneId, boolean clientRequest) {
+        ExecutorUtils.submit(LeaveMapCommand.valueOf(player, mapId, sceneId));
     }
 
     @Override
@@ -88,15 +88,15 @@ public class WorldService implements IWorldService {
         }
     }
 
-	@Override
-	public void showAround(Player player, CM_ShowAround request) {
-		ExecutorUtils.submit(ShowAroundCommand.valueOf(player));
-	}
-
-	// 测试用 gm和facade都会走这里
     @Override
-    public void logMap(Player player, int mapId) {
-        ExecutorUtils.submit(LogMapCommand.valueOf(player, mapId));
+    public void showAround(Player player, CM_ShowAround request) {
+        ExecutorUtils.submit(ShowAroundCommand.valueOf(player));
+    }
+
+    // 测试用 gm和facade都会走这里
+    @Override
+    public void logMap(Player player, int mapId, long sceneId) {
+        ExecutorUtils.submit(LogMapCommand.valueOf(player, mapId, sceneId));
     }
 
 }

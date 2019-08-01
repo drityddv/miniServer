@@ -24,12 +24,12 @@ public class EnterMapCommand extends AbstractSceneCommand {
     private Player player;
     private int mapId;
 
-    public EnterMapCommand(int mapId) {
-        super(mapId);
+    public EnterMapCommand(int mapId, long sceneId) {
+        super(mapId, sceneId);
     }
 
-    public static EnterMapCommand valueOf(Player player, int mapId) {
-        EnterMapCommand command = new EnterMapCommand(mapId);
+    public static EnterMapCommand valueOf(Player player, int mapId, long sceneId) {
+        EnterMapCommand command = new EnterMapCommand(mapId, sceneId);
         command.player = player;
         command.mapId = mapId;
         return command;
@@ -44,13 +44,13 @@ public class EnterMapCommand extends AbstractSceneCommand {
             handler = AbstractMapHandler.getHandler(mapResource.getGroupId());
 
             // 检查进入条件
-            handler.canEnterMapThrow(player, mapId);
+            handler.canEnterMapThrow(player, mapId, sceneId);
             // 进入地图前的一些工作 检查,上锁等
             handler.enterMapPre(player);
             // 真正进入地图
-            handler.realEnterMap(player, mapId);
+            handler.realEnterMap(player, mapId, sceneId);
             // 进入地图后的一些工作
-            handler.enterMapAfter(player, mapId);
+            handler.enterMapAfter(player, mapId, sceneId);
         } catch (RequestException e) {
             player.setChangingMap(false);
             logger.info("玩家[{}]进图失败,自动回到主城", player.getAccountId());

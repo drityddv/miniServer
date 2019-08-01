@@ -18,12 +18,12 @@ public class PlayerMapObject extends BaseAttackAbleMapObject {
 
     private Player player;
 
-    public static PlayerMapObject valueOf(Player player, int mapId) {
+    public static PlayerMapObject valueOf(Player player, int mapId, long sceneId) {
         PlayerMapObject accountInfo = new PlayerMapObject();
         accountInfo.accountId = player.getAccountId();
         accountInfo.playerId = player.getPlayerId();
         accountInfo.player = player;
-        accountInfo.fighterAccount = FighterAccount.valueOfPlayer(player, mapId, accountInfo);
+        accountInfo.fighterAccount = FighterAccount.valueOfPlayer(player, mapId, sceneId, accountInfo);
         return accountInfo;
     }
 

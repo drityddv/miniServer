@@ -44,7 +44,7 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public void realEnterMap(Player player, int mapId) {
+    public void realEnterMap(Player player, int mapId, long sceneId) {
         neutralMapService.enterMap(player, mapId);
     }
 
@@ -54,7 +54,7 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public void doLogMap(Player player, int mapId) {
+    public void doLogMap(Player player, int mapId, long sceneId) {
         neutralMapService.logMap(player, mapId);
     }
 
@@ -69,12 +69,12 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public Map<Long, PlayerMapObject> getPlayerObjects(int mapId) {
+    public Map<Long, PlayerMapObject> getPlayerObjects(int mapId, long sceneId) {
         return neutralMapService.getMapScene(mapId).getPlayerMap();
     }
 
     @Override
-    public Map<Long, MonsterMapObject> getMonsterObjects(int mapId) {
+    public Map<Long, MonsterMapObject> getMonsterObjects(int mapId, long sceneId) {
         return neutralMapService.getMapScene(mapId).getMonsterMap();
     }
 
@@ -84,12 +84,12 @@ public class NeutralMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public AbstractMovableScene getMapScene(int mapId) {
+    public AbstractMovableScene getMapScene(int mapId, long sceneId) {
         return neutralMapService.getMapScene(mapId);
     }
 
     @Override
-    public void test(int mapId, Map<String, Object> param) {
+    public void test(int mapId, long sceneId, Map<String, Object> param) {
         neutralMapService.test(mapId, param);
     }
 

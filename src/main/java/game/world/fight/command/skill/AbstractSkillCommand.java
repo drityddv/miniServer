@@ -30,25 +30,25 @@ public abstract class AbstractSkillCommand extends AbstractSceneCommand {
     protected BattleParam battleParam;
 
     public AbstractSkillCommand(Player player, long skillId) {
-        super(player.getCurrentMapId());
+        super(player.getCurrentMapId(), player.getCurrentSceneId());
         this.player = player;
-        this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
+        this.battleParam = BattleUtil.loadParam(mapId, sceneId, skillId, player.getPlayerId());
         this.battleParam.setTargetId(player.getPlayerId());
         this.battleParam.getTargetIdList().add(battleParam.getCaster().getId());
     }
 
     public AbstractSkillCommand(Player player, long skillId, Long targetId) {
-        super(player.getCurrentMapId());
+        super(player.getCurrentMapId(), player.getCurrentSceneId());
         this.player = player;
-        this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
+        this.battleParam = BattleUtil.loadParam(mapId, sceneId, skillId, player.getPlayerId());
         this.battleParam.setTargetId(targetId);
         this.battleParam.getTargetIdList().add(targetId);
     }
 
     public AbstractSkillCommand(Player player, long skillId, List<Long> targetIdList) {
-        super(player.getCurrentMapId());
+        super(player.getCurrentMapId(), player.getCurrentSceneId());
         this.player = player;
-        this.battleParam = BattleUtil.loadParam(mapId, skillId, player.getPlayerId());
+        this.battleParam = BattleUtil.loadParam(mapId, sceneId, skillId, player.getPlayerId());
         this.battleParam.setTargetIdList(targetIdList);
     }
 

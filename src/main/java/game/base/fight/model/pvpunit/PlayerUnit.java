@@ -39,7 +39,7 @@ public class PlayerUnit extends BaseCreatureUnit {
         super(player.getPlayerId(), fighterAccount, player.getAccountId());
     }
 
-    public static PlayerUnit valueOf(Player player, FighterAccount fighterAccount, int mapId) {
+    public static PlayerUnit valueOf(Player player, FighterAccount fighterAccount, int mapId, long sceneId) {
         PlayerUnit playerUnit = new PlayerUnit(player, fighterAccount);
         playerUnit.mapObject = (PlayerMapObject)fighterAccount.getMapObject();
         playerUnit.level = player.getLevel();
@@ -57,6 +57,7 @@ public class PlayerUnit extends BaseCreatureUnit {
         playerUnit.initBaseAttribute();
 
         playerUnit.mapId = mapId;
+        playerUnit.sceneId = sceneId;
 
         // 初始化技能组件
         PVPSkillComponent skillComponent = playerUnit.getSkillComponent();

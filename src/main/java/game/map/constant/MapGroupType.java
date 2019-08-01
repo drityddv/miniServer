@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.map.base.AbstractPlayerMapInfo;
+import game.world.instance.model.InstancePlayerMapInfo;
 import game.world.mainCity.model.MainCityPlayerMapInfo;
 import game.world.neutral.neutralMap.model.NeutralPlayerMapInfo;
 
@@ -16,7 +17,7 @@ import game.world.neutral.neutralMap.model.NeutralPlayerMapInfo;
 
 public enum MapGroupType {
     /**
-     * 空副本
+     * 空组
      */
     EMPTY_GROUP(0, null),
 
@@ -42,7 +43,9 @@ public enum MapGroupType {
     /**
      * 副本
      */
-    INSTANCE(3, null),;
+    INSTANCE(3, new InstancePlayerMapInfo()) {
+
+    },;
     private static final Map<Class<? extends AbstractPlayerMapInfo>, MapGroupType> CLASS_TO_TYPE = new HashMap<>();
     private static final Map<Integer, MapGroupType> GROUP_ID_TO_TYPE = new HashMap<>();
 
@@ -74,7 +77,6 @@ public enum MapGroupType {
         return GROUP_ID_TO_TYPE.get(groupId);
     }
 
-    // 进入野外如果没有cd 玩家发包疯狂发包刷怪
     public boolean isNeedCd() {
         return true;
     }

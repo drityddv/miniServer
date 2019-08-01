@@ -18,6 +18,8 @@ public abstract class AbstractScene<T extends AbstractMapObject> {
      */
     protected int mapId;
 
+    protected long sceneId;
+
     protected BaseMapInfo baseMapInfo;
 
     public AbstractScene(int mapId) {
@@ -45,8 +47,24 @@ public abstract class AbstractScene<T extends AbstractMapObject> {
         return mapId;
     }
 
+    public void setMapId(int mapId) {
+        this.mapId = mapId;
+    }
+
+    public long getSceneId() {
+        return sceneId;
+    }
+
+    public void setSceneId(long sceneId) {
+        this.sceneId = sceneId;
+    }
+
     public BaseMapInfo getBaseMapInfo() {
         return baseMapInfo;
+    }
+
+    public void setBaseMapInfo(BaseMapInfo baseMapInfo) {
+        this.baseMapInfo = baseMapInfo;
     }
 
 }

@@ -23,7 +23,7 @@ public class SceneHeartBeatRateJob implements Job {
     public void execute(JobExecutionContext context) {
         SceneHeartBeatCommand command =
             (SceneHeartBeatCommand)context.getMergedJobDataMap().get(ExecutorConstant.COMMAND);
-        logger.info("地图[{}] 心跳任务", command.getMapId());
+
         ExecutorUtils.submit(command);
     }
 }

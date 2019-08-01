@@ -14,10 +14,11 @@ public interface IWorldService {
      * 服务器切图 这里账号,地图线程都会调用
      *
      * @param player
-     * @param mapId
+     * @param newMapId
+     * @param newSceneId
      * @param clientRequest
      */
-    void gatewayChangeMap(Player player, int mapId, boolean clientRequest);
+    void gatewayChangeMap(Player player, int newMapId, long newSceneId, boolean clientRequest);
 
     /**
      * 离开地图
@@ -26,7 +27,7 @@ public interface IWorldService {
      * @param mapId
      * @param clientRequest
      */
-    void gatewayLeaveMap(Player player, int mapId, boolean clientRequest);
+    void gatewayLeaveMap(Player player, int mapId, long sceneId, boolean clientRequest);
 
     /**
      * 离开地图
@@ -42,8 +43,9 @@ public interface IWorldService {
      *
      * @param player
      * @param mapId
+     * @param sceneId
      */
-    void logMap(Player player, int mapId);
+    void logMap(Player player, int mapId, long sceneId);
 
     /**
      * 地图移动 不要带开始坐标了 服务端做寻路
@@ -53,10 +55,11 @@ public interface IWorldService {
      */
     void move(Player player, Grid targetPosition);
 
-	/**
-	 * 查看周围
-	 * @param player
-	 * @param request
-	 */
-	void showAround(Player player, CM_ShowAround request);
+    /**
+     * 查看周围
+     *
+     * @param player
+     * @param request
+     */
+    void showAround(Player player, CM_ShowAround request);
 }

@@ -1,5 +1,6 @@
 package game.world.base.service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import resource.anno.Static;
 public class WorldManager {
 
     private static WorldManager instance;
+
     @Static
     private Map<Integer, MiniMapResource> mapResources;
 
@@ -50,4 +52,7 @@ public class WorldManager {
         return resources;
     }
 
+    public Collection<MiniMapResource> getMapResources() {
+        return mapResources.values();
+    }
 }

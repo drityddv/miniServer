@@ -20,12 +20,13 @@ public class LogMapCommand extends AbstractSceneCommand {
 
     private Player player;
 
-    public LogMapCommand(Player player, int mapId) {
-        super(mapId);
+    public LogMapCommand(Player player, int mapId, long sceneId) {
+        super(mapId, sceneId);
+        this.player = player;
     }
 
-    public static LogMapCommand valueOf(Player player, int mapId) {
-        LogMapCommand command = new LogMapCommand(player, mapId);
+    public static LogMapCommand valueOf(Player player, int mapId, long sceneId) {
+        LogMapCommand command = new LogMapCommand(player, mapId, sceneId);
         command.player = player;
         return command;
     }
@@ -38,7 +39,7 @@ public class LogMapCommand extends AbstractSceneCommand {
             return;
         }
         AbstractMapHandler handler = AbstractMapHandler.getHandler(mapResource.getGroupId());
-        handler.doLogMap(player, mapId);
+        handler.doLogMap(player, mapId, sceneId);
     }
 
 }

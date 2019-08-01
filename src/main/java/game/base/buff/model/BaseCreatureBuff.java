@@ -14,6 +14,7 @@ import spring.SpringContext;
 
 public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
     protected int mapId;
+    protected long sceneId;
     /**
      * 是否需要提交调度请求
      */
@@ -42,6 +43,7 @@ public abstract class BaseCreatureBuff extends BaseBuff<BaseCreatureUnit> {
     public void init(BuffResource buffResource, BuffContext context) {
         super.init(buffResource, context);
         mapId = caster.getMapId();
+        sceneId = caster.getSceneId();
     }
 
     /**

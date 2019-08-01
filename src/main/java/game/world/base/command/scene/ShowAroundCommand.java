@@ -12,19 +12,19 @@ import game.role.player.model.Player;
 public class ShowAroundCommand extends AbstractSceneCommand {
     private Player player;
 
-    public ShowAroundCommand(int mapId, Player player) {
-        super(mapId);
+    public ShowAroundCommand(Player player) {
+        super(player.getCurrentMapId(), player.getCurrentSceneId());
         this.player = player;
     }
 
     public static ShowAroundCommand valueOf(Player player) {
 
-        return new ShowAroundCommand(player.getCurrentMapId(), player);
+        return new ShowAroundCommand(player);
     }
 
     @Override
     public void action() {
-		AbstractMapHandler handler = AbstractMapHandler.getAbstractMapHandler(mapId);
-		handler.showAround(player);
+        AbstractMapHandler handler = AbstractMapHandler.getAbstractMapHandler(mapId);
+        handler.showAround(player);
     }
 }

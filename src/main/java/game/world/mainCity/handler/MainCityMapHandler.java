@@ -27,7 +27,7 @@ public class MainCityMapHandler extends AbstractMapHandler
     private IMainCityService mainCityService;
 
     @Override
-    public void doLogMap(Player player, int mapId) {
+    public void doLogMap(Player player, int mapId, long sceneId) {
         mainCityService.doLogMap(player, mapId);
     }
 
@@ -52,7 +52,7 @@ public class MainCityMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public void realEnterMap(Player player, int mapId) {
+    public void realEnterMap(Player player, int mapId, long sceneId) {
         mainCityService.enterMap(player, mapId);
     }
 
@@ -67,7 +67,7 @@ public class MainCityMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public AbstractMovableScene getMapScene(int mapId) {
+    public AbstractMovableScene getMapScene(int mapId, long sceneId) {
         return mainCityService.getMapScene(mapId);
     }
 

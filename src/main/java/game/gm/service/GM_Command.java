@@ -228,7 +228,7 @@ public class GM_Command {
         param.put("x", x);
         param.put("y", y);
         param.put("radius", radius);
-        TestMapCommand command = TestMapCommand.valueOf(mapId, param);
+        TestMapCommand command = TestMapCommand.valueOf(mapId, 0, param);
         ExecutorUtils.submit(command);
     }
 

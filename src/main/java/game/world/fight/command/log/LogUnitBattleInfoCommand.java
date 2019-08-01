@@ -16,7 +16,7 @@ public class LogUnitBattleInfoCommand extends AbstractSceneCommand {
     private long unitId;
 
     public LogUnitBattleInfoCommand(Player player, long unitId) {
-        super(player.getCurrentMapId());
+        super(player.getCurrentMapId(), player.getCurrentSceneId());
         this.player = player;
         this.unitId = unitId;
     }
@@ -27,7 +27,8 @@ public class LogUnitBattleInfoCommand extends AbstractSceneCommand {
 
     @Override
     public void action() {
-        AbstractMapObject visibleMapInfo = AbstractMapHandler.getAbstractMapHandler(mapId).getUnit(mapId, unitId);
+        AbstractMapObject visibleMapInfo =
+            AbstractMapHandler.getAbstractMapHandler(mapId).getUnit(mapId, unitId, sceneId);
 
         if (visibleMapInfo == null) {
             return;

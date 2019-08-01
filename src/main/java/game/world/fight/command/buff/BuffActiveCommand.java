@@ -20,12 +20,12 @@ public class BuffActiveCommand extends AbstractSceneCommand {
 
     private BaseCreatureBuff buff;
 
-    public BuffActiveCommand(int mapId) {
-        super(mapId);
+    public BuffActiveCommand(int mapId, long sceneId) {
+        super(mapId, sceneId);
     }
 
-    public static BuffActiveCommand valueOf(BaseCreatureBuff buff, int mapId) {
-        BuffActiveCommand command = new BuffActiveCommand(mapId);
+    public static BuffActiveCommand valueOf(BaseCreatureBuff buff, int mapId, long sceneId) {
+        BuffActiveCommand command = new BuffActiveCommand(mapId, sceneId);
         command.buff = buff;
         return command;
     }
@@ -34,7 +34,7 @@ public class BuffActiveCommand extends AbstractSceneCommand {
     public void action() {
         if (buff instanceof BaseScheduleBuff) {
             BaseScheduleBuff baseScheduleBuff = (BaseScheduleBuff)buff;
-            logger.info("周期次数[{}] 剩余次数[{}]", baseScheduleBuff.getPeriodCount(), baseScheduleBuff.getRemainCount());
+            // logger.info("周期次数[{}] 剩余次数[{}]", baseScheduleBuff.getPeriodCount(), baseScheduleBuff.getRemainCount());
         }
         buff.triggerBuff(BuffTriggerPointEnum.Schedule_Active);
     }

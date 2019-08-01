@@ -6,10 +6,9 @@ package game.publicsystem.rank.service;
  */
 
 public interface IRankService {
-	/**
-	 * 排行榜初始化
-	 */
-	void init();
-
+    /**
+     * 排行榜初始化
+     */
+    void init();
 
 }

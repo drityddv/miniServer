@@ -47,7 +47,7 @@ public class MainCityService implements IMainCityService {
         MainCityMapScene scene = mapInfo.getMapScene();
         MiniMapResource miniMapResource = mapInfo.getMiniMapResource();
 
-        PlayerMapObject visibleMapInfo = PlayerMapObject.valueOf(player, mapId);
+        PlayerMapObject visibleMapInfo = PlayerMapObject.valueOf(player, mapId, mapId);
         visibleMapInfo.init(miniMapResource.getBornX(), miniMapResource.getBornY());
 
         scene.enter(player.getPlayerId(), visibleMapInfo);

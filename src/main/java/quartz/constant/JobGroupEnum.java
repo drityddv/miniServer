@@ -31,7 +31,11 @@ public enum JobGroupEnum {
     /**
      * 测试用
      */
-    TEST(),;
+    TEST(),
+    /**
+     * 场景通用
+     */
+    SCENE_COMMAND(),;
 
     public static Map<String, JobGroupEnum> NAME_TO_GROUP = new HashMap<>();
 

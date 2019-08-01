@@ -47,7 +47,7 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
     // 加载怪物
     public void initMonster(List<CreatureResource> creatureResources) {
         for (CreatureResource creatureResource : creatureResources) {
-            MonsterMapObject monster = MonsterMapObject.valueOf(creatureResource);
+            MonsterMapObject monster = MonsterMapObject.valueOf(creatureResource, mapId, sceneId);
             monsterMap.put(monster.getId(), monster);
         }
         registerStaticUnitAoi(new ArrayList<>(monsterMap.values()));

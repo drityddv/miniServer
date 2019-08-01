@@ -17,13 +17,13 @@ public class MoveCommand extends AbstractSceneCommand {
     private Grid targetGrid;
     private AbstractMapHandler handler;
 
-    public MoveCommand(Player player, int currentMapId) {
-        super(currentMapId);
+    public MoveCommand(Player player) {
+        super(player.getCurrentMapId(), player.getCurrentSceneId());
         this.player = player;
     }
 
     public static MoveCommand valueOf(Player player, Grid targetGrid, AbstractMapHandler handler) {
-        MoveCommand command = new MoveCommand(player, player.getCurrentMapId());
+        MoveCommand command = new MoveCommand(player);
         command.targetGrid = targetGrid;
         command.handler = handler;
         return command;

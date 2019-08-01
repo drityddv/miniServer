@@ -1,14 +1,17 @@
-package game.map.npc.service;
+package game.world.base.service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Component;
 
 import game.map.npc.reource.NpcResource;
 import game.world.base.resource.CreatureResource;
+import game.world.instance.resource.HatchResource;
 import resource.anno.Static;
 
 /**
@@ -18,11 +21,25 @@ import resource.anno.Static;
 @Component
 public class CreatureManager {
 
+    private static CreatureManager instance;
+
     @Static
     private Map<Integer, NpcResource> npcResources;
 
     @Static
     private Map<Integer, CreatureResource> creatureResources;
+
+    @Static
+    private Map<Long, HatchResource> hatchResourceMap;
+
+    public static CreatureManager getInstance() {
+        return instance;
+    }
+
+    @PostConstruct
+    private void init() {
+        instance = this;
+    }
 
     public NpcResource getNpcResource(int configId) {
         return npcResources.get(configId);
@@ -44,6 +61,10 @@ public class CreatureManager {
         npcResourceList.addAll(npcResources.values().stream().filter(npcResource -> npcResource.getMapId() == mapId)
             .collect(Collectors.toList()));
         return npcResourceList;
+    }
+
+    public HatchResource getHatchResource(long configId) {
+        return hatchResourceMap.get(configId);
     }
 
 }

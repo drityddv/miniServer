@@ -13,18 +13,18 @@ import game.map.handler.AbstractMapHandler;
 public class TestMapCommand extends AbstractSceneCommand {
     private Map<String, Object> param;
 
-    public TestMapCommand(int mapId, Map<String, Object> param) {
-        super(mapId);
+    public TestMapCommand(int mapId, long sceneId, Map<String, Object> param) {
+        super(mapId, sceneId);
         this.param = param;
     }
 
-    public static TestMapCommand valueOf(int mapId, Map<String, Object> param) {
-        TestMapCommand command = new TestMapCommand(mapId, param);
+    public static TestMapCommand valueOf(int mapId, long sceneId, Map<String, Object> param) {
+        TestMapCommand command = new TestMapCommand(mapId, sceneId, param);
         return command;
     }
 
     @Override
     public void action() {
-        AbstractMapHandler.getAbstractMapHandler(mapId).test(mapId, param);
+        AbstractMapHandler.getAbstractMapHandler(mapId).test(mapId, sceneId, param);
     }
 }

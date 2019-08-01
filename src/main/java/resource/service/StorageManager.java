@@ -62,7 +62,7 @@ public class StorageManager {
             storageManager.registerDefinition(aClass, definition);
         });
 
-        logger.info("初始化普通静态资源文件目的地完毕,加载了[{}]条注解数据", storageManager.getDefinitionMap().size());
+        // logger.info("初始化普通静态资源文件目的地完毕,加载了[{}]条注解数据", storageManager.getDefinitionMap().size());
     }
 
     // 注册普通静态资源类目的地
@@ -86,7 +86,7 @@ public class StorageManager {
         initResourceDefinition();
         initCsvCache();
         initSimpleResource();
-        initServiceMap();
+
     }
 
     // 初始化静态资源类
@@ -97,8 +97,9 @@ public class StorageManager {
             List objectList = ResourceUtil.loadObjectFromCsv(aClass, SimpleUtil.getParserFromStream(inputStream));
             storageMap.put(aClass, Storage.valueOf(objectList));
 
-            logger.info("从缓存流生成java对象完毕,生成数量[{}],对象[{}]", objectList.size(), aClass.getSimpleName());
+            // logger.info("从缓存流生成java对象完毕,生成数量[{}],对象[{}]", objectList.size(), aClass.getSimpleName());
         });
+        initServiceMap();
         storageResourceSecondInit();
     }
 

@@ -33,13 +33,13 @@ public abstract class BaseScheduleBuff extends BaseCreatureBuff {
     public void initBuffJob() {
         if (isScheduleBuff()) {
             scheduleJob = JobEntry.newBuffRateJob(EffectActiveJob.class, frequencyTime, periodCount, buffId,
-                JobGroupEnum.BUFF.name(), BuffActiveCommand.valueOf(this, mapId));
+                JobGroupEnum.BUFF.name(), BuffActiveCommand.valueOf(this, mapId, sceneId));
             needScheduled = true;
         }
 
         if (isNeedCancel()) {
             cancelJob = JobEntry.newBuffCancelJob(BuffCancelDelayJob.class, delayEndTime, buffId,
-                JobGroupEnum.BUFF.name(), BuffCancelCommand.valueOf(this, mapId));
+                JobGroupEnum.BUFF.name(), BuffCancelCommand.valueOf(this, mapId, sceneId));
             needScheduleCancel = true;
         }
 

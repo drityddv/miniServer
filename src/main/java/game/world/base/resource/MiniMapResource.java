@@ -1,6 +1,5 @@
 package game.world.base.resource;
 
-import resource.anno.Init;
 import resource.anno.MiniResource;
 
 /**
@@ -45,11 +44,6 @@ public class MiniMapResource {
      */
     private int mapDataConfigId;
 
-    @Init
-    public void init() {
-
-    }
-
     // get and set
     public int getMapId() {
         return mapId;
@@ -82,4 +76,5 @@ public class MiniMapResource {
     public int getMapDataConfigId() {
         return mapDataConfigId;
     }
+
 }
