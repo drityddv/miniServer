@@ -1,4 +1,4 @@
-package game.world.instance.model.hatch;
+package game.world.instance.base.model.hatch;
 
 import java.util.List;
 

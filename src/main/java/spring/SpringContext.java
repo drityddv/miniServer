@@ -29,7 +29,8 @@ import game.user.pack.service.IPackService;
 import game.world.base.service.CreatureManager;
 import game.world.base.service.IWorldService;
 import game.world.fight.service.IFightService;
-import game.world.instance.service.IInstanceService;
+import game.world.instance.groupInstance.service.IGroupInstanceService;
+import game.world.instance.singleIntance.service.ISingleInstanceService;
 import game.world.mainCity.service.IMainCityService;
 import game.world.neutral.neutralMap.service.INeutralMapService;
 import net.server.Server;
@@ -103,7 +104,7 @@ public class SpringContext implements ApplicationContextAware {
     private IMainCityService mainCityService;
 
     @Autowired
-    private IInstanceService instanceService;
+    private ISingleInstanceService instanceService;
 
     // 业务service区
     @Autowired
@@ -135,6 +136,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private IGroupInstanceService groupInstance;
 
     public static Dispatcher getDispatcher() {
         return instance.dispatcher;
@@ -232,8 +236,12 @@ public class SpringContext implements ApplicationContextAware {
         return instance.mainCityService;
     }
 
-    public static IInstanceService getInstanceService() {
+    public static ISingleInstanceService getInstanceService() {
         return instance.instanceService;
+    }
+
+    public static IGroupInstanceService getGroupInstanceService() {
+        return instance.groupInstance;
     }
 
     public static IEffectService getEffectService() {

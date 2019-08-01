@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 import game.map.base.AbstractMovableScene;
 import game.map.constant.MapGroupType;
 import game.map.handler.AbstractMapHandler;
-import game.map.handler.IMovableMapHandler;
 import game.map.handler.ISceneMapHandler;
 import game.map.model.Grid;
 import game.map.visible.PlayerMapObject;
@@ -22,8 +21,7 @@ import game.world.neutral.neutralMap.service.INeutralMapService;
  * @since : 2019/7/3 下午4:58
  */
 @Component
-public class NeutralMapHandler extends AbstractMapHandler
-    implements IMovableMapHandler, ISceneMapHandler<NeutralMapScene> {
+public class NeutralMapHandler extends AbstractMapHandler implements ISceneMapHandler<NeutralMapScene> {
 
     @Autowired
     private INeutralMapService neutralMapService;
@@ -76,11 +74,6 @@ public class NeutralMapHandler extends AbstractMapHandler
     @Override
     public Map<Long, MonsterMapObject> getMonsterObjects(int mapId, long sceneId) {
         return neutralMapService.getMapScene(mapId).getMonsterMap();
-    }
-
-    @Override
-    public void showAround(Player player) {
-        move(player, getCurrentScene(player).getMapObject(player.getPlayerId()).getCurrentGrid());
     }
 
     @Override

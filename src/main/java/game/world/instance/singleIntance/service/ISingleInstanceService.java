@@ -1,24 +1,17 @@
-package game.world.instance.service;
+package game.world.instance.singleIntance.service;
 
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.world.instance.model.InstanceMapScene;
+import game.world.instance.base.model.BaseInstanceMapScene;
 
 /**
- * 副本
+ * 单人副本
  *
  * @author : ddv
  * @since : 2019/7/30 5:45 PM
  */
 
-public interface IInstanceService {
-
-    /**
-     * 刷怪
-     *
-     * @param mapId
-     */
-    void flushMonsters(int mapId, long sceneId);
+public interface ISingleInstanceService {
 
     /**
      * 初始化
@@ -30,6 +23,7 @@ public interface IInstanceService {
      *
      * @param player
      * @param mapId
+     * @param sceneId
      */
     void enterMap(Player player, int mapId, long sceneId);
 
@@ -55,13 +49,14 @@ public interface IInstanceService {
      * @param player
      * @return
      */
-    InstanceMapScene getCurrentScene(Player player);
+    BaseInstanceMapScene getCurrentScene(Player player);
 
     /**
      * 打印地图
      *
      * @param player
      * @param mapId
+     * @param sceneId
      */
     void doLogMap(Player player, int mapId, long sceneId);
 
@@ -69,9 +64,10 @@ public interface IInstanceService {
      * 获取场景
      *
      * @param mapId
+     * @param sceneId
      * @return
      */
-    InstanceMapScene getMapScene(int mapId, long sceneId);
+    BaseInstanceMapScene getMapScene(int mapId, long sceneId);
 
     /**
      * 心跳
@@ -84,6 +80,7 @@ public interface IInstanceService {
      * 销毁副本
      *
      * @param mapId
+     * @param sceneId
      */
     void destroy(int mapId, long sceneId);
 
@@ -91,6 +88,16 @@ public interface IInstanceService {
      * 关闭副本
      *
      * @param mapId
+     * @param sceneId
      */
     void close(int mapId, long sceneId);
+
+    /**
+     * 获取对应场景id
+     *
+     * @param mapId
+     * @param sceneId
+     * @return
+     */
+    long getSceneId(int mapId, long sceneId);
 }

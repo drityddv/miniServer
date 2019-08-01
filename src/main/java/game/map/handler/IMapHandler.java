@@ -4,13 +4,11 @@ import java.util.Collections;
 import java.util.Map;
 
 import game.map.base.AbstractMovableScene;
-import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 import game.map.visible.AbstractMapObject;
 import game.map.visible.PlayerMapObject;
 import game.map.visible.impl.MonsterMapObject;
 import game.role.player.model.Player;
-import game.user.mapinfo.entity.MapInfoEnt;
 
 /**
  * @author : ddv
@@ -18,16 +16,6 @@ import game.user.mapinfo.entity.MapInfoEnt;
  */
 
 public interface IMapHandler {
-
-    /**
-     * 获取玩家的地图记录信息
-     *
-     * @param player
-     * @param ent
-     * @param <T>
-     * @return
-     */
-    <T extends AbstractPlayerMapInfo> T getMapInfo(Player player, MapInfoEnt ent);
 
     /**
      * 获得地图类型
@@ -48,6 +36,7 @@ public interface IMapHandler {
      *
      * @param player
      * @param mapId
+     * @param sceneId
      */
     void realEnterMap(Player player, int mapId, long sceneId);
 
@@ -62,6 +51,7 @@ public interface IMapHandler {
      * 获取玩家单位
      *
      * @param mapId
+     * @param sceneId
      * @return
      */
     default Map<Long, PlayerMapObject> getPlayerObjects(int mapId, long sceneId) {
@@ -72,6 +62,7 @@ public interface IMapHandler {
      * 获取怪物单位
      *
      * @param mapId
+     * @param sceneId
      * @return
      */
     default Map<Long, MonsterMapObject> getMonsterObjects(int mapId, long sceneId) {
@@ -106,6 +97,7 @@ public interface IMapHandler {
      * 测试用
      *
      * @param mapId
+     * @param sceneId
      * @param param
      */
     void test(int mapId, long sceneId, Map<String, Object> param);

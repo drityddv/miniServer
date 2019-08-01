@@ -3,8 +3,8 @@ package game.world.base.resource;
 import java.util.List;
 
 import game.base.game.attribute.Attribute;
-import game.world.instance.model.hatch.BaseMapObjectHatch;
-import game.world.instance.model.hatch.MapHatchEnum;
+import game.world.instance.base.model.hatch.BaseMapObjectHatch;
+import game.world.instance.base.model.hatch.MapHatchEnum;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 import utils.ResourceUtil;
@@ -19,6 +19,7 @@ public class CreatureResource {
      * id
      */
     private int configId;
+    private int creatureTypeId;
     /**
      * 对象类型
      */
@@ -92,5 +93,9 @@ public class CreatureResource {
 
     public BaseMapObjectHatch getHatch() {
         return hatch;
+    }
+
+    public int getCreatureTypeId() {
+        return creatureTypeId;
     }
 }

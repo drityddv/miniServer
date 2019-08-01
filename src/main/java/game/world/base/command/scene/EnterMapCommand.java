@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.base.message.exception.RequestException;
 import game.base.message.packet.SM_Message;
+import game.map.base.AbstractMovableScene;
 import game.map.handler.AbstractMapHandler;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
@@ -35,6 +36,10 @@ public class EnterMapCommand extends AbstractSceneCommand {
         return command;
     }
 
+    public static EnterMapCommand valueOfMainCity(Player player) {
+        return valueOf(player, 4, 0);
+    }
+
     @Override
     public void action() {
         AbstractMapHandler handler = null;
@@ -45,12 +50,14 @@ public class EnterMapCommand extends AbstractSceneCommand {
 
             // 检查进入条件
             handler.canEnterMapThrow(player, mapId, sceneId);
+            AbstractMovableScene mapScene = handler.getMapScene(mapId, handler.decodeSceneId(player, sceneId));
+            sceneId = mapScene.getSceneId();
             // 进入地图前的一些工作 检查,上锁等
             handler.enterMapPre(player);
             // 真正进入地图
-            handler.realEnterMap(player, mapId, sceneId);
+            handler.realEnterMap(player, mapId, this.sceneId);
             // 进入地图后的一些工作
-            handler.enterMapAfter(player, mapId, sceneId);
+            handler.enterMapAfter(player, mapId, this.sceneId);
         } catch (RequestException e) {
             player.setChangingMap(false);
             logger.info("玩家[{}]进图失败,自动回到主城", player.getAccountId());
@@ -58,6 +65,7 @@ public class EnterMapCommand extends AbstractSceneCommand {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
             player.setChangingMap(false);
+            handler.handEnterMapFailed(player);
             e.printStackTrace();
         }
     }

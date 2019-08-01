@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import game.map.npc.reource.NpcResource;
 import game.world.base.resource.CreatureResource;
-import game.world.instance.resource.HatchResource;
+import game.world.instance.base.resource.HatchResource;
 import resource.anno.Static;
 
 /**

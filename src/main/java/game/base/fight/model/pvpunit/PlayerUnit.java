@@ -16,8 +16,10 @@ import game.base.game.attribute.Attribute;
 import game.base.game.attribute.AttributeType;
 import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.game.attribute.util.AttributeUtils;
+import game.map.handler.AbstractMapHandler;
 import game.map.visible.PlayerMapObject;
 import game.role.player.model.Player;
+import game.world.instance.groupInstance.handler.GroupInstanceMapHandler;
 import net.utils.PacketUtil;
 
 /**
@@ -69,6 +71,13 @@ public class PlayerUnit extends BaseCreatureUnit {
     @Override
     public void handlerDead(BaseActionEntry attackEntry) {
         if (!handleDead) {
+            AbstractMapHandler mapHandler = attackEntry.getBattleParam().getMapHandler();
+            if (mapHandler instanceof GroupInstanceMapHandler) {
+                mapHandler.handlerUnitDead(this);
+                handleDead = true;
+                return;
+            }
+
             super.handlerDead(attackEntry);
             PacketUtil.send(mapObject.getPlayer(), MessageEnum.DEAD);
         }

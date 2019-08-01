@@ -33,8 +33,11 @@ public class Start {
         // 中立地图初始化
         SpringContext.getNeutralMapService().init();
 
-        // 副本地图初始化
+        // 单人副本地图初始化
         SpringContext.getInstanceService().init();
+
+        // 多人副本地图初始化
+        SpringContext.getGroupInstanceService().init();
 
         // 初始化定时组件
         SpringContext.getQuartzService().init();

@@ -217,9 +217,8 @@ public class GM_Command {
     public void run(Player player) {
         QuartzService quartzService = SpringContext.getQuartzService();
         JobEntry jobEntry =
-            JobEntry.newRateJob(TestJob.class, 2000, 100, IdUtil.getLongId(), JobGroupEnum.TEST.name(), null);
-        quartzService.addJob(jobEntry.getJobDetail(), jobEntry.getTrigger());
-        quartzService.removeJob(jobEntry.getJobDetail());
+            JobEntry.newRateJob(TestJob.class, 2000, 5, IdUtil.getLongId(), JobGroupEnum.TEST.name(), null);
+        jobEntry.schedule();
 
     }
 

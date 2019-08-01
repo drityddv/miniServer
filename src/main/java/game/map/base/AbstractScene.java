@@ -3,6 +3,9 @@ package game.map.base;
 import java.util.Collections;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import game.map.visible.AbstractMapObject;
 import game.map.visible.impl.MonsterMapObject;
 
@@ -12,6 +15,7 @@ import game.map.visible.impl.MonsterMapObject;
  */
 
 public abstract class AbstractScene<T extends AbstractMapObject> {
+    protected static final Logger logger = LoggerFactory.getLogger(AbstractScene.class);
 
     /**
      * 地图id
@@ -24,6 +28,10 @@ public abstract class AbstractScene<T extends AbstractMapObject> {
 
     public AbstractScene(int mapId) {
         this.mapId = mapId;
+    }
+
+    public void init() {
+
     }
 
     public Map<Long, T> getPlayerMap() {

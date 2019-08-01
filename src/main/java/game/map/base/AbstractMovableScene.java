@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import game.base.buff.model.BaseBuff;
 import game.base.buff.model.BaseCreatureBuff;
 import game.base.fight.model.buff.PVPBuffComponent;
@@ -28,9 +25,6 @@ import game.world.base.resource.CreatureResource;
  */
 
 public abstract class AbstractMovableScene<T extends AbstractMapObject> extends AbstractNpcScene {
-
-    private static final Logger logger = LoggerFactory.getLogger(AbstractMovableScene.class);
-
     // aoi模块
     protected MapAoiManager aoiManager;
 

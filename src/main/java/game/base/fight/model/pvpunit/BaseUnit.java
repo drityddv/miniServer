@@ -16,7 +16,7 @@ import game.base.fight.model.componet.UnitComponentContainer;
 
 public abstract class BaseUnit {
 
-    private static final Logger logger = LoggerFactory.getLogger("战报");
+    protected static final Logger logger = LoggerFactory.getLogger("战报");
     protected UnitComponentContainer componentContainer = new UnitComponentContainer();
     protected long id;
     protected int level;
@@ -147,6 +147,10 @@ public abstract class BaseUnit {
 
     public long getSceneId() {
         return sceneId;
+    }
+
+    public void setSceneId(long sceneId) {
+        this.sceneId = sceneId;
     }
 
     public long getCurrentMp() {

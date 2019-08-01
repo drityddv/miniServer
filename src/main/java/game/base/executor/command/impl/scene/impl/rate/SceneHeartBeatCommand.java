@@ -22,7 +22,7 @@ public class SceneHeartBeatCommand extends AbstractSceneCommand {
     @Override
     public void action() {
         AbstractMapHandler handler = AbstractMapHandler.getAbstractMapHandler(mapId);
-        logger.info("地图[{}] 心跳任务", mapId);
+        // logger.info("地图[{}] 心跳任务", mapId);
         handler.heartBeat(mapId);
     }
 }

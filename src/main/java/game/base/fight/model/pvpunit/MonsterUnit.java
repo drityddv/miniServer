@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import game.base.effect.model.constant.RestrictStatusEnum;
 import game.base.executor.util.ExecutorUtils;
 import game.base.fight.base.model.BaseActionEntry;
@@ -21,8 +18,7 @@ import game.map.handler.AbstractMapHandler;
 import game.role.player.model.Player;
 import game.world.base.command.player.AddItemToPackCommand;
 import game.world.base.resource.CreatureResource;
-import game.world.instance.handler.InstanceMapHandler;
-import game.world.instance.model.InstanceMapScene;
+import game.world.instance.singleIntance.handler.SingleInstanceMapHandler;
 import spring.SpringContext;
 
 /**
@@ -33,8 +29,6 @@ import spring.SpringContext;
  */
 
 public class MonsterUnit extends BaseCreatureUnit {
-
-    private static Logger logger = LoggerFactory.getLogger(MonsterUnit.class);
 
     static {
         Map<UnitComponentType, Class<? extends IUnitComponent>> map = new HashMap<>();
@@ -83,25 +77,26 @@ public class MonsterUnit extends BaseCreatureUnit {
 
     @Override
     public void handlerDead(BaseActionEntry attackEntry) {
-        AbstractMapHandler mapHandler = attackEntry.getBattleParam().getMapHandler();
-        if (mapHandler instanceof InstanceMapHandler) {
-            if (dead) {
-                statusEnum = RestrictStatusEnum.DEAD;
-            }
-            InstanceMapScene mapScene = (InstanceMapScene)mapHandler.getMapScene(mapId, sceneId);
-            mapScene.stageCheck();
+        if (handleDead) {
             return;
         }
-        if (!handleDead) {
-            super.handlerDead(attackEntry);
-            // 触发发奖
-            if (attackUnit instanceof PlayerUnit) {
-                PlayerUnit playerUnit = (PlayerUnit)attackUnit;
-                Player player = playerUnit.getMapObject().getPlayer();
-                long dropConfigId = creatureResource.getDropConfigId();
-                List<AbstractItem> rewardItems = SpringContext.getItemService().createItemsByDropConfig(dropConfigId);
-                ExecutorUtils.submit(AddItemToPackCommand.valueOf(player, rewardItems));
-            }
+        statusEnum = RestrictStatusEnum.DEAD;
+        handleDead = true;
+        AbstractMapHandler mapHandler = attackEntry.getBattleParam().getMapHandler();
+        if (mapHandler instanceof SingleInstanceMapHandler) {
+            mapHandler.handlerUnitDead(this);
+
+            return;
+        }
+
+        super.handlerDead(attackEntry);
+        // 触发发奖
+        if (attackUnit instanceof PlayerUnit) {
+            PlayerUnit playerUnit = (PlayerUnit)attackUnit;
+            Player player = playerUnit.getMapObject().getPlayer();
+            long dropConfigId = creatureResource.getDropConfigId();
+            List<AbstractItem> rewardItems = SpringContext.getItemService().createItemsByDropConfig(dropConfigId);
+            ExecutorUtils.submit(AddItemToPackCommand.valueOf(player, rewardItems));
         }
 
     }

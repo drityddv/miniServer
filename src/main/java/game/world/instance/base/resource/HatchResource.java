@@ -1,6 +1,6 @@
-package game.world.instance.resource;
+package game.world.instance.base.resource;
 
-import game.world.instance.model.hatch.HatchParam;
+import game.world.instance.base.model.hatch.HatchParam;
 import resource.anno.Init;
 import resource.anno.MiniResource;
 

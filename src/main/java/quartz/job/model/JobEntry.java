@@ -2,6 +2,8 @@ package quartz.job.model;
 
 import static org.quartz.DateBuilder.futureDate;
 
+import java.util.Date;
+
 import org.quartz.*;
 
 import game.base.executor.command.constant.ExecutorConstant;
@@ -91,11 +93,14 @@ public class JobEntry {
         return entry;
     }
 
+    // not running when submit job
     public static JobEntry newRateJob(Class<? extends Job> jobClazz, long delay, long period, long jobId,
         String groupName, Object jobMapData) {
         JobEntry entry = new JobEntry();
         String name = jobId + "";
         Trigger trigger;
+        Date startAt = new Date();
+        startAt.setTime(startAt.getTime() + delay);
 
         JobDetail jobDetail = JobBuilder.newJob(jobClazz).withIdentity(name, groupName).build();
         jobDetail.getJobDataMap().put(ExecutorConstant.COMMAND, jobMapData);
@@ -105,11 +110,10 @@ public class JobEntry {
                 .withSchedule(SimpleScheduleBuilder.simpleSchedule().repeatForever().withIntervalInMilliseconds(delay))
                 .forJob(jobDetail).build();
         } else {
-            trigger =
-                TriggerBuilder
-                    .newTrigger().withIdentity(name, groupName).withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                        .withRepeatCount((int)(period - 1)).withIntervalInMilliseconds(delay))
-                    .forJob(jobDetail).build();
+            trigger = TriggerBuilder
+                .newTrigger().withIdentity(name, groupName).withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                    .withRepeatCount((int)(period - 1)).withIntervalInMilliseconds(delay))
+                .startAt(startAt).forJob(jobDetail).build();
         }
 
         entry.jobDetail = jobDetail;

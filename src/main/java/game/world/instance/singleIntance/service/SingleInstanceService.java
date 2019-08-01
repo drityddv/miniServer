@@ -1,4 +1,4 @@
-package game.world.instance.service;
+package game.world.instance.singleIntance.service;
 
 import java.util.Collection;
 import java.util.List;
@@ -16,8 +16,8 @@ import game.map.visible.impl.NpcObject;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
-import game.world.instance.model.InstanceMapInfo;
-import game.world.instance.model.InstanceMapScene;
+import game.world.instance.base.model.BaseInstanceMapScene;
+import game.world.instance.singleIntance.model.SingleInstanceMapInfo;
 import game.world.utils.MapUtil;
 
 /**
@@ -28,37 +28,28 @@ import game.world.utils.MapUtil;
  */
 
 @Component
-public class InstanceService implements IInstanceService {
+public class SingleInstanceService implements ISingleInstanceService {
 
-    private static final Logger logger = LoggerFactory.getLogger(InstanceService.class);
+    private static final Logger logger = LoggerFactory.getLogger(SingleInstanceService.class);
 
     @Autowired
     private WorldManager worldManager;
 
     @Autowired
-    private InstanceManager instanceManager;
-
-    @Override
-    public void flushMonsters(int mapId, long sceneId) {
-
-    }
+    private SingleInstanceManager singleInstanceManager;
 
     @Override
     public void init() {
-        List<MiniMapResource> mapResources = worldManager.getMapResourcesByGroup(MapGroupType.INSTANCE.getGroupId());
-        mapResources.forEach(this::initInstanceMapInfo);
-        logger.info("公共副本地图加载完成,数量[{}]", instanceManager.getMapInfoMap().size());
+        List<MiniMapResource> mapResources =
+            worldManager.getMapResourcesByGroup(MapGroupType.SINGLE_INSTANCE.getGroupId());
+        mapResources.forEach(this::initSingleInstanceMapInfo);
+        logger.info("公共副本地图加载完成,数量[{}]", singleInstanceManager.getMapInfoMap().size());
     }
 
     @Override
     public void enterMap(Player player, int mapId, long sceneId) {
-        InstanceMapInfo mapInfo = instanceManager.getMapInfo(mapId);
-        InstanceMapScene mapScene = mapInfo.getMapScene(sceneId);
-
-        if (mapScene == null) {
-            mapScene = mapInfo.loadSingleInstance(sceneId);
-        }
-
+        SingleInstanceMapInfo mapInfo = singleInstanceManager.getMapInfo(mapId);
+        BaseInstanceMapScene mapScene = mapInfo.getMapScene(sceneId);
         PlayerMapObject playerMapObject = PlayerMapObject.valueOf(player, mapId, sceneId);
         playerMapObject.init(mapInfo.getMiniMapResource().getBornX(), mapInfo.getMiniMapResource().getBornY());
         mapScene.enter(player.getPlayerId(), playerMapObject);
@@ -66,7 +57,7 @@ public class InstanceService implements IInstanceService {
 
     @Override
     public void leaveMap(Player player) {
-        InstanceMapScene mapScene = getMapScene(player.getCurrentMapId(), player.getCurrentSceneId());
+        BaseInstanceMapScene mapScene = getMapScene(player.getCurrentMapId(), player.getCurrentSceneId());
         mapScene.leave(player.getPlayerId());
     }
 
@@ -76,13 +67,13 @@ public class InstanceService implements IInstanceService {
     }
 
     @Override
-    public InstanceMapScene getCurrentScene(Player player) {
+    public BaseInstanceMapScene getCurrentScene(Player player) {
         return getMapScene(player.getCurrentMapId(), player.getCurrentSceneId());
     }
 
     @Override
     public void doLogMap(Player player, int mapId, long sceneId) {
-        InstanceMapScene mapScene = getMapScene(mapId, sceneId);
+        BaseInstanceMapScene mapScene = getMapScene(mapId, sceneId);
         List<PlayerMapObject> visibleObjects = mapScene.getVisibleObjects();
         Collection<NpcObject> npcList = mapScene.getNpcMap().values();
         Collection<MonsterMapObject> monsterList = mapScene.getMonsterMap().values();
@@ -90,21 +81,21 @@ public class InstanceService implements IInstanceService {
     }
 
     @Override
-    public InstanceMapScene getMapScene(int mapId, long sceneId) {
-        return instanceManager.getMapInfo(mapId).getMapScene();
+    public BaseInstanceMapScene getMapScene(int mapId, long sceneId) {
+        return singleInstanceManager.getMapInfo(mapId).getMapScene(sceneId);
     }
 
     @Override
     public void heartBeat(int mapId) {
-        instanceManager.getMapInfoMap().values().forEach(instanceMapInfo -> {
-            instanceMapInfo.getMapScene().tryDestroy();
+        singleInstanceManager.getMapInfoMap().values().forEach(singleInstanceMapInfo -> {
+            singleInstanceMapInfo.heatBeat();
         });
     }
 
     @Override
     public void destroy(int mapId, long sceneId) {
-        logger.info("销毁副本[{}]", mapId);
-        instanceManager.destroy(mapId);
+        logger.info("销毁副本[{} {}]", mapId, sceneId);
+        singleInstanceManager.getMapInfo(mapId).destroyScene(sceneId);
     }
 
     @Override
@@ -112,25 +103,22 @@ public class InstanceService implements IInstanceService {
         getMapScene(mapId, sceneId).close();
     }
 
-    private InstanceMapInfo loadMapInfo(int mapId, long sceneId) {
+    @Override
+    public long getSceneId(int mapId, long sceneId) {
+        return sceneId % singleInstanceManager.getMaxSceneSize();
+    }
+
+    public SingleInstanceMapInfo initInstanceMap(int mapId, long playerId) {
         MiniMapResource mapResource = worldManager.getMapResource(mapId);
-        InstanceMapInfo mapInfo = InstanceMapInfo.valueOf(mapResource);
-        instanceManager.addMapInfo(mapInfo);
+        SingleInstanceMapInfo mapInfo = SingleInstanceMapInfo.valueOf(mapResource);
+        mapInfo.loadSingleInstance(playerId);
+        singleInstanceManager.addMapInfo(mapInfo);
         return mapInfo;
     }
 
-    private InstanceMapInfo initInstanceMapInfo(MiniMapResource mapResource) {
-        InstanceMapInfo mapInfo = InstanceMapInfo.valueOf(mapResource);
-        instanceManager.addMapInfo(mapInfo);
+    private SingleInstanceMapInfo initSingleInstanceMapInfo(MiniMapResource mapResource) {
+        SingleInstanceMapInfo mapInfo = SingleInstanceMapInfo.valueOf(mapResource);
+        singleInstanceManager.addMapInfo(mapInfo);
         return mapInfo;
-    }
-
-    private boolean isInstanceExist(int mapId, long sceneId) {
-        InstanceMapInfo mapInfo = getMapInfo(mapId);
-        return mapInfo.containsScene(sceneId);
-    }
-
-    private InstanceMapInfo getMapInfo(int mapId) {
-        return instanceManager.getMapInfo(mapId);
     }
 }

@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.map.base.AbstractPlayerMapInfo;
-import game.world.instance.model.InstancePlayerMapInfo;
+import game.world.instance.groupInstance.model.GroupInstancePlayerMapInfo;
+import game.world.instance.singleIntance.model.SingleInstancePlayerMapInfo;
 import game.world.mainCity.model.MainCityPlayerMapInfo;
 import game.world.neutral.neutralMap.model.NeutralPlayerMapInfo;
 
@@ -41,9 +42,15 @@ public enum MapGroupType {
 
     },
     /**
-     * 副本
+     * 单人副本
      */
-    INSTANCE(3, new InstancePlayerMapInfo()) {
+    SINGLE_INSTANCE(3, new SingleInstancePlayerMapInfo()) {
+
+    },
+    /**
+     * 多人副本
+     */
+    GROUP_INSTANCE(4, new GroupInstancePlayerMapInfo()) {
 
     },;
     private static final Map<Class<? extends AbstractPlayerMapInfo>, MapGroupType> CLASS_TO_TYPE = new HashMap<>();

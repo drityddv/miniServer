@@ -1,4 +1,4 @@
-package game.world.instance.resource;
+package game.world.instance.base.resource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +25,8 @@ public class InstanceResource {
     // 1:1,2:2,3:3
     private String hatchConfigString;
     private long dropConfigId;
+    // 切阶段延迟 次数默认阶段数 -1
+    private long changeStageDelay;
 
     @Init
     private void init() {
@@ -40,32 +42,20 @@ public class InstanceResource {
         return configId;
     }
 
-    public void setConfigId(long configId) {
-        this.configId = configId;
-    }
-
     public int getMapId() {
         return mapId;
-    }
-
-    public void setMapId(int mapId) {
-        this.mapId = mapId;
     }
 
     public int getTotalStage() {
         return totalStage;
     }
 
-    public void setTotalStage(int totalStage) {
-        this.totalStage = totalStage;
-    }
-
     public Map<Integer, Long> getStageHatchResourceMap() {
         return stageHatchResourceMap;
     }
 
-    public void setStageHatchResourceMap(Map<Integer, Long> stageHatchResourceMap) {
-        this.stageHatchResourceMap = stageHatchResourceMap;
+    public long getChangeStageDelay() {
+        return changeStageDelay;
     }
 
     public long getMaxTime() {

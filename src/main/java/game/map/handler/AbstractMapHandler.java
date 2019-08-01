@@ -10,15 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import client.MessageEnum;
 import game.base.executor.util.ExecutorUtils;
+import game.base.fight.model.pvpunit.BaseCreatureUnit;
 import game.base.fight.model.skill.action.handler.BaseActionHandler;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
 import game.base.skill.constant.SkillEnum;
-import game.map.base.AbstractPlayerMapInfo;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.role.player.model.Player;
-import game.user.mapinfo.entity.MapInfoEnt;
 import game.world.base.command.scene.EnterMapCommand;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
@@ -30,7 +29,7 @@ import game.world.base.service.WorldManager;
  * @since : 2019/7/2 下午9:22
  */
 
-public abstract class AbstractMapHandler implements IMapHandler {
+public abstract class AbstractMapHandler implements IMapHandler, IMovableMapHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractMapHandler.class);
 
@@ -85,11 +84,6 @@ public abstract class AbstractMapHandler implements IMapHandler {
     private void init() {
         HANDLER_MAP.put(getGroupType().getGroupId(), this);
         actionHandlerMap = SkillEnum.TYPE_TO_HANDLER;
-    }
-
-    @Override
-    public <T extends AbstractPlayerMapInfo> T getMapInfo(Player player, MapInfoEnt ent) {
-        return (T)ent.getPlayerMapInfo().getOrCreateMapInfo(getGroupType());
     }
 
     public boolean canEnterMap(Player player, int mapId) {
@@ -157,23 +151,46 @@ public abstract class AbstractMapHandler implements IMapHandler {
     }
 
     @Override
-    public void heartBeat(int mapId) {
-        // du nothing
-    }
+    public void heartBeat(int mapId) {}
 
     @Override
-    public void test(int mapId, long sceneId, Map<String, Object> param) {
-
-    }
+    public void test(int mapId, long sceneId, Map<String, Object> param) {}
 
     @Override
     public void showAround(Player player) {
+        move(player, getMapScene(player.getCurrentMapId(), player.getCurrentSceneId())
+            .getMapObject(player.getPlayerId()).getCurrentGrid());
+    }
+
+    /**
+     * 广播
+     *
+     * @param mapId
+     * @param currentGrid
+     */
+    public void broadcast(int mapId, Grid currentGrid) {}
+
+    /**
+     * 关闭副本
+     *
+     * @param mapId
+     * @param sceneId
+     */
+    public void closeInstance(int mapId, long sceneId) {
 
     }
 
-    public void broadcast(int mapId, Grid currentGrid) {}
+    /**
+     * 处理单位死亡
+     *
+     * @param unit
+     */
+    public void handlerUnitDead(BaseCreatureUnit unit) {
 
-    public void closeInstance(int mapId, long sceneId) {
+    }
 
+    // 预处理sceneId
+    public long decodeSceneId(Player player, long sceneId) {
+        return sceneId;
     }
 }

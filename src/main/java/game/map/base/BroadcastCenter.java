@@ -59,7 +59,6 @@ public class BroadcastCenter {
         SM_AoiBroadCast sm = SM_AoiBroadCast.valueOf(smObjects, pointX, pointY);
         PlayerMapObject playerVisibleMapInfo = (PlayerMapObject)object;
         PacketUtil.send(playerVisibleMapInfo.getPlayer(), sm);
-
     }
 
     public void broadCastAllUnits() {
@@ -114,8 +113,12 @@ public class BroadcastCenter {
         if (lastGrid != null && lastGrid.containsKey(object.getId())) {
             lastGrid.remove(object.getId());
         }
-        unitMap.get(object.getCurrentGrid()).put(object.getId(), object);
-        broadCastUnits(object);
+        Map<Long, AbstractMapObject> objectMap = unitMap.get(object.getCurrentGrid());
+        objectMap.put(object.getId(), object);
+        objectMap.values().stream().filter(mapObject -> mapObject instanceof PlayerMapObject).forEach(mapObject -> {
+            broadCastUnits(mapObject);
+        });
+
     }
 
     @Override

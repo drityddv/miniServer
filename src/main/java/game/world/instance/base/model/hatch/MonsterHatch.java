@@ -1,11 +1,11 @@
-package game.world.instance.model.hatch;
+package game.world.instance.base.model.hatch;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import game.map.visible.AbstractMapObject;
 import game.map.visible.impl.MonsterMapObject;
-import game.world.instance.resource.HatchResource;
+import game.world.instance.base.resource.HatchResource;
 
 /**
  * @author : ddv

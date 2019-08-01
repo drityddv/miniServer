@@ -62,11 +62,6 @@ public class MainCityMapHandler extends AbstractMapHandler
     }
 
     @Override
-    public void showAround(Player player) {
-        move(player, getCurrentScene(player).getMapObject(player.getPlayerId()).getCurrentGrid());
-    }
-
-    @Override
     public AbstractMovableScene getMapScene(int mapId, long sceneId) {
         return mainCityService.getMapScene(mapId);
     }

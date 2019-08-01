@@ -1,4 +1,4 @@
-package game.world.instance.model.hatch;
+package game.world.instance.base.model.hatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +32,6 @@ public enum MapHatchEnum {
 
     public static MapHatchEnum getById(int hatchId) {
         return ID_TO_TYPE.get(hatchId);
-    }
-
-    public int getHatchId() {
-        return hatchId;
     }
 
     public BaseMapObjectHatch getHatch() {

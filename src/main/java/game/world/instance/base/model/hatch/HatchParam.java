@@ -1,10 +1,10 @@
-package game.world.instance.model.hatch;
+package game.world.instance.base.model.hatch;
 
 import java.util.List;
 
 import game.world.base.resource.CreatureResource;
 import game.world.base.service.CreatureManager;
-import game.world.instance.resource.HatchResource;
+import game.world.instance.base.resource.HatchResource;
 
 /**
  * 单位孵化器参数

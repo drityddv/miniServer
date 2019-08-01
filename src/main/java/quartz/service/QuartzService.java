@@ -42,7 +42,7 @@ public class QuartzService {
 
     private void initSceneHearJob() {
         WorldManager.getInstance().getMapResources().forEach(mapResource -> {
-            JobEntry.newSceneRateJob(1000 * 60, 0, SceneHeartBeatCommand.valueOf(mapResource.getMapId())).schedule();
+            JobEntry.newSceneRateJob(1000 * 20, 0, SceneHeartBeatCommand.valueOf(mapResource.getMapId())).schedule();
         });
     }
 

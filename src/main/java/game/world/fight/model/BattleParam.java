@@ -18,7 +18,6 @@ import game.map.model.Grid;
 import game.map.visible.AbstractMapObject;
 import game.map.visible.BaseAttackAbleMapObject;
 import game.role.player.model.Player;
-import game.world.instance.model.InstanceParam;
 
 /**
  * 一次战斗所需对象集合
@@ -45,8 +44,6 @@ public class BattleParam {
     private CenterTypeEnum centerTypeEnum;
     private long targetId;
     private List<Long> targetIdList = new ArrayList<>();
-    // 副本战斗参数
-    private InstanceParam instanceParam;
 
     private Map<Long, ActionResult> unitResultMap = new HashMap<>();
 
