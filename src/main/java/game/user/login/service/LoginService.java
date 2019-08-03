@@ -72,7 +72,7 @@ public class LoginService implements ILoginService {
         }
         PacketUtil.send(session, SM_LoginSuccess.valueOf());
 
-        ExecutorUtils.submit(EnterMapCommand.valueOf(player, 4, 0));
+        ExecutorUtils.submit(EnterMapCommand.valueOf(player, 1, 1));
     }
 
     @Override

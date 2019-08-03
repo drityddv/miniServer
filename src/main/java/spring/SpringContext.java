@@ -26,6 +26,7 @@ import game.system.ISystemService;
 import game.user.login.service.ILoginService;
 import game.user.mapinfo.service.IMapInfoService;
 import game.user.pack.service.IPackService;
+import game.user.task.service.ITaskService;
 import game.world.base.service.CreatureManager;
 import game.world.base.service.IWorldService;
 import game.world.fight.service.IFightService;
@@ -77,6 +78,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private IItemService iItemService;
+
+    @Autowired
+    private ITaskService taskService;
 
     @Autowired
     private IEffectService effectService;
@@ -246,6 +250,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IEffectService getEffectService() {
         return instance.effectService;
+    }
+
+    public static ITaskService getTaskService() {
+        return instance.taskService;
     }
 
     public static BuffService getBuffService() {

@@ -129,8 +129,8 @@ public class StorageManager {
             String location = resourceDefinition.getLocation();
             InputStream inputStream = SimpleUtil.getInputStreamFromFile(location);
             storageManager.registerCsvCache(location, inputStream);
-            logger.info("初始化csv文件流结束,csv文件个数[{}],[{}]", resourceDefinitionMap.size(),
-                resourceDefinition.getClz().getSimpleName());
+            // logger.info("初始化csv文件流结束,csv文件个数[{}],[{}]", resourceDefinitionMap.size(),
+            // resourceDefinition.getClz().getSimpleName());
         });
     }
 

@@ -45,7 +45,7 @@ public abstract class BaseCreatureUnit extends BaseUnit {
     /**
      * 是否已经处理死亡事件
      */
-    protected boolean handleDead;
+    protected boolean handleDead = false;
     /**
      * 名称
      */

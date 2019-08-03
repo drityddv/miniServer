@@ -16,8 +16,10 @@ import game.base.game.attribute.id.AttributeIdEnum;
 import game.base.item.base.model.AbstractItem;
 import game.map.handler.AbstractMapHandler;
 import game.role.player.model.Player;
+import game.world.base.command.player.AccountEbusPushCommand;
 import game.world.base.command.player.AddItemToPackCommand;
 import game.world.base.resource.CreatureResource;
+import game.world.fight.event.KillMonsterEvent;
 import game.world.instance.singleIntance.handler.SingleInstanceMapHandler;
 import spring.SpringContext;
 
@@ -77,26 +79,30 @@ public class MonsterUnit extends BaseCreatureUnit {
 
     @Override
     public void handlerDead(BaseActionEntry attackEntry) {
+        BaseCreatureUnit caster = attackEntry.getCaster();
         if (handleDead) {
             return;
         }
         statusEnum = RestrictStatusEnum.DEAD;
-        handleDead = true;
+
         AbstractMapHandler mapHandler = attackEntry.getBattleParam().getMapHandler();
         if (mapHandler instanceof SingleInstanceMapHandler) {
+			handleDead = true;
             mapHandler.handlerUnitDead(this);
-
             return;
         }
-
         super.handlerDead(attackEntry);
         // 触发发奖
-        if (attackUnit instanceof PlayerUnit) {
-            PlayerUnit playerUnit = (PlayerUnit)attackUnit;
+        if (caster instanceof PlayerUnit) {
+            PlayerUnit playerUnit = (PlayerUnit)caster;
             Player player = playerUnit.getMapObject().getPlayer();
             long dropConfigId = creatureResource.getDropConfigId();
             List<AbstractItem> rewardItems = SpringContext.getItemService().createItemsByDropConfig(dropConfigId);
             ExecutorUtils.submit(AddItemToPackCommand.valueOf(player, rewardItems));
+
+            ExecutorUtils.submit(AccountEbusPushCommand.valueOf(player,
+                KillMonsterEvent.valueOf(player, caster.getMapId(), creatureResource)));
+
         }
 
     }

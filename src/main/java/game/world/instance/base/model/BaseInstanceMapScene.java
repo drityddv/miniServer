@@ -147,11 +147,9 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
             passSettlement();
             return;
         }
-
         if (allMonsterDead()) {
             changeStage();
         }
-
     }
 
     private boolean ableSettlement() {

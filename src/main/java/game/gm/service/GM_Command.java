@@ -24,6 +24,7 @@ import game.role.equip.model.EquipStorage;
 import game.role.equip.model.Equipment;
 import game.role.equip.service.EquipService;
 import game.role.player.entity.PlayerEnt;
+import game.role.player.event.PlayerLevelUpEvent;
 import game.role.player.model.Player;
 import game.role.player.service.IPlayerService;
 import game.role.skill.model.SkillEntry;
@@ -34,13 +35,8 @@ import game.user.pack.service.IPackService;
 import game.world.base.command.scene.TestMapCommand;
 import game.world.utils.MapUtil;
 import net.utils.PacketUtil;
-import quartz.constant.JobGroupEnum;
-import quartz.job.common.TestJob;
-import quartz.job.model.JobEntry;
-import quartz.service.QuartzService;
 import spring.SpringContext;
 import utils.StringUtil;
-import utils.snow.IdUtil;
 
 /**
  * gm命令后台实现
@@ -215,11 +211,7 @@ public class GM_Command {
     }
 
     public void run(Player player) {
-        QuartzService quartzService = SpringContext.getQuartzService();
-        JobEntry jobEntry =
-            JobEntry.newRateJob(TestJob.class, 2000, 5, IdUtil.getLongId(), JobGroupEnum.TEST.name(), null);
-        jobEntry.schedule();
-
+        SpringContext.getEventBus().pushEventSyn(PlayerLevelUpEvent.valueOf(player));
     }
 
     public void mapTest(Player player, int mapId, int x, int y, int radius) {

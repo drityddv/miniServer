@@ -10,6 +10,7 @@ import game.role.player.entity.PlayerEnt;
 import game.role.skill.model.SkillList;
 import game.user.mapinfo.entity.MapInfoEnt;
 import game.user.pack.model.Pack;
+import game.user.task.model.TaskInfo;
 import game.world.base.command.scene.FighterSyncCommand;
 import game.world.fight.syncStrategy.BasePlayerSyncStrategy;
 import spring.SpringContext;
@@ -48,6 +49,8 @@ public class Player extends AbstractCreature<Player> {
     private int gold;
 
     private volatile boolean changingMap;
+
+    private volatile boolean occupy;
 
     private Player() {}
 
@@ -197,5 +200,9 @@ public class Player extends AbstractCreature<Player> {
 
     public void setBattleScore(long battleScore) {
         this.battleScore = battleScore;
+    }
+
+    public TaskInfo getTaskInfo() {
+        return SpringContext.getTaskService().getTaskInfo(this);
     }
 }

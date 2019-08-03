@@ -11,10 +11,10 @@ import game.base.item.base.model.AbstractItem;
 import game.base.item.resource.ItemResource;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
+import game.gm.packet.SM_LogMessage;
 import game.role.player.model.Player;
 import game.user.pack.model.Pack;
 import game.user.pack.model.PackSquare;
-import game.user.pack.packet.SM_Items;
 import game.user.pack.packet.SM_PackInfo;
 import net.utils.PacketUtil;
 import spring.SpringContext;
@@ -67,7 +67,11 @@ public class PackService implements IPackService {
             }
         }
         packManager.save(player.getPlayerId());
-        PacketUtil.send(player, SM_Items.valueOf(items));
+        String pre = "道具增加:[";
+        for (AbstractItem item : items) {
+            pre = pre + item.getConfigId() + ",";
+        }
+        PacketUtil.send(player, SM_LogMessage.valueOf(pre));
         return true;
     }
 

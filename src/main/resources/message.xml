@@ -21,7 +21,7 @@
     <!--玩家背包相关 91 - 120 -->
     <message id="91" value="game.user.pack.packet.SM_PackInfo"/>
     <message id="92" key="pack" value="game.user.pack.packet.CM_PackInfo"/>
-    <message id="93"  value="game.user.pack.packet.SM_Items"/>
+    <message id="93" value="game.user.pack.packet.SM_Items"/>
 
     <!--玩家装备栏相关  140 - 160 -->
     <message id="140" key="storage" value="game.role.equip.packet.CM_EquipStorage"/>
@@ -44,6 +44,10 @@
     <message id="304" key="setDefaultIndex" value="game.role.skill.packet.CM_SetDefaultSquare"/>
     <message id="305" key="addSkillToSquare" value="game.role.skill.packet.CM_AddSkillToSquare"/>
 
+    <!--玩家任务 400 - 450-->
+    <message id="400" key="acceptTask" value="game.user.task.packet.CM_AcceptTask"/>
+    <message id="401" key="taskInfo" value="game.user.task.packet.CM_TaskInfo"/>
+    <message id="402" value="game.user.task.packet.SM_TaskInfoVo"/>
 
     <!--地图基础协议 2001 - 2005-->
     <message id="2002" key="leave" value="game.world.base.packet.CM_LeaveMap"/>
