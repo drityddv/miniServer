@@ -47,6 +47,9 @@ public class Start {
 
         SpringContext.getRedisService().init();
 
+        // 初始化排行榜
+        SpringContext.getRankService().init();
+
         // net服务器启动
         SpringContext.getServer().run();
 

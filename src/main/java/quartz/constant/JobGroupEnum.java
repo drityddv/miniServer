@@ -35,7 +35,9 @@ public enum JobGroupEnum {
     /**
      * 场景通用
      */
-    SCENE_COMMAND(),;
+    SCENE_COMMAND(),
+
+    RANK_UPDATE(),;
 
     public static Map<String, JobGroupEnum> NAME_TO_GROUP = new HashMap<>();
 

@@ -57,10 +57,6 @@ public class TaskEntry {
         return taskId;
     }
 
-    public void setTaskId(long taskId) {
-        this.taskId = taskId;
-    }
-
     public TaskResource getTaskResource() {
         return taskResource;
     }
@@ -73,10 +69,6 @@ public class TaskEntry {
         return executingProgress;
     }
 
-    public void setExecutingProgress(Map<Integer, Integer> executingProgress) {
-        this.executingProgress = executingProgress;
-    }
-
     public boolean containsTaskEventType(TaskEventType eventType) {
         return getTaskEventTypeSet().contains(eventType);
     }
@@ -87,10 +79,6 @@ public class TaskEntry {
 
     public Map<Integer, Integer> getTriggerProgress() {
         return triggerProgress;
-    }
-
-    public void setTriggerProgress(Map<Integer, Integer> triggerProgress) {
-        this.triggerProgress = triggerProgress;
     }
 
     /**

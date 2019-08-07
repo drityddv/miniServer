@@ -32,4 +32,8 @@ public class EntityCache<K extends Serializable & Comparable<K>, T extends IEnti
     public void clear() {
         cache.clear();
     }
+
+	public Map<K, T> getCache() {
+		return cache;
+	}
 }

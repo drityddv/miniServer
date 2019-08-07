@@ -19,12 +19,15 @@ import game.base.item.service.IItemService;
 import game.common.service.ICommonService;
 import game.gm.event.HotFixEvent;
 import game.gm.packet.SM_LogMessage;
+import game.publicsystem.alliance.model.ServerAllianceInfo;
+import game.publicsystem.rank.model.ServerRank;
+import game.publicsystem.rank.model.type.BattleScoreRankInfo;
+import game.publicsystem.rank.model.type.LevelRankInfo;
 import game.role.equip.constant.EquipPosition;
 import game.role.equip.model.EquipStorage;
 import game.role.equip.model.Equipment;
 import game.role.equip.service.EquipService;
 import game.role.player.entity.PlayerEnt;
-import game.role.player.event.PlayerLevelUpEvent;
 import game.role.player.model.Player;
 import game.role.player.service.IPlayerService;
 import game.role.skill.model.SkillEntry;
@@ -210,8 +213,12 @@ public class GM_Command {
         playerService.savePlayer(playerEnt);
     }
 
+    public void getAlliance(Player player) {
+        ServerAllianceInfo allianceInfo = SpringContext.getAllianceService().getAllianceInfo(player);
+    }
+
     public void run(Player player) {
-        SpringContext.getEventBus().pushEventSyn(PlayerLevelUpEvent.valueOf(player));
+        ServerRank serverRankInfo = SpringContext.getRankService().getServerRankInfo(player);
     }
 
     public void mapTest(Player player, int mapId, int x, int y, int radius) {
@@ -221,6 +228,20 @@ public class GM_Command {
         param.put("radius", radius);
         TestMapCommand command = TestMapCommand.valueOf(mapId, 0, param);
         ExecutorUtils.submit(command);
+    }
+
+    public void resetPlayerAllianceId(Player player, long allianceId) {
+        player.getPlayerAllianceInfo().changeAllianceId(allianceId, true);
+        playerService.save(player);
+    }
+
+    public void mockRankData(Player player) {
+        SpringContext.getRankService().addRankInfo(new LevelRankInfo("1", 1));
+        SpringContext.getRankService().addRankInfo(new LevelRankInfo("2", 2));
+        SpringContext.getRankService().addRankInfo(new LevelRankInfo("3", 3));
+        SpringContext.getRankService().addRankInfo(new LevelRankInfo("4", 4));
+        SpringContext.getRankService().addRankInfoCallback(player, new BattleScoreRankInfo("ddv", 9999));
+        SpringContext.getRankService().addRankInfoCallback(player, new LevelRankInfo("ddv", 5));
     }
 
 }

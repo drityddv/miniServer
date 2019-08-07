@@ -54,11 +54,13 @@ public abstract class AttributeContainer<T> {
             attributeSet = new AttributeSet();
             modelAttributeSet.put(model, attributeSet);
         }
-        attributeSet.getAttributeMap().clear();
+
+        attributeSet.clear();
 
         if (attributeList != null) {
             AttributeUtils.accumulateToMap(attributeList, attributeSet.getAttributeMap());
         }
+        attributeSet.plusBattleScore();
     }
 
     public long getAttributeValue(AttributeType attributeType) {

@@ -75,4 +75,8 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
             entityCacheMap.put(entityType, new EntityCache<>());
         }
     }
+
+	public Map<Class<?>, EntityCache<K, T>> getEntityCacheMap() {
+		return entityCacheMap;
+	}
 }

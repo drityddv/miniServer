@@ -5,8 +5,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import db.cache.IEntityCacheService;
+import db.cache.EntityCacheService;
 import game.role.player.entity.PlayerEnt;
+import game.role.player.model.Player;
 import game.role.player.resource.PlayerResource;
 import resource.anno.Static;
 
@@ -18,7 +19,7 @@ import resource.anno.Static;
 public class PlayerManager {
 
     @Autowired
-    private IEntityCacheService<String, PlayerEnt> entEntityCache;
+    private EntityCacheService<String, PlayerEnt> entEntityCache;
 
     @Static
     private Map<Integer, PlayerResource> resourceMap;
@@ -39,4 +40,10 @@ public class PlayerManager {
         return resourceMap.get(id);
     }
 
+    public Player loadPlayerById(long playerId) {
+        return entEntityCache.getEntityCacheMap().get(PlayerEnt.class).getCache().values().stream()
+            .filter(playerEnt -> {
+                return playerEnt.getPlayer().getPlayerId() == playerId;
+            }).findAny().get().getPlayer();
+    }
 }

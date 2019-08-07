@@ -21,13 +21,17 @@ public class AttributeSet {
         AttributeSet attributeSet = new AttributeSet();
         for (Attribute attribute : attributeList) {
             attributeSet.attributeMap.put(attribute.getAttributeType(), attribute);
-            attributeSet.plusBattleScore(attribute.getValue());
+
         }
+        attributeSet.plusBattleScore();
         return attributeSet;
     }
 
-    public void plusBattleScore(long value) {
-        battleScore += value;
+    public void plusBattleScore() {
+        for (Attribute attribute : attributeMap.values()) {
+            battleScore += attribute.getValue();
+        }
+
     }
 
     /**
@@ -56,5 +60,10 @@ public class AttributeSet {
 
     public void setAttributeMap(Map<AttributeType, Attribute> attributeMap) {
         this.attributeMap = attributeMap;
+    }
+
+    public void clear() {
+        battleScore = 0;
+        attributeMap.clear();
     }
 }

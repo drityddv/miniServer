@@ -73,4 +73,8 @@ public class SessionManager {
         }
         return null;
     }
+
+    public int getSize() {
+        return playerSession.size();
+    }
 }

@@ -112,4 +112,25 @@ public interface IPlayerService {
      */
     boolean isPlayerOnline(String accountId);
 
+    /**
+     * 保存数据
+     *
+     * @param player
+     */
+    void save(Player player);
+
+    /**
+     * 处理玩家升级事件 [更新排行榜内容]
+     *
+     * @param player
+     */
+    void handlerLevelUp(Player player);
+
+    /**
+     * 查找玩家
+     *
+     * @param playerId
+     * @return
+     */
+    Player getPlayer(long playerId);
 }

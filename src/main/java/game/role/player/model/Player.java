@@ -50,9 +50,9 @@ public class Player extends AbstractCreature<Player> {
 
     private volatile boolean changingMap;
 
-    private volatile boolean occupy;
+    private PlayerAllianceInfo playerAllianceInfo;
 
-    private Player() {}
+    public Player() {}
 
     // 初始给1000黄金
     public static Player valueOf(String accountId) {
@@ -64,6 +64,7 @@ public class Player extends AbstractCreature<Player> {
         player.skillPoint = 1;
         player.gold = 1000;
         player.changingMap = false;
+        player.playerAllianceInfo = PlayerAllianceInfo.valueOf();
         player.setAttributeContainer(new PlayerAttributeContainer(player));
         return player;
     }
@@ -204,5 +205,17 @@ public class Player extends AbstractCreature<Player> {
 
     public TaskInfo getTaskInfo() {
         return SpringContext.getTaskService().getTaskInfo(this);
+    }
+
+    public PlayerAllianceInfo getPlayerAllianceInfo() {
+        return playerAllianceInfo;
+    }
+
+    public boolean changeAllianceId(long allianceId, boolean leave) {
+        boolean success = getPlayerAllianceInfo().changeAllianceId(allianceId, leave);
+        if (success) {
+            SpringContext.getPlayerService().save(this);
+        }
+        return success;
     }
 }

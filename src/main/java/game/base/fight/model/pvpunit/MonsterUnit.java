@@ -87,7 +87,7 @@ public class MonsterUnit extends BaseCreatureUnit {
 
         AbstractMapHandler mapHandler = attackEntry.getBattleParam().getMapHandler();
         if (mapHandler instanceof SingleInstanceMapHandler) {
-			handleDead = true;
+            handleDead = true;
             mapHandler.handlerUnitDead(this);
             return;
         }

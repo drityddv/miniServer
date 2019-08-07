@@ -49,6 +49,20 @@
     <message id="401" key="taskInfo" value="game.user.task.packet.CM_TaskInfo"/>
     <message id="402" value="game.user.task.packet.SM_TaskInfoVo"/>
 
+    <!--行会相关 500 - 550 -->
+    <message id="500" key="createAlliance" value="game.publicsystem.alliance.packet.CM_CreateAlliance"/>
+    <message id="501" key="join" value="game.publicsystem.alliance.packet.CM_JoinApplication"/>
+    <message id="502" key="allianceVo" value="game.publicsystem.alliance.packet.CM_ServerAlliances"/>
+    <message id="503" value="game.publicsystem.alliance.packet.SM_ServerAllianceVo"/>
+    <message id="504" key="handler" value="game.publicsystem.alliance.packet.CM_HandlerApplication"/>
+    <message id="505" key="leaveAlliance" value="game.publicsystem.alliance.packet.CM_LeaveApplication"/>
+    <message id="506" key="kick" value="game.publicsystem.alliance.packet.CM_KickMember"/>
+
+
+    <!--排行榜相关 600 - 650 -->
+    <message id="600" key="rankInfo" value="game.publicsystem.rank.packet.CM_RankInfo"/>
+    <message id="601" value="game.publicsystem.rank.packet.SM_RankVo"/>
+
     <!--地图基础协议 2001 - 2005-->
     <message id="2002" key="leave" value="game.world.base.packet.CM_LeaveMap"/>
     <message id="2003" key="move" value="game.world.base.packet.CM_MoveMap"/>

@@ -13,6 +13,7 @@ import game.base.game.attribute.model.PlayerAttributeContainer;
 import game.base.manager.SessionManager;
 import game.base.message.I18N;
 import game.base.message.exception.RequestException;
+import game.publicsystem.rank.model.type.LevelRankInfo;
 import game.role.player.entity.PlayerEnt;
 import game.role.player.model.Player;
 import game.role.player.resource.PlayerResource;
@@ -141,6 +142,21 @@ public class PlayerService implements IPlayerService {
     public boolean isPlayerOnline(String accountId) {
         return SessionManager.isPlayerOnline(accountId);
 
+    }
+
+    @Override
+    public void save(Player player) {
+        playerManager.saveEntity(getPlayerEnt(player));
+    }
+
+    @Override
+    public void handlerLevelUp(Player player) {
+        SpringContext.getRankService().addRankInfo(LevelRankInfo.valueOf(player.getAccountId(), player.getLevel()));
+    }
+
+    @Override
+    public Player getPlayer(long playerId) {
+        return playerManager.loadPlayerById(playerId);
     }
 
 }

@@ -19,6 +19,8 @@ import game.common.service.ICommonService;
 import game.dispatch.Dispatcher;
 import game.gm.service.GM_Command;
 import game.gm.service.IGmService;
+import game.publicsystem.alliance.service.IAllianceService;
+import game.publicsystem.rank.service.IRankService;
 import game.role.equip.service.IEquipService;
 import game.role.player.service.IPlayerService;
 import game.role.skill.service.ISkillService;
@@ -139,7 +141,13 @@ public class SpringContext implements ApplicationContextAware {
     private BuffService buffService;
 
     @Autowired
+    private IAllianceService allianceService;
+
+    @Autowired
     private RedisService redisService;
+
+    @Autowired
+    private IRankService rankService;
 
     @Autowired
     private IGroupInstanceService groupInstance;
@@ -258,6 +266,14 @@ public class SpringContext implements ApplicationContextAware {
 
     public static BuffService getBuffService() {
         return instance.buffService;
+    }
+
+    public static IRankService getRankService() {
+        return instance.rankService;
+    }
+
+    public static IAllianceService getAllianceService() {
+        return instance.allianceService;
     }
 
     public static ApplicationContext getApplicationContext() {

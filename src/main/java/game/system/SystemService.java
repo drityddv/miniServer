@@ -1,9 +1,15 @@
 package game.system;
 
+import java.lang.management.ManagementFactory;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import game.system.model.mbean.MiniMBean;
 import spring.SpringContext;
 
 /**
@@ -28,7 +34,19 @@ public class SystemService implements ISystemService {
     @Override
     public void init() {
         initShutdownHook();
+        initMBean();
     }
+
+    private void initMBean() {
+        try {
+            MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+            MiniMBean runtime = new MiniMBean();
+			ObjectName name = new ObjectName("game.system.model.mbean:type=RuntimeMbean");
+			mBeanServer.registerMBean(runtime,name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
     private void initShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> SpringContext.getSystemService().serverClose()));

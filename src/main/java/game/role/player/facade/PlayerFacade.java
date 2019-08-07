@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import ebus.anno.EventReceiver;
 import game.dispatch.anno.HandlerAnno;
 import game.gm.event.HotFixEvent;
+import game.role.player.event.PlayerLevelUpEvent;
 import game.role.player.packet.CM_CreatePlayer;
 import game.role.player.service.PlayerService;
 import game.user.login.event.PlayerLoadSynEvent;
@@ -45,6 +46,17 @@ public class PlayerFacade {
     public void playerLoginBefore(PlayerLoadSynEvent event) {
         try {
             playerService.loadPlayerAttribute(event.getPlayer());
+        } catch (Exception e) {
+            logger.info("玩家登陆前置事件出错,[{}]", e.getClass());
+            e.printStackTrace();
+        }
+
+    }
+
+    @EventReceiver
+    public void handlerLevelUp(PlayerLevelUpEvent event) {
+        try {
+            playerService.handlerLevelUp(event.getPlayer());
         } catch (Exception e) {
             logger.info("玩家登陆前置事件出错,[{}]", e.getClass());
             e.printStackTrace();

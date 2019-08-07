@@ -59,6 +59,8 @@
                 <value>game.user.mapinfo.entity</value>
                 <value>game.user.task.entity</value>
                 <value>game.role.skill.entity</value>
+                <value>game.publicsystem.alliance.entity</value>
+                <value>game.publicsystem.rank.entity</value>
             </list>
         </property>
 

@@ -6,8 +6,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import game.base.game.attribute.AttributeSet;
 import game.base.game.attribute.AttributeUpdateRecords;
 import game.base.game.attribute.CreatureAttributeContainer;
+import game.publicsystem.rank.model.type.BattleScoreRankInfo;
 import game.role.player.model.Player;
 import game.world.fight.syncStrategy.impl.AttributeSynStrategy;
+import spring.SpringContext;
 
 /**
  * @author : ddv
@@ -41,7 +43,7 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
         }
 
         if (calculateBattleScore()) {
-
+            SpringContext.getRankService().addRankInfo(BattleScoreRankInfo.valueOf(owner));
         }
     }
 
