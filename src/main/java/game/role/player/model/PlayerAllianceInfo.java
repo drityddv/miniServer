@@ -35,10 +35,21 @@ public class PlayerAllianceInfo {
         }
     }
 
+    public boolean leaveAlliance(long allianceId) {
+        synchronized (lock) {
+            if (this.allianceId != allianceId) {
+                return false;
+            }
+            this.allianceId = AllianceConst.EMPTY_ALLIANCE_ID;
+            return true;
+        }
+    }
+
     public long getAllianceId() {
         return allianceId;
     }
 
+    // 是否在行会中
     public boolean isInAlliance() {
         return allianceId != AllianceConst.EMPTY_ALLIANCE_ID;
     }

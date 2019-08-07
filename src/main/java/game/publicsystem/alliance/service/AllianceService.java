@@ -122,15 +122,19 @@ public class AllianceService implements IAllianceService {
             return;
         }
 
-        // 是否有冲突的申请
         List<OperationType> conflictTypes = OperationType.Join_Alliance.getConflictTypes();
         boolean legality = alliance.isOperationLegality(conflictTypes, player);
+
         if (legality) {
-            alliance.addApplication(JoinApplication.valueOf(player, alliance.getAllianceId()));
+            Object lock = alliance.getOrCreateLock(player.getPlayerId());
+            synchronized (lock) {
+                alliance.addApplication(JoinApplication.valueOf(player, alliance.getAllianceId()));
+            }
         } else {
             PacketUtil.send(player, MessageEnum.Conflict_Application);
             return;
         }
+
         saveServerAllianceInfo();
         sendAllianceInfo(player);
     }
@@ -159,11 +163,13 @@ public class AllianceService implements IAllianceService {
         if (force) {
             alliance.forceLeave(player);
         } else {
-            // 是否有冲突的申请
+            // 是否有冲突的申请 这个判断不上锁也没毛病
             List<OperationType> conflictTypes = OperationType.Join_Alliance.getConflictTypes();
             boolean legality = alliance.isOperationLegality(conflictTypes, player);
             if (legality) {
-                alliance.addApplication(LeaveApplication.valueOf(player));
+                synchronized (alliance.getOrCreateLock(player.getPlayerId())) {
+                    alliance.addApplication(LeaveApplication.valueOf(player));
+                }
             } else {
                 PacketUtil.send(player, MessageEnum.Conflict_Application);
                 return;
@@ -178,7 +184,7 @@ public class AllianceService implements IAllianceService {
         PlayerAllianceInfo playerAllianceInfo = player.getPlayerAllianceInfo();
         OperationType operationType = OperationType.getById(operationTypeId);
         if (operationType == null) {
-            logger.warn("玩家[{}]处理申请失败,参数[{}]有误", player.getPlayerId(), operationTypeId);
+            logger.warn("玩家处理申请[{}]失败,参数[{}]有误", player.getPlayerId(), operationTypeId);
             return;
         }
 
@@ -199,9 +205,16 @@ public class AllianceService implements IAllianceService {
             logger.warn("玩家[{}]处理申请失败,申请不存在或者过期", player.getPlayerId());
             return;
         }
+        Object lock = alliance.getLock(application.getPlayerId());
+        if (lock == null) {
+            logger.warn("玩家[{}]处理申请失败,申请对象[{}]已经离开行会", player.getPlayerId(), application.getPlayerId());
+            return;
+        }
 
-        if (application.handler(agreed)) {
-            saveServerAllianceInfo();
+        synchronized (lock) {
+            if (application.handler(agreed)) {
+                saveServerAllianceInfo();
+            }
         }
     }
 

@@ -1,6 +1,12 @@
+import java.lang.management.ManagementFactory;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import game.system.model.mbean.MiniMBean;
 import spring.SpringContext;
 import spring.SpringController;
 
@@ -45,6 +51,7 @@ public class Start {
         // 初始化公共服务
         SpringContext.getSystemService().init();
 
+        // 初始化redis
         SpringContext.getRedisService().init();
 
         // 初始化排行榜
@@ -53,6 +60,19 @@ public class Start {
         // net服务器启动
         SpringContext.getServer().run();
 
+        initMBean();
+
         logger.info("服务器启动成功...");
+    }
+
+    private static void initMBean() {
+        try {
+            MBeanServer mBeanServer = ManagementFactory.getPlatformMBeanServer();
+            MiniMBean runtime = new MiniMBean();
+            ObjectName name = new ObjectName("game.system.model.mbean:type=RuntimeMbean");
+            mBeanServer.registerMBean(runtime, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

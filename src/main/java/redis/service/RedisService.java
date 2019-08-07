@@ -1,8 +1,12 @@
 package redis.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import game.publicsystem.rank.constant.RankType;
@@ -18,29 +22,34 @@ import redis.clients.jedis.Jedis;
 @Component
 public class RedisService implements IRedisService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RedisService.class);
+
     private static Jedis jedis;
 
     @Override
     public void init() {
         jedis = new Jedis("localhost", 6379);
+        logger.info("redis初始化完成");
+
     }
 
     @Override
-    public void addRankInfo(Player player, BaseRankInfo<String> rankInfo) {
+    public void addRankInfo(Player player, BaseRankInfo rankInfo) {
         jedis.zadd(rankInfo.getType().name(), rankInfo.getValue(), rankInfo.getId());
     }
 
     @Override
     public Collection<BaseRankInfo> getRankInfo(Player player, RankType rankType) {
         String rankName = rankType.name();
+        List<BaseRankInfo> rankInfoList = new ArrayList<>();
         Set<String> memberSet = jedis.zrevrange(rankName, 0, -1);
         memberSet.forEach(key -> {
             if (rankType == RankType.Battle_Score) {
                 BattleScoreRankInfo rankInfo = new BattleScoreRankInfo(key, (jedis.zscore(rankName, key)).longValue());
+                rankInfoList.add(rankInfo);
             }
         });
-
-        return null;
+        return rankInfoList;
     }
 
 }

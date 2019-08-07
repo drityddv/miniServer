@@ -1,8 +1,8 @@
 package game.system.model.mbean;
 
-import spring.SpringContext;
-
 import javax.management.MXBean;
+
+import spring.SpringContext;
 
 /**
  * @author : ddv
@@ -16,8 +16,8 @@ public class MiniMBean implements MiniServerMBean {
         return SpringContext.getSessionManager().getSize();
     }
 
-	@Override
-	public int getInstanceCount() {
-		return 0;
-	}
+    @Override
+    public int getInstanceCount() {
+        return 0;
+    }
 }

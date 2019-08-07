@@ -7,7 +7,7 @@ package game.publicsystem.alliance.constant;
 
 public interface AllianceConst {
 
-    int EMPTY_ALLIANCE_ID = 0;
+    long EMPTY_ALLIANCE_ID = 0;
 
     long SERVER_ID = 1;
 

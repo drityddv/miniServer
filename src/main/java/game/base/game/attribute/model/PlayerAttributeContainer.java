@@ -43,7 +43,9 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
         }
 
         if (calculateBattleScore()) {
-            SpringContext.getRankService().addRankInfo(BattleScoreRankInfo.valueOf(owner));
+            BattleScoreRankInfo rankInfo = BattleScoreRankInfo.valueOf(owner);
+            SpringContext.getRankService().addRankInfo(rankInfo);
+            SpringContext.getRedisService().addRankInfo(owner, rankInfo);
         }
     }
 

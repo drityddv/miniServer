@@ -33,7 +33,7 @@ public class EntityCache<K extends Serializable & Comparable<K>, T extends IEnti
         cache.clear();
     }
 
-	public Map<K, T> getCache() {
-		return cache;
-	}
+    public Map<K, T> getCache() {
+        return cache;
+    }
 }

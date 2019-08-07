@@ -1,6 +1,7 @@
 package game.publicsystem.alliance.packet;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,17 @@ public class SM_ServerAllianceVo {
     private void action() {
         logger.info("服务器[{}]", serverId);
         allianceMap.values().forEach(alliance -> {
+            Set<Long> memberSet = alliance.getMemberSet();
             logger.info("公会[{} {}] 会长[{}] 成员数[{}]", alliance.getAllianceId(), alliance.getAllianceName(),
-                alliance.getChairmanId(), alliance.getMemberSet().size());
+                alliance.getChairmanId(), memberSet.size());
+
+            alliance.getMemberLocks().keySet().forEach(playerId -> {
+                logger.info("成员锁[{}]", playerId);
+            });
+
+            memberSet.forEach(playerId -> {
+                logger.info("成员[{}]", playerId);
+            });
 
             alliance.getApplicationMap().forEach((operationType, applicationMap) -> {
                 logger.info("申请操作[{}]", operationType.name());

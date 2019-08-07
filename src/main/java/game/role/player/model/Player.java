@@ -31,7 +31,7 @@ public class Player extends AbstractCreature<Player> {
 
     private long playerId;
 
-    private transient long battleScore;
+    private long battleScore;
 
     /**
      * 0为男性 1为女性 2为无相关信息
@@ -211,11 +211,20 @@ public class Player extends AbstractCreature<Player> {
         return playerAllianceInfo;
     }
 
-    public boolean changeAllianceId(long allianceId, boolean leave) {
-        boolean success = getPlayerAllianceInfo().changeAllianceId(allianceId, leave);
-        if (success) {
-            SpringContext.getPlayerService().save(this);
+    public boolean changeAllianceId(long targetAllianceId, boolean leave) {
+        boolean success = false;
+        if (leave) {
+            success = getPlayerAllianceInfo().leaveAlliance(targetAllianceId);
+            if (success) {
+                SpringContext.getPlayerService().save(this);
+            }
+        } else {
+            success = getPlayerAllianceInfo().changeAllianceId(targetAllianceId, false);
+            if (success) {
+                SpringContext.getPlayerService().save(this);
+            }
         }
         return success;
     }
+
 }

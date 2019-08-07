@@ -9,7 +9,7 @@ import spring.SpringContext;
  * @since : 2019/8/5 4:39 PM
  */
 
-public class BattleScoreRankInfo extends BaseRankInfo<String> {
+public class BattleScoreRankInfo extends BaseRankInfo {
 
     public BattleScoreRankInfo(String accountId, long battleScore) {
         super(accountId, battleScore);
@@ -27,7 +27,7 @@ public class BattleScoreRankInfo extends BaseRankInfo<String> {
 
     @Override
     public void init() {
-        value = SpringContext.getPlayerService().loadPlayer(id).getBattleScore();
+        value = SpringContext.getPlayerService().getPlayerByAccountId(id).getBattleScore();
     }
 
 }

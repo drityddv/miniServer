@@ -33,6 +33,8 @@ import game.role.player.service.IPlayerService;
 import game.role.skill.model.SkillEntry;
 import game.role.skill.model.SkillList;
 import game.role.skill.service.SkillManager;
+import game.user.login.entity.UserEnt;
+import game.user.login.service.LoginManager;
 import game.user.pack.model.Pack;
 import game.user.pack.service.IPackService;
 import game.world.base.command.scene.TestMapCommand;
@@ -52,6 +54,9 @@ import utils.StringUtil;
 public class GM_Command {
 
     private static final Logger logger = LoggerFactory.getLogger(GM_Command.class);
+
+    @Autowired
+    private LoginManager loginManager;
 
     @Autowired
     private IPackService packService;
@@ -75,8 +80,10 @@ public class GM_Command {
         StringBuilder sb = new StringBuilder();
         sb.append(StringUtil.wipePlaceholder("打印玩家[{}]属性", player.getAccountId()));
         sb.append(StringUtil.wipePlaceholder("账号id[{}]", player.getAccountId()));
+        sb.append(StringUtil.wipePlaceholder("公会id[{}]", player.getPlayerAllianceInfo().getAllianceId()));
         sb.append(StringUtil.wipePlaceholder("playerId[{}]", player.getPlayerId()));
         sb.append(StringUtil.wipePlaceholder("性别[{}]", player.getSex()));
+        sb.append(StringUtil.wipePlaceholder("战力[{}]", player.getBattleScore()));
         sb.append(StringUtil.wipePlaceholder("等级[{}]", player.getLevel()));
         sb.append(StringUtil.wipePlaceholder("黄金[{}]", player.getGold()));
         sb.append(StringUtil.wipePlaceholder("技能点[{}]", player.getSkillPoint()));
@@ -243,5 +250,21 @@ public class GM_Command {
         SpringContext.getRankService().addRankInfoCallback(player, new BattleScoreRankInfo("ddv", 9999));
         SpringContext.getRankService().addRankInfoCallback(player, new LevelRankInfo("ddv", 5));
     }
+
+    public void rankTest(Player player) {
+        BattleScoreRankInfo rankInfo = BattleScoreRankInfo.valueOf(player);
+        SpringContext.getRankService().addRankInfo(rankInfo);
+    }
+
+    public void mockUsers(Player player, int count) {
+        for (int i = 0; i < count; i++) {
+            String k = i + "";
+            loginManager.save(UserEnt.valueOf(k, k, k, k, k));
+        }
+    }
+
+    public void serverRank(Player player){
+		ServerRank serverRankInfo = SpringContext.getRankService().getServerRankInfo(player);
+	}
 
 }

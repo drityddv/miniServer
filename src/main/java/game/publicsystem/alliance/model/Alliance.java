@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import game.publicsystem.alliance.constant.AllianceConst;
 import game.publicsystem.alliance.constant.OperationType;
 import game.publicsystem.alliance.model.application.BaseAllianceApplication;
 import game.role.player.model.Player;
@@ -18,13 +17,14 @@ import utils.snow.IdUtil;
  */
 
 public class Alliance {
-    private final Object adminLock = new Object();
-    private final Object memberLock = new Object();
+
+    // 申请 增加 删除 临界资源锁用到的锁 每个行会只有一个
+    private final Object lock = new Object();
     private long allianceId;
     // 会长
     private long chairmanId;
     private String allianceName;
-    // 成员操作锁
+    // 临界资源操作锁
     private Map<Long, Object> memberLocks = new ConcurrentHashMap<>();
     private Set<Long> adminMember = new ConcurrentSet<>();
     private Set<Long> memberSet = new ConcurrentSet<>();
@@ -62,6 +62,25 @@ public class Alliance {
         }
     }
 
+    public boolean addLock(long playerId) {
+        synchronized (lock) {
+            if (memberLocks.containsKey(playerId)) {
+                return false;
+            }
+            return true;
+        }
+    }
+
+    public boolean removeLock(long playerId) {
+        synchronized (lock) {
+            if (!memberLocks.containsKey(playerId)) {
+                return false;
+            }
+            memberLocks.remove(playerId);
+            return true;
+        }
+    }
+
     /**
      * 添加成员
      *
@@ -72,7 +91,6 @@ public class Alliance {
         if (memberSet.contains(playerId)) {
             return;
         }
-        memberLocks.put(playerId, new Object());
         memberSet.add(playerId);
     }
 
@@ -121,19 +139,28 @@ public class Alliance {
         return true;
     }
 
-    // 队员强退 干掉所有申请
+    // 强制成员离开
     public void forceLeave(Player player) {
-        applicationMap.values().forEach(map -> {
-            BaseAllianceApplication application = map.get(player.getPlayerId());
-            application.setExpired(true);
-            map.remove(application.getPlayerId());
-        });
+        synchronized (getLock(player.getPlayerId())) {
+            if (!memberSet.contains(player.getPlayerId())) {
+                return;
+            }
+            applicationMap.values().forEach(map -> {
+                BaseAllianceApplication application = map.get(player.getPlayerId());
+                if (application == null) {
+                    return;
+                }
+                application.setExpired(true);
+                map.remove(application.getPlayerId());
+            });
 
-        adminMember.remove(player.getPlayerId());
-        memberSet.remove(player.getPlayerId());
-        // clear other alliance jobs if exist
-        // 这种情况 不可能改失败
-        player.changeAllianceId(AllianceConst.EMPTY_ALLIANCE_ID, true);
+            removeLock(player.getPlayerId());
+            adminMember.remove(player.getPlayerId());
+            memberSet.remove(player.getPlayerId());
+            // clear other alliance jobs if exist
+            // 这种情况 就不用管 player的信息了
+            boolean success = player.changeAllianceId(allianceId, true);
+        }
     }
 
     public boolean isMemberAdmin(long playerId) {
@@ -144,7 +171,22 @@ public class Alliance {
         return memberSet.contains(targetPlayerId);
     }
 
-    private Object getLock(long playerId) {
-        return memberLocks.get(playerId);
+    public Object getLock(long playerId) {
+        synchronized (lock) {
+            return memberLocks.get(playerId);
+        }
+    }
+
+    public Object getOrCreateLock(long playerId) {
+        synchronized (lock) {
+            if (!memberLocks.containsKey(playerId)) {
+                memberLocks.put(playerId, new Object());
+            }
+            return memberLocks.get(playerId);
+        }
+    }
+
+    public Map<Long, Object> getMemberLocks() {
+        return memberLocks;
     }
 }

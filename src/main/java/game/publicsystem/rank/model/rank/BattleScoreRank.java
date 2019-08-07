@@ -9,7 +9,7 @@ import game.publicsystem.rank.constant.RankType;
  * @since : 2019/8/6 10:59 AM
  */
 
-public class BattleScoreRank extends AbstractRank<String> {
+public class BattleScoreRank extends AbstractRank {
 
     public BattleScoreRank() {
         super();

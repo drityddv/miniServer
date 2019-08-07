@@ -10,7 +10,7 @@ import spring.SpringContext;
  * @since : 2019/8/5 9:48 PM
  */
 
-public class LevelRankInfo extends BaseRankInfo<String> {
+public class LevelRankInfo extends BaseRankInfo {
     public LevelRankInfo(String id, long value) {
         super(id, value);
     }

@@ -24,12 +24,13 @@ public interface IRedisService {
      * @param player
      * @param rankInfo
      */
-    void addRankInfo(Player player, BaseRankInfo<String> rankInfo);
+    void addRankInfo(Player player, BaseRankInfo rankInfo);
 
     /**
-     * 获取排行榜数据
+     * 获取排行榜
      *
      * @param player
+     * @param rankType
      * @return
      */
     Collection<BaseRankInfo> getRankInfo(Player player, RankType rankType);

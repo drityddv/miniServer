@@ -19,13 +19,13 @@ import net.utils.PacketUtil;
  * @since : 2019/8/6 10:54 AM
  */
 
-public abstract class AbstractRank<K> {
+public abstract class AbstractRank {
 
     protected Object[] locks = new Object[ExecutorConst.POOL_SIZE];
 
     protected volatile List<BaseRankInfo> cache = new ArrayList<>();
 
-    protected ConcurrentSkipListMap<BaseRankInfo<K>, K> rankDataMap =
+    protected transient ConcurrentSkipListMap<BaseRankInfo, Object> rankDataMap =
         new ConcurrentSkipListMap<>(new DefaultComparator());
 
     public AbstractRank() {}
@@ -37,9 +37,9 @@ public abstract class AbstractRank<K> {
      */
     public abstract RankType getRankType();
 
-    public void addRankInfo(BaseRankInfo<K> rankInfo) {
+    public void addRankInfo(BaseRankInfo rankInfo) {
         synchronized (getLock(rankInfo)) {
-            rankDataMap.put(rankInfo, rankInfo.getId());
+            rankDataMap.put(rankInfo, rankInfo);
             if (rankDataMap.size() > RankConst.MAX_SIZE) {
                 removeLast();
             }
@@ -47,9 +47,9 @@ public abstract class AbstractRank<K> {
     }
 
     // 返回段位数据
-    public void addRankInfoCallback(Player player, BaseRankInfo<K> rankInfo) {
+    public void addRankInfoCallback(Player player, BaseRankInfo rankInfo) {
         synchronized (getLock(rankInfo)) {
-            rankDataMap.put(rankInfo, rankInfo.getId());
+            rankDataMap.put(rankInfo, rankInfo);
             if (rankDataMap.size() > RankConst.MAX_SIZE) {
                 removeLast();
             }
@@ -66,6 +66,7 @@ public abstract class AbstractRank<K> {
         return cache;
     }
 
+    // FIXME 偶现死循环
     public void init() {
         for (int i = 0; i < locks.length; i++) {
             locks[i] = new Object();
@@ -73,9 +74,8 @@ public abstract class AbstractRank<K> {
         rankDataMap.clear();
         cache.forEach(baseRankInfo -> {
             baseRankInfo.init();
-            rankDataMap.put(baseRankInfo, (K)baseRankInfo.getId());
+            rankDataMap.put(baseRankInfo, baseRankInfo);
         });
-
     }
 
     public void updateCache() {
@@ -85,7 +85,7 @@ public abstract class AbstractRank<K> {
         }
     }
 
-    public Object getLock(BaseRankInfo<K> baseRankInfo) {
+    public Object getLock(BaseRankInfo baseRankInfo) {
         int index = baseRankInfo.getId().hashCode() % locks.length;
         return locks[index];
     }

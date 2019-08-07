@@ -9,13 +9,13 @@ import game.publicsystem.rank.constant.RankType;
  * @since : 2019/8/5 9:37 PM
  */
 
-public abstract class BaseRankInfo<K> {
-    protected K id;
+public abstract class BaseRankInfo {
+    protected String id;
     protected long value;
 
     public BaseRankInfo() {}
 
-    public BaseRankInfo(K id, long value) {
+    public BaseRankInfo(String id, long value) {
         this.id = id;
         this.value = value;
     }
@@ -32,11 +32,11 @@ public abstract class BaseRankInfo<K> {
      */
     public abstract void init();
 
-    public K getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(K id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -62,7 +62,11 @@ public abstract class BaseRankInfo<K> {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "BaseRankInfo{" + "id=" + id + ", value=" + value + '}';
     }
 }

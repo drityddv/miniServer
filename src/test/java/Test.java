@@ -1,20 +1,22 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.CountDownLatch;
 
+import game.publicsystem.rank.model.DefaultComparator;
+import game.publicsystem.rank.model.type.BaseRankInfo;
+import game.publicsystem.rank.model.type.BattleScoreRankInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.publicsystem.alliance.model.Alliance;
 import game.publicsystem.alliance.model.ServerAllianceInfo;
-import game.publicsystem.rank.model.DefaultComparator;
-import game.publicsystem.rank.model.type.BaseRankInfo;
-import game.publicsystem.rank.model.type.BattleScoreRankInfo;
 import game.role.player.model.Player;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.model.subscribe.Subscriber;
-import spring.SpringContext;
 import utils.ProtoStuffUtil;
 
 /**
@@ -23,6 +25,8 @@ import utils.ProtoStuffUtil;
  */
 
 public class Test {
+
+    private volatile int num = 0;
 
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
 
@@ -69,9 +73,30 @@ public class Test {
 
     @org.junit.Test
     public void run2() {
+		ConcurrentSkipListMap<BaseRankInfo,Object> rankDataMap =
+				new ConcurrentSkipListMap<>(new DefaultComparator());
+
+		Set<BaseRankInfo> baseRankInfoSet = new HashSet<>();
+
+		BattleScoreRankInfo rankInfo = new BattleScoreRankInfo("1",999);
+		BattleScoreRankInfo rankInfo1 = new BattleScoreRankInfo("2",999);
+		BattleScoreRankInfo rankInfo2 = new BattleScoreRankInfo("3",999);
+		BattleScoreRankInfo rankInfo3 = new BattleScoreRankInfo("1",3);
+		BattleScoreRankInfo rankInfo4 = new BattleScoreRankInfo("1",4);
+
+		rankDataMap.put(rankInfo,rankInfo);
+		rankDataMap.put(rankInfo1,rankInfo1);
+		rankDataMap.put(rankInfo2,rankInfo2);
+		rankDataMap.put(rankInfo3,rankInfo3);
+		rankDataMap.put(rankInfo4,rankInfo4);
+
+		baseRankInfoSet.add(rankInfo);
+		baseRankInfoSet.add(rankInfo1);
+		baseRankInfoSet.add(rankInfo2);
+		baseRankInfoSet.add(rankInfo3);
+		baseRankInfoSet.add(rankInfo4);
+
 
     }
-
-
 
 }
