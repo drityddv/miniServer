@@ -1,5 +1,8 @@
 package game.role.player.model;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import game.publicsystem.alliance.constant.AllianceConst;
 
 /**
@@ -12,6 +15,7 @@ import game.publicsystem.alliance.constant.AllianceConst;
 public class PlayerAllianceInfo {
     private final Object lock = new Object();
     private volatile long allianceId;
+    private Map<Long, Long> inviteMap = new ConcurrentHashMap<>();
 
     public static PlayerAllianceInfo valueOf() {
         return new PlayerAllianceInfo();
@@ -21,13 +25,11 @@ public class PlayerAllianceInfo {
      * 目前只有走流程的进出公会 创立公会 才会有管理员改这个字段
      *
      * @param allianceId
-     * @param leave
-     *            这个字段是专门用来离开行会的 需要跳过allianceId验证
      * @return
      */
-    public boolean changeAllianceId(long allianceId, boolean leave) {
+    public boolean changeAllianceId(long allianceId) {
         synchronized (lock) {
-            if (isInAlliance() && !leave) {
+            if (isInAlliance()) {
                 return false;
             }
             this.allianceId = allianceId;
@@ -35,9 +37,15 @@ public class PlayerAllianceInfo {
         }
     }
 
-    public boolean leaveAlliance(long allianceId) {
+    /**
+     *
+     * @param currentAllianceId
+     * @return 是否需要保存player信息 || 玩家是否离开行会成功
+     */
+    public boolean leaveAlliance(long currentAllianceId) {
         synchronized (lock) {
-            if (this.allianceId != allianceId) {
+            if (this.allianceId != currentAllianceId || this.allianceId == AllianceConst.EMPTY_ALLIANCE_ID) {
+                // 说明已经进入了新行会或者已经退出
                 return false;
             }
             this.allianceId = AllianceConst.EMPTY_ALLIANCE_ID;
@@ -52,5 +60,25 @@ public class PlayerAllianceInfo {
     // 是否在行会中
     public boolean isInAlliance() {
         return allianceId != AllianceConst.EMPTY_ALLIANCE_ID;
+    }
+
+    public void addInvite(long memberId, long allianceId) {
+        inviteMap.put(memberId, allianceId);
+    }
+
+    public void removeInvite(long inviteId) {
+        inviteMap.remove(inviteId);
+    }
+
+    public Long getInvite(long inviteId) {
+        return inviteMap.get(inviteId);
+    }
+
+    public boolean containsInvite(long inviteId) {
+        return inviteMap.containsKey(inviteId);
+    }
+
+    public Map<Long, Long> getInviteMap() {
+        return inviteMap;
     }
 }

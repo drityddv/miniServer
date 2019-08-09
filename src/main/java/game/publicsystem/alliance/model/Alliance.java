@@ -9,6 +9,7 @@ import game.publicsystem.alliance.constant.OperationType;
 import game.publicsystem.alliance.model.application.BaseAllianceApplication;
 import game.role.player.model.Player;
 import io.netty.util.internal.ConcurrentSet;
+import spring.SpringContext;
 import utils.snow.IdUtil;
 
 /**
@@ -18,14 +19,10 @@ import utils.snow.IdUtil;
 
 public class Alliance {
 
-    // 申请 增加 删除 临界资源锁用到的锁 每个行会只有一个
     private final Object lock = new Object();
     private long allianceId;
-    // 会长
     private long chairmanId;
     private String allianceName;
-    // 临界资源操作锁
-    private Map<Long, Object> memberLocks = new ConcurrentHashMap<>();
     private Set<Long> adminMember = new ConcurrentSet<>();
     private Set<Long> memberSet = new ConcurrentSet<>();
     // 申请列表
@@ -54,30 +51,11 @@ public class Alliance {
      * @return
      */
     public void addAdmin(Long playerId) {
-        synchronized (getLock(playerId)) {
+        synchronized (lock) {
             if (adminMember.contains(playerId)) {
                 return;
             }
             adminMember.add(playerId);
-        }
-    }
-
-    public boolean addLock(long playerId) {
-        synchronized (lock) {
-            if (memberLocks.containsKey(playerId)) {
-                return false;
-            }
-            return true;
-        }
-    }
-
-    public boolean removeLock(long playerId) {
-        synchronized (lock) {
-            if (!memberLocks.containsKey(playerId)) {
-                return false;
-            }
-            memberLocks.remove(playerId);
-            return true;
         }
     }
 
@@ -88,9 +66,6 @@ public class Alliance {
      * @return
      */
     public void addMember(long playerId) {
-        if (memberSet.contains(playerId)) {
-            return;
-        }
         memberSet.add(playerId);
     }
 
@@ -104,10 +79,6 @@ public class Alliance {
 
     public long getAllianceId() {
         return allianceId;
-    }
-
-    public void setAllianceId(long allianceId) {
-        this.allianceId = allianceId;
     }
 
     public String getAllianceName() {
@@ -141,26 +112,15 @@ public class Alliance {
 
     // 强制成员离开
     public void forceLeave(Player player) {
-        synchronized (getLock(player.getPlayerId())) {
-            if (!memberSet.contains(player.getPlayerId())) {
-                return;
-            }
-            applicationMap.values().forEach(map -> {
-                BaseAllianceApplication application = map.get(player.getPlayerId());
-                if (application == null) {
-                    return;
-                }
-                application.setExpired(true);
-                map.remove(application.getPlayerId());
-            });
+        applicationMap.values().forEach(map -> {
+            BaseAllianceApplication application = map.get(player.getPlayerId());
+            application.setExpired(true);
+            map.remove(application.getPlayerId());
+        });
 
-            removeLock(player.getPlayerId());
-            adminMember.remove(player.getPlayerId());
-            memberSet.remove(player.getPlayerId());
-            // clear other alliance jobs if exist
-            // 这种情况 就不用管 player的信息了
-            boolean success = player.changeAllianceId(allianceId, true);
-        }
+        adminMember.remove(player.getPlayerId());
+        memberSet.remove(player.getPlayerId());
+        player.leaveAlliance(allianceId);
     }
 
     public boolean isMemberAdmin(long playerId) {
@@ -171,22 +131,20 @@ public class Alliance {
         return memberSet.contains(targetPlayerId);
     }
 
-    public Object getLock(long playerId) {
-        synchronized (lock) {
-            return memberLocks.get(playerId);
-        }
+    public Object getLock() {
+        return lock;
     }
 
-    public Object getOrCreateLock(long playerId) {
-        synchronized (lock) {
-            if (!memberLocks.containsKey(playerId)) {
-                memberLocks.put(playerId, new Object());
-            }
-            return memberLocks.get(playerId);
-        }
+    // 解散行会
+    public void dismiss() {
+        memberSet.forEach(playerId -> {
+            SpringContext.getPlayerService().getPlayer(playerId).leaveAlliance(allianceId);
+        });
+        memberSet.clear();
+        adminMember.clear();
     }
 
-    public Map<Long, Object> getMemberLocks() {
-        return memberLocks;
+    public void addAdmin(long targetMemberId) {
+        adminMember.add(targetMemberId);
     }
 }

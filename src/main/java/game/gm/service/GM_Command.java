@@ -28,6 +28,7 @@ import game.role.equip.model.EquipStorage;
 import game.role.equip.model.Equipment;
 import game.role.equip.service.EquipService;
 import game.role.player.entity.PlayerEnt;
+import game.role.player.event.PlayerLevelUpEvent;
 import game.role.player.model.Player;
 import game.role.player.service.IPlayerService;
 import game.role.skill.model.SkillEntry;
@@ -238,8 +239,12 @@ public class GM_Command {
     }
 
     public void resetPlayerAllianceId(Player player, long allianceId) {
-        player.getPlayerAllianceInfo().changeAllianceId(allianceId, true);
+        player.getPlayerAllianceInfo().changeAllianceId(allianceId);
         playerService.save(player);
+    }
+
+    public void pushLevelUpEvent(Player player) {
+        SpringContext.getEventBus().pushEventSyn(PlayerLevelUpEvent.valueOf(player));
     }
 
     public void mockRankData(Player player) {
@@ -263,8 +268,16 @@ public class GM_Command {
         }
     }
 
-    public void serverRank(Player player){
-		ServerRank serverRankInfo = SpringContext.getRankService().getServerRankInfo(player);
-	}
+    public void serverRank(Player player) {
+        ServerRank serverRankInfo = SpringContext.getRankService().getServerRankInfo(player);
+    }
+
+    public void moveTriggerTask(Player player, long taskId) {
+        SpringContext.getTaskService().moveTriggerTask(player, taskId);
+    }
+
+    public void mockRank(Player player, long score) {
+        SpringContext.getRankService().addRankInfo(new BattleScoreRankInfo(player.getAccountId(), score));
+    }
 
 }

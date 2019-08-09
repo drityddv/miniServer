@@ -65,4 +65,12 @@ public interface ITaskService {
      * @param player
      */
     void requestTaskInfo(Player player);
+
+    /**
+     * 将触发池的任务提现到执行池
+     *
+     * @param player
+     * @param taskId
+     */
+    void moveTriggerTask(Player player, long taskId);
 }

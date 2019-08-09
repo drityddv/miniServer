@@ -28,7 +28,7 @@ public class JobEntry {
     private Trigger trigger;
 
     public static JobEntry newMapObjectReliveJob(long delay, long unitId, int mapId, long sceneId) {
-        ReliveCommand command = ReliveCommand.valueOf(mapId, unitId, sceneId);
+        ReliveCommand command = ReliveCommand.valueOf(mapId, sceneId, unitId);
         return newDelayJob(SceneReliveJob.class, delay, unitId, JobGroupEnum.SCENE_RELIVE.name(), command);
     }
 

@@ -11,7 +11,7 @@ public abstract class AbstractPlayerMapInfo {
     /**
      * 上次离线所在的地图id
      */
-    private int mapId;
+    private volatile int mapId;
 
     /**
      * 初始化逻辑

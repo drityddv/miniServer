@@ -1,7 +1,5 @@
 package game.publicsystem.rank.model.type;
 
-import java.util.Objects;
-
 import game.publicsystem.rank.constant.RankType;
 
 /**
@@ -56,13 +54,15 @@ public abstract class BaseRankInfo {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        BaseRankInfo that = (BaseRankInfo)o;
-        return Objects.equals(id, that.id);
+
+        BaseRankInfo rankInfo = (BaseRankInfo)o;
+
+        return id != null ? id.equals(rankInfo.id) : rankInfo.id == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override

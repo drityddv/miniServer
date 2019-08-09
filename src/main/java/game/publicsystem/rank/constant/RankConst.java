@@ -7,9 +7,9 @@ package game.publicsystem.rank.constant;
 
 public interface RankConst {
     /**
-     * 最大上榜数量
+     * 最大上榜数量 预留200区间
      */
-    int MAX_SIZE = 1000;
+    int MAX_SIZE = 1200;
     /**
      * 战力最大值 十万
      */

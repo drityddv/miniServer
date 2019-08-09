@@ -22,7 +22,6 @@ public class DefaultComparator implements Comparator<BaseRankInfo> {
             return 0;
         }
 
-
         if (first > second) {
             return -1;
         }

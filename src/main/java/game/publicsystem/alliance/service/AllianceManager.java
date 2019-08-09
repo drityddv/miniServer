@@ -21,9 +21,7 @@ public class AllianceManager {
     @Autowired
     private EntityCacheService<Long, AllianceEnt> entityCacheService;
 
-    private Map<Long, Alliance> allianceMap = new ConcurrentHashMap<>();
-
-    public AllianceEnt loadOrCreate(long serverId) {
+	public AllianceEnt loadOrCreate(long serverId) {
         return entityCacheService.loadOrCreate(AllianceEnt.class, serverId, AllianceEnt::valueOf);
     }
 

@@ -122,6 +122,18 @@ public class TaskService implements ITaskService {
         PacketUtil.send(player, SM_TaskInfoVo.valueOf(taskInfo));
     }
 
+    @Override
+    public void moveTriggerTask(Player player, long taskId) {
+        TaskInfo taskInfo = player.getTaskInfo();
+        if (!taskInfo.getTriggerTaskMap().containsKey(taskId)) {
+            logger.warn("玩家[{}]提现触发池任务[{}]失败,触发池中没有此任务!", player.getAccountId(), taskId);
+            return;
+        }
+
+        taskInfo.moveTriggerToExecuting(taskId);
+        saveTaskInfo(player);
+    }
+
     // 完成触发任务相关流程 不作任何处理 触发池取出只能等待其他任务激活
     private void doFinishTrigger(TaskEntry taskEntry, Player player) {
         // 从触发池取出 放进待完成池

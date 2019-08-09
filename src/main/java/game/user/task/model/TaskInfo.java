@@ -33,6 +33,16 @@ public class TaskInfo {
         putExecutingTask(taskEntry);
     }
 
+    // 提现触发池任务至执行池 这里不做检查
+    public void moveTriggerToExecuting(long taskId) {
+        TaskEntry taskEntry = triggerTaskMap.get(taskId);
+        triggerTaskMap.remove(taskId);
+        executingTaskMap.put(taskId, taskEntry);
+
+        taskEntry.changeProcess();
+
+    }
+
     public Set<Long> getFinishedTaskIdList() {
         return finishedTaskIdList;
     }
@@ -102,4 +112,5 @@ public class TaskInfo {
     public void addFinishTaskId(long taskId) {
         finishedTaskIdList.add(taskId);
     }
+
 }

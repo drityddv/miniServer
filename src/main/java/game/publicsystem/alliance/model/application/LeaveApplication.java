@@ -30,9 +30,8 @@ public class LeaveApplication extends BaseAllianceApplication {
         if (agreed) {
             Player player = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
             if (player.getPlayerAllianceInfo().leaveAlliance(allianceId)) {
-                alliance.removeLock(playerId);
                 alliance.getMemberSet().remove(playerId);
-				alliance.getApplicationMap().get(getOperationType()).remove(playerId);
+                alliance.getApplicationMap().get(getOperationType()).remove(playerId);
             }
 
             SpringContext.getAllianceService().sendAllianceInfo(player);

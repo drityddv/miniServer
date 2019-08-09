@@ -52,7 +52,7 @@ public class AllianceFacade {
     @HandlerAnno
     public void joinApplication(Player player, CM_JoinApplication request) {
         try {
-            allianceService.joinApplication(player, request.getAllianceId());
+            allianceService.pullJoinApplication(player, request.getAllianceId());
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -69,7 +69,7 @@ public class AllianceFacade {
     @HandlerAnno
     public void leaveApplication(Player player, CM_LeaveApplication request) {
         try {
-            allianceService.leaveApplication(player, request.getForce() == 1);
+            allianceService.pullLeaveApplication(player, request.getForce() == 1);
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public class AllianceFacade {
     }
 
     /**
-     * 处理公会相关申请
+     * 踢人
      *
      * @param player
      * @param request
@@ -105,6 +105,74 @@ public class AllianceFacade {
     public void kickMember(Player player, CM_KickMember request) {
         try {
             allianceService.kickMember(player, request.getPlayerId());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 解散行会
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void dismissAlliance(Player player, CM_DismissAlliance request) {
+        try {
+            allianceService.dismissAlliance(player);
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 邀请加入行会
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void inviteJoinAlliance(Player player, CM_Invite request) {
+        try {
+            allianceService.inviteJoinAlliance(player, request.getAccountId());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 玩家处理邀请
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void handlerInvite(Player player, CM_HandlerInvite request) {
+        try {
+            allianceService.handlerInvite(player, request.getInviteId(), request.getAgreed() == 1);
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 玩家处理邀请
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void playerAllianceInfoVo(Player player, CM_PlayerAllianceVo request) {
+        try {
+            allianceService.playerAllianceInfoVo(player);
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

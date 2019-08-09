@@ -24,43 +24,50 @@ public class Start {
     }
 
     public static void run() {
-        // 初始化spring
-        SpringController.init();
+        try {
+            // 初始化spring
+            SpringController.init();
 
-        // 初始化派发器和eventBus
-        SpringContext.getDispatcher().init();
+            // 初始化派发器和eventBus
+            SpringContext.getDispatcher().init();
 
-        // 初始化静态资源组件
-        SpringContext.getStorageManager().init();
+            // 初始化静态资源组件
+            SpringContext.getStorageManager().init();
 
-        // 主城地图初始化
-        SpringContext.getMainCityService().init();
+            // 主城地图初始化
+            SpringContext.getMainCityService().init();
 
-        // 中立地图初始化
-        SpringContext.getNeutralMapService().init();
+            // 中立地图初始化
+            SpringContext.getNeutralMapService().init();
 
-        // 单人副本地图初始化
-        SpringContext.getInstanceService().init();
+            // 单人副本地图初始化
+            SpringContext.getInstanceService().init();
 
-        // 多人副本地图初始化
-        SpringContext.getGroupInstanceService().init();
+            // 多人副本地图初始化
+            SpringContext.getGroupInstanceService().init();
 
-        // 初始化定时组件
-        SpringContext.getQuartzService().init();
+            // 初始化定时组件
+            SpringContext.getQuartzService().init();
 
-        // 初始化公共服务
-        SpringContext.getSystemService().init();
+            // 初始化公共服务
+            SpringContext.getSystemService().init();
 
-        // 初始化redis
-        SpringContext.getRedisService().init();
+            // 初始化redis
+            SpringContext.getRedisService().init();
 
-        // 初始化排行榜
-        SpringContext.getRankService().init();
+            // 初始化排行榜
+            SpringContext.getRankService().init();
 
-        // net服务器启动
-        SpringContext.getServer().run();
+            // net服务器启动
+            SpringContext.getServer().run();
 
-        initMBean();
+            initMBean();
+        } catch (Exception e) {
+            logger.info("服务器启动失败...");
+            e.printStackTrace();
+            SpringContext.getSystemService().serverClose();
+            return;
+        }
 
         logger.info("服务器启动成功...");
     }

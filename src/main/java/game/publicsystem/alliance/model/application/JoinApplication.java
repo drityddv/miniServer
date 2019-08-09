@@ -34,19 +34,12 @@ public class JoinApplication extends BaseAllianceApplication {
         if (agreed) {
             Player player = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
             // 尝试修改player 判断是否成功
-            success = player.changeAllianceId(allianceId, false);
+            success = player.changeAllianceId(allianceId);
             if (success) {
                 alliance.addMember(player.getPlayerId());
             }
         }
 
-        /**
-         * 结果没有进会删掉对应锁关于锁是否会冲突申请的问题 锁申请只会在第一次提交申请的时候加入 申请之前会检查申请表状态 锁删除只会在退会或者拒绝加入行会的时候
-         */
-
-        if (!success) {
-            alliance.removeLock(playerId);
-        }
         // 删除请求
         alliance.getApplicationMap().get(getOperationType()).remove(playerId);
         expired = true;

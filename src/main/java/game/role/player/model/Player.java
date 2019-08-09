@@ -153,7 +153,7 @@ public class Player extends AbstractCreature<Player> {
         return SpringContext.getMapInfoService().getMapInfoEnt(this).getCurrentMapId();
     }
 
-    public void setCurrentMapId(int mapId) {
+    public synchronized void setCurrentMapId(int mapId) {
         MapInfoEnt mapInfoEnt = SpringContext.getMapInfoService().getMapInfoEnt(this);
         mapInfoEnt.setCurrentMapId(mapId);
         SpringContext.getMapInfoService().saveMapInfoEnt(this, mapInfoEnt);
@@ -211,18 +211,15 @@ public class Player extends AbstractCreature<Player> {
         return playerAllianceInfo;
     }
 
-    public boolean changeAllianceId(long targetAllianceId, boolean leave) {
-        boolean success = false;
-        if (leave) {
-            success = getPlayerAllianceInfo().leaveAlliance(targetAllianceId);
-            if (success) {
-                SpringContext.getPlayerService().save(this);
-            }
-        } else {
-            success = getPlayerAllianceInfo().changeAllianceId(targetAllianceId, false);
-            if (success) {
-                SpringContext.getPlayerService().save(this);
-            }
+    public void leaveAlliance(long currentAllianceId) {
+        playerAllianceInfo.leaveAlliance(currentAllianceId);
+    }
+
+    public boolean changeAllianceId(long targetAllianceId) {
+        boolean success;
+        success = getPlayerAllianceInfo().changeAllianceId(targetAllianceId);
+        if (success) {
+            SpringContext.getPlayerService().save(this);
         }
         return success;
     }

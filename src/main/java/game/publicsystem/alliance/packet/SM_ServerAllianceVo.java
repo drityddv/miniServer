@@ -37,10 +37,6 @@ public class SM_ServerAllianceVo {
             logger.info("公会[{} {}] 会长[{}] 成员数[{}]", alliance.getAllianceId(), alliance.getAllianceName(),
                 alliance.getChairmanId(), memberSet.size());
 
-            alliance.getMemberLocks().keySet().forEach(playerId -> {
-                logger.info("成员锁[{}]", playerId);
-            });
-
             memberSet.forEach(playerId -> {
                 logger.info("成员[{}]", playerId);
             });

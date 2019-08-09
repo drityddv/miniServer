@@ -94,7 +94,7 @@ public class GroupInstanceService implements IGroupInstanceService {
 
     @Override
     public long getSceneId(int mapId, long sceneId) {
-        return sceneId % groupInstanceManager.getMaxSceneSize();
+        return sceneId;
     }
 
     private GroupInstanceMapInfo initGroupInstanceMapInfo(MiniMapResource mapResource) {

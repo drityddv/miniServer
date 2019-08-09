@@ -61,7 +61,8 @@ public class PlayerAttributeContainer extends CreatureAttributeContainer<Player>
         if (newScore != oldScore) {
             return true;
         }
-        return false;
+        // 写死
+        return true;
     }
 
 }

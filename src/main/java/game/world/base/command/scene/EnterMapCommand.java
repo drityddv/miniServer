@@ -55,9 +55,9 @@ public class EnterMapCommand extends AbstractSceneCommand {
             // 进入地图前的一些工作 检查,上锁等
             handler.enterMapPre(player);
             // 真正进入地图
-            handler.realEnterMap(player, mapId, this.sceneId);
+            handler.realEnterMap(player, mapId, sceneId);
             // 进入地图后的一些工作
-            handler.enterMapAfter(player, mapId, this.sceneId);
+            handler.enterMapAfter(player, mapId, sceneId);
         } catch (RequestException e) {
             player.setChangingMap(false);
             logger.info("玩家[{}]进图失败,自动回到主城", player.getAccountId());

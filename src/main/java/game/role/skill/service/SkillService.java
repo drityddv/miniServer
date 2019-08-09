@@ -51,6 +51,10 @@ public class SkillService implements ISkillService {
         }
 
         SkillResource skillResource = skillManager.getSkillResource(skillId);
+        if (skillResource == null) {
+            logger.info("玩家[{}]学习技能[{}]失败,技能不存在!", player.getAccountId(), skillId);
+            return;
+        }
         SkillLevelResource skillLevelResource =
             skillManager.getSkillLevelResource(skillResource.getInitLevelConfigId());
 

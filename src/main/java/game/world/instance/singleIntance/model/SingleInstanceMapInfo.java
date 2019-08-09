@@ -2,6 +2,7 @@ package game.world.instance.singleIntance.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import game.world.base.resource.MiniMapResource;
 import game.world.instance.base.model.BaseInstanceMapScene;
@@ -17,7 +18,7 @@ public class SingleInstanceMapInfo extends InstanceMapInfo {
     /**
      * 单人副本 playerId --sceneId
      */
-    private Map<Long, SingleInstanceMapScene> singleInstanceMap = new HashMap<>();
+    private Map<Long, SingleInstanceMapScene> singleInstanceMap = new ConcurrentHashMap<>();
 
     public static SingleInstanceMapInfo valueOf(MiniMapResource mapResource) {
         SingleInstanceMapInfo mapInfo = new SingleInstanceMapInfo();
@@ -59,5 +60,9 @@ public class SingleInstanceMapInfo extends InstanceMapInfo {
         SingleInstanceMapScene mapScene = singleInstanceMap.get(sceneId);
         mapScene.close();
         singleInstanceMap.remove(sceneId);
+    }
+
+    public int getSize() {
+        return singleInstanceMap.size();
     }
 }

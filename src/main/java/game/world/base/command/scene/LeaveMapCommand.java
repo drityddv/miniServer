@@ -48,7 +48,6 @@ public class LeaveMapCommand extends AbstractSceneCommand {
             handler.leaveMapPre(player);
             handler.leaveMap(player);
             handler.leaveMapAfter(player);
-
             if (newMapId != 0) {
                 ExecutorUtils.submit(EnterMapCommand.valueOf(player, newMapId, newSceneId));
             }

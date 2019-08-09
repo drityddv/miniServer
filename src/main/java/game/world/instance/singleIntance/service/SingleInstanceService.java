@@ -58,6 +58,9 @@ public class SingleInstanceService implements ISingleInstanceService {
     @Override
     public void leaveMap(Player player) {
         BaseInstanceMapScene mapScene = getMapScene(player.getCurrentMapId(), player.getCurrentSceneId());
+        if (mapScene == null) {
+            return;
+        }
         mapScene.leave(player.getPlayerId());
     }
 

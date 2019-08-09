@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import game.publicsystem.rank.model.type.BaseRankInfo;
 import game.publicsystem.rank.model.type.BattleScoreRankInfo;
 import game.role.player.model.Player;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 /**
  * @author : ddv
@@ -24,11 +26,15 @@ public class RedisService implements IRedisService {
 
     private static final Logger logger = LoggerFactory.getLogger(RedisService.class);
 
+    private static GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+
     private static Jedis jedis;
 
     @Override
     public void init() {
-        jedis = new Jedis("localhost", 6379);
+        // jedis = new Jedis("127.0.0.1", 6379);
+        JedisPool jedisPool = new JedisPool(poolConfig, "127.0.0.1", 6379, 0, null);
+        jedis = jedisPool.getResource();
         logger.info("redis初始化完成");
 
     }

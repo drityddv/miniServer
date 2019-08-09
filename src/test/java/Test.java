@@ -1,18 +1,14 @@
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
-import java.util.concurrent.CountDownLatch;
 
-import game.publicsystem.rank.model.DefaultComparator;
-import game.publicsystem.rank.model.type.BaseRankInfo;
-import game.publicsystem.rank.model.type.BattleScoreRankInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import game.publicsystem.alliance.model.Alliance;
 import game.publicsystem.alliance.model.ServerAllianceInfo;
+import game.publicsystem.rank.model.DefaultComparator;
+import game.publicsystem.rank.model.type.BaseRankInfo;
+import game.publicsystem.rank.model.type.BattleScoreRankInfo;
 import game.role.player.model.Player;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
@@ -26,9 +22,8 @@ import utils.ProtoStuffUtil;
 
 public class Test {
 
-    private volatile int num = 0;
-
     private static final Logger logger = LoggerFactory.getLogger(Test.class);
+    private volatile int num = 0;
 
     @org.junit.Test
     public void run() {
@@ -61,6 +56,42 @@ public class Test {
         a = ProtoStuffUtil.deserialize(serialize, ServerAllianceInfo.class);
     }
 
+    @org.junit.Test
+    public void run2() {
+        ConcurrentSkipListMap<BaseRankInfo, String> rankDataMap = new ConcurrentSkipListMap<>(new DefaultComparator());
+
+        Set<BaseRankInfo> baseRankInfoSet = new HashSet<>();
+
+        BattleScoreRankInfo rankInfo = new BattleScoreRankInfo("1", 20);
+        BattleScoreRankInfo rankInfo1 = new BattleScoreRankInfo("2", 999);
+        BattleScoreRankInfo rankInfo2 = new BattleScoreRankInfo("3", 999);
+        BattleScoreRankInfo rankInfo3 = new BattleScoreRankInfo("1", 10000);
+        BattleScoreRankInfo rankInfo4 = new BattleScoreRankInfo("1", 4);
+
+        rankDataMap.put(rankInfo, rankInfo.getId());
+        rankDataMap.put(rankInfo1, rankInfo1.getId());
+        rankDataMap.put(rankInfo2, rankInfo2.getId());
+        rankDataMap.remove(rankInfo);
+        rankInfo.setValue(10000);
+        rankDataMap.put(rankInfo, rankInfo.getId());
+        rankDataMap.put(rankInfo3, rankInfo3.getId());
+        rankDataMap.put(rankInfo4, rankInfo4.getId());
+
+        baseRankInfoSet.add(rankInfo);
+        baseRankInfoSet.add(rankInfo1);
+        baseRankInfoSet.add(rankInfo2);
+        baseRankInfoSet.add(rankInfo3);
+        baseRankInfoSet.add(rankInfo4);
+
+    }
+
+    @org.junit.Test
+    public void run3() {
+        while (true) {
+            System.out.println(new Random().nextInt(10));
+        }
+    }
+
     class A {
         private Map<Long, Alliance> memberMap = new HashMap<>();
     }
@@ -69,34 +100,6 @@ public class Test {
         private long id;
         private String name;
         private Map<Long, Long> map;
-    }
-
-    @org.junit.Test
-    public void run2() {
-		ConcurrentSkipListMap<BaseRankInfo,Object> rankDataMap =
-				new ConcurrentSkipListMap<>(new DefaultComparator());
-
-		Set<BaseRankInfo> baseRankInfoSet = new HashSet<>();
-
-		BattleScoreRankInfo rankInfo = new BattleScoreRankInfo("1",999);
-		BattleScoreRankInfo rankInfo1 = new BattleScoreRankInfo("2",999);
-		BattleScoreRankInfo rankInfo2 = new BattleScoreRankInfo("3",999);
-		BattleScoreRankInfo rankInfo3 = new BattleScoreRankInfo("1",3);
-		BattleScoreRankInfo rankInfo4 = new BattleScoreRankInfo("1",4);
-
-		rankDataMap.put(rankInfo,rankInfo);
-		rankDataMap.put(rankInfo1,rankInfo1);
-		rankDataMap.put(rankInfo2,rankInfo2);
-		rankDataMap.put(rankInfo3,rankInfo3);
-		rankDataMap.put(rankInfo4,rankInfo4);
-
-		baseRankInfoSet.add(rankInfo);
-		baseRankInfoSet.add(rankInfo1);
-		baseRankInfoSet.add(rankInfo2);
-		baseRankInfoSet.add(rankInfo3);
-		baseRankInfoSet.add(rankInfo4);
-
-
     }
 
 }

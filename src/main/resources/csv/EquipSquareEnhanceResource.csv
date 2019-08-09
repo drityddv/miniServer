@@ -1,10 +1,10 @@
-configId  ,"consumeString      ",nextLevelConfigId  ,level  ,nextLevel  ,equipPositionString  ,"attributeString                                    ",newConsumeString
-"1       ","ITEM:7:1,ITEM:7:1"  ,"2                ","1    ","2        ","WEAPON             ","PHYSICAL_ATTACK_UPPER:10,PHYSICAL_ATTACK_LOWER:10"  ,"SKILL_POINT:10,ITEM:7:10"
-"2       ","ITEM:7:2           ","3                ","2    ","3        ","WEAPON             ","PHYSICAL_ATTACK_UPPER:15,PHYSICAL_ATTACK_LOWER:15"  ,"SKILL_POINT:10,ITEM:7:10"
-"3       ","ITEM:7:3           ","0                ","3    ","0        ","WEAPON             ","PHYSICAL_ATTACK_UPPER:20,PHYSICAL_ATTACK_LOWER:20"  ,"SKILL_POINT:10,ITEM:7:10"
-"4       ","ITEM:7:1           ","5                ","1    ","2        ","HAT                ","MAX_HP:10                                          ",
-"5       ","ITEM:7:2           ","6                ","2    ","3        ","HAT                ","MAX_HP:15                                          ",
-"6       ","ITEM:7:3           ","0                ","3    ","0        ","HAT                ","MAX_HP:20                                          ",
-"7       ","ITEM:7:1           ","8                ","1    ","2        ","CLOTHES            ","MAX_HP:10,MAX_MP:10                            "    ,
-"8       ","ITEM:7:2           ","9                ","2    ","3        ","CLOTHES            ","MAX_HP:15,MAX_MP:15                       "         ,
-"9       ","ITEM:7:3           ","0                ","3    ","0        ","CLOTHES            ","MAX_HP:20,MAX_MP:20                    "            ,
+"configId  ","consumeString      ","nextLevelConfigId  ","level  ","nextLevel  ","equipPositionString  ","attributeString                                    ",newConsumeString
+"1       "  ,"ITEM:7:1,ITEM:7:1"  ,"2                "  ,"1    "  ,"2        "  ,"WEAPON             "  ,"PHYSICAL_ATTACK_UPPER:10,PHYSICAL_ATTACK_LOWER:10"  ,"SKILL_POINT:10,ITEM:7:10"
+"2       "  ,"ITEM:7:2           ","3                "  ,"2    "  ,"3        "  ,"WEAPON             "  ,"PHYSICAL_ATTACK_UPPER:15,PHYSICAL_ATTACK_LOWER:15"  ,"SKILL_POINT:10,ITEM:7:10"
+"3       "  ,"ITEM:7:3           ","0                "  ,"3    "  ,"0        "  ,"WEAPON             "  ,"PHYSICAL_ATTACK_UPPER:20,PHYSICAL_ATTACK_LOWER:20"  ,"SKILL_POINT:10,ITEM:7:10"
+"4       "  ,"ITEM:7:1           ","5                "  ,"1    "  ,"2        "  ,"HAT                "  ,"MAX_HP:10                                          ",
+"5       "  ,"ITEM:7:2           ","6                "  ,"2    "  ,"3        "  ,"HAT                "  ,"MAX_HP:15                                          ",
+"6       "  ,"ITEM:7:3           ","0                "  ,"3    "  ,"0        "  ,"HAT                "  ,"MAX_HP:20                                          ",
+"7       "  ,"ITEM:7:1           ","8                "  ,"1    "  ,"2        "  ,"CLOTHES            "  ,"MAX_HP:10,MAX_MP:10"                                ,
+"8       "  ,"ITEM:7:2           ","9                "  ,"2    "  ,"3        "  ,"CLOTHES            "  ,"MAX_HP:15,MAX_MP:15"                                ,
+"9       "  ,"ITEM:7:3           ","0                "  ,"3    "  ,"0        "  ,"CLOTHES            "  ,"MAX_HP:20,MAX_MP:20"                                ,

@@ -57,6 +57,11 @@
     <message id="504" key="handler" value="game.publicsystem.alliance.packet.CM_HandlerApplication"/>
     <message id="505" key="leaveAlliance" value="game.publicsystem.alliance.packet.CM_LeaveApplication"/>
     <message id="506" key="kick" value="game.publicsystem.alliance.packet.CM_KickMember"/>
+    <message id="507" key="dismiss" value="game.publicsystem.alliance.packet.CM_DismissAlliance"/>
+    <message id="508" key="invite" value="game.publicsystem.alliance.packet.CM_Invite"/>
+    <message id="509" key="handlerInvite" value="game.publicsystem.alliance.packet.CM_HandlerInvite"/>
+    <message id="510" value="game.publicsystem.alliance.packet.SM_PlayerAllianceVo"/>
+    <message id="511" key="myAllianceInfo" value="game.publicsystem.alliance.packet.CM_PlayerAllianceVo"/>
 
 
     <!--排行榜相关 600 - 650 -->

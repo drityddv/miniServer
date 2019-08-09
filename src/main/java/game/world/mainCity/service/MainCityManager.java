@@ -3,6 +3,8 @@ package game.world.mainCity.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import game.world.mainCity.model.MainCityMapInfo;
@@ -13,6 +15,7 @@ import game.world.mainCity.model.MainCityMapInfo;
  */
 @Component
 public class MainCityManager {
+    private static final Logger logger = LoggerFactory.getLogger(MainCityManager.class);
 
     /**
      * 中立地图通用数据 地图id→地图数据
@@ -24,7 +27,11 @@ public class MainCityManager {
     }
 
     public MainCityMapInfo getMainCityMapInfo(int mapId) {
-        return mainCityInfoMap.get(mapId);
+        MainCityMapInfo mainCityMapInfo = mainCityInfoMap.get(mapId);
+        if (mainCityMapInfo == null) {
+            logger.warn("主城地图[{}]不存在!", mapId);
+        }
+        return mainCityMapInfo;
     }
 
     public Map<Integer, MainCityMapInfo> getMainCityInfoMap() {

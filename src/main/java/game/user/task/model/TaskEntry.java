@@ -22,7 +22,7 @@ public class TaskEntry {
     private transient TaskResource taskResource;
 
     // 进度下标根据taskResource的finishCondList下标 依次对应
-    // 完成需要达到的进度
+    // 完成需要达到的进度 1 3
     private Map<Integer, Integer> totalProgress = new HashMap<>();
 
     private Map<Integer, Integer> executingProgress = new HashMap<>();
@@ -119,5 +119,12 @@ public class TaskEntry {
                 triggerProgress.get(index));
         });
 
+    }
+
+    // 触发池 - 执行池 进度逻辑变换 默认 / 2
+    public void changeProcess() {
+        triggerProgress.forEach((integer, integer2) -> {
+            executingProgress.put(integer, integer2 / 2);
+        });
     }
 }

@@ -60,7 +60,11 @@ public enum MessageEnum {
 
     Instance_Occupy(29, "副本已经占用!"),
 
-    Instance_Failed(30, "副本通关失败!"), Conflict_Application(31, "行会存在冲突的申请!");
+    Instance_Failed(30, "副本通关失败!"),
+
+    Conflict_Application(31, "行会存在冲突的申请!"),
+
+    INSTANCE_END(32, "副本已经结束,不能进入!");
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 

@@ -17,6 +17,6 @@ public class LoginHandler implements IHandler<SM_LoginSuccess> {
 
     @Override
     public void handler(SM_LoginSuccess sm) {
-        logger.info("登陆成功!");
+        // logger.info("登陆成功!");
     }
 }

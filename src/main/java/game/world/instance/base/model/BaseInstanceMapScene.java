@@ -9,6 +9,7 @@ import java.util.Map;
 import client.MessageEnum;
 import game.base.executor.util.ExecutorUtils;
 import game.base.item.base.model.AbstractItem;
+import game.base.message.exception.RequestException;
 import game.gm.packet.SM_LogMessage;
 import game.map.base.AbstractMovableScene;
 import game.map.model.Grid;
@@ -59,6 +60,7 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     @Override
     public void enter(long playerId, PlayerMapObject object) {
         if (end) {
+            RequestException.throwException(MessageEnum.INSTANCE_END);
             return;
         }
         if (!start) {
@@ -70,7 +72,6 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     @Override
     public void leave(long playerId) {
         super.leave(playerId);
-        needHatchMonster = true;
     }
 
     @Override
@@ -134,6 +135,8 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
             monsterMap.put(monster.getId(), monster);
             aoiManager.registerUnits(monster);
         });
+        
+        needHatchMonster = true;
     }
 
     private boolean allMonsterDead() {

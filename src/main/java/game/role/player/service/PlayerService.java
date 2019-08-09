@@ -90,7 +90,7 @@ public class PlayerService implements IPlayerService {
 
     @Override
     public Player loadPlayer(String accountId) {
-        PlayerEnt playerEnt = getPlayerWithoutCreate(accountId);
+        PlayerEnt playerEnt = playerManager.loadOrCreate(accountId);
         if (playerEnt == null) {
             return null;
         }

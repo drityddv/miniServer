@@ -12,11 +12,6 @@ import game.role.player.model.Player;
 public interface IAllianceService {
 
     /**
-     * 加载服务器工会数据
-     */
-    void init();
-
-    /**
      * 创建公会
      *
      * @param player
@@ -43,6 +38,7 @@ public interface IAllianceService {
     /**
      * 获取服务器的所有工会信息
      *
+     * @param player
      * @return
      */
     ServerAllianceInfo getAllianceInfo(Player player);
@@ -53,7 +49,7 @@ public interface IAllianceService {
      * @param player
      * @param allianceId
      */
-    void joinApplication(Player player, long allianceId);
+    void pullJoinApplication(Player player, long allianceId);
 
     /**
      * 离开工会
@@ -62,7 +58,7 @@ public interface IAllianceService {
      * @param force
      *            是否强退
      */
-    void leaveApplication(Player player, boolean force);
+    void pullLeaveApplication(Player player, boolean force);
 
     /**
      * 处理公会相关申请
@@ -80,4 +76,42 @@ public interface IAllianceService {
      * @param player
      */
     void sendAllianceInfo(Player player);
+
+    /**
+     * 提拔成员为管理员
+     *
+     * @param player
+     * @param targetMemberId
+     */
+    void promoteAdmin(Player player, long targetMemberId);
+
+    /**
+     * 解散行会
+     *
+     * @param player
+     */
+    void dismissAlliance(Player player);
+
+    /**
+     * 邀请人加入行会
+     *
+     * @param player
+     * @param targetAccountId
+     */
+    void inviteJoinAlliance(Player player, String targetAccountId);
+
+    /**
+     * 玩家处理加入行会邀请
+     *
+     * @param player
+     * @param inviteId
+     * @param agreed
+     */
+    void handlerInvite(Player player, long inviteId, boolean agreed);
+
+	/**
+	 * 玩家身上的行会信息vo
+	 * @param player
+	 */
+    void playerAllianceInfoVo(Player player);
 }
