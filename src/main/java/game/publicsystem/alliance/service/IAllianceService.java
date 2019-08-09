@@ -113,4 +113,12 @@ public interface IAllianceService {
      * @param player
      */
     void playerAllianceInfoVo(Player player);
+
+    /**
+     * 转移会长
+     *
+     * @param player
+     * @param membrId
+     */
+    void deliverChairman(Player player, long membrId);
 }

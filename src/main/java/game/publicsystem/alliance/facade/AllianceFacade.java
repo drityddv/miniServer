@@ -181,6 +181,23 @@ public class AllianceFacade {
     }
 
     /**
+     * 转交会长给成员
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void deliverChairman(Player player, CM_DeliverChairman request) {
+        try {
+            allianceService.deliverChairman(player, request.getMemberId());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 玩家个人行会信息vo
      *
      * @param player

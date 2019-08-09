@@ -63,6 +63,7 @@
     <message id="510" value="game.publicsystem.alliance.packet.SM_PlayerAllianceVo"/>
     <message id="511" key="myAllianceInfo" value="game.publicsystem.alliance.packet.CM_PlayerAllianceVo"/>
     <message id="512" key="promote" value="game.publicsystem.alliance.packet.CM_PromoteAdmin"/>
+    <message id="513" key="deliver" value="game.publicsystem.alliance.packet.CM_DeliverChairman"/>
 
 
     <!--排行榜相关 600 - 650 -->

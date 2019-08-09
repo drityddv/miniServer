@@ -77,7 +77,6 @@ public class AllianceService implements IAllianceService {
         }
 
         synchronized (alliance.getLock()) {
-
             if (!alliance.isMemberAdmin(player.getPlayerId())) {
                 logger.warn("玩家[{}]踢人失败,玩家不是管理员", player.getAccountId());
                 return;
@@ -263,6 +262,34 @@ public class AllianceService implements IAllianceService {
     @Override
     public void playerAllianceInfoVo(Player player) {
         PacketUtil.send(player, SM_PlayerAllianceVo.valueOf(player.getPlayerAllianceInfo()));
+    }
+
+    @Override
+    public void deliverChairman(Player player, long memberId) {
+
+        if (player.getPlayerId() == memberId) {
+            logger.warn("玩家[{}]转移会长失败,不能转交给自己!", player.getAccountId());
+            return;
+        }
+
+        PlayerAllianceInfo allianceInfo = player.getPlayerAllianceInfo();
+        Alliance alliance = getAlliance(allianceInfo.getAllianceId());
+
+        if (alliance == null || alliance.getChairmanId() != player.getPlayerId()) {
+            logger.warn("玩家[{}]转移会长失败,玩家无公会或者玩家不是会长!", player.getAccountId());
+            return;
+        }
+
+        synchronized (alliance.getLock()) {
+            if (!alliance.isMember(memberId)) {
+                logger.warn("玩家[{}]转移会长失败,移交对象[{}]不是行会成员!", player.getAccountId(), memberId);
+                return;
+            }
+
+            alliance.setChairmanId(memberId);
+            alliance.addAdmin(memberId);
+        }
+        saveAlliance();
     }
 
     @Override

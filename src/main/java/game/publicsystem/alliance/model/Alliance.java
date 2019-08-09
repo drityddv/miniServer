@@ -22,7 +22,7 @@ public class Alliance {
     private final Object lock = new Object();
     private volatile boolean dismiss = false;
     private long allianceId;
-    private long chairmanId;
+    private volatile long chairmanId;
     private String allianceName;
     private Set<Long> adminMember = new ConcurrentSet<>();
     private Set<Long> memberSet = new ConcurrentSet<>();
@@ -125,7 +125,11 @@ public class Alliance {
         return dismiss;
     }
 
-	public Set<Long> getAdminMember() {
-		return adminMember;
+    public Set<Long> getAdminMember() {
+        return adminMember;
+    }
+
+	public void setChairmanId(long chairmanId) {
+		this.chairmanId = chairmanId;
 	}
 }
