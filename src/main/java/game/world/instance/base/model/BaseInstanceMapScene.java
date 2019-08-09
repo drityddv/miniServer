@@ -37,7 +37,7 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     // 副本是否正式开始
     protected boolean start = false;
     // 副本是否结束
-    protected boolean end;
+    protected boolean end = false;
     // 副本开始时间
     protected LocalTime startAt;
     // 副本开始时间

@@ -118,7 +118,15 @@ public interface IAllianceService {
      * 转移会长
      *
      * @param player
-     * @param membrId
+     * @param memberId
      */
-    void deliverChairman(Player player, long membrId);
+    void deliverChairman(Player player, long memberId);
+
+    /**
+     * 降级指定管理员 会长才有的操作
+     *
+     * @param player
+     * @param adminId
+     */
+    void demoteAdmin(Player player, long adminId);
 }

@@ -15,6 +15,7 @@ import game.publicsystem.alliance.constant.AllianceConst;
 public class PlayerAllianceInfo {
     private final Object lock = new Object();
     private volatile long allianceId;
+    // playerId-allianceId
     private Map<Long, Long> inviteMap = new ConcurrentHashMap<>();
 
     public static PlayerAllianceInfo valueOf() {

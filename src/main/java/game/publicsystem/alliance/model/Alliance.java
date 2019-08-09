@@ -19,7 +19,7 @@ import utils.snow.IdUtil;
 
 public class Alliance {
 
-    private final Object lock = new Object();
+    private transient final Object lock = new Object();
     private volatile boolean dismiss = false;
     private long allianceId;
     private volatile long chairmanId;
@@ -129,7 +129,7 @@ public class Alliance {
         return adminMember;
     }
 
-	public void setChairmanId(long chairmanId) {
-		this.chairmanId = chairmanId;
-	}
+    public void setChairmanId(long chairmanId) {
+        this.chairmanId = chairmanId;
+    }
 }

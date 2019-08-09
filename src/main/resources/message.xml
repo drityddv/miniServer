@@ -64,6 +64,7 @@
     <message id="511" key="myAllianceInfo" value="game.publicsystem.alliance.packet.CM_PlayerAllianceVo"/>
     <message id="512" key="promote" value="game.publicsystem.alliance.packet.CM_PromoteAdmin"/>
     <message id="513" key="deliver" value="game.publicsystem.alliance.packet.CM_DeliverChairman"/>
+    <message id="514" key="demote" value="game.publicsystem.alliance.packet.CM_DemoteAdmin"/>
 
 
     <!--排行榜相关 600 - 650 -->

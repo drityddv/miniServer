@@ -25,7 +25,7 @@ public class JoinApplication extends BaseAllianceApplication {
 
     @Override
     public boolean handler(boolean agreed) {
-        boolean success = false;
+        boolean success;
         if (expired) {
             return false;
         }

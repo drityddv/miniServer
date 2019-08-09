@@ -181,6 +181,23 @@ public class AllianceFacade {
     }
 
     /**
+     * 卸载指定管理员职位
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void demoteAdmin(Player player, CM_DemoteAdmin request) {
+        try {
+            allianceService.demoteAdmin(player, request.getAdminId());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 转交会长给成员
      *
      * @param player
