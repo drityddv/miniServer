@@ -73,6 +73,7 @@ public class AllianceService implements IAllianceService {
             return;
         }
 
+        // 检测是否满提交条件
         boolean legality = alliance.isOperationLegality(OperationType.Join_Alliance.getConflictTypes(), player);
         if (legality) {
             synchronized (alliance.getLock()) {
@@ -143,7 +144,18 @@ public class AllianceService implements IAllianceService {
             return;
         }
 
+        BaseAllianceApplication application = alliance.getApplicationMap().get(operationType).get(applicationId);
+        if (application == null || application.isExpired()) {
+            logger.warn("玩家[{}]处理申请失败,申请不存在或者过期", player.getPlayerId());
+            return;
+        }
+
         synchronized (alliance.getLock()) {
+            if (application.isExpired()) {
+                logger.warn("玩家[{}]处理申请失败,申请过期", player.getPlayerId());
+                return;
+            }
+
             if (alliance.isDismiss()) {
                 logger.warn("玩家[{}]处理申请失败,公会已经解散!", player.getPlayerId());
                 return;
@@ -151,12 +163,6 @@ public class AllianceService implements IAllianceService {
 
             if (!alliance.isMemberAdmin(player.getPlayerId())) {
                 logger.warn("玩家[{}]处理申请失败,玩家不是管理员", player.getPlayerId());
-                return;
-            }
-
-            BaseAllianceApplication application = alliance.getApplicationMap().get(operationType).get(applicationId);
-            if (application == null || application.isExpired()) {
-                logger.warn("玩家[{}]处理申请失败,申请不存在或者过期", player.getPlayerId());
                 return;
             }
 
@@ -245,12 +251,10 @@ public class AllianceService implements IAllianceService {
         }
 
         synchronized (alliance.getLock()) {
-
             if (alliance.getChairmanId() != player.getPlayerId()) {
                 logger.warn("玩家[{}]解散行会失败,不是会长!", player.getAccountId());
                 return;
             }
-
             alliance.dismiss();
         }
 
@@ -324,7 +328,6 @@ public class AllianceService implements IAllianceService {
                         allianceInfo.getAllianceId());
                     return;
                 }
-
             }
             saveAlliance();
         }
