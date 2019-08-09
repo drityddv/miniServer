@@ -20,6 +20,7 @@ import utils.snow.IdUtil;
 public class Alliance {
 
     private final Object lock = new Object();
+    private volatile boolean dismiss = false;
     private long allianceId;
     private long chairmanId;
     private String allianceName;
@@ -35,8 +36,8 @@ public class Alliance {
         alliance.allianceId = IdUtil.getLongId();
         alliance.chairmanId = chairman.getPlayerId();
         alliance.allianceName = allianceName;
-        alliance.addAdmin(chairman);
-        alliance.addMember(chairman);
+        alliance.addAdmin(chairman.getPlayerId());
+        alliance.addMember(chairman.getPlayerId());
 
         for (OperationType operationType : OperationType.values()) {
             alliance.applicationMap.put(operationType, new ConcurrentHashMap<>());
@@ -44,37 +45,8 @@ public class Alliance {
         return alliance;
     }
 
-    /**
-     * 添加管理员
-     *
-     * @param playerId
-     * @return
-     */
-    public void addAdmin(Long playerId) {
-        synchronized (lock) {
-            if (adminMember.contains(playerId)) {
-                return;
-            }
-            adminMember.add(playerId);
-        }
-    }
-
-    /**
-     * 添加成员
-     *
-     * @param playerId
-     * @return
-     */
     public void addMember(long playerId) {
         memberSet.add(playerId);
-    }
-
-    private void addAdmin(Player admin) {
-        adminMember.add(admin.getPlayerId());
-    }
-
-    public void addMember(Player member) {
-        memberSet.add(member.getPlayerId());
     }
 
     public long getAllianceId() {
@@ -110,14 +82,14 @@ public class Alliance {
         return true;
     }
 
-    // 强制成员离开
     public void forceLeave(Player player) {
         applicationMap.values().forEach(map -> {
             BaseAllianceApplication application = map.get(player.getPlayerId());
-            application.setExpired(true);
-            map.remove(application.getPlayerId());
+            if (application != null) {
+                application.setExpired(true);
+                map.remove(application.getPlayerId());
+            }
         });
-
         adminMember.remove(player.getPlayerId());
         memberSet.remove(player.getPlayerId());
         player.leaveAlliance(allianceId);
@@ -137,6 +109,7 @@ public class Alliance {
 
     // 解散行会
     public void dismiss() {
+        this.dismiss = true;
         memberSet.forEach(playerId -> {
             SpringContext.getPlayerService().getPlayer(playerId).leaveAlliance(allianceId);
         });
@@ -147,4 +120,12 @@ public class Alliance {
     public void addAdmin(long targetMemberId) {
         adminMember.add(targetMemberId);
     }
+
+    public boolean isDismiss() {
+        return dismiss;
+    }
+
+	public Set<Long> getAdminMember() {
+		return adminMember;
+	}
 }

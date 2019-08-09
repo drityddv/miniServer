@@ -67,9 +67,9 @@ public class AllianceFacade {
      * @param request
      */
     @HandlerAnno
-    public void leaveApplication(Player player, CM_LeaveApplication request) {
+    public void leaveApplication(Player player, CM_LeaveAlliance request) {
         try {
-            allianceService.pullLeaveApplication(player, request.getForce() == 1);
+            allianceService.leaveAlliance(player);
         } catch (RequestException e) {
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {
@@ -164,7 +164,24 @@ public class AllianceFacade {
     }
 
     /**
-     * 玩家处理邀请
+     * 提拔管理员
+     *
+     * @param player
+     * @param request
+     */
+    @HandlerAnno
+    public void promoteAdmin(Player player, CM_PromoteAdmin request) {
+        try {
+            allianceService.promoteAdmin(player, request.getMemberId());
+        } catch (RequestException e) {
+            PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 玩家个人行会信息vo
      *
      * @param player
      * @param request

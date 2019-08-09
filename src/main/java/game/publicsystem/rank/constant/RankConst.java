@@ -9,7 +9,7 @@ public interface RankConst {
     /**
      * 最大上榜数量 预留200区间
      */
-    int MAX_SIZE = 1200;
+    int MAX_SIZE = 1000;
     /**
      * 战力最大值 十万
      */

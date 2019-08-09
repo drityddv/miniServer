@@ -1,10 +1,13 @@
 package game.publicsystem.rank.service;
 
+import game.publicsystem.rank.constant.RankType;
 import game.publicsystem.rank.model.ServerRank;
 import game.publicsystem.rank.model.type.BaseRankInfo;
 import game.role.player.model.Player;
 
 /**
+ * 排行榜接口
+ *
  * @author : ddv
  * @since : 2019/7/30 3:08 PM
  */
@@ -47,4 +50,23 @@ public interface IRankService {
      * 更新cache
      */
     void updateCache();
+
+    /**
+     * 获取玩家对应模块的排行榜缓存
+     *
+     * @param rankType
+     * @param id
+     * @return
+     */
+    BaseRankInfo getPlayerCacheRankInfo(RankType rankType, String id);
+
+    /**
+     * 获取排行榜信息 start 从0开始
+     *
+     * @param player
+     * @param rankType
+     * @param start
+     * @param end
+     */
+    void getRankInfo(Player player, RankType rankType, int start, int end);
 }

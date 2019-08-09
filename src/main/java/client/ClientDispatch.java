@@ -23,6 +23,8 @@ public class ClientDispatch {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientDispatch.class);
 
+    private Object lastCommand = null;
+
     // 临时的客户端应用层派发器
     // 使用格式为 CM_Class param... 空格分隔
     public void handler(ChannelHandlerContext ctx, String input) {
@@ -39,6 +41,11 @@ public class ClientDispatch {
         switch (operation) {
             case "gm": {
                 sendGmCommand(ctx, input, list);
+                break;
+            }
+
+            case "+": {
+                ctx.writeAndFlush(PacketProtocol.valueOf(lastCommand));
                 break;
             }
 
@@ -87,6 +94,7 @@ public class ClientDispatch {
             Object newInstance = aClass.newInstance();
             ClassUtil.insertDefaultFields(newInstance, list.stream().skip(1).collect(Collectors.toList()));
             ctx.writeAndFlush(PacketProtocol.valueOf(newInstance));
+            lastCommand = newInstance;
             logger.info("执行命令 : [{}]", newInstance.getClass().getSimpleName());
         } catch (Exception e) {
             logger.error("派发器执行错误,input[{}]", input);

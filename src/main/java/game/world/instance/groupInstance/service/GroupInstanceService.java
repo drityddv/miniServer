@@ -7,12 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import client.MessageEnum;
+import game.base.message.exception.RequestException;
 import game.map.constant.MapGroupType;
 import game.map.model.Grid;
 import game.map.visible.PlayerMapObject;
 import game.role.player.model.Player;
 import game.world.base.resource.MiniMapResource;
 import game.world.base.service.WorldManager;
+import game.world.instance.base.constant.InstanceConst;
 import game.world.instance.base.model.BaseInstanceMapScene;
 import game.world.instance.groupInstance.model.GroupInstanceMapInfo;
 
@@ -46,6 +49,10 @@ public class GroupInstanceService implements IGroupInstanceService {
     public void enterMap(Player player, int mapId, long sceneId) {
         GroupInstanceMapInfo mapInfo = groupInstanceManager.getMapInfo(mapId);
         BaseInstanceMapScene mapScene = mapInfo.getMapScene(sceneId);
+
+        if (mapScene.getCurrentPlayerSize() >= InstanceConst.MAX_PLAYER_SIZE) {
+            RequestException.throwException(MessageEnum.MAP_MAX_PLAYER_NUM);
+        }
 
         PlayerMapObject playerMapObject = PlayerMapObject.valueOf(player, mapId, sceneId);
         playerMapObject.init(mapInfo.getMiniMapResource().getBornX(), mapInfo.getMiniMapResource().getBornY());

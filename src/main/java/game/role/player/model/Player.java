@@ -212,7 +212,9 @@ public class Player extends AbstractCreature<Player> {
     }
 
     public void leaveAlliance(long currentAllianceId) {
-        playerAllianceInfo.leaveAlliance(currentAllianceId);
+        if (playerAllianceInfo.leaveAlliance(currentAllianceId)) {
+            SpringContext.getPlayerService().save(this);
+        }
     }
 
     public boolean changeAllianceId(long targetAllianceId) {

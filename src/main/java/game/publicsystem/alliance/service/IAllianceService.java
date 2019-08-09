@@ -55,10 +55,8 @@ public interface IAllianceService {
      * 离开工会
      *
      * @param player
-     * @param force
-     *            是否强退
      */
-    void pullLeaveApplication(Player player, boolean force);
+    void leaveAlliance(Player player);
 
     /**
      * 处理公会相关申请
@@ -109,9 +107,10 @@ public interface IAllianceService {
      */
     void handlerInvite(Player player, long inviteId, boolean agreed);
 
-	/**
-	 * 玩家身上的行会信息vo
-	 * @param player
-	 */
+    /**
+     * 玩家身上的行会信息vo
+     *
+     * @param player
+     */
     void playerAllianceInfoVo(Player player);
 }

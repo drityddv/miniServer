@@ -59,8 +59,8 @@ public class EnterMapCommand extends AbstractSceneCommand {
             // 进入地图后的一些工作
             handler.enterMapAfter(player, mapId, sceneId);
         } catch (RequestException e) {
+            logger.info("玩家[{}]进图[{}]失败,自动回到主城", player.getAccountId(), mapId);
             player.setChangingMap(false);
-            logger.info("玩家[{}]进图失败,自动回到主城", player.getAccountId());
             handler.handEnterMapFailed(player);
             PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
         } catch (Exception e) {

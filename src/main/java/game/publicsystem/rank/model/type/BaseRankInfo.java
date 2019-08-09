@@ -1,5 +1,7 @@
 package game.publicsystem.rank.model.type;
 
+import java.util.Random;
+
 import game.publicsystem.rank.constant.RankType;
 
 /**
@@ -68,5 +70,9 @@ public abstract class BaseRankInfo {
     @Override
     public String toString() {
         return "BaseRankInfo{" + "id=" + id + ", value=" + value + '}';
+    }
+
+    public void random() {
+        value = new Random().nextInt((int)value);
     }
 }

@@ -67,9 +67,6 @@ public class LoginService implements ILoginService {
         SessionManager.registerPlayerSession(accountId, session);
 
         Player player = SpringContext.getPlayerService().loadPlayer(accountId);
-        if (player != null) {
-            player.getAttributeContainer().containerRecompute();
-        }
         PacketUtil.send(session, SM_LoginSuccess.valueOf());
 
         ExecutorUtils.submit(EnterMapCommand.valueOf(player, 1, 1));

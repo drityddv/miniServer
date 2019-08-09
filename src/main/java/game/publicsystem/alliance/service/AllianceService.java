@@ -15,7 +15,6 @@ import game.publicsystem.alliance.model.Alliance;
 import game.publicsystem.alliance.model.ServerAllianceInfo;
 import game.publicsystem.alliance.model.application.BaseAllianceApplication;
 import game.publicsystem.alliance.model.application.JoinApplication;
-import game.publicsystem.alliance.model.application.LeaveApplication;
 import game.publicsystem.alliance.packet.SM_PlayerAllianceVo;
 import game.publicsystem.alliance.packet.SM_ServerAllianceVo;
 import game.role.player.model.Player;
@@ -85,8 +84,10 @@ public class AllianceService implements IAllianceService {
             }
 
             if (alliance.isMemberAdmin(targetPlayerId)) {
-                logger.warn("玩家[{}]踢人[{}]失败,目标也是管理员", player.getAccountId(), targetPlayerId);
-                return;
+                if (alliance.getChairmanId() != player.getPlayerId()) {
+                    logger.warn("玩家[{}]踢人[{}]失败,目标也是管理员", player.getAccountId(), targetPlayerId);
+                    return;
+                }
             }
 
             if (!alliance.isMember(targetPlayerId)) {
@@ -167,7 +168,7 @@ public class AllianceService implements IAllianceService {
                 return;
             }
 
-            if (!alliance.isMemberAdmin(targetMemberId)) {
+            if (alliance.isMemberAdmin(targetMemberId)) {
                 logger.warn("玩家[{}]提拔管理员失败,成员[{}]已经是管理员!", player.getAccountId(), targetMemberId);
                 return;
             }
@@ -243,7 +244,13 @@ public class AllianceService implements IAllianceService {
 
         if (agreed) {
             synchronized (alliance.getLock()) {
+                if (!alliance.isMember(inviteId)) {
+                    logger.warn("玩家[{}]处理行会[{}]加入邀请失败,邀请者身份失效!", player.getAccountId(), inviteId);
+                    return;
+                }
+
                 if (alliance.isMember(player.getPlayerId())) {
+                    logger.warn("玩家[{}]处理行会[{}]加入邀请失败,玩家已经是该行会的成员了!", player.getAccountId(), allianceId);
                     return;
                 }
                 alliance.addMember(player.getPlayerId());
@@ -259,34 +266,37 @@ public class AllianceService implements IAllianceService {
     }
 
     @Override
-    public void pullLeaveApplication(Player player, boolean force) {
+    public void leaveAlliance(Player player) {
         PlayerAllianceInfo playerAllianceInfo = player.getPlayerAllianceInfo();
         long allianceId = playerAllianceInfo.getAllianceId();
-        Alliance alliance = getAlliance(allianceId);
+
         // 提交离开申请 此时可能已经不在了
         if (!playerAllianceInfo.isInAlliance()) {
+            logger.warn("玩家[{}]主动离开行会失败,玩家已经不在行会了!", player.getAccountId());
             return;
         }
+
+        Alliance alliance = getAlliance(allianceId);
+
+        if (alliance == null || alliance.isDismiss()) {
+            logger.warn("玩家[{}]主动离开行会失败,行会已经失效,无需手动离开!", player.getAccountId());
+            return;
+        }
+
         // 会长暂时不允许离开
         if (alliance.getChairmanId() == player.getPlayerId()) {
+            logger.warn("玩家[{}]主动离开行会失败,玩家是会长!", player.getAccountId());
             return;
         }
+
         synchronized (alliance.getLock()) {
-            if (force) {
-                alliance.forceLeave(player);
-            } else {
-                List<OperationType> conflictTypes = OperationType.Join_Alliance.getConflictTypes();
-                boolean legality = alliance.isOperationLegality(conflictTypes, player);
-                if (legality) {
-
-                    alliance.addApplication(LeaveApplication.valueOf(player));
-
-                } else {
-                    PacketUtil.send(player, MessageEnum.Conflict_Application);
-                    return;
-                }
+            if (alliance.isDismiss()) {
+                logger.warn("玩家[{}]主动离开行会失败,行会已经解散,无需手动离开!", player.getAccountId());
+                return;
             }
+            alliance.forceLeave(player);
         }
+
         saveAlliance();
         PacketUtil.send(player, SM_ServerAllianceVo.valueOf(getServerAllianceInfo()));
     }
@@ -308,7 +318,6 @@ public class AllianceService implements IAllianceService {
         }
 
         synchronized (alliance.getLock()) {
-            // 不是管理员
             if (!alliance.isMemberAdmin(player.getPlayerId())) {
                 logger.warn("玩家[{}]处理申请失败,玩家不是管理员", player.getPlayerId());
                 return;

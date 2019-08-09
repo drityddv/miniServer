@@ -41,6 +41,10 @@ public class SM_ServerAllianceVo {
                 logger.info("成员[{}]", playerId);
             });
 
+            alliance.getAdminMember().forEach(playerId -> {
+                logger.info("管理员[{}]", playerId);
+            });
+
             alliance.getApplicationMap().forEach((operationType, applicationMap) -> {
                 logger.info("申请操作[{}]", operationType.name());
                 applicationMap.values().forEach(allianceApplication -> {

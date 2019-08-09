@@ -55,18 +55,21 @@
     <message id="502" key="allianceVo" value="game.publicsystem.alliance.packet.CM_ServerAlliances"/>
     <message id="503" value="game.publicsystem.alliance.packet.SM_ServerAllianceVo"/>
     <message id="504" key="handler" value="game.publicsystem.alliance.packet.CM_HandlerApplication"/>
-    <message id="505" key="leaveAlliance" value="game.publicsystem.alliance.packet.CM_LeaveApplication"/>
+    <message id="505" key="leaveAlliance" value="game.publicsystem.alliance.packet.CM_LeaveAlliance"/>
     <message id="506" key="kick" value="game.publicsystem.alliance.packet.CM_KickMember"/>
     <message id="507" key="dismiss" value="game.publicsystem.alliance.packet.CM_DismissAlliance"/>
     <message id="508" key="invite" value="game.publicsystem.alliance.packet.CM_Invite"/>
     <message id="509" key="handlerInvite" value="game.publicsystem.alliance.packet.CM_HandlerInvite"/>
     <message id="510" value="game.publicsystem.alliance.packet.SM_PlayerAllianceVo"/>
     <message id="511" key="myAllianceInfo" value="game.publicsystem.alliance.packet.CM_PlayerAllianceVo"/>
+    <message id="512" key="promote" value="game.publicsystem.alliance.packet.CM_PromoteAdmin"/>
 
 
     <!--排行榜相关 600 - 650 -->
     <message id="600" key="rankInfo" value="game.publicsystem.rank.packet.CM_RankInfo"/>
     <message id="601" value="game.publicsystem.rank.packet.SM_RankVo"/>
+    <message id="602" key="rankDetail" value="game.publicsystem.rank.packet.CM_RankDetail"/>
+    <message id="603" value="game.publicsystem.rank.packet.SM_RankDetailVo"/>
 
     <!--地图基础协议 2001 - 2005-->
     <message id="2002" key="leave" value="game.world.base.packet.CM_LeaveMap"/>

@@ -19,6 +19,10 @@ public class GroupInstanceManager {
 
     private Map<Integer, GroupInstanceMapInfo> mapInfoMap = new HashMap<>();
 
+    public static int getMaxPlayerSize() {
+        return MAX_PLAYER_SIZE;
+    }
+
     public void addMapInfo(GroupInstanceMapInfo mapInfo) {
         mapInfoMap.put(mapInfo.getMapId(), mapInfo);
     }
@@ -33,9 +37,5 @@ public class GroupInstanceManager {
 
     public void removeMapInfo(int mapId) {
         mapInfoMap.remove(mapId);
-    }
-
-    public static int getMaxPlayerSize() {
-        return MAX_PLAYER_SIZE;
     }
 }

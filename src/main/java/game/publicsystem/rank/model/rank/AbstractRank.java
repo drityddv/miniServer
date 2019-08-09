@@ -6,13 +6,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import game.base.executor.constant.ExecutorConst;
 import game.publicsystem.rank.constant.RankConst;
 import game.publicsystem.rank.constant.RankType;
 import game.publicsystem.rank.model.DefaultComparator;
 import game.publicsystem.rank.model.type.BaseRankInfo;
 import game.role.player.model.Player;
 import net.utils.PacketUtil;
+import spring.SpringContext;
 
 /**
  * 排行榜基类
@@ -23,9 +23,10 @@ import net.utils.PacketUtil;
 
 public abstract class AbstractRank {
 
-    protected Object[] locks = new Object[ExecutorConst.POOL_SIZE];
+    // lock
+    private final Object lock = new Object();
     // 玩家查看的缓存
-    protected volatile List<BaseRankInfo> cache = new ArrayList<>();
+    protected volatile List<BaseRankInfo> cacheVo = new ArrayList<>();
     // 玩家修改的缓存
     protected transient Map<String, BaseRankInfo> playerCache = new ConcurrentHashMap<>();
 
@@ -41,95 +42,59 @@ public abstract class AbstractRank {
      */
     public abstract RankType getRankType();
 
-    public void addRankInfo(BaseRankInfo rankInfo) {
-        BaseRankInfo cacheRank = playerCache.get(rankInfo.getId());
-        if (cacheRank == null) {
-            playerCache.put(rankInfo.getId(), rankInfo);
-            synchronized (getLock(rankInfo)) {
+    public void addRankInfo(BaseRankInfo rankInfo, boolean refreshCache, Player player) {
+        synchronized (lock) {
+            BaseRankInfo cacheRank = playerCache.get(rankInfo.getId());
+            if (cacheRank == null) {
+                playerCache.put(rankInfo.getId(), rankInfo);
                 rankDataMap.put(rankInfo, rankInfo.getId());
-                if (rankDataMap.size() > RankConst.MAX_SIZE) {
-                    removeLast();
-                }
-            }
 
-        } else {
-            if (cacheRank.getValue() == rankInfo.getValue()) {
-                return;
-            }
-            synchronized (getLock(rankInfo)) {
+            } else {
+                if (cacheRank.getValue() == rankInfo.getValue()) {
+                    return;
+                }
                 rankDataMap.remove(cacheRank);
                 playerCache.put(rankInfo.getId(), rankInfo);
                 rankDataMap.put(rankInfo, rankInfo.getId());
-                if (rankDataMap.size() > RankConst.MAX_SIZE) {
-                    removeLast();
-                }
-            }
-        }
-
-    }
-
-    // 返回段位数据
-    public void addRankInfoCallback(Player player, BaseRankInfo rankInfo) {
-        BaseRankInfo cacheRank = playerCache.get(rankInfo.getId());
-        if (cacheRank == null) {
-            playerCache.put(rankInfo.getId(), rankInfo);
-            synchronized (getLock(rankInfo)) {
-                rankDataMap.put(rankInfo, rankInfo.getId());
-                if (rankDataMap.size() > RankConst.MAX_SIZE) {
-                    removeLast();
-                }
-                List<BaseRankInfo> tempCache = new ArrayList<>(rankDataMap.keySet());
-                cache = tempCache;
-                PacketUtil.send(player, cache);
             }
 
-        } else {
-            if (cacheRank.getValue() == rankInfo.getValue()) {
-                return;
+            // 检查数量
+            if (rankDataMap.size() > RankConst.MAX_SIZE) {
+                removeLast();
             }
-            synchronized (getLock(rankInfo)) {
-                rankDataMap.remove(cacheRank);
-                playerCache.put(rankInfo.getId(), rankInfo);
-                rankDataMap.put(rankInfo, rankInfo.getId());
-                if (rankDataMap.size() > RankConst.MAX_SIZE) {
-                    removeLast();
-                }
-                cache = new ArrayList<>(rankDataMap.keySet());
-                PacketUtil.send(player, cache);
+            // 刷新缓存
+            if (refreshCache) {
+                updateCache();
+                PacketUtil.send(player, cacheVo);
+                SpringContext.getRankService().saveRankInfo();
             }
         }
 
     }
 
     private void removeLast() {
-        rankDataMap.pollLastEntry();
+        Map.Entry<BaseRankInfo, String> entry = rankDataMap.pollLastEntry();
+        playerCache.remove(entry.getValue());
     }
 
-    public List<BaseRankInfo> getCache() {
-        return cache;
+    public List<BaseRankInfo> getCacheVo() {
+        return cacheVo;
     }
 
     public void init() {
-        for (int i = 0; i < locks.length; i++) {
-            locks[i] = new Object();
-        }
-
-        cache.forEach(baseRankInfo -> {
-            baseRankInfo.init();
-            playerCache.put(baseRankInfo.getId(), baseRankInfo);
-            rankDataMap.put(baseRankInfo, baseRankInfo.getId());
+        cacheVo.forEach(rankInfo -> {
+            playerCache.put(rankInfo.getId(), rankInfo);
+            rankDataMap.put(rankInfo, rankInfo.getId());
         });
     }
 
     public void updateCache() {
-        cache = new ArrayList<>(rankDataMap.keySet());
-        while (rankDataMap.size() > RankConst.MAX_SIZE) {
-            removeLast();
-        }
+        cacheVo = new ArrayList<>(rankDataMap.keySet());
+        SpringContext.getRankService().saveRankInfo();
     }
 
-    public Object getLock(BaseRankInfo baseRankInfo) {
-        int index = baseRankInfo.getId().hashCode() % locks.length;
-        return locks[index];
+    public BaseRankInfo getCacheRankInfo(String id) {
+        return playerCache.get(id);
     }
+
 }

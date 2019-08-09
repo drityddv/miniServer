@@ -20,17 +20,17 @@
 //
 // private int capacity = RankConst.MAX_SIZE;
 // //
-// private Map<K, BaseRankInfo> cache;
+// private Map<K, BaseRankInfo> cacheVo;
 //
 // private ConcurrentSkipListMap<BaseRankInfo, K> rankMap;
 //
 // public Segment() {
-// this.cache = new ConcurrentHashMap<>();
+// this.cacheVo = new ConcurrentHashMap<>();
 // this.rankMap = new ConcurrentSkipListMap<>(new DefaultComparator());
 // }
 //
 // public boolean contain(K k) {
-// return cache.containsKey(k);
+// return cacheVo.containsKey(k);
 // }
 //
 // private boolean isOverFull() {
@@ -41,8 +41,8 @@
 // return capacity;
 // }
 //
-// public Map<K, BaseRankInfo> getCache() {
-// return cache;
+// public Map<K, BaseRankInfo> getCacheVo() {
+// return cacheVo;
 // }
 //
 // public ConcurrentSkipListMap<BaseRankInfo, K> getRankMap() {
@@ -50,7 +50,7 @@
 // }
 //
 // public void remove(BaseRankInfo<K> rankInfo) {
-// cache.remove(rankInfo.getId());
+// cacheVo.remove(rankInfo.getId());
 // rankMap.remove(rankInfo);
 // }
 //
@@ -58,11 +58,11 @@
 // public void add(BaseRankInfo<K> rankInfo, boolean needOccupy) {
 // if (needOccupy) {
 // synchronized (occupy) {
-// cache.put(rankInfo.getId(), rankInfo);
+// cacheVo.put(rankInfo.getId(), rankInfo);
 // rankMap.put(rankInfo, rankInfo.getId());
 // }
 // } else {
-// cache.put(rankInfo.getId(), rankInfo);
+// cacheVo.put(rankInfo.getId(), rankInfo);
 // rankMap.put(rankInfo, rankInfo.getId());
 // }
 // }
@@ -70,7 +70,7 @@
 // // 添加并且callback一份数据
 // public List<BaseRankInfo> addCallback(BaseRankInfo<K> rankInfo) {
 // synchronized (occupy) {
-// cache.put(rankInfo.getId(), rankInfo);
+// cacheVo.put(rankInfo.getId(), rankInfo);
 // rankMap.put(rankInfo, rankInfo.getId());
 // List<BaseRankInfo> copy = new ArrayList(rankMap.keySet());
 // return copy;

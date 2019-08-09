@@ -34,8 +34,6 @@ import utils.StringUtil;
  */
 
 public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMapObject> {
-    // 是否需要刷怪
-    protected boolean needHatchMonster = true;
     // 副本是否正式开始
     protected boolean start = false;
     // 副本是否结束
@@ -44,6 +42,8 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     protected LocalTime startAt;
     // 副本开始时间
     protected LocalTime endAt;
+    // 重置时间
+    protected LocalTime resetAt;
     // 延迟关闭副本调度作业
     protected JobEntry closeScheduleJob;
     // 当前阶段
@@ -61,7 +61,6 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     public void enter(long playerId, PlayerMapObject object) {
         if (end) {
             RequestException.throwException(MessageEnum.INSTANCE_END);
-            return;
         }
         if (!start) {
             instanceStart();
@@ -93,7 +92,7 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
 
     // 销毁副本实例 副本上一次开启距今超过五分钟清除
     public void tryDestroy() {
-        if (ChronoUnit.MINUTES.between(startAt, LocalTime.now()) >= InstanceConst.INSTANCE_DESTROY_MINUTES) {
+        if (ChronoUnit.MINUTES.between(resetAt, LocalTime.now()) >= InstanceConst.INSTANCE_DESTROY_MINUTES) {
             SpringContext.getInstanceService().destroy(mapId, sceneId);
         }
     }
@@ -113,14 +112,9 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     private void clearMonster() {
         monsterMap.clear();
         aoiManager.removeMonsters();
-        needHatchMonster = true;
     }
 
     public void hatchMonsters() {
-        if (!needHatchMonster) {
-            return;
-        }
-
         List<MonsterMapObject> monsterObjects = stageHatchMap.get(currentStage).hatch();
         monsterObjects.forEach(monsterMapObject -> {
             monsterMapObject.getFighterAccount().getCreatureUnit().setSceneId(sceneId);
@@ -135,8 +129,7 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
             monsterMap.put(monster.getId(), monster);
             aoiManager.registerUnits(monster);
         });
-        
-        needHatchMonster = true;
+
     }
 
     private boolean allMonsterDead() {
@@ -199,10 +192,10 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     // 重置副本信息
     private void reset() {
         currentStage = 1;
-        needHatchMonster = true;
         start = false;
         startAt = null;
         end = false;
+        resetAt = LocalTime.now();
     }
 
     // 踢人
@@ -223,4 +216,9 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
     }
 
     public void playerDeadCallBack() {}
+
+    public int getCurrentPlayerSize() {
+        return playerMap.size();
+    }
+
 }

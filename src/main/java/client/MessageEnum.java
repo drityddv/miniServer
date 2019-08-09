@@ -64,7 +64,8 @@ public enum MessageEnum {
 
     Conflict_Application(31, "行会存在冲突的申请!"),
 
-    INSTANCE_END(32, "副本已经结束,不能进入!");
+    INSTANCE_END(32, "副本已经结束,不能进入!"), MAP_MAX_PLAYER_NUM(33, "副本人数达到最大上限!"),
+    RANK_INDEX_ERROR(34, "排行榜分页查看参数错误,实例参数:'rankTypeId:1,start:0,end:1'"),;
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 

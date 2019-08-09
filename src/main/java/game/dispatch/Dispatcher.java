@@ -92,7 +92,7 @@ public class Dispatcher {
     }
 
     public void invoke(USession session, Object packet) {
-        logger.info("请求类型[{}]", packet.getClass().getSimpleName());
+        // logger.info("请求类型[{}]", packet.getClass().getSimpleName());
         HandlerInvoke handlerInvoke = handlerDestinationMap.get(packet.getClass());
         if (handlerInvoke == null) {
             logger.error("协议[{}]未注册handlerMap,忽视此条消息!", packet.getClass());

@@ -60,7 +60,7 @@ public class EntityCacheService<K extends Serializable & Comparable<K>, T extend
     @Override
     public void save(T object) {
         if (object == null) {
-            throw new RuntimeException("cache object has been deleted");
+            throw new RuntimeException("cacheVo object has been deleted");
         }
 
         checkEntityCacheMap(entityCacheMap, (Class<T>)object.getClass());

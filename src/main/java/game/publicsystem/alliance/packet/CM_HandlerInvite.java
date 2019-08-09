@@ -13,7 +13,7 @@ public class CM_HandlerInvite {
         return agreed;
     }
 
-	public long getInviteId() {
-		return inviteId;
-	}
+    public long getInviteId() {
+        return inviteId;
+    }
 }
