@@ -90,9 +90,7 @@ public class SingleInstanceService implements ISingleInstanceService {
 
     @Override
     public void heartBeat(int mapId) {
-        singleInstanceManager.getMapInfoMap().values().forEach(singleInstanceMapInfo -> {
-            singleInstanceMapInfo.heatBeat();
-        });
+        singleInstanceManager.getMapInfoMap().values().forEach(SingleInstanceMapInfo::heatBeat);
     }
 
     @Override
@@ -104,11 +102,6 @@ public class SingleInstanceService implements ISingleInstanceService {
     @Override
     public void close(int mapId, long sceneId) {
         getMapScene(mapId, sceneId).close();
-    }
-
-    @Override
-    public long getSceneId(int mapId, long sceneId) {
-        return sceneId % singleInstanceManager.getMaxSceneSize();
     }
 
     public SingleInstanceMapInfo initInstanceMap(int mapId, long playerId) {

@@ -26,24 +26,32 @@ public class AllianceParam {
         return param;
     }
 
+    public static AllianceParam valueOf(Player player, long allianceId, Player targetPlayer) {
+        AllianceParam param = new AllianceParam();
+        param.allianceId = allianceId;
+        param.player = player;
+        param.targetPlayer = targetPlayer;
+        return param;
+    }
+
     public long getAllianceId() {
         return allianceId;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public Player getTargetPlayer() {
-        return targetPlayer;
     }
 
     public void setAllianceId(long allianceId) {
         this.allianceId = allianceId;
     }
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Player getTargetPlayer() {
+        return targetPlayer;
     }
 
     public void setTargetPlayer(Player targetPlayer) {

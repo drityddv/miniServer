@@ -92,12 +92,4 @@ public interface IGroupInstanceService {
      */
     void close(int mapId, long sceneId);
 
-    /**
-     * 获取对应场景id
-     *
-     * @param mapId
-     * @param sceneId
-     * @return
-     */
-    long getSceneId(int mapId, long sceneId);
 }

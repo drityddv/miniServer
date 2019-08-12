@@ -10,7 +10,7 @@ package game.publicsystem.alliance.packet;
 public class CM_DeliverChairman {
     private long memberId;
 
-	public long getMemberId() {
-		return memberId;
-	}
+    public long getMemberId() {
+        return memberId;
+    }
 }

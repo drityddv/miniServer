@@ -17,16 +17,12 @@ public class DefaultComparator implements Comparator<BaseRankInfo> {
     public int compare(BaseRankInfo o1, BaseRankInfo o2) {
         long first = o1.getValue();
         long second = o2.getValue();
-
         if (o1.getId().equals(o2.getId())) {
             return 0;
         }
-
         if (first > second) {
             return -1;
         }
-
         return 1;
-
     }
 }

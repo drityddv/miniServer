@@ -35,6 +35,9 @@ public class WorldService implements IWorldService {
     @Override
     public void gatewayChangeMap(Player player, int newMapId, long newSceneId, boolean clientRequest) {
         int currentMapId = player.getCurrentMapId();
+        if (currentMapId == newMapId) {
+            return;
+        }
         try {
             if (player.isChangingMap()) {
                 logger.warn("玩家[{}]正在切图", player.getAccountId());
@@ -56,8 +59,9 @@ public class WorldService implements IWorldService {
                 PacketUtil.send(player, SM_Message.valueOf(e.getErrorCode()));
             }
         } catch (Exception e) {
-            player.setChangingMap(false);
             e.printStackTrace();
+        } finally {
+            player.setChangingMap(false);
         }
 
     }

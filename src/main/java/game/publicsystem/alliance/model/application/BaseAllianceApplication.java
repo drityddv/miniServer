@@ -57,10 +57,6 @@ public abstract class BaseAllianceApplication {
         return operationType;
     }
 
-    public void setOperationType(OperationType operationType) {
-        this.operationType = operationType;
-    }
-
     public String getAccountId() {
         return accountId;
     }

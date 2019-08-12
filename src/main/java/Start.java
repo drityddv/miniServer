@@ -41,7 +41,7 @@ public class Start {
             SpringContext.getNeutralMapService().init();
 
             // 单人副本地图初始化
-            SpringContext.getInstanceService().init();
+            SpringContext.getSingleInstanceService().init();
 
             // 多人副本地图初始化
             SpringContext.getGroupInstanceService().init();

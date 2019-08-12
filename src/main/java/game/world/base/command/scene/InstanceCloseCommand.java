@@ -4,6 +4,8 @@ import game.base.executor.command.impl.scene.base.AbstractSceneCommand;
 import game.map.handler.AbstractMapHandler;
 
 /**
+ * 副本关闭命令
+ *
  * @author : ddv
  * @since : 2019/7/31 4:29 PM
  */

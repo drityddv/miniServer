@@ -90,18 +90,12 @@ public class GroupInstanceService implements IGroupInstanceService {
 
     @Override
     public void destroy(int mapId, long sceneId) {
-        logger.info("销毁副本[{}]", mapId);
-        groupInstanceManager.removeMapInfo(mapId);
+        // do nothing
     }
 
     @Override
     public void close(int mapId, long sceneId) {
         getMapScene(mapId, sceneId).close();
-    }
-
-    @Override
-    public long getSceneId(int mapId, long sceneId) {
-        return sceneId;
     }
 
     private GroupInstanceMapInfo initGroupInstanceMapInfo(MiniMapResource mapResource) {

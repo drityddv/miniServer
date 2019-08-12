@@ -88,12 +88,20 @@ public abstract class BaseInstanceMapScene extends AbstractMovableScene<PlayerMa
         startAt = LocalTime.now();
         end = false;
         endAt = null;
+        resetAt = null;
     }
 
-    // 销毁副本实例 副本上一次开启距今超过五分钟清除
+    // 销毁副本实例
     public void tryDestroy() {
+        if (resetAt == null) {
+            if (ChronoUnit.MINUTES.between(startAt, LocalTime.now()) >= InstanceConst.INSTANCE_DESTROY_MINUTES) {
+                SpringContext.getSingleInstanceService().destroy(mapId, sceneId);
+            }
+            return;
+        }
         if (ChronoUnit.MINUTES.between(resetAt, LocalTime.now()) >= InstanceConst.INSTANCE_DESTROY_MINUTES) {
-            SpringContext.getInstanceService().destroy(mapId, sceneId);
+            // 暂时只有单人副本需要销毁 多人副本的接口不做事情
+            SpringContext.getSingleInstanceService().destroy(mapId, sceneId);
         }
     }
 

@@ -15,8 +15,6 @@ import game.world.instance.singleIntance.model.SingleInstanceMapInfo;
 @Component
 public class SingleInstanceManager {
 
-    private static final int MAX_SCENE_SIZE = 100;
-
     private Map<Integer, SingleInstanceMapInfo> mapInfoMap = new HashMap<>();
 
     public void addMapInfo(SingleInstanceMapInfo mapInfo) {
@@ -29,14 +27,6 @@ public class SingleInstanceManager {
 
     public Map<Integer, SingleInstanceMapInfo> getMapInfoMap() {
         return mapInfoMap;
-    }
-
-    public void removeMapInfo(int mapId) {
-        mapInfoMap.remove(mapId);
-    }
-
-    public int getMaxSceneSize() {
-        return MAX_SCENE_SIZE;
     }
 
 }

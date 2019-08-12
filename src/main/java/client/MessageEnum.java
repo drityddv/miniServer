@@ -76,11 +76,23 @@ public enum MessageEnum {
 
     Operator_Not_Chairman(37, "操作人不是会长!"),
 
-    Operator_Not_Admin(38, "操作人不是会员!"),
+    Operator_Not_Admin(38, "操作人不是管理员!"),
 
     Operator_Not_Member(39, "操作人不是行会成员"),
 
-	Alliance_Application_Expired(40, "行会申请表过期!");
+    Alliance_Application_Expired(40, "行会申请表过期!"),
+
+    Target_Admin(41, "对象玩家是管理员!"),
+
+    Target_Not_Member(42, "对象玩家不是会员!"),
+
+    Alliance_Full(43, "行会人数已经达到最大值!"),
+
+    Operator_Member(44, "操作人已经是会员!"),
+
+    Target_Not_admin(45, "对象玩家不是管理员!"),
+
+    Operator_Chairman(46, "操作人是会长!"),;
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 

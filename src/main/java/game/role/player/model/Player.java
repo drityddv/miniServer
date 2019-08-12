@@ -221,9 +221,13 @@ public class Player extends AbstractCreature<Player> {
         boolean success;
         success = getPlayerAllianceInfo().changeAllianceId(targetAllianceId);
         if (success) {
-            SpringContext.getPlayerService().save(this);
+            save();
         }
         return success;
+    }
+
+    public void save() {
+        SpringContext.getPlayerService().save(this);
     }
 
 }

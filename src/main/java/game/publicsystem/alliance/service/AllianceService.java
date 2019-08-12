@@ -78,7 +78,6 @@ public class AllianceService implements IAllianceService {
         if (legality) {
             synchronized (alliance.getLock()) {
                 checkAllianceCondition(param, AllianceConst.ALLIANCE_LEGAL);
-                // 不需要再次检查冲突 因为提交都是在玩家自己的线程提交的
                 alliance.addApplication(JoinApplication.valueOf(player, alliance.getAllianceId()));
             }
         } else {
@@ -123,12 +122,18 @@ public class AllianceService implements IAllianceService {
         param.setApplicationId(applicationId);
 
         checkAllianceCondition(param, AllianceConst.APPLICATION_LEGAL);
+        if (operationType == OperationType.Join_Alliance) {
+            checkAllianceCondition(param, CheckType.Alliance_Full);
+        }
 
         Alliance alliance = getAlliance(allianceId);
         BaseAllianceApplication application = alliance.getApplicationMap().get(operationType).get(applicationId);
 
         synchronized (alliance.getLock()) {
             checkAllianceCondition(param, AllianceConst.APPLICATION_LEGAL);
+            if (operationType == OperationType.Join_Alliance) {
+                checkAllianceCondition(param, CheckType.Alliance_Full);
+            }
 
             if (application.handler(agreed)) {
                 saveAlliance();
@@ -138,38 +143,22 @@ public class AllianceService implements IAllianceService {
 
     @Override
     public void kickMember(Player player, long targetPlayerId) {
-        PlayerAllianceInfo playerAllianceInfo = player.getPlayerAllianceInfo();
-        Alliance alliance = getAlliance(playerAllianceInfo.getAllianceId());
-
-        if (alliance == null) {
-            logger.warn("玩家[{}]踢人失败,公会不存在[{}]", player.getAccountId(), playerAllianceInfo.getAllianceId());
+        // 不能踢自己
+        if (player.getPlayerId() == targetPlayerId) {
+            logger.warn("玩家[{}]踢人失败,目标对象不能为自己!", player.getAccountId());
             return;
         }
+        PlayerAllianceInfo playerAllianceInfo = player.getPlayerAllianceInfo();
+        long allianceId = playerAllianceInfo.getAllianceId();
+        Alliance alliance = getAlliance(allianceId);
+        Player targetPlayer = SpringContext.getPlayerService().getPlayer(targetPlayerId);
+
+        AllianceParam param = AllianceParam.valueOf(player, allianceId, targetPlayer);
+        checkAllianceCondition(param, AllianceConst.KICK_MEMBER_ADMIN);
 
         synchronized (alliance.getLock()) {
-            if (alliance.isDismiss()) {
-                logger.warn("玩家[{}]踢人失败,行会已经被解散!", player.getAccountId());
-                return;
-            }
-
-            if (!alliance.isMemberAdmin(player.getPlayerId())) {
-                logger.warn("玩家[{}]踢人失败,玩家不是管理员", player.getAccountId());
-                return;
-            }
-
-            if (alliance.isMemberAdmin(targetPlayerId)) {
-                if (alliance.getChairmanId() != player.getPlayerId()) {
-                    logger.warn("玩家[{}]踢人[{}]失败,目标也是管理员", player.getAccountId(), targetPlayerId);
-                    return;
-                }
-            }
-
-            if (!alliance.isMember(targetPlayerId)) {
-                logger.warn("玩家[{}]踢人[{}]失败,目标不存在于公会之中", player.getAccountId(), targetPlayerId);
-                return;
-            }
-
-            alliance.forceLeave(SpringContext.getPlayerService().getPlayer(targetPlayerId));
+            checkAllianceCondition(param, AllianceConst.KICK_MEMBER_ADMIN);
+            alliance.forceLeave(targetPlayer);
         }
     }
 
@@ -177,28 +166,13 @@ public class AllianceService implements IAllianceService {
     public void promoteAdmin(Player player, long targetMemberId) {
         long allianceId = player.getPlayerAllianceInfo().getAllianceId();
         Alliance alliance = getAlliance(allianceId);
+        Player targetPlayer = SpringContext.getPlayerService().getPlayer(targetMemberId);
+        AllianceParam param = AllianceParam.valueOf(player, allianceId, targetPlayer);
 
-        if (alliance == null) {
-            logger.warn("玩家[{}]提拔管理员失败,玩家无行会!", player.getAccountId());
-            return;
-        }
-
-        if (alliance.getChairmanId() != player.getPlayerId()) {
-            logger.warn("玩家[{}]提拔管理员失败,不是会长!", player.getAccountId());
-            return;
-        }
+        checkAllianceCondition(param, AllianceConst.PROMOTE_ADMIN);
 
         synchronized (alliance.getLock()) {
-            if (!alliance.isMember(targetMemberId)) {
-                logger.warn("玩家[{}]提拔管理员失败,成员[{}]不是会员!", player.getAccountId(), targetMemberId);
-                return;
-            }
-
-            if (alliance.isMemberAdmin(targetMemberId)) {
-                logger.warn("玩家[{}]提拔管理员失败,成员[{}]已经是管理员!", player.getAccountId(), targetMemberId);
-                return;
-            }
-
+            checkAllianceCondition(param, AllianceConst.PROMOTE_ADMIN);
             alliance.addAdmin(targetMemberId);
             saveAlliance();
         }
@@ -209,16 +183,11 @@ public class AllianceService implements IAllianceService {
         long allianceId = player.getPlayerAllianceInfo().getAllianceId();
         Alliance alliance = getAlliance(allianceId);
 
-        if (alliance == null) {
-            logger.warn("玩家[{}]解散行会失败,玩家无行会!", player.getAccountId());
-            return;
-        }
+        AllianceParam param = AllianceParam.valueOf(player, allianceId);
+        checkAllianceCondition(param, AllianceConst.DISMISS_ALLIANCE);
 
         synchronized (alliance.getLock()) {
-            if (alliance.getChairmanId() != player.getPlayerId()) {
-                logger.warn("玩家[{}]解散行会失败,不是会长!", player.getAccountId());
-                return;
-            }
+            checkAllianceCondition(param, AllianceConst.DISMISS_ALLIANCE);
             alliance.dismiss();
         }
 
@@ -252,44 +221,28 @@ public class AllianceService implements IAllianceService {
 
         long allianceId = allianceInfo.getInvite(inviteId);
         Alliance alliance = getAlliance(allianceId);
-
         allianceInfo.removeInvite(inviteId);
         SpringContext.getPlayerService().save(player);
-
-        if (alliance == null || alliance.isDismiss()) {
-            logger.warn("玩家[{}]处理行会加入邀请失败,行会已经失效!", player.getAccountId(), allianceId);
+        if (!agreed) {
             return;
         }
 
-        if (agreed) {
-            synchronized (alliance.getLock()) {
-                if (alliance.isDismiss()) {
-                    logger.warn("玩家[{}]处理行会[{}]加入邀请失败,行会已经解散!", player.getAccountId(), allianceId);
-                    return;
-                }
+        AllianceParam param =
+            AllianceParam.valueOf(player, allianceId, SpringContext.getPlayerService().getPlayer(inviteId));
+        checkAllianceCondition(param, AllianceConst.HANDLER_JOIN_ALLIANCE);
 
-                if (!alliance.isMember(inviteId)) {
-                    logger.warn("玩家[{}]处理行会[{}]加入邀请失败,邀请者身份失效!", player.getAccountId(), allianceId);
-                    return;
-                }
+        synchronized (alliance.getLock()) {
+            checkAllianceCondition(param, AllianceConst.HANDLER_JOIN_ALLIANCE);
 
-                if (alliance.isMember(player.getPlayerId())) {
-                    logger.warn("玩家[{}]处理行会[{}]加入邀请失败,玩家已经是该行会的成员了!", player.getAccountId(), inviteId);
-                    return;
-                }
-
-                if (player.changeAllianceId(alliance.getAllianceId())) {
-                    alliance.addMember(player.getPlayerId());
-                } else {
-                    // must be in other alliance
-                    logger.warn("玩家[{}]处理行会加入邀请失败,玩家已经是行会[{}]的成员!", player.getAccountId(),
-                        allianceInfo.getAllianceId());
-                    return;
-                }
+            if (player.changeAllianceId(alliance.getAllianceId())) {
+                alliance.addMember(player.getPlayerId());
+            } else {
+                // must be in other alliance
+                logger.warn("玩家[{}]处理行会加入邀请失败,玩家已经是行会[{}]的成员!", player.getAccountId(), allianceInfo.getAllianceId());
+                return;
             }
-            saveAlliance();
         }
-
+        saveAlliance();
     }
 
     @Override
@@ -305,24 +258,15 @@ public class AllianceService implements IAllianceService {
         }
 
         PlayerAllianceInfo allianceInfo = player.getPlayerAllianceInfo();
-        Alliance alliance = getAlliance(allianceInfo.getAllianceId());
+        long allianceId = allianceInfo.getAllianceId();
+        Alliance alliance = getAlliance(allianceId);
 
-        if (alliance == null || alliance.getChairmanId() != player.getPlayerId()) {
-            logger.warn("玩家[{}]转移会长失败,玩家无公会或者玩家不是会长!", player.getAccountId());
-            return;
-        }
+        AllianceParam param =
+            AllianceParam.valueOf(player, allianceId, SpringContext.getPlayerService().getPlayer(memberId));
+        checkAllianceCondition(param, AllianceConst.DELIVER_CHAIRMAN);
 
         synchronized (alliance.getLock()) {
-            if (alliance.isDismiss()) {
-                logger.warn("玩家[{}]转移会长失败,行会已经解散!", player.getAccountId());
-                return;
-            }
-
-            if (!alliance.isMember(memberId)) {
-                logger.warn("玩家[{}]转移会长失败,移交对象[{}]不是行会成员!", player.getAccountId(), memberId);
-                return;
-            }
-
+            checkAllianceCondition(param, AllianceConst.DELIVER_CHAIRMAN);
             alliance.setChairmanId(memberId);
             alliance.addAdmin(memberId);
         }
@@ -331,41 +275,21 @@ public class AllianceService implements IAllianceService {
 
     @Override
     public void demoteAdmin(Player player, long adminId) {
+        if (player.getPlayerId() == adminId) {
+            logger.warn("玩家[{}]降级管理员等级失败,不能自己操作自己!", player.getAccountId());
+            return;
+        }
         PlayerAllianceInfo allianceInfo = player.getPlayerAllianceInfo();
+        long allianceId = allianceInfo.getAllianceId();
+        Alliance alliance = getAlliance(allianceId);
 
-        if (!allianceInfo.isInAlliance()) {
-            logger.warn("玩家[{}]修改管理员等级失败,玩家不处于行会之中!", player.getAccountId());
-            return;
-        }
-
-        Alliance alliance = getAlliance(allianceInfo.getAllianceId());
-        if (alliance == null || alliance.isDismiss()) {
-            logger.warn("玩家[{}]修改管理员等级失败,行会信息失效!", player.getAccountId());
-            return;
-        }
+        AllianceParam param =
+            AllianceParam.valueOf(player, allianceId, SpringContext.getPlayerService().getPlayer(adminId));
+        checkAllianceCondition(param, AllianceConst.DEMOTE_ADMIN);
 
         synchronized (alliance.getLock()) {
-            if (alliance.isDismiss()) {
-                logger.warn("玩家[{}]修改管理员等级失败,行会已经被解散!", player.getAccountId());
-                return;
-            }
-
-            if (alliance.getChairmanId() != player.getPlayerId()) {
-                logger.warn("玩家[{}]修改管理员等级失败,玩家不是会长!", player.getAccountId());
-                return;
-            }
-
-            if (alliance.isMemberAdmin(adminId)) {
-                logger.warn("玩家[{}]修改管理员等级失败,会员[{}]已经是管理员了!", player.getAccountId(), adminId);
-                return;
-            }
-
-            if (alliance.isMember(adminId)) {
-                logger.warn("玩家[{}]修改管理员等级失败,行会不存在成员[{}]!", player.getAccountId(), adminId);
-                return;
-            }
-
-            alliance.addAdmin(adminId);
+            checkAllianceCondition(param, AllianceConst.DEMOTE_ADMIN);
+            alliance.removeAdmin(adminId);
             saveAlliance();
         }
     }

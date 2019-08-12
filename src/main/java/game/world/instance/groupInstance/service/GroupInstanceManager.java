@@ -15,13 +15,7 @@ import game.world.instance.groupInstance.model.GroupInstanceMapInfo;
 @Component
 public class GroupInstanceManager {
 
-    private static final int MAX_PLAYER_SIZE = 100;
-
     private Map<Integer, GroupInstanceMapInfo> mapInfoMap = new HashMap<>();
-
-    public static int getMaxPlayerSize() {
-        return MAX_PLAYER_SIZE;
-    }
 
     public void addMapInfo(GroupInstanceMapInfo mapInfo) {
         mapInfoMap.put(mapInfo.getMapId(), mapInfo);
@@ -35,7 +29,4 @@ public class GroupInstanceManager {
         return mapInfoMap;
     }
 
-    public void removeMapInfo(int mapId) {
-        mapInfoMap.remove(mapId);
-    }
 }

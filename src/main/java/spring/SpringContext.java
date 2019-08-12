@@ -248,7 +248,7 @@ public class SpringContext implements ApplicationContextAware {
         return instance.mainCityService;
     }
 
-    public static ISingleInstanceService getInstanceService() {
+    public static ISingleInstanceService getSingleInstanceService() {
         return instance.instanceService;
     }
 

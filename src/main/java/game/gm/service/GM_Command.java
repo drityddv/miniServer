@@ -19,6 +19,7 @@ import game.base.item.service.IItemService;
 import game.common.service.ICommonService;
 import game.gm.event.HotFixEvent;
 import game.gm.packet.SM_LogMessage;
+import game.publicsystem.alliance.model.Alliance;
 import game.publicsystem.alliance.model.ServerAllianceInfo;
 import game.publicsystem.rank.model.ServerRank;
 import game.publicsystem.rank.model.type.BattleScoreRankInfo;
@@ -278,6 +279,16 @@ public class GM_Command {
 
     public void mockRank(Player player, long score) {
         SpringContext.getRankService().addRankInfo(new BattleScoreRankInfo(player.getAccountId(), score));
+    }
+
+    public void addMember(Player player, long allianceId, String accountId) {
+
+        Player targetPlayer = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
+        Alliance alliance = SpringContext.getAllianceService().getAlliance(allianceId);
+        alliance.addMember(targetPlayer.getPlayerId());
+        alliance.addAdmin(targetPlayer.getPlayerId());
+        targetPlayer.getPlayerAllianceInfo().changeAllianceId(allianceId);
+
     }
 
 }

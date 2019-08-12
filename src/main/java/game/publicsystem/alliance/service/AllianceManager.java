@@ -24,4 +24,5 @@ public class AllianceManager {
     public void save(AllianceEnt ent) {
         entityCacheService.save(ent);
     }
+
 }

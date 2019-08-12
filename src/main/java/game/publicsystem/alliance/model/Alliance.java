@@ -61,6 +61,10 @@ public class Alliance {
         return chairmanId;
     }
 
+    public void setChairmanId(long chairmanId) {
+        this.chairmanId = chairmanId;
+    }
+
     public Set<Long> getMemberSet() {
         return memberSet;
     }
@@ -129,7 +133,7 @@ public class Alliance {
         return adminMember;
     }
 
-    public void setChairmanId(long chairmanId) {
-        this.chairmanId = chairmanId;
+    public void removeAdmin(long adminId) {
+        adminMember.remove(adminId);
     }
 }

@@ -62,6 +62,7 @@ public abstract class AbstractMovableScene<T extends AbstractMapObject> extends 
     }
 
     public void enter(long playerId, T object) {
+        // 暂时没有给地图重连的接口
         T absent = playerMap.putIfAbsent(playerId, object);
         if (absent == null) {
             playerMap.put(object.getId(), object);

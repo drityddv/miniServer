@@ -22,13 +22,12 @@ import spring.SpringContext;
  */
 
 public abstract class AbstractRank {
-
     // lock
     private final Object lock = new Object();
     // 玩家查看的缓存
-    protected volatile List<BaseRankInfo> cacheVo = new ArrayList<>();
+    protected transient volatile List<BaseRankInfo> cacheVo = new ArrayList<>();
     // 玩家修改的缓存
-    protected transient Map<String, BaseRankInfo> playerCache = new ConcurrentHashMap<>();
+    protected Map<String, BaseRankInfo> playerCache = new ConcurrentHashMap<>();
 
     protected transient ConcurrentSkipListMap<BaseRankInfo, String> rankDataMap =
         new ConcurrentSkipListMap<>(new DefaultComparator());
@@ -69,7 +68,6 @@ public abstract class AbstractRank {
                 SpringContext.getRankService().saveRankInfo();
             }
         }
-
     }
 
     private void removeLast() {
@@ -82,10 +80,10 @@ public abstract class AbstractRank {
     }
 
     public void init() {
-        cacheVo.forEach(rankInfo -> {
-            playerCache.put(rankInfo.getId(), rankInfo);
+        playerCache.values().forEach(rankInfo -> {
             rankDataMap.put(rankInfo, rankInfo.getId());
         });
+        cacheVo = new ArrayList<>(rankDataMap.keySet());
     }
 
     public void updateCache() {
