@@ -68,7 +68,19 @@ public enum MessageEnum {
 
     MAP_MAX_PLAYER_NUM(33, "副本人数达到最大上限!"),
 
-    RANK_INDEX_ERROR(34, "排行榜分页查看参数错误,实例参数:'rankTypeId:1,start:0,end:1'"),;
+    RANK_INDEX_ERROR(34, "排行榜分页查看参数错误,实例参数:'rankTypeId:1,start:0,end:1'"),
+
+    Alliance_Dismiss(35, "行会已经被解散!"),
+
+    Alliance_Empty(36, "行会不存在!"),
+
+    Operator_Not_Chairman(37, "操作人不是会长!"),
+
+    Operator_Not_Admin(38, "操作人不是会员!"),
+
+    Operator_Not_Member(39, "操作人不是行会成员"),
+
+	Alliance_Application_Expired(40, "行会申请表过期!");
 
     private static Map<Integer, MessageEnum> ID_TO_ENUM = new HashMap<>();
 
