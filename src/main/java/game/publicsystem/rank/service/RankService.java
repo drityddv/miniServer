@@ -80,7 +80,7 @@ public class RankService implements IRankService {
 
     @Override
     public void updateCache() {
-        // logger.info("刷新排行榜缓存...");
+//        logger.info("刷新排行榜缓存...");
         getServerRankInfo().updateCache();
     }
 

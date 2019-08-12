@@ -93,12 +93,12 @@ public class AllianceService implements IAllianceService {
     public void leaveAlliance(Player player) {
         PlayerAllianceInfo allianceInfo = player.getPlayerAllianceInfo();
         long allianceId = allianceInfo.getAllianceId();
-
+		Alliance alliance = getAlliance(allianceId);
         AllianceParam param = AllianceParam.valueOf(player, allianceId);
         checkAllianceCondition(param, AllianceConst.LEAVE_ALLIANCE);
 
-        Alliance alliance = getAlliance(allianceId);
         synchronized (alliance.getLock()) {
+        	//
             checkAllianceCondition(param, AllianceConst.LEAVE_ALLIANCE);
             alliance.forceLeave(player);
         }
@@ -121,12 +121,13 @@ public class AllianceService implements IAllianceService {
         param.setOperationType(operationType);
         param.setApplicationId(applicationId);
 
+        Alliance alliance = getAlliance(allianceId);
+
         checkAllianceCondition(param, AllianceConst.APPLICATION_LEGAL);
         if (operationType == OperationType.Join_Alliance) {
             checkAllianceCondition(param, CheckType.Alliance_Full);
         }
 
-        Alliance alliance = getAlliance(allianceId);
         BaseAllianceApplication application = alliance.getApplicationMap().get(operationType).get(applicationId);
 
         synchronized (alliance.getLock()) {
@@ -189,9 +190,9 @@ public class AllianceService implements IAllianceService {
         synchronized (alliance.getLock()) {
             checkAllianceCondition(param, AllianceConst.DISMISS_ALLIANCE);
             alliance.dismiss();
+            getServerAllianceInfo().removeAlliance(alliance);
         }
 
-        getServerAllianceInfo().removeAlliance(alliance);
         saveAlliance();
     }
 

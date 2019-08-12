@@ -24,11 +24,11 @@ import spring.SpringContext;
 public abstract class AbstractRank {
     // lock
     private final Object lock = new Object();
-    // 玩家查看的缓存
+    // 玩家查看的缓存 100
     protected transient volatile List<BaseRankInfo> cacheVo = new ArrayList<>();
     // 玩家修改的缓存
     protected Map<String, BaseRankInfo> playerCache = new ConcurrentHashMap<>();
-
+	//
     protected transient ConcurrentSkipListMap<BaseRankInfo, String> rankDataMap =
         new ConcurrentSkipListMap<>(new DefaultComparator());
 

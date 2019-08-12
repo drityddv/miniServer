@@ -20,6 +20,9 @@ import utils.snow.IdUtil;
 public class Alliance {
 
     private transient final Object lock = new Object();
+    /**
+     * 标志行会是否解散
+     */
     private volatile boolean dismiss = false;
     private long allianceId;
     private volatile long chairmanId;
