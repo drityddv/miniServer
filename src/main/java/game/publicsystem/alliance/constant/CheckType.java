@@ -14,7 +14,7 @@ import spring.SpringContext;
 
 public enum CheckType {
     // 行会存在
-    Alliance_Empty{
+    Alliance_Empty {
         @Override
         public void check(AllianceParam param) {
             Alliance alliance = SpringContext.getAllianceService().getAlliance(param.getAllianceId());

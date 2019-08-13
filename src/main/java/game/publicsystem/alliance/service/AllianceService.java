@@ -93,12 +93,12 @@ public class AllianceService implements IAllianceService {
     public void leaveAlliance(Player player) {
         PlayerAllianceInfo allianceInfo = player.getPlayerAllianceInfo();
         long allianceId = allianceInfo.getAllianceId();
-		Alliance alliance = getAlliance(allianceId);
+        Alliance alliance = getAlliance(allianceId);
         AllianceParam param = AllianceParam.valueOf(player, allianceId);
         checkAllianceCondition(param, AllianceConst.LEAVE_ALLIANCE);
 
         synchronized (alliance.getLock()) {
-        	//
+            //
             checkAllianceCondition(param, AllianceConst.LEAVE_ALLIANCE);
             alliance.forceLeave(player);
         }

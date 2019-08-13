@@ -32,7 +32,6 @@ public class Player extends AbstractCreature<Player> {
     private long playerId;
 
     private long battleScore;
-
     /**
      * 0为男性 1为女性 2为无相关信息
      */
