@@ -4,6 +4,9 @@
 *.iml
 *.ipr
 
+# docker
+docker/runtime/mysql/data/
+
 # Compiled class file
 *.class
 
