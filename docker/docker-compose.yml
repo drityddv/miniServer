@@ -1,0 +1,17 @@
+version: '3'
+services:
+  miniserver-mysql:
+      image: dockerfile-mysql:v1
+      environment:
+             - MYSQL_ROOT_PASSWORD=root
+             - MYSQL_DATABASE=mini-server
+      privileged: true
+      volumes:
+        - ./runtime/mysql/data:/var/lib/mysql
+        - ./runtime/mysql/config:/etc/mysql/conf.d
+      ports:
+         - "127.0.0.1:3307:3306"
+  miniserver-redis:
+        image: dockerfile-redis:v1
+        ports:
+           - "127.0.0.1:6310:6309"

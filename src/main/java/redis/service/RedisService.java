@@ -33,10 +33,9 @@ public class RedisService implements IRedisService {
     @Override
     public void init() {
         // jedis = new Jedis("127.0.0.1", 6379);
-        JedisPool jedisPool = new JedisPool(poolConfig, "127.0.0.1", 6379, 0, null);
+        JedisPool jedisPool = new JedisPool(poolConfig, "127.0.0.1", 6310, 0, null);
         jedis = jedisPool.getResource();
         logger.info("redis初始化完成");
-
     }
 
     @Override

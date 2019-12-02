@@ -14,13 +14,13 @@
     <context:annotation-config/>
 
     <!-- 配置要扫描的包 -->
-    <context:component-scan base-package="db,ebus,game,net,redis,quartz,resource,spring,"/>
+    <context:component-scan base-package="db,ebus,game,message,net,redis,quartz,resource,spring,"/>
 
     <!-- 配置数据源 -->
     <bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 
         <!-- 配置连接参数 -->
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/miniServer?characterEncoding=utf8"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3307/miniServer?characterEncoding=utf8"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="user" value="root"/>
         <property name="password" value="root"/>
@@ -46,7 +46,7 @@
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
                 <!--<prop key="hibernate.show_sql">true</prop>-->
                 <!--<prop key="hibernate.formate_sql">true</prop>-->
-                <prop key="hibernate.hbm2ddl.">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
 

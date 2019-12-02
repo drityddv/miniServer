@@ -282,13 +282,15 @@ public class GM_Command {
     }
 
     public void addMember(Player player, long allianceId, String accountId) {
-
         Player targetPlayer = SpringContext.getPlayerService().getPlayerByAccountId(accountId);
         Alliance alliance = SpringContext.getAllianceService().getAlliance(allianceId);
         alliance.addMember(targetPlayer.getPlayerId());
         alliance.addAdmin(targetPlayer.getPlayerId());
         targetPlayer.getPlayerAllianceInfo().changeAllianceId(allianceId);
-
     }
 
+    public void agentTest(Player player) {
+        logger.info("old code!");
+//         logger.info("hotfix生效!");
+    }
 }

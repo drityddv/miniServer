@@ -1,6 +1,8 @@
+import java.time.DayOfWeek;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import org.apache.commons.lang3.Range;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -87,10 +89,12 @@ public class Test {
 
     @org.junit.Test
     public void run3() {
-        while (true) {
-            System.out.println(new Random().nextInt(10));
-        }
-    }
+		int[] array = new int[0];
+//		System.out.println(array[0]);
+		System.out.println(array.length);
+//		System.out.println(array[1]);
+
+	}
 
     class A {
         private Map<Long, Alliance> memberMap = new HashMap<>();
