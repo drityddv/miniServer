@@ -127,7 +127,10 @@ public class StorageManager {
         Map<Class<?>, ResourceDefinition> resourceDefinitionMap) {
         resourceDefinitionMap.forEach((aClass, resourceDefinition) -> {
             String location = resourceDefinition.getLocation();
-            InputStream inputStream = SimpleUtil.getInputStreamFromFile(location);
+            this.getClass().getClassLoader().getResource(resourceDefinition.getLocation() + ".csv");
+            // InputStream inputStream = SimpleUtil.getInputStreamFromFile(location);
+            InputStream inputStream =
+                this.getClass().getClassLoader().getResourceAsStream(resourceDefinition.getLocation() + ".csv");
             storageManager.registerCsvCache(location, inputStream);
             // logger.info("初始化csv文件流结束,csv文件个数[{}],[{}]", resourceDefinitionMap.size(),
             // resourceDefinition.getClz().getSimpleName());

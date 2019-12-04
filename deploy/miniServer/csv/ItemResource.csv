@@ -1,0 +1,9 @@
+configId,itemName,itemLevel,overLimit,typeString   ,effectString
+1       ,红药水     ,1        ,0        ,MEDICINE     ,HP:30
+2       ,蓝药水     ,1        ,0        ,MEDICINE     ,MANA:20
+3       ,经验仙丹    ,1        ,99       ,ELIXIR       ,EXP:100
+4       ,等级仙丹    ,1        ,99       ,ELIXIR       ,LEVEL:1
+5       ,点券兑换卡   ,1        ,1        ,EXCHANGE_CARD,
+6       ,铁剑      ,1        ,1        ,EQUIPMENT    ,
+7       ,强化石     ,1        ,0        ,STONE        ,
+8       ,长矛      ,1        ,1        ,EQUIPMENT    ,

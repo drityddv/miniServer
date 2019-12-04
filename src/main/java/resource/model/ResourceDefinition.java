@@ -7,7 +7,8 @@ package resource.model;
 
 public class ResourceDefinition {
 
-    private static final String PATH_NAME = "src/main/resources/csv/";
+//    private static final String PATH_NAME = "src/main/resources/csv/";
+    private static final String PATH_NAME = "csv/";
 
     private final Class<?> clz;
 

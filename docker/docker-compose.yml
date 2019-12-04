@@ -1,7 +1,16 @@
 version: '3'
 services:
+#  miniserver-java:
+#    image: dockerfile-miniserver:v1
+#    container_name: mini-server
+#    ports:
+#      - "127.0.0.1:8000:8000"
+#    depends_on:
+#      - miniserver-mysql
+#      - miniserver-redis
   miniserver-mysql:
       image: dockerfile-mysql:v1
+      container_name: mini-mysql
       environment:
              - MYSQL_ROOT_PASSWORD=root
              - MYSQL_DATABASE=mini-server
@@ -11,7 +20,15 @@ services:
         - ./runtime/mysql/config:/etc/mysql/conf.d
       ports:
          - "127.0.0.1:3307:3306"
+      networks:
+        - default
   miniserver-redis:
         image: dockerfile-redis:v1
+        container_name: mini-redis
         ports:
            - "127.0.0.1:6310:6309"
+        networks:
+         - default
+networks:
+    default:
+#      external: true

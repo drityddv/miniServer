@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.2.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 采用注释的方式配置bean -->
+    <context:annotation-config/>
+
+    <!-- 配置要扫描的包 -->
+    <context:component-scan base-package="db,ebus,game,message,net,redis,quartz,resource,spring,"/>
+
+    <!-- 配置数据源 -->
+    <bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+
+        <!-- 配置连接参数 -->
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/miniServer?characterEncoding=utf8"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+
+        <!-- 配置连接池 -->
+        <property name="initialPoolSize" value="10"/>
+        <property name="maxPoolSize" value="30"/>
+        <property name="minPoolSize" value="1"/>
+        <property name="acquireIncrement" value="3"/>
+        <property name="maxIdleTime" value="60"/>
+
+    </bean>
+
+
+    <!-- 配置SessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+
+        <!-- 依赖数据源 -->
+        <property name="dataSource" ref="ds"/>
+        <!-- Hibernate框架相关配置 -->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
+                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <!--<prop key="hibernate.formate_sql">true</prop>-->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+
+        <property name="packagesToScan">
+            <list>
+                <value>game.user.login.entity</value>
+                <value>game.role.player.entity</value>
+                <value>game.user.pack.entity</value>
+                <value>game.role.equip.entity</value>
+                <value>game.user.mapinfo.entity</value>
+                <value>game.user.task.entity</value>
+                <value>game.role.skill.entity</value>
+                <value>game.publicsystem.alliance.entity</value>
+                <value>game.publicsystem.rank.entity</value>
+            </list>
+        </property>
+
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>
