@@ -20,7 +20,7 @@
     <bean id="ds" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
 
         <!-- 配置连接参数 -->
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3307/miniServer?characterEncoding=utf8"/>
+        <property name="jdbcUrl" value="jdbc:mysql://172.19.0.4:3306/miniServer?characterEncoding=utf8"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="user" value="root"/>
         <property name="password" value="root"/>

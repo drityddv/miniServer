@@ -1,13 +1,15 @@
 version: '3'
 services:
-#  miniserver-java:
-#    image: dockerfile-miniserver:v1
-#    container_name: mini-server
-#    ports:
-#      - "127.0.0.1:8000:8000"
-#    depends_on:
-#      - miniserver-mysql
-#      - miniserver-redis
+  miniserver-java:
+    image: dockerfile-miniserver:v1
+    container_name: mini-server
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - miniserver-mysql
+      - miniserver-redis
+    networks:
+      mini-net:
   miniserver-mysql:
       image: dockerfile-mysql:v1
       container_name: mini-mysql
@@ -19,16 +21,27 @@ services:
         - ./runtime/mysql/data:/var/lib/mysql
         - ./runtime/mysql/config:/etc/mysql/conf.d
       ports:
-         - "127.0.0.1:3307:3306"
+         - "3307:3306"
       networks:
-        - default
+        mini-net:
+          ipv4_address: 172.19.0.4
   miniserver-redis:
         image: dockerfile-redis:v1
         container_name: mini-redis
         ports:
-           - "127.0.0.1:6310:6309"
+           - "6310:6309"
         networks:
-         - default
+         mini-net:
+          ipv4_address: 172.19.0.2
+  miniserver-centos:
+        image: dockerfile-centos:v1
+        container_name: mini-centos
+        networks:
+          mini-net:
+            ipv4_address: 172.19.0.3
 networks:
-    default:
-#      external: true
+    mini-net:
+      driver: bridge
+      ipam:
+        config:
+          - subnet: 172.19.0.0/16
