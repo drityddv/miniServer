@@ -8,14 +8,17 @@ services:
     depends_on:
       - miniserver-mysql
       - miniserver-redis
+      - miniserver-zookeeper
     networks:
       mini-net:
+  miniserver-game:
+
   miniserver-mysql:
       image: dockerfile-mysql:v1
       container_name: mini-mysql
       environment:
              - MYSQL_ROOT_PASSWORD=root
-             - MYSQL_DATABASE=mini-server
+             - MYSQL_DATABASE=miniServer
       privileged: true
       volumes:
         - ./runtime/mysql/data:/var/lib/mysql
@@ -39,6 +42,12 @@ services:
         networks:
           mini-net:
             ipv4_address: 172.19.0.3
+  miniserver-zookeeper:
+        image: zookeeper
+        container_name: mini-zookeeper
+        networks:
+          mini-net:
+           ipv4_address: 172.19.0.5
 networks:
     mini-net:
       driver: bridge

@@ -1,7 +1,0 @@
-miniServer:
-  net:
-    boss:
-      threadNum: 1
-    worker:
-      threadNum: 20
-    maxIdleMinute : 30

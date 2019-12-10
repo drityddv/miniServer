@@ -40,6 +40,7 @@ import net.server.Server;
 import quartz.service.QuartzService;
 import redis.service.RedisService;
 import resource.service.StorageManager;
+import zookeeper.service.IServiceRegister;
 
 /**
  * @author : ddv
@@ -148,6 +149,9 @@ public class SpringContext implements ApplicationContextAware {
 
     @Autowired
     private IRankService rankService;
+
+    @Autowired
+    private IServiceRegister serviceRegister;
 
     @Autowired
     private IGroupInstanceService groupInstance;
@@ -274,6 +278,10 @@ public class SpringContext implements ApplicationContextAware {
 
     public static IAllianceService getAllianceService() {
         return instance.allianceService;
+    }
+
+    public static IServiceRegister getServiceRegister() {
+        return instance.serviceRegister;
     }
 
     public static ApplicationContext getApplicationContext() {

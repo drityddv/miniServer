@@ -53,7 +53,10 @@ public class Start {
             SpringContext.getSystemService().init();
 
             // 初始化redis
-            SpringContext.getRedisService().init();
+//            SpringContext.getRedisService().init();
+
+            // 手动初始化zookeeper
+            SpringContext.getServiceRegister().init();
 
             // 初始化排行榜
             SpringContext.getRankService().init();
@@ -69,7 +72,7 @@ public class Start {
             return;
         }
 
-        logger.info("服务器启动成功...");
+        logger.info("服务器启动成功... 版本[1.0]");
     }
 
     private static void initMBean() {

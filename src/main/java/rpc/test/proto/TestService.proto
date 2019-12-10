@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package rpc.test.proto;
+
+option java_package = "rpc.test.TestRpcService";
+option java_multiple_files = true;
+
+
+message TestPacket {
+    string name = 1;
+    int32 id = 2;
+    string email = 3;
+}
+
+message TestPacketRequest {
+    string serverId = 1;
+//    TestPacket packet = 2;
+}
+
+message TestPacketResponse {
+    int32 statsCode = 1;
+}
+
+service TestRpcService {
+
+    rpc TestMethod (TestPacketRequest) returns (TestPacketResponse);
+}
