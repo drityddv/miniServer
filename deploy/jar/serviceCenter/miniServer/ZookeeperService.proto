@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package rpc.service.zookeeper;
+
+option java_package = "rpc.service.zookeeper";
+option java_multiple_files = true;
+
+
+message RegisteServiceRequest {
+    string id = 1;
+    string ip = 2;
+    int32 port = 3;
+    string serviceName = 4;
+}
+
+message RegisteServiceResponse {
+    string id = 1;
+    bool success = 2;
+}
+
+message RemoveServiceRequest {
+    string id = 1;
+    string ip = 2;
+    int32 port = 3;
+    string serviceName = 4;
+}
+
+
+message RemoveServiceResponse {
+    string id = 1;
+    bool success = 2;
+}
+
+
+service MatchService {
+    // 请求注册服务
+    rpc registeService (RegisteServiceRequest) returns (RegisteServiceResponse);
+
+    // 请求移除服务
+    rpc removeService (RemoveServiceRequest) returns (RemoveServiceResponse);
+}

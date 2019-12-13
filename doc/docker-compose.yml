@@ -1,0 +1,65 @@
+version: '3'
+services:
+  miniserver-java:
+    image: dockerfile-miniserver:v1
+    container_name: mini-server
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      - miniserver-mysql
+      - miniserver-redis
+      - rpc-service-center
+      - miniserver-zookeeper
+    networks:
+      mini-net:
+  rpc-service-center:
+    image: dockerfile-service-center:v1
+    container_name: service-center
+    depends_on:
+      - miniserver-zookeeper
+    networks:
+      mini-net:
+        ipv4_address: 172.19.0.6
+  miniserver-mysql:
+      image: dockerfile-mysql:v1
+      container_name: mini-mysql
+      environment:
+             - MYSQL_ROOT_PASSWORD=root
+             - MYSQL_DATABASE=miniServer
+      privileged: true
+      volumes:
+        - ./runtime/mysql/data:/var/lib/mysql
+        - ./runtime/mysql/config:/etc/mysql/conf.d
+      ports:
+         - "3307:3306"
+      networks:
+        mini-net:
+          ipv4_address: 172.19.0.4
+  miniserver-redis:
+        image: dockerfile-redis:v1
+        container_name: mini-redis
+        ports:
+           - "6380:6379"
+        networks:
+         mini-net:
+          ipv4_address: 172.19.0.2
+  miniserver-centos:
+        image: dockerfile-centos:v1
+        container_name: mini-centos
+        networks:
+          mini-net:
+            ipv4_address: 172.19.0.3
+  miniserver-zookeeper:
+        image: zookeeper
+        container_name: mini-zookeeper
+        ports:
+          - "2181:2181"
+        networks:
+          mini-net:
+           ipv4_address: 172.19.0.5
+networks:
+    mini-net:
+      driver: bridge
+      ipam:
+        config:
+          - subnet: 172.19.0.0/16

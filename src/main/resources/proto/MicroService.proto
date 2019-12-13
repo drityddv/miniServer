@@ -1,0 +1,62 @@
+syntax = "proto3";
+package micro.service;
+
+option java_package = "micro.service";
+option java_multiple_files = true;
+
+message RegisteServiceRequest {
+    string id = 1;
+    string ip = 2;
+    int32 port = 3;
+    string serviceName = 4;
+}
+
+message RegisteServiceResponse {
+    string id = 1;
+    bool success = 2;
+}
+
+message RemoveServiceRequest {
+    string id = 1;
+    string ip = 2;
+    int32 port = 3;
+    string serviceName = 4;
+}
+
+message RemoveServiceResponse {
+    string id = 1;
+    bool success = 2;
+}
+
+message GetSynRemoteServiceRequest {
+    string serverName = 1;
+}
+
+message GetAsynRemoteServiceRequest {
+    string serverName = 1;
+}
+
+message getSynRemoteServiceRequestResponse {
+    bool success = 1;
+    string ip = 2;
+    int32 port = 3;
+}
+
+message getAsynRemoteServiceRequestResponse {
+    string ip = 1;
+    int32 port = 2;
+}
+
+service MicroService {
+    // 请求注册服务
+    rpc registerService (RegisteServiceRequest) returns (RegisteServiceResponse);
+
+    // 请求移除服务
+    rpc removeService (RemoveServiceRequest) returns (RemoveServiceResponse);
+
+    // 请求相关服务信息[阻塞]
+    rpc getService (GetSynRemoteServiceRequest) returns (getSynRemoteServiceRequestResponse);
+
+    // 请求相关服务信息[异步]
+    rpc getServiceAsyn (GetAsynRemoteServiceRequest) returns (getAsynRemoteServiceRequestResponse);
+}

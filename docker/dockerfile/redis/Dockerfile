@@ -1,2 +1,2 @@
-FROM redis
+FROM redis:5
 MAINTAINER ddv

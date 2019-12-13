@@ -40,7 +40,7 @@ import net.server.Server;
 import quartz.service.QuartzService;
 import redis.service.RedisService;
 import resource.service.StorageManager;
-import zookeeper.service.IServiceRegister;
+import micro.zookeeper.service.IServiceRegister;
 
 /**
  * @author : ddv
@@ -150,7 +150,7 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private IRankService rankService;
 
-    @Autowired
+//    @Autowired
     private IServiceRegister serviceRegister;
 
     @Autowired

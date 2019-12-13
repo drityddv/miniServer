@@ -291,6 +291,10 @@ public class GM_Command {
 
     public void agentTest(Player player) {
         logger.info("old code!");
-//         logger.info("hotfix生效!");
+        // logger.info("hot swap生效!");
     }
+
+    public void crossServer(Player player){
+
+	}
 }

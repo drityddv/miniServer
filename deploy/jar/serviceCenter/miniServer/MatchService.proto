@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package micro.match;
+
+option java_package = "micro.match";
+option java_multiple_files = true;
+
+
+message MatchRequest {
+    string serverId = 1;
+    string name = 2;
+    int32 level = 3;
+}
+
+message MatchResponse {
+    string serverId = 1;
+    string name = 2;
+    bool success = 3;
+    int32 matchId = 4;
+}
+
+message MatchCancelRequest {
+    string serverId = 1;
+    string name = 2;
+}
+
+message MatchCancelResponse {
+    string serverId = 1;
+    string name = 2;
+    bool success = 3;
+}
+
+service MatchService {
+    // 请求匹配
+    rpc match (MatchRequest) returns (MatchResponse);
+
+    // 取消匹配
+    rpc matchCancel (MatchCancelRequest) returns (MatchCancelResponse);
+}

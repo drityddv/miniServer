@@ -1,20 +1,27 @@
 version: '3'
 services:
   miniserver-java:
-    image: dockerfile-miniserver:v1
+    image: ddvddv/mini-server:game-v1
     container_name: mini-server
     ports:
       - "127.0.0.1:8000:8000"
     depends_on:
       - miniserver-mysql
       - miniserver-redis
+      - rpc-service-center
       - miniserver-zookeeper
     networks:
       mini-net:
-  miniserver-game:
-
+  rpc-service-center:
+    image: ddvddv/mini-server:service-center-v1
+    container_name: service-center
+    depends_on:
+      - miniserver-zookeeper
+    networks:
+      mini-net:
+        ipv4_address: 172.19.0.6
   miniserver-mysql:
-      image: dockerfile-mysql:v1
+      image: ddvddv/mini-server:mysql-v1
       container_name: mini-mysql
       environment:
              - MYSQL_ROOT_PASSWORD=root
@@ -29,15 +36,15 @@ services:
         mini-net:
           ipv4_address: 172.19.0.4
   miniserver-redis:
-        image: dockerfile-redis:v1
+        image: ddvddv/mini-server:redis-v1
         container_name: mini-redis
         ports:
-           - "6310:6309"
+           - "6380:6379"
         networks:
          mini-net:
           ipv4_address: 172.19.0.2
   miniserver-centos:
-        image: dockerfile-centos:v1
+        image: ddvddv/mini-server:centos7-v1
         container_name: mini-centos
         networks:
           mini-net:
@@ -45,6 +52,8 @@ services:
   miniserver-zookeeper:
         image: zookeeper
         container_name: mini-zookeeper
+        ports:
+          - "2181:2181"
         networks:
           mini-net:
            ipv4_address: 172.19.0.5
