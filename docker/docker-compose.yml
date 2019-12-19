@@ -4,7 +4,7 @@ services:
     image: ddvddv/mini-server:game-v1
     container_name: mini-server
     ports:
-      - "127.0.0.1:8000:8000"
+      - "8000:8000"
     depends_on:
       - miniserver-mysql
       - miniserver-redis

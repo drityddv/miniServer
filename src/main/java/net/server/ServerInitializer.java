@@ -24,8 +24,6 @@ public class ServerInitializer extends ChannelInitializer<SocketChannel> {
 
         pipeline.addLast(new PacketDecoder());
         pipeline.addLast(new PacketEncoder());
-        pipeline.addLast(new IdleStateHandler(MAX_TIME_SECOND, MAX_TIME_SECOND, MAX_TIME_SECOND, TimeUnit.SECONDS));
-        pipeline.addLast(new SessionHandler());
         pipeline.addLast(new ServerHandler());
     }
 }

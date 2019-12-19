@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-js
+spec:
+  selector:
+    matchLabels:
+      app: js
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: js
+    spec:
+      containers:
+      - name: js
+        image: ddvddv/node:v1
+        ports:
+        - containerPort: 7000
+

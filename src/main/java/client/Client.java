@@ -26,7 +26,7 @@ public class Client {
 
     public static void main(String[] args) {
         start(args);
-        // test(args);
+        // test(new String[]{"1"});
     }
 
     private static void start(String[] args) {
@@ -36,7 +36,7 @@ public class Client {
         try {
             bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class)
                 .handler(ClientInitializer.valueOf(args.length <= 0 ? "ddv" : args[0]));
-            ChannelFuture future = bootstrap.connect("localhost", 8000).sync();
+            ChannelFuture future = bootstrap.connect(args[0], 8000).sync();
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             e.printStackTrace();

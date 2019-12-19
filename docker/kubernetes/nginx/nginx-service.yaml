@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels: #service标签
+    app: nginx
+spec:
+  selector:
+    app: nginx #选择pod的规则 标签为app:nginx
+  ports:
+  - name: nginx-tcp # 端口名 可以同时暴露多个类型的端口
+    protocol: TCP # 协议类型
+    port: 80  # 集群内其他容器可以用80端口访问service
+    nodePort: 32600 # 通过任意节点的32600端口访问该service
+    targetPort: 80 #请求转发至pod的端口
+  type: NodePort #service类型 clusterIp,NodePort,LoaderBalancer
+

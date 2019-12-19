@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: # deployment的基本属性
+  name: nginx-deployment
+  labels: # 资源标签 可以配置多组
+    app: nginx
+spec: # deployment行为描述
+  replicas: 3
+  selector: # 标签选择器与labels配套使用
+    matchLabels: # 选择包含标签app:nginx 的资源
+      app: nginx
+  template: # 创建pod的模板信息
+    metadata: #pod基本属性
+      labels: # pod标签 上述selector选择标签会从这里选择过滤
+        app: nginx
+    spec: #pod的行为描述
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+          - containerPort: 80

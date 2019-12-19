@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import game.base.manager.ClazzManager;
 import game.base.manager.SessionManager;
-import game.user.login.packet.CM_UserLogout;
+import game.gm.packet.SM_LogMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -13,9 +13,8 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import net.model.PacketProtocol;
-import net.model.USession;
 import spring.SpringContext;
-import utils.SessionUtil;
+import utils.NetUtil;
 
 /**
  * @author : ddv
@@ -30,19 +29,23 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
-            // 跑到派发器去执行,这里是netty线程
-            logger.info("channel超时,即将清除玩家数据...");
-            USession session = SessionManager.getSession(ctx.channel());
-            String accountId = SessionUtil.getAccountIdFromSession(session);
+            // // 跑到派发器去执行,这里是netty线程
+            // logger.info("channel超时,即将清除玩家数据...");
+            // USession session = SessionManager.getSession(ctx.channel());
+            // String accountId = SessionUtil.getAccountIdFromSession(session);
+            //
+            // // 如果一直没登录 在这里干掉
+            // if (accountId == null) {
+            // SessionManager.removeSession(ctx.channel());
+            // ctx.channel().close();
+            // return;
+            // }
+            //
+            // SpringContext.getDispatcher().invoke(session, new CM_UserLogout());
 
-            // 如果一直没登录 在这里干掉
-            if (accountId == null) {
-                SessionManager.removeSession(ctx.channel());
-                ctx.channel().close();
-                return;
-            }
-
-            SpringContext.getDispatcher().invoke(session, new CM_UserLogout());
+            Object object = SM_LogMessage.valueOf("server response" + NetUtil.getLocalIpAddress());
+            PacketProtocol protocol = PacketProtocol.valueOf(object);
+            ctx.writeAndFlush(protocol);
         }
     }
 
@@ -50,8 +53,9 @@ public class ServerHandler extends SimpleChannelInboundHandler<PacketProtocol> {
     protected void channelRead0(ChannelHandlerContext ctx, PacketProtocol protocol) throws Exception {
 
         try {
-            Object packet = ClazzManager.readObjectById(protocol.getData(), protocol.getId());
-            SpringContext.getDispatcher().invoke(SessionManager.getSession(ctx.channel()), packet);
+			Object object = SM_LogMessage.valueOf("server response " + NetUtil.getLocalIpAddress());
+			PacketProtocol protocol1 = PacketProtocol.valueOf(object);
+			ctx.writeAndFlush(protocol1);
         } catch (Exception e) {
             e.printStackTrace();
             logger.error("dispatcher invoke error.");

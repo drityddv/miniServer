@@ -33,7 +33,7 @@ public class ClientCommand implements Runnable {
 
     public ClientCommand(int i) {
         this.i = 100 * (i);
-        this.end = 100 * (i + 1);
+        this.end = 1000 * (i + 1);
     }
 
     public static ClientCommand valueOf(int i) {
@@ -44,7 +44,7 @@ public class ClientCommand implements Runnable {
     public void run() {
         while (i < end - 1) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(100 * 5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -54,7 +54,7 @@ public class ClientCommand implements Runnable {
             Bootstrap bootstrap = new Bootstrap();
             try {
                 bootstrap.group(eventLoopGroup).channel(NioSocketChannel.class).handler(ClientInitializer.valueOf(k));
-                ChannelFuture future = bootstrap.connect("localhost", 8000).sync();
+                ChannelFuture future = bootstrap.connect("192.168.99.100", 30279).sync();
                 channelList.add(future.channel());
                 logger.info("登陆序列[{}]", i);
             } catch (Exception e) {

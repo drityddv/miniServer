@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: game
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: game
+  template:
+    metadata:
+      labels:
+        app: game
+    spec:
+      containers:
+      - name: game
+        image: ddvddv/mini-server:netty-v2
+        ports:
+        - name: netty
+          containerPort: 9000
