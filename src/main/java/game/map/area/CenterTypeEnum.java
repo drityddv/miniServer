@@ -58,6 +58,7 @@ public enum CenterTypeEnum {
     }
 
     public static CenterTypeEnum getById(Integer id) {
+
         CenterTypeEnum centerTypeEnum = ID_TO_TYPE.get(id);
         if (centerTypeEnum == null) {
             return Default;
