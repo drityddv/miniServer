@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.slf4j.Logger;
@@ -83,23 +84,6 @@ public class Test {
         baseRankInfoSet.add(rankInfo3);
         baseRankInfoSet.add(rankInfo4);
 
-    }
-
-    @org.junit.Test
-    public void run3() {
-        while (true) {
-            System.out.println(new Random().nextInt(10));
-        }
-    }
-
-    class A {
-        private Map<Long, Alliance> memberMap = new HashMap<>();
-    }
-
-    class B {
-        private long id;
-        private String name;
-        private Map<Long, Long> map;
     }
 
 }

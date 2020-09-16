@@ -17,7 +17,8 @@ import net.model.USession;
  * @author : ddv
  * @since : 2019/4/30 下午2:15
  */
-public class PacketUtil {
+public class
+PacketUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(PacketUtil.class);
 

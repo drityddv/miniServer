@@ -18,7 +18,6 @@ import net.model.PacketProtocol;
  * @author : ddv
  * @date : 2019/3/3 下午7:49
  */
-
 public class ClientHandler extends SimpleChannelInboundHandler<PacketProtocol> {
 
     private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
